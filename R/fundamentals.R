@@ -6,7 +6,6 @@
 #' @param serverip
 #' @param user
 #' @param pwd
-#' @param projectname
 #'
 #' @return connection object
 #' @export get_idaifield_connection
@@ -26,26 +25,29 @@ get_idaifield_connection <- function(serverip = "192.168.1.199",
 
 #' get_idaifield_docs
 #'
-#' Imports the docs from an idaifield-database that is currently running and synching, needs a connection-object
-#' as produced by sofa directly or with get_idaifield_connection()
+#' Imports the docs from an idaifield-database that is currently running and synching,
+#' needs params to be processed to idaifield_connection()
 #'
-#' @param idaifield_connection
 #' @param projectname
 #' @param all
+#' @param serverip
+#' @param user
+#' @param pwd
 #'
 #' @return
 #' @export
 #'
 #' @examples
-get_idaifield_docs <- function(idaifield_connection = get_idaifield_connection(),
+get_idaifield_docs <- function(serverip = "192.168.1.199",
+                               user = "Anna Allgemeinperson",
+                               pwd = "password",
                                projectname = "projektname",
                                all = TRUE) {
+  idaifield_connection <- get_idaifield_connection(serverip, user, pwd)
   sofa::db_info(idaifield_connection, projectname)
   idaifield_docs <- sofa::db_alldocs(idaifield_connection, projectname, include_docs = TRUE)$rows
   return(idaifield_docs)
 }
-
-
 
 
 #' get_uid_type_list
@@ -71,7 +73,7 @@ get_uid_type_list <- function(idaifield_docs, verbose = FALSE){
   colnames(uid_type_list) <- colnames
   for (i in 1:length(idaifield_docs)){
     uid_type_list$uid[i] <- idaifield_docs[[i]]$key
-    uid_type_list$type[i] <- idaifield_docs[[i]]$doc$resource$type
+    uid_type_list$type[i] <- ifnotempty(idaifield_docs[[i]]$doc$resource$type)
     if (verbose) {
       uid_type_list$identifier[i] <- idaifield_docs[[i]]$doc$resource$identifier
       uid_type_list$shorttitle[i] <- ifnotempty(idaifield_docs[[i]]$doc$resource$shortDescription)
@@ -79,3 +81,6 @@ get_uid_type_list <- function(idaifield_docs, verbose = FALSE){
   }
   return(uid_type_list)
 }
+
+
+

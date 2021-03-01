@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of idaifieldR is to ... get data from idaifield into R. 
+The goal of idaifieldR is to ... get data from idaifield (https://github.com/dainst/idai-field) into R. 
 This is currently not usable. 
 
 I want to: 
@@ -12,6 +12,11 @@ I want to:
 * get to a point where tables can be imported flexibly into R
 
 (this currently works easiest with csv-import, but it can be easier)
+
+
+## Dependencies
+
+This depends on the r-package `sofa` (https://github.com/ropensci/sofa).
 
 ## Installation
 

@@ -11,7 +11,7 @@ get_idaifield_connection(
 )
 }
 \arguments{
-\item{projectname}{}
+\item{pwd}{}
 }
 \value{
 connection object

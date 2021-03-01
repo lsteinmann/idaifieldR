@@ -5,18 +5,20 @@
 \title{get_idaifield_docs}
 \usage{
 get_idaifield_docs(
-  idaifield_connection = get_idaifield_connection(),
+  serverip = "192.168.1.199",
+  user = "Anna Allgemeinperson",
+  pwd = "password",
   projectname = "projektname",
   all = TRUE
 )
 }
 \arguments{
-\item{all}{}
+\item{pwd}{}
 }
 \value{
 
 }
 \description{
-Imports the docs from an idaifield-database that is currently running and synching, needs a connection-object
-as produced by sofa directly or with get_idaifield_connection()
+Imports the docs from an idaifield-database that is currently running and synching,
+needs params to be processed to idaifield_connection()
 }
