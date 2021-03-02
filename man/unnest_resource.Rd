@@ -14,10 +14,22 @@ possible to use unnest_resource() later on in the resulting list to simplify it 
 point in time.}
 }
 \value{
-
+a list of class idaifield_resource (same as idaifield_docs, but the top-level
+with meta-information has been removed to make the actual resource data more accessible)
 }
 \description{
 This function somewhat unnests the lists provided by `idaifield`. The actualy data
 of a resource is usually stored in a sub-list behind $doc$resource, which contains
 the data one would mostly want to work with in R.
+}
+\examples{
+\dontrun{
+idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+projectname = "testproj",
+user = "R",
+pwd = "password",
+simplified = FALSE)
+
+idaifield_resources <- unnest_resource(idaifield_docs)
+}
 }

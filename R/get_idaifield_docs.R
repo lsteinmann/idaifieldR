@@ -6,9 +6,8 @@
 #'
 #' This just wraps `sofa`s functions under another name, but with defaults that
 #' are useful for the import from `idaifield`. Also, I am using unnest_resource() from
-#' this package here, as there seems to be no use in the unnested version.
-#'
-#' (todo: maybe I can add an option to have it unnested.)
+#' this package here, as there seems to be no use in the unnested version. However,
+#' simplified = FALSE would allow to get the top-level version.
 #'
 #'
 #' @param serverip The IP that the user can find in `idaifield`s settings as "Eigene Adresse" without the port-specification
@@ -25,13 +24,22 @@
 #'
 #' @param simplified Defaults to TRUE. If you do not wish to automatically unnest (i.e. remove
 #' a level of the list that contains some metadata which is IMO not useful when processing in R)
-#' just put FALSE (or anything but TRUE). If you wish to take a look at it and then later unnest, you can always
-#' use unnest_resource() from this package.
+#' just put FALSE (or anything but TRUE). If you wish to take a look at it and then later unnest,
+#' you can always use unnest_resource() from this package.
 #'
-#' @return
+#' @return an object (list) of class "idaifield_docs" (if simplified = FALSE) or
+#' "idaifield_resource" (if simplified = TRUE) that contains the resources in the selected
+#' project.
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password")
+#' }
+#'
 get_idaifield_docs <- function(serverip    = "192.168.1.199",
                                projectname = "projektname",
                                user        = "Anna Allgemeinperson",

@@ -11,10 +11,20 @@ show_type_list(idaifield_docs)
 resource level if it didn't already happen.}
 }
 \value{
-
+a character vector with the types represented in the idaifield_docs/resource
 }
 \description{
 Returns a list of types present in the idaifield-database (for orientation)
 it would be nice to be able to embed the translations, but i am guessing thats only
 possible if the configuration was available
+}
+\examples{
+\dontrun{
+idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+projectname = "testproj",
+user = "R",
+pwd = "password")
+
+show_type_list(idaifield_docs)
+}
 }

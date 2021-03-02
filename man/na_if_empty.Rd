@@ -10,11 +10,16 @@ na_if_empty(item)
 \item{item}{any object whatsoever}
 }
 \value{
-
+NA if empty, or the object that has been handed to it
 }
 \description{
 This is a helper function in defense against empty list items from `idaifield`,
 which sometimes occur. It simply writes NA in the corresponding field if a
 list or any kind of object handed to it is of length 0.
 Otherwise, it returns the input untouched.
+}
+\examples{
+na_if_empty(1)
+na_if_empty(list(2,3,4,list(4,5,4)))
+na_if_empty(NULL)
 }

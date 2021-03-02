@@ -13,7 +13,7 @@ get_uid_list(idaifield_docs, verbose = FALSE)
 more convenient for humans, and FALSE returns only UID and type, which is enough for internal selections}
 }
 \value{
-
+a list of UIDs and their Types, Identifiers and shortDescriptions
 }
 \description{
 All resources from `idaifield` are refenced with their UID in the relations fields. Therefore, for many purposes
@@ -25,4 +25,14 @@ and short descriptions and can be used to select the resources along their respe
 Please note that in any case the internal names of everything will be used. If you relabeled `Trench` to `Schnitt` in
 your language-configuration, this will still be `Trench` here. None of these functions have any respect for language
 configuration!
+}
+\examples{
+\dontrun{
+idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+projectname = "testproj",
+user = "R",
+pwd = "password")
+
+uid_list <- get_uid_list(idaifield_docs, verbose = TRUE)
+}
 }

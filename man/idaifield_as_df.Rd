@@ -10,7 +10,7 @@ idaifield_as_df(idaifield_docs)
 \item{idaifield_docs}{An object as returned by get_idaifield_docs(...)}
 }
 \value{
-
+a data.frame
 }
 \description{
 Converts the list that is returned by get_idaifield_docs(...) into a data.frame with
@@ -23,4 +23,14 @@ done that yet.)
 \details{
 If the list containing all meta-info (i.e. the docs-list)
 is handed to the function it will automatically unnest to resource level).
+}
+\examples{
+\dontrun{
+idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+projectname = "testproj",
+user = "R",
+pwd = "password")
+
+idaifield_df <- idaifield_as_df(idaifield_docs)
+}
 }

@@ -8,10 +8,13 @@
 #'
 #' @param item any object whatsoever
 #'
-#' @return
+#' @return NA if empty, or the object that has been handed to it
 #' @export
 #'
 #' @examples
+#' na_if_empty(1)
+#' na_if_empty(list(2,3,4,list(4,5,4)))
+#' na_if_empty(NULL)
 na_if_empty <- function(item) {
   if (length(item) == 0) {
     return(NA)
@@ -35,10 +38,20 @@ na_if_empty <- function(item) {
 #' possible to use unnest_resource() later on in the resulting list to simplify it a later
 #' point in time.
 #'
-#' @return
+#' @return a list of class idaifield_resource (same as idaifield_docs, but the top-level
+#' with meta-information has been removed to make the actual resource data more accessible)
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password",
+#' simplified = FALSE)
+#'
+#' idaifield_resources <- unnest_resource(idaifield_docs)
+#' }
 unnest_resource <- function(idaifield_docs) {
 
   check_result <- suppressMessages(check_if_idaifield(idaifield_docs))
@@ -70,10 +83,19 @@ unnest_resource <- function(idaifield_docs) {
 #'
 #' @param testobject An object that should be evaluated.
 #'
-#' @return
+#' @return a matrix that allows other functions to determine which type of list the object is
 #' @export
 #'
 #' @examples
+#' check_if_idaifield(list(1,1,1,list(2,2,2)))
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password")
+#'
+#' check_if_idaifield(idaifield_docs)
+#' }
 check_if_idaifield <- function(testobject) {
 
   result <- matrix(nrow = 1, ncol = 3)
@@ -119,10 +141,19 @@ check_if_idaifield <- function(testobject) {
 #'
 #' @param idaifield_docs An object to be used by one of the functions in this package
 #'
-#' @return
+#' @return if already unnested, the same object as handed to it. if not,
+#' the same list with the toplevel removed.
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password")
+#'
+#' check_and_unnest(idaifield_docs)
+#' }
 check_and_unnest <- function(idaifield_docs) {
   check <- suppressMessages(check_if_idaifield(idaifield_docs))
   if (unname(check[1,"idaifield_docs"])) {
@@ -152,10 +183,18 @@ check_and_unnest <- function(idaifield_docs) {
 #' @param verbose TRUE or FALSE (= anything but TRUE), TRUE returns a list including identifier and shorttitle which is
 #' more convenient for humans, and FALSE returns only UID and type, which is enough for internal selections
 #'
-#' @return
+#' @return a list of UIDs and their Types, Identifiers and shortDescriptions
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password")
+#'
+#' uid_list <- get_uid_list(idaifield_docs, verbose = TRUE)
+#' }
 get_uid_list <- function(idaifield_docs, verbose = FALSE){
 
   idaifield_docs <- check_and_unnest(idaifield_docs)

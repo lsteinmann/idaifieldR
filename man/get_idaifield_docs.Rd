@@ -28,11 +28,13 @@ There is no need to specify this as the default works. Included for fringe-cases
 
 \item{simplified}{Defaults to TRUE. If you do not wish to automatically unnest (i.e. remove
 a level of the list that contains some metadata which is IMO not useful when processing in R)
-just put FALSE (or anything but TRUE). If you wish to take a look at it and then later unnest, you can always
-use unnest_resource() from this package.}
+just put FALSE (or anything but TRUE). If you wish to take a look at it and then later unnest,
+you can always use unnest_resource() from this package.}
 }
 \value{
-
+an object (list) of class "idaifield_docs" (if simplified = FALSE) or
+"idaifield_resource" (if simplified = TRUE) that contains the resources in the selected
+project.
 }
 \description{
 Imports all resources from an idaifield-database that is currently running
@@ -42,7 +44,15 @@ Synching has to be activated in `idaifield` itself (Settings -> Synchronisation)
 \details{
 This just wraps `sofa`s functions under another name, but with defaults that
 are useful for the import from `idaifield`. Also, I am using unnest_resource() from
-this package here, as there seems to be no use in the unnested version.
+this package here, as there seems to be no use in the unnested version. However,
+simplified = FALSE would allow to get the top-level version.
+}
+\examples{
+\dontrun{
+idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+projectname = "testproj",
+user = "R",
+pwd = "password")
+}
 
-(todo: maybe I can add an option to have it unnested.)
 }

@@ -7,10 +7,18 @@
 #' @param idaifield_docs An object as returned by get_idaifield_docs(...); unnests to
 #' resource level if it didn't already happen.
 #'
-#' @return
+#' @return a character vector with the types represented in the idaifield_docs/resource
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password")
+#'
+#' show_type_list(idaifield_docs)
+#' }
 show_type_list <- function(idaifield_docs) {
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
@@ -28,10 +36,19 @@ show_type_list <- function(idaifield_docs) {
 #' @param idaifield_docs An object as returned by get_idaifield_docs(...)
 #' @param type Character expected, should be the internal Name of the Type that will be selected for (e.g. "Layer", "Pottery")
 #'
-#' @return
+#' @return a list of class idaifield_resource containing the resources
+#' which are of the selected type
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password")
+#'
+#' idaifield_layers <- select_by_type(idaifield_docs, type = "Layer")
+#' }
 select_by_type <- function(idaifield_docs, type = "Pottery") {
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
@@ -61,10 +78,18 @@ select_by_type <- function(idaifield_docs, type = "Pottery") {
 #'
 #' @param idaifield_docs An object as returned by get_idaifield_docs(...)
 #'
-#' @return
+#' @return a data.frame
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password")
+#'
+#' idaifield_df <- idaifield_as_df(idaifield_docs)
+#' }
 idaifield_as_df <- function(idaifield_docs) {
 
   resource_list <- check_and_unnest(idaifield_docs)

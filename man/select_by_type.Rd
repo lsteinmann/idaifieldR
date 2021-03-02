@@ -12,8 +12,19 @@ select_by_type(idaifield_docs, type = "Pottery")
 \item{type}{Character expected, should be the internal Name of the Type that will be selected for (e.g. "Layer", "Pottery")}
 }
 \value{
-
+a list of class idaifield_resource containing the resources
+which are of the selected type
 }
 \description{
 returns a subset of the docs list selected by type
+}
+\examples{
+\dontrun{
+idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+projectname = "testproj",
+user = "R",
+pwd = "password")
+
+idaifield_layers <- select_by_type(idaifield_docs, type = "Layer")
+}
 }
