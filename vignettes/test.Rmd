@@ -19,7 +19,7 @@ library(idaifieldR)
 ```
 
 
-```{r}
+```{r eval=FALSE}
 idaifield_docs <- get_idaifield_docs(serverip = "192.168.2.21",
                                      user = "Lisa Steinmann",
                                      pwd = "hallo",
@@ -34,20 +34,21 @@ okay.
 #str(idaifield_docs)
 ```
 
-```{r}
+```{r eval=FALSE}
 pottery <- select_by_type(idaifield_docs, type = "Pottery")
 
 pottery <- convert_to_df(pottery)
 
 head(pottery)
+
+saveRDS(idaifield_docs, "idaifield_docs_example.RDS")
 ```
 
 
-```{r}
+```{r eval=FALSE}
 uidlist <- get_uid_type_list(idaifield_docs, verbose = TRUE)
 
 library(tidyverse)
-uidlist
 
 new <- left_join(pottery, uidlist[,c(1,2)], by = c("liesWithin" = "uid"))
 
@@ -56,13 +57,13 @@ new <- left_join(pottery, uidlist[,c(1,2)], by = c("liesWithin" = "uid"))
 
 Keramikfragmente pro Befund:
 
-```{r}
+```{r eval=FALSE}
 ggplot(new, aes(x = identifier.y)) +
   geom_bar()
 ```
 
 
-```{r}
+```{r eval=FALSE}
 ggplot(new, aes(x = identifier.y, fill = materialType)) +
   geom_bar()
 ```

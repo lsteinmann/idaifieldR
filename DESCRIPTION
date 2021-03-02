@@ -18,3 +18,5 @@ Config/testthat/edition: 3
 Imports:
     sofa
 VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

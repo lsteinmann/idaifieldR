@@ -2,16 +2,22 @@
 % Please edit documentation in R/utilities.R
 \name{unnest_resource}
 \alias{unnest_resource}
-\title{removes the top layers of the json-list since they are not needed}
+\title{unnest_resource: Remove doc-level of `idaifield`-List}
 \usage{
 unnest_resource(idaifield_docs)
 }
 \arguments{
-\item{idaifield_docs}{}
+\item{idaifield_docs}{A list as provided by sofa::db_alldocs(...), or used within
+get_idaifield_docs(). The latter employs this function already, so mostly there is no
+need to deal with it. If one chooses get_idaifield_docs(..., simplified  = FALSE), it is
+possible to use unnest_resource() later on in the resulting list to simplify it a later
+point in time.}
 }
 \value{
 
 }
 \description{
-removes the top layers of the json-list since they are not needed
+This function somewhat unnests the lists provided by `idaifield`. The actualy data
+of a resource is usually stored in a sub-list behind $doc$resource, which contains
+the data one would mostly want to work with in R.
 }

@@ -1,17 +1,21 @@
 #' show_type_list
 #'
-#' returns a list of types present in the idaifield-database (for orientation)
+#' Returns a list of types present in the idaifield-database (for orientation)
 #' it would be nice to be able to embed the translations, but i am guessing thats only
 #' possible if the configuration was available
 #'
-#' @param idaifield_docs
+#' @param idaifield_docs An object as returned by get_idaifield_docs(...); unnests to
+#' resource level if it didn't already happen.
 #'
 #' @return
 #' @export
 #'
 #' @examples
 show_type_list <- function(idaifield_docs) {
-  uid_type_list <- get_uid_type_list(idaifield_docs)
+
+  idaifield_docs <- check_and_unnest(idaifield_docs)
+
+  uid_type_list <- get_uid_list(idaifield_docs)
   db_types <- unique(uid_type_list$type)
   return(db_types)
 }
@@ -21,8 +25,8 @@ show_type_list <- function(idaifield_docs) {
 #'
 #' returns a subset of the docs list selected by type
 #'
-#' @param idaifield_docs
-#' @param type
+#' @param idaifield_docs An object as returned by get_idaifield_docs(...)
+#' @param type Character expected, should be the internal Name of the Type that will be selected for (e.g. "Layer", "Pottery")
 #'
 #' @return
 #' @export
@@ -30,32 +34,40 @@ show_type_list <- function(idaifield_docs) {
 #' @examples
 select_by_type <- function(idaifield_docs, type = "Pottery") {
 
-  uid_type_list <- get_uid_type_list(idaifield_docs)
+  idaifield_docs <- check_and_unnest(idaifield_docs)
+  uid_type_list <- get_uid_list(idaifield_docs)
+
   typeindex <- grep(type, uid_type_list$type)
 
   selected_docs <- idaifield_docs[typeindex]
-  selected_docs <- unnest_resource(selected_docs)
+  selected_docs <- structure(selected_docs, class = "idaifield_resource")
+
   return(selected_docs)
 }
 
 
 
-#' Tries to convert the list that one gets from the json-format into a usable df
-#' this is currently horrible
+#' idaifield_as_df
 #'
-#' @param idaifield_docs
+#' Converts the list that is returned by get_idaifield_docs(...) into a data.frame with
+#' all columns present in the data. Individual rows will contain NA if there was no information
+#' entered into the respective field in `idaifield`. Lists are currently not preserved (e.g.
+#' the color-lists etc, but instead converted to a ;-seperated character string). They can be
+#' pulled apart again, and I am also thinking about preserving them in this function (but have not
+#' done that yet.)
+#'
+#' If the list containing all meta-info (i.e. the docs-list)
+#' is handed to the function it will automatically unnest to resource level).
+#'
+#' @param idaifield_docs An object as returned by get_idaifield_docs(...)
 #'
 #' @return
 #' @export
 #'
 #' @examples
-convert_to_df <- function(idaifield_docs) {
+idaifield_as_df <- function(idaifield_docs) {
 
-  if (length(idaifield_docs[[1]]$doc$resource) == 0) {
-    resource_list <- idaifield_docs
-  } else {
-    resource_list <- unnest_resource(idaifield_docs)
-  }
+  idaifield_docs <- check_and_unnest(idaifield_docs)
 
   names_list <- sapply(resource_list, names)
 
