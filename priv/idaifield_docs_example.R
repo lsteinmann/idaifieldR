@@ -6,6 +6,8 @@ idaifield_test_docs <- get_idaifield_docs(serverip = "192.168.2.21",
                                           pwd = "hallo",
                                           simplified = FALSE)
 
+df <- idaifield_as_df(idaifield_test_docs)
+
 write_rds(idaifield_test_docs, "inst/testdata/idaifield_test_docs.RDS")
 
 

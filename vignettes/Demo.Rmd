@@ -1,0 +1,112 @@
+---
+title: "How to use this package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to use this package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(idaifieldR)
+```
+
+
+Testdata is included as an RDS in `inst/testdata` since I cannot use the database-connection in this vignette: 
+
+```{r}
+idaifield_test_docs <- unnest_resource(readRDS(system.file("testdata", "idaifield_test_docs.RDS", package = "idaifieldR")))
+```
+
+This object is essentially what one would get with the following call:
+
+```{r eval=FALSE}
+idaifield_test_docs <- get_idaifield_docs(serverip = "192.168.1.21", 
+                                          # ^ The IP listet in the idaifield-Client as "Eigene Adresse"
+                                          projectname = "testproj", 
+                                          # ^ Name of the Project from said client that should be imported
+                                          user = "R",
+                                          # ^ Username to be used (inconsequential, as we are not going to write to the db)
+                                          # which would be possible with sofa, btw, and may be useful in some case!
+                                          pwd = "hallo",
+                                          # ^ The password as listed in the idaifield-Client
+                                          simplified = TRUE
+                                          # ^ default is TRUE, as it would otherwise pull the docs list with meta-info
+                                          # that I do not expect to be needed in R, I nonetheless made it possible to get it
+                                          )
+```
+
+This returns an object of (currently) class "idaifield_resource", which is a nested list: 
+
+```{r}
+idaifield_test_docs[[200]]
+```
+From the whole resource or docs list we can get a lookup-table that will be needed to display the resources correctly: 
+
+```{r}
+head(get_uid_list(idaifield_test_docs))
+```
+
+It can also incorporate the shortDescription if one wishes, as that may be a bit more readable in some cases:
+
+```{r}
+head(get_uid_list(idaifield_test_docs, verbose = TRUE))
+```
+
+As most functions are "helpers", they do not need to be demonstrated here. Important, however, is the `select_by_type`:
+
+```{r}
+pottery <- select_by_type(idaifield_test_docs, type = "Pottery")
+pottery[[1]]
+```
+
+The list of all Types present in the database can be gathered with `show_type_list`:
+
+```{r}
+show_type_list(idaifield_test_docs)
+```
+
+And a selection or the whole list can be converted into a data.frame: 
+
+```{r}
+pottery <- idaifield_as_df(pottery)
+head(df)
+```
+
+I will fix the `relations`-problematic at some point, but it works and there is no problem, currently. (Well, liesWithin and isRecorded in may need to be fused.)
+
+But from the df it should now be easy - still with a little reformatting - to actually plot distributions and such. 
+
+```{r}
+uidlist <- get_uid_list(idaifield_test_docs, verbose = FALSE)
+
+
+library(dplyr)
+pottery <- left_join(pottery, uidlist, by = c("liesWithin" = "UID"), suffix = c(".find", ".container"))
+
+head(pottery)
+```
+
+
+And then, it is easy to plot e.g. the counts of finds per Layer: 
+
+```{r}
+library(ggplot2)
+ggplot(pottery, aes(x = identifier.container)) +
+  geom_bar()
+```
+
+
+```{r }
+ggplot(pottery, aes(x = identifier.container, fill = materialType)) +
+  geom_bar()
+```
+The dataframe contains all fields from idaifield that were filled out in at least one object of the same type. I have not included a way to automatically select by Operation (yet?), but I imagine anyone familiar with are should be able to do that with this basis. 
+

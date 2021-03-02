@@ -73,8 +73,8 @@ idaifield_as_df <- function(idaifield_docs) {
 
   colnames <- unique(unlist(names_list))
 
-  resource_simple <- as.data.frame(matrix(nrow = length(resource_list), ncol = length(colnames)+2))
-  colnames(resource_simple) <- c(colnames, "liesWithin", "isRecordedIn")
+  resource_simple <- as.data.frame(matrix(nrow = length(resource_list), ncol = length(colnames)))
+  colnames(resource_simple) <- colnames
 
   for (listindex in 1:length(resource_list)) {
     sublist <- resource_list[[listindex]]
