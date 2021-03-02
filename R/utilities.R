@@ -170,7 +170,7 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE){
   uid_list <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
   colnames(uid_list) <- colnames
   for (i in 1:length(idaifield_docs)){
-    uid_list$UID[i] <- na_if_empty(idaifield_docs[[i]]$key)
+    uid_list$UID[i] <- na_if_empty(idaifield_docs[[i]]$id)
     uid_list$type[i] <- na_if_empty(idaifield_docs[[i]]$type)
     uid_list$identifier[i] <- na_if_empty(idaifield_docs[[i]]$identifier)
     if (verbose) {
