@@ -5,6 +5,11 @@ language: R
 cache: packages
 latex: false
 
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
 
 branches:
   only:
