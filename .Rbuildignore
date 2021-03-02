@@ -4,3 +4,5 @@
 ^priv$
 ^\.github$
 ^LICENSE\.md$
+^codecov\.yml$
+^\.travis\.yml$
