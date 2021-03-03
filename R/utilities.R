@@ -55,15 +55,26 @@ na_if_empty <- function(item) {
 #'
 #' idaifield_resources <- unnest_resource(idaifield_docs)
 #' }
-unnest_resource <- function(idaifield_docs) {
+unnest_resource <- function(idaifield_docs, keep_geometry = FALSE) {
 
   check_result <- suppressMessages(check_if_idaifield(idaifield_docs))
 
   if (unname(check_result[1, "idaifield_docs"])) {
-    for (i in seq_len(length(idaifield_docs))) {
+    for (i in seq_along(idaifield_docs)) {
       idaifield_docs[[i]] <- idaifield_docs[[i]]$doc$resource
-      idaifield_docs[[i]] <- c(idaifield_docs[[i]],
-                               unlist(idaifield_docs[[i]]$relations))
+
+      if (length(idaifield_docs[[i]]$relations) > 0) {
+        new_relnames <- names(idaifield_docs[[i]]$relations)
+        new_relnames <- paste("relations.", new_relnames, sep = "")
+        names(idaifield_docs[[i]]$relations) <- new_relnames
+        idaifield_docs[[i]] <- c(idaifield_docs[[i]],
+                                 idaifield_docs[[i]]$relations)
+        idaifield_docs[[i]]$relations <- NULL
+      }
+      if (!keep_geometry) {
+        idaifield_docs[[i]]$geometry <- NULL
+        idaifield_docs[[i]]$georeference <- NULL
+      }
     }
 
     idaifield_docs <- structure(idaifield_docs, class = "idaifield_resource")
@@ -221,7 +232,7 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
   }
   uid_list <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
   colnames(uid_list) <- colnames
-  for (i in seq_len(length(idaifield_docs))) {
+  for (i in seq_along(idaifield_docs)) {
     uid_list$UID[i] <- na_if_empty(idaifield_docs[[i]]$id)
     uid_list$type[i] <- na_if_empty(idaifield_docs[[i]]$type)
     uid_list$identifier[i] <- na_if_empty(idaifield_docs[[i]]$identifier)
@@ -231,4 +242,33 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
     }
   }
   return(uid_list)
+}
+
+
+
+#' check_for_sublist
+#'
+#' Checks if a list has sublists and returns TRUE if so
+#'
+#' @param single_resource_field
+#'
+#' @return
+#' @export
+#'
+#' @examples
+check_for_sublist <- function(single_resource_field) {
+  if (class(single_resource_field) == "list") {
+    len <- sapply(single_resource_field, length)
+    len <- unname(len)
+    if (length(len) == 1) {
+      return(FALSE)
+    } else if (length(len) > 1) {
+      return(TRUE)
+    } else {
+      print(single_resource_field)
+      return(FALSE)
+    }
+  } else {
+    return(FALSE)
+  }
 }

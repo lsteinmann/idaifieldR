@@ -30,12 +30,14 @@ And a bit further:
 You can install the current version of `idaifieldR` from github using devtools:
 
 ``` r
-devtools::install.github("lsteinmann/idaifieldR")
+devtools::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
 ```
+
+
 
 ## Example / Basic 
 
-This is a basic example which shows you how to use `idaifieldR`. See the Demo.Rmd-vignette for a bit more explanation.
+This is a basic example which shows you how to use `idaifieldR`. See the Demo.Rmd-vignette (browseVignettes("idaifieldR"), if it has been build) for a bit more explanation. The example below will produce a (depending on you database) large Matrix containing lists, where every row is a database entry and every column a field. It is basically the same output as the csv-Export from the client. The matrix can without further issues be coerced to a data.frame. (Relations are still references as UIDs. You can use `get_uid_list(idaifield_docs)` for a lookup table.
 
 ``` r
 library(idaifieldR)
@@ -43,9 +45,11 @@ idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
                                      projectname = "testproj", 
                                      user = "R",
                                      pwd = "password")
+                                     
+pottery <- select_by_type(idaifield_docs, "Pottery")
 
-idaifield_df <- idaifield_as_df(idaifield_docs)
+pottery_mat <- idaifield_as_matrix(pottery)
 
-head(idaifield_df)
+View(pottery_mat)
 ```
 
