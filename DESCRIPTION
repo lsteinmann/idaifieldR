@@ -1,24 +1,25 @@
-Package: idaifieldR
 Type: Package
+Package: idaifieldR
 Title: An interface for idaifield2 in R
 Version: 0.1.0
 Author: Lisa Steinmann
 Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
 Description: Importing data from the idaifield-Client into R.
 License: GPL (>= 3)
+Depends: 
+    R (>= 2.10)
+Imports:
+    sofa
+Suggests: 
+    covr,
+    dplyr,
+    ggplot2,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
-Suggests: 
-    testthat (>= 3.0.0),
-    knitr,
-    rmarkdown,
-    dplyr,
-    ggplot2,
-    covr
-Config/testthat/edition: 3
-Imports:
-    sofa
-VignetteBuilder: knitr
-Depends: 
-    R (>= 2.10)

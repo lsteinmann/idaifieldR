@@ -22,24 +22,36 @@ library(idaifieldR)
 Testdata is included as an RDS in `inst/testdata` since I cannot use the database-connection in this vignette: 
 
 ```{r}
-idaifield_test_docs <- unnest_resource(readRDS(system.file("testdata", "idaifield_test_docs.RDS", package = "idaifieldR")))
+idaifield_test_docs <- readRDS(system.file("testdata",
+                                           "idaifield_test_docs.RDS",
+                                           package = "idaifieldR"))
+idaifield_test_docs <- unnest_resource(idaifield_test_docs)
 ```
 
 This object is essentially what one would get with the following call:
 
 ```{r eval=FALSE}
-idaifield_test_docs <- get_idaifield_docs(serverip = "192.168.1.21", 
-                                          # ^ The IP listet in the idaifield-Client as "Eigene Adresse"
-                                          projectname = "testproj", 
-                                          # ^ Name of the Project from said client that should be imported
+idaifield_test_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+                                          # ^ The IP listet in the idaifield-
+                                          # Client as "Eigene Adresse"
+                                          projectname = "testproj",
+                                          # ^ Name of the Project from said
+                                          # client that should be imported
                                           user = "R",
-                                          # ^ Username to be used (inconsequential, as we are not going to write to the db)
-                                          # which would be possible with sofa, btw, and may be useful in some case!
+                                          # ^ Username to be used
+                                          # (inconsequential, as we are not
+                                          # going to write to the db)
+                                          # which would be possible with sofa,
+                                          # btw, and may be useful in some case!
                                           pwd = "hallo",
-                                          # ^ The password as listed in the idaifield-Client
+                                          # ^ The password as listed in the
+                                          # idaifield-Client
                                           simplified = TRUE
-                                          # ^ default is TRUE, as it would otherwise pull the docs list with meta-info
-                                          # that I do not expect to be needed in R, I nonetheless made it possible to get it
+                                          # ^ default is TRUE, as it would
+                                          # otherwise pull the docs list with
+                                          # meta-info that I do not expect to
+                                          # be needed in R, I nonetheless made
+                                          # it possible to get it
                                           )
 ```
 
@@ -89,7 +101,8 @@ uidlist <- get_uid_list(idaifield_test_docs, verbose = FALSE)
 
 
 library(dplyr)
-pottery <- left_join(pottery, uidlist, by = c("liesWithin" = "UID"), suffix = c(".find", ".container"))
+pottery <- left_join(pottery, uidlist, by = c("liesWithin" = "UID"),
+                     suffix = c(".find", ".container"))
 
 head(pottery)
 ```

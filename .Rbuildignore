@@ -1,7 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
-^priv$
+^priv_testing_dir$
 ^\.github$
 ^LICENSE\.md$
 ^codecov\.yml$
