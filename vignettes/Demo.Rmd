@@ -88,8 +88,13 @@ show_type_list(idaifield_test_docs)
 And a selection or the whole list can be converted into a data.frame: 
 
 ```{r}
-pottery <- idaifield_as_df(pottery)
-head(df)
+pottery_df <- idaifield_as_df(pottery)
+head(pottery_df)
+```
+
+```{r}
+pottery_mat <- idaifield_as_matrix(pottery)
+head(pottery_mat)
 ```
 
 I will fix the `relations`-problematic at some point, but it works and there is no problem, currently. (Well, liesWithin and isRecorded in may need to be fused.)
@@ -99,27 +104,42 @@ But from the df it should now be easy - still with a little reformatting - to ac
 ```{r}
 uidlist <- get_uid_list(idaifield_test_docs, verbose = FALSE)
 
+pottery_mat
 
 library(dplyr)
-pottery <- left_join(pottery, uidlist, by = c("liesWithin" = "UID"),
+# sorry got to fix that whitespace some time, not present in matrix though
+#pottery_df$relations.liesWithin <- gsub("^\\s*", "", pottery_df$relations.liesWithin)
+# i give up
+
+pottery_df <- as.data.frame(pottery_mat)
+match(pottery_df$relations.liesWithin, uidlist$UID)
+
+pottery_df$relations.liesWithin <- as.character(pottery_df$relations.liesWithin)
+
+pottery_df <- left_join(pottery_df, uidlist, by = c("relations.liesWithin" = "UID"),
                      suffix = c(".find", ".container"))
 
-head(pottery)
+head(pottery_df)
 ```
 
 
 And then, it is easy to plot e.g. the counts of finds per Layer: 
 
-```{r}
+```{r fig.width=8}
 library(ggplot2)
-ggplot(pottery, aes(x = identifier.container)) +
+ggplot(pottery_df, aes(x = identifier.container)) +
   geom_bar()
 ```
 
 
-```{r }
-ggplot(pottery, aes(x = identifier.container, fill = materialType)) +
+```{r fig.width=8}
+pottery_df$materialType <- as.character(pottery_df$materialType)
+
+ggplot(pottery_df, aes(x = identifier.container, fill = materialType)) +
   geom_bar()
 ```
+
+
+
 The dataframe contains all fields from idaifield that were filled out in at least one object of the same type. I have not included a way to automatically select by Operation (yet?), but I imagine anyone familiar with are should be able to do that with this basis. 
 
