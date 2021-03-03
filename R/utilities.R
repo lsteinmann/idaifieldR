@@ -39,6 +39,8 @@ na_if_empty <- function(item) {
 #' get_idaifield_docs(..., simplified  = FALSE), it is possible to use
 #' unnest_resource() later on in the resulting list to simplify it a later
 #' point in time.
+#' @param keep_geometry FALSE by default. TRUE if you wish to import the
+#' geometry-fields into R (TODO: this is not reachable from top level function)
 #'
 #' @return a list of class idaifield_resource (same as idaifield_docs,
 #' but the top-level with meta-information has been removed to make the actual
@@ -250,9 +252,9 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
 #'
 #' Checks if a list has sublists and returns TRUE if so
 #'
-#' @param single_resource_field
+#' @param single_resource_field a list to be checked
 #'
-#' @return
+#' @return TRUE/FALSE
 #' @export
 #'
 #' @examples

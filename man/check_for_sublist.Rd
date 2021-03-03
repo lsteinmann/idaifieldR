@@ -7,10 +7,10 @@
 check_for_sublist(single_resource_field)
 }
 \arguments{
-\item{single_resource_field}{}
+\item{single_resource_field}{a list to be checked}
 }
 \value{
-
+TRUE/FALSE
 }
 \description{
 Checks if a list has sublists and returns TRUE if so

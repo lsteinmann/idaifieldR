@@ -13,6 +13,9 @@ so mostly there is no need to deal with it. If one chooses
 get_idaifield_docs(..., simplified  = FALSE), it is possible to use
 unnest_resource() later on in the resulting list to simplify it a later
 point in time.}
+
+\item{keep_geometry}{FALSE by default. TRUE if you wish to import the
+geometry-fields into R (TODO: this is not reachable from top level function)}
 }
 \value{
 a list of class idaifield_resource (same as idaifield_docs,
