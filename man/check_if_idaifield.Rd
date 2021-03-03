@@ -10,10 +10,11 @@ check_if_idaifield(testobject)
 \item{testobject}{An object that should be evaluated.}
 }
 \value{
-a matrix that allows other functions to determine which type of list the object is
+a matrix that allows other functions to determine which type of
+list the object is
 }
 \description{
-For internal use... checks if an object can actually processed by the functions
-in this package which need the specific format that is returned by the core
-function get_idaifield_docs(...).
+For internal use... checks if an object can actually processed by
+the functions in this package which need the specific format that is
+returned by the core function get_idaifield_docs(...).
 }

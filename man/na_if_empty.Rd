@@ -13,10 +13,10 @@ na_if_empty(item)
 NA if empty, or the object that has been handed to it
 }
 \description{
-This is a helper function in defense against empty list items from `idaifield`,
-which sometimes occur. It simply writes NA in the corresponding field if a
-list or any kind of object handed to it is of length 0.
-Otherwise, it returns the input untouched.
+This is a helper function in defense against empty list items from
+`idaifield`, which sometimes occur. It simply writes NA in the
+corresponding field if a list or any kind of object handed to it is
+of length 0. Otherwise, it returns the input untouched.
 }
 \examples{
 na_if_empty(1)

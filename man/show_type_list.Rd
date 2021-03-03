@@ -7,16 +7,17 @@
 show_type_list(idaifield_docs)
 }
 \arguments{
-\item{idaifield_docs}{An object as returned by get_idaifield_docs(...); unnests to
-resource level if it didn't already happen.}
+\item{idaifield_docs}{An object as returned by get_idaifield_docs(...);
+unnests to resource level if it didn't already happen.}
 }
 \value{
-a character vector with the types represented in the idaifield_docs/resource
+a character vector with the types represented in
+the idaifield_docs/resource
 }
 \description{
 Returns a list of types present in the idaifield-database (for orientation)
-it would be nice to be able to embed the translations, but i am guessing thats only
-possible if the configuration was available
+it would be nice to be able to embed the translations, but i am guessing
+thats only possible if the configuration was available
 }
 \examples{
 \dontrun{

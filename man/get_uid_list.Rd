@@ -9,22 +9,27 @@ get_uid_list(idaifield_docs, verbose = FALSE)
 \arguments{
 \item{idaifield_docs}{An object as returned by get_idaifield_docs}
 
-\item{verbose}{TRUE or FALSE (= anything but TRUE), TRUE returns a list including identifier and shorttitle which is
-more convenient for humans, and FALSE returns only UID and type, which is enough for internal selections}
+\item{verbose}{TRUE or FALSE (= anything but TRUE), TRUE returns a list
+including identifier and shorttitle which is more convenient for humans,
+and FALSE returns only UID and type, which is enough for internal selections}
 }
 \value{
 a list of UIDs and their Types, Identifiers and shortDescriptions
 }
 \description{
-All resources from `idaifield` are refenced with their UID in the relations fields. Therefore, for many purposes
-a lookup-table needs to be provided in order to get to the actual identifiers and names of the resources referenced.
+All resources from `idaifield` are refenced with their UID in the relations
+fields. Therefore, for many purposes a lookup-table needs to be provided
+in order to get to the actual identifiers and names of the resources
+referenced.
 }
 \details{
-This function is also good for a quick overview / a list of all the resources that exist along with their identifiers
-and short descriptions and can be used to select the resources along their respective Types (e.g. Pottery, Layer etc.).
-Please note that in any case the internal names of everything will be used. If you relabeled `Trench` to `Schnitt` in
-your language-configuration, this will still be `Trench` here. None of these functions have any respect for language
-configuration!
+This function is also good for a quick overview / a list of all the
+resources that exist along with their identifiers and short descriptions
+and can be used to select the resources along their respective Types
+(e.g. Pottery, Layer etc.). Please note that in any case the internal
+names of everything will be used. If you relabeled `Trench` to `Schnitt` in
+your language-configuration, this will still be `Trench` here.
+None of these functions have any respect for language configuration!
 }
 \examples{
 \dontrun{

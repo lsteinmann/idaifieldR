@@ -37,16 +37,16 @@ idaifield_as_df <- function(idaifield_docs) {
                                           ncol = length(colnames)))
   colnames(resource_simple) <- colnames
 
-  for (listindex in seq_len(length(resource_list))) {
-    sublist <- resource_list[[listindex]]
-    for (i in seq_len(length(sublist))) {
-      colindex <- match(names(sublist)[i], colnames)
-      if (class(sublist[[i]]) == "list") {
-        pasted_info <- paste(names(sublist[[i]]), unlist(sublist[[i]]),
+  for (listindex in seq_along(resource_list)) {
+    single_resource <- resource_list[[listindex]]
+    for (i in seq_along(single_resource)) {
+      colindex <- match(names(single_resource)[i], colnames)
+      if (class(single_resource[[i]]) == "list") {
+        pasted_info <- paste(names(single_resource[[i]]), unlist(single_resource[[i]]),
                              collapse = "; ")
         resource_simple[listindex, colindex] <- pasted_info
       } else {
-        resource_simple[listindex, colindex] <- sublist[[i]]
+        resource_simple[listindex, colindex] <- single_resource[[i]]
       }
     }
   }

@@ -9,7 +9,8 @@ select_by_type(idaifield_docs, type = "Pottery")
 \arguments{
 \item{idaifield_docs}{An object as returned by get_idaifield_docs(...)}
 
-\item{type}{Character expected, should be the internal Name of the Type that will be selected for (e.g. "Layer", "Pottery")}
+\item{type}{Character expected, should be the internal Name of the Type
+that will be selected for (e.g. "Layer", "Pottery")}
 }
 \value{
 a list of class idaifield_resource containing the resources

@@ -4,23 +4,26 @@
 \alias{unnest_resource}
 \title{unnest_resource: Remove doc-level of `idaifield`-List}
 \usage{
-unnest_resource(idaifield_docs)
+unnest_resource(idaifield_docs, keep_geometry = FALSE)
 }
 \arguments{
-\item{idaifield_docs}{A list as provided by sofa::db_alldocs(...), or used within
-get_idaifield_docs(). The latter employs this function already, so mostly there is no
-need to deal with it. If one chooses get_idaifield_docs(..., simplified  = FALSE), it is
-possible to use unnest_resource() later on in the resulting list to simplify it a later
+\item{idaifield_docs}{A list as provided by sofa::db_alldocs(...), or
+used within get_idaifield_docs(). The latter employs this function already,
+so mostly there is no need to deal with it. If one chooses
+get_idaifield_docs(..., simplified  = FALSE), it is possible to use
+unnest_resource() later on in the resulting list to simplify it a later
 point in time.}
 }
 \value{
-a list of class idaifield_resource (same as idaifield_docs, but the top-level
-with meta-information has been removed to make the actual resource data more accessible)
+a list of class idaifield_resource (same as idaifield_docs,
+but the top-level with meta-information has been removed to make the actual
+resource data more accessible)
 }
 \description{
-This function somewhat unnests the lists provided by `idaifield`. The actualy data
-of a resource is usually stored in a sub-list behind $doc$resource, which contains
-the data one would mostly want to work with in R.
+This function somewhat unnests the lists provided by `idaifield`.
+The actualy data of a resource is usually stored in a sub-list
+behind $doc$resource, which contains the data one would mostly
+want to work with in R.
 }
 \examples{
 \dontrun{

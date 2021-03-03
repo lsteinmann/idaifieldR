@@ -7,16 +7,17 @@
 check_and_unnest(idaifield_docs)
 }
 \arguments{
-\item{idaifield_docs}{An object to be used by one of the functions in this package}
+\item{idaifield_docs}{An object to be used by one of the
+functions in this package}
 }
 \value{
 if already unnested, the same object as handed to it. if not,
 the same list with the toplevel removed.
 }
 \description{
-Checks if the object is already unnested, and if it isnt, does so. If it cant
-be processed, because it is not an idaifield_docs or idaifield_resource object,
-throws error.
+Checks if the object is already unnested, and if it isnt, does so.
+If it cant be processed, because it is not an idaifield_docs or
+idaifield_resource object, throws error.
 }
 \examples{
 \dontrun{
