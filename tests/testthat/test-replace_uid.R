@@ -1,0 +1,29 @@
+source(file = "../load_testdata.R")
+
+uidlist <- get_uid_list(test_resource)
+
+test_that("replace_uid fails for non uid", {
+  expect_error(replace_uid(item = "börek",
+                           uidlist = uidlist))
+})
+
+sample <- sample(seq_len(nrow(uidlist)), 1)
+test_that("replace_uid finds correct name", {
+  expect_identical(replace_uid(item = uidlist$UID[sample],
+                               uidlist = uidlist),
+                   uidlist$identifier[sample])
+})
+
+
+#sample <- sample(seq_len(nrow(uidlist)), 3)
+#list <- list(uidlist$UID[sample])
+
+#test_that("replace_uid finds correct name", {
+#  expect_identical(replace_uid(item = list,
+#                               uidlist = uidlist),
+#                   uidlist$identifier[sample])
+#})
+
+
+#sample <- sample(seq_len(nrow(uidlist)), 4)
+#replace_single_uid(item = uidlist$UID[sample], uidlist = uidlist)
