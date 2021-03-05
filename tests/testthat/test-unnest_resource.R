@@ -1,6 +1,4 @@
-test_resource <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
-                                     package = "idaifieldR"))
-unnested_test_resource <- unnest_resource(test_resource)
+source(file = "../load_testdata.R")
 
 test_that("unnest_resource returns a list", {
   expect_identical(class(unnest_resource(test_resource)), "idaifield_resource")

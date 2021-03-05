@@ -2,30 +2,30 @@
 #'
 #' Imports all resources from an idaifield-database that is currently running
 #' and synching into a list-object for further processing in R.
-#' Please note that synching has to be activated in `idaifield`
+#' Please note that synching has to be activated in i.DAIfield 2
 #' itself (Settings -> Synchronisation).
 #'
-#' This just wraps `sofa`s functions under another name, but with defaults that
-#' are useful for the import from `idaifield`. Also, I am using
+#' This just wraps **sofa**s functions under another name, but with defaults that
+#' are useful for the import from i.DAIfield 2. Also, I am using
 #' unnest_resource() from this package here, as there seems to be no use in
 #' the unnested version. However, simplified = FALSE would allow to get
 #' the top-level version.
 #'
 #'
-#' @param serverip The IP that the user can find in `idaifield`s settings as
+#' @param serverip The IP that the user can find in i.DAIfield 2's settings as
 #' "Eigene Adresse" without the port-specification
 #'
-#' @param projectname The name of the project in `idaifield` that one
+#' @param projectname The name of the project in i.DAIfield 2 that one
 #' wishes to load.
 #'
 #' @param user A user name (anything works, really.)
 #'
-#' @param pwd The Password as it is displayed in the `idaifield`-settings
+#' @param pwd The Password as it is displayed in the i.DAIfield 2-settings
 #' as "Eigenes Passwort"
 #'
-#' @param port The port that is specified by `idaifield`s setting below
+#' @param port The port that is specified by i.DAIfield 2's setting below
 #' "Eigene Adresse" (the format there would be: "http://192.168.2.21:3000")
-#' and port refers to the number befind ":". There is no need to specify this
+#' and port refers to the number behind ":". There is no need to specify this
 #' as the default works. Included for fringe-cases.
 #'
 #' @param simplified Defaults to TRUE. If you do not wish to automatically

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{unnest_resource}
 \alias{unnest_resource}
-\title{unnest_resource: Remove doc-level of `idaifield`-List}
+\title{unnest_resource: Remove doc-level of idaifield_docs-List}
 \usage{
 unnest_resource(idaifield_docs, keep_geometry = FALSE)
 }
@@ -23,7 +23,7 @@ but the top-level with meta-information has been removed to make the actual
 resource data more accessible)
 }
 \description{
-This function somewhat unnests the lists provided by `idaifield`.
+This function somewhat unnests the lists provided by i.DAIfield 2.
 The actualy data of a resource is usually stored in a sub-list
 behind $doc$resource, which contains the data one would mostly
 want to work with in R.

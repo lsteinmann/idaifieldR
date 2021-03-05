@@ -3,7 +3,7 @@
 #' Converts the list that is returned by get_idaifield_docs(...) into a
 #' data.frame with all columns present in the data. Individual rows will
 #' contain NA if there was no information entered into the respective field
-#' in `idaifield`. Lists are currently not preserved (e.g. the color-lists etc,
+#' in i.DAIfield 2. Lists are currently not preserved (e.g. the color-lists etc,
 #' but instead converted to a ;-seperated character string). They can be pulled
 #' apart again, and I am also thinking about preserving them in this
 #' function (but have not done that yet.)
@@ -42,7 +42,8 @@ idaifield_as_df <- function(idaifield_docs) {
     for (i in seq_along(single_resource)) {
       colindex <- match(names(single_resource)[i], colnames)
       if (class(single_resource[[i]]) == "list") {
-        pasted_info <- paste(names(single_resource[[i]]), unlist(single_resource[[i]]),
+        pasted_info <- paste(names(single_resource[[i]]),
+                             unlist(single_resource[[i]]),
                              collapse = "; ")
         resource_simple[listindex, colindex] <- pasted_info
       } else {

@@ -1,6 +1,3 @@
-test_resource <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
-                                     package = "idaifieldR"))
-
 list <- list(1, 2, 3, 4)
 
 test_that("check_for_sublist can process a list", {

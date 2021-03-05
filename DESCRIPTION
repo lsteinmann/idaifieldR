@@ -1,10 +1,12 @@
 Type: Package
 Package: idaifieldR
-Title: An interface for idaifield2 in R
+Title: An interface for i.DAIfield 2 in R
 Version: 0.1.0
 Author: Lisa Steinmann
 Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
-Description: Importing data from the idaifield-Client into R.
+Description: Importing data from the i.DAIfield 2-Client into R.
+URL: https://github.com/lsteinmann/idaifieldR
+BugReports: https://github.com/lsteinmann/idaifieldR/issues
 License: GPL (>= 3)
 Depends: 
     R (>= 2.10)

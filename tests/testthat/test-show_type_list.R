@@ -1,6 +1,5 @@
-test_resource <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
-                                     package = "idaifieldR"))
-unnested_test_resource <- unnest_resource(test_resource)
+source(file = "../load_testdata.R")
+
 
 
 test_that("returns a vector and works for nested and unnested", {
