@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, include = FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -15,13 +15,13 @@ knitr::opts_chunk$set(
 library(knitr)
 
 knit_print.data.frame = function(x, ...) {
-  res = paste(c("", "", knitr::kable(x)), collapse = "\n")
+  res <- paste(c("", "", knitr::kable(x)), collapse = "\n")
   knitr::asis_output(res)
 }
 
 registerS3method(
   "knit_print", "data.frame", knit_print.data.frame,
-  envir = asNamespace("knitr")
+  envir <- asNamespace("knitr")
 )
 
 library(dplyr)
@@ -46,18 +46,18 @@ idaifield_test_docs <- get_idaifield_docs(
   # The IP listet in the i.DAIfield 2-Client as "Eigene Adresse":
   serverip = "192.168.1.21",
   # You can but should typically not need to specify the port, as the
-  # default value is already i.DAIfield 2's default: 
+  # default value is already i.DAIfield 2's default:
   port = 3000,
   # Name of the Project from said client that should be imported:
   projectname = "rtest",
-  # Username to be used. This is inconsequential, as long as you are not 
+  # Username to be used. This is inconsequential, as long as you are not
   # planning on writing anything to the db, which would be possible with sofa,
   # and may be useful in some cases!
   user = "R",
   # The password as listed in the i.DAIfield 2-client
   pwd = "hallo",
-  # simplified = TRUE (which is the default) returns a list that is already 
-  # unnested to resource level. With simplified = FALSE it is possible to 
+  # simplified = TRUE (which is the default) returns a list that is already
+  # unnested to resource level. With simplified = FALSE it is possible to
   # obtain all the meta-info on each resource, i.e. the changelog of each
   # resource.
   simplified = TRUE
@@ -76,7 +76,7 @@ With `get_uid_list()`, it is possible to generate a reference or "lookup"-table,
 ```{r}
 uidlist <- get_uid_list(idaifield_test_docs)
 
-uidlist %>% 
+uidlist %>%
   head()
 ```
 
@@ -92,7 +92,7 @@ For any further processing and especially larger data sets, the `select_by_type(
 
 ```{r}
 layers <- select_by_type(idaifield_test_docs, type = "Layer")
-layers[[5]] 
+layers[[5]]
 ```
 Relations are still recorded as UIDs. Replacing them is easiest with `sapply()` and idaifieldR's `replace_uid()`-function, which needs a uidlist for reference:
 
@@ -121,11 +121,11 @@ pottery[1:5, 1:5]
 With this matrix, it is easy to plot any distributions or actually further select and analyse the data. First, the UIDs should be replaced. If one wants to visualize the frequency of pottery finds over their containing objects, the values from "relations.liesWithin" are of interest:
 
 ```{r warning=FALSE}
-pottery_df <- pottery %>% 
+pottery_df <- pottery %>%
   as.data.frame() %>%
-  mutate(relations.liesWithin = replace_uid(relations.liesWithin, 
+  mutate(relations.liesWithin = replace_uid(relations.liesWithin,
                                             uidlist = uidlist))
-head(pottery_df[,c(1,25:29)])
+head(pottery_df[,c(1, 25:29)])
 ```
 
 And from the resulting data.frame, plotting with ggplot works without complications:

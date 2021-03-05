@@ -1,7 +1,7 @@
 source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_resource)
-uidlist <- uidlist[-which(uidlist$UID == "project"),]
+uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 
 sample <- sample(seq_len(nrow(uidlist)), 1)
 
@@ -10,7 +10,7 @@ test_that("returns uids in correct column", {
 })
 
 test_that("i did not change column order", {
-  expect_true(check_if_uid(uidlist[sample,2]))
+  expect_true(check_if_uid(uidlist[sample, 2]))
 })
 
 colnames <- colnames(get_uid_list(test_resource, verbose = TRUE))

@@ -1,4 +1,31 @@
-skip("Needs DB-connection")
+skip_on_cran()
+
+idaifield_connection <- sofa::Cushion$new(host = "192.168.2.21",
+                                          transport = "http",
+                                          port = 3000,
+                                          user = "R",
+                                          pwd = "hallo")
+
+check_db_availability <- function() {
+  connection_exists <- tryCatch({
+    sofa::ping(idaifield_connection)
+  },
+  error = function(cond) {
+    return(NA)
+  })
+
+  if (length(connection_exists) > 1) {
+    connection_exists <- TRUE
+  } else {
+    connection_exists <- FALSE
+  }
+}
+
+if (!check_db_availability()) {
+  skip("Test skipped, needs DB-connection")
+}
+
+
 
 test_resource <- get_idaifield_docs(serverip = "192.168.2.21",
                                     projectname = "rtest",
