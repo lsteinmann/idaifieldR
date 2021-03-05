@@ -1,7 +1,7 @@
 #' na_if_empty: returns NA if an object handed to the function is empty
 #'
 #' This is a helper function in defense against empty list items from
-#' `idaifield`, which sometimes occur. It simply writes NA in the
+#' i.DAIfield 2, which sometimes occur. It simply writes NA in the
 #' corresponding field if a list or any kind of object handed to it is
 #' of length 0. Otherwise, it returns the input untouched.
 #'
@@ -26,9 +26,9 @@ na_if_empty <- function(item) {
 
 
 
-#' unnest_resource: Remove doc-level of `idaifield`-List
+#' unnest_resource: Remove doc-level of idaifield_docs-List
 #'
-#' This function somewhat unnests the lists provided by `idaifield`.
+#' This function somewhat unnests the lists provided by i.DAIfield 2.
 #' The actualy data of a resource is usually stored in a sub-list
 #' behind $doc$resource, which contains the data one would mostly
 #' want to work with in R.
@@ -267,9 +267,34 @@ check_for_sublist <- function(single_resource_field) {
     } else if (length(len) > 1) {
       return(TRUE)
     } else {
-      print(single_resource_field)
+      #print(single_resource_field)
       return(FALSE)
     }
+  } else {
+    return(FALSE)
+  }
+}
+
+
+
+#' check_if_uid
+#'
+#' @param string A character string that should be checked for being a UID
+#' as used in i.DAIfield 2 (expects a single character value!)
+#'
+#' @return TRUE if UID, or FALSE if not
+#' @export
+#'
+#' @examples
+check_if_uid <- function(string) {
+  if (length(string) != 1) {
+    string <- string[1]
+    warning("check_if_string() has been given more than 1 string, only evaluationg first.")
+  }
+  string <- as.character(string)
+  is_uid <- grepl("\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}", string)
+  if (is_uid) {
+    return(TRUE)
   } else {
     return(FALSE)
   }
