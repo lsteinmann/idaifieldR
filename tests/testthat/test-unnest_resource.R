@@ -1,7 +1,7 @@
 source(file = "../load_testdata.R")
 
 test_that("unnest_resource returns a list", {
-  expect_identical(class(unnest_resource(test_resource)), "idaifield_resource")
+  expect_identical(class(unnest_resource(test_resource)), "idaifield_resources")
 })
 
 item <- sample(seq_along(test_resource), 1)

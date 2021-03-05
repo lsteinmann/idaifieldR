@@ -38,7 +38,7 @@ unnest_resource() from this package.}
 }
 \value{
 an object (list) of class "idaifield_docs" (if simplified = FALSE)
-or "idaifield_resource" (if simplified = TRUE) that contains the
+or "idaifield_resources" (if simplified = TRUE) that contains the
 resources in the selected project.
 }
 \description{

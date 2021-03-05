@@ -42,7 +42,7 @@ na_if_empty <- function(item) {
 #' @param keep_geometry FALSE by default. TRUE if you wish to import the
 #' geometry-fields into R (TODO: this is not reachable from top level function)
 #'
-#' @return a list of class idaifield_resource (same as idaifield_docs,
+#' @return a list of class idaifield_resources (same as idaifield_docs,
 #' but the top-level with meta-information has been removed to make the actual
 #' resource data more accessible)
 #' @export
@@ -55,7 +55,7 @@ na_if_empty <- function(item) {
 #' pwd = "password",
 #' simplified = FALSE)
 #'
-#' idaifield_resources <- unnest_resource(idaifield_docs)
+#' idaifield_resourcess <- unnest_resource(idaifield_docs)
 #' }
 unnest_resource <- function(idaifield_docs, keep_geometry = FALSE) {
 
@@ -79,10 +79,10 @@ unnest_resource <- function(idaifield_docs, keep_geometry = FALSE) {
       }
     }
 
-    idaifield_docs <- structure(idaifield_docs, class = "idaifield_resource")
+    idaifield_docs <- structure(idaifield_docs, class = "idaifield_resources")
     return(idaifield_docs)
 
-  } else if (unname(check_result[1, "idaifield_resource"])) {
+  } else if (unname(check_result[1, "idaifield_resources"])) {
     stop("The list is already unnested to resource-level.")
   } else {
     stop("The object provided cannot be processed by this function.")
@@ -117,7 +117,7 @@ unnest_resource <- function(idaifield_docs, keep_geometry = FALSE) {
 check_if_idaifield <- function(testobject) {
 
   result <- matrix(nrow = 1, ncol = 3)
-  colnames(result) <- c("idaifield_docs", "idaifield_resource", "list")
+  colnames(result) <- c("idaifield_docs", "idaifield_resources", "list")
 
   if (class(testobject) == "idaifield_docs") {
     message("The object provided is a docs-list as returned by ",
@@ -127,12 +127,12 @@ check_if_idaifield <- function(testobject) {
     result[1, "idaifield_docs"] <- FALSE
   }
 
-  if (class(testobject) == "idaifield_resource") {
+  if (class(testobject) == "idaifield_resources") {
     message("The object provided is a resource-list as returned by ",
             "get_idaifield_docs(..., simplified = TRUE) or unnest_resource().")
-    result[1, "idaifield_resource"] <- TRUE
+    result[1, "idaifield_resources"] <- TRUE
   } else {
-    result[1, "idaifield_resource"] <- FALSE
+    result[1, "idaifield_resources"] <- FALSE
   }
 
   if (class(testobject) == "list") {
@@ -157,7 +157,7 @@ check_if_idaifield <- function(testobject) {
 #'
 #' Checks if the object is already unnested, and if it isnt, does so.
 #' If it cant be processed, because it is not an idaifield_docs or
-#' idaifield_resource object, throws error.
+#' idaifield_resources object, throws error.
 #'
 #' @param idaifield_docs An object to be used by one of the
 #' functions in this package
@@ -180,7 +180,7 @@ check_and_unnest <- function(idaifield_docs) {
   if (unname(check[1, "idaifield_docs"])) {
     idaifield_docs <- unnest_resource(idaifield_docs)
     return(idaifield_docs)
-  } else if (unname(check[1, "idaifield_resource"])) {
+  } else if (unname(check[1, "idaifield_resources"])) {
     return(idaifield_docs)
   } else {
     stop("Cannot process the object.")

@@ -13,7 +13,7 @@ select_by_type(idaifield_docs, type = "Pottery")
 that will be selected for (e.g. "Layer", "Pottery")}
 }
 \value{
-a list of class idaifield_resource containing the resources
+a list of class idaifield_resources containing the resources
 which are of the selected type
 }
 \description{

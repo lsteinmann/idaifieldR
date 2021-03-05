@@ -38,7 +38,7 @@ show_type_list <- function(idaifield_docs) {
 #' @param type Character expected, should be the internal Name of the Type
 #' that will be selected for (e.g. "Layer", "Pottery")
 #'
-#' @return a list of class idaifield_resource containing the resources
+#' @return a list of class idaifield_resources containing the resources
 #' which are of the selected type
 #' @export
 #'
@@ -59,7 +59,7 @@ select_by_type <- function(idaifield_docs, type = "Pottery") {
   typeindex <- grep(type, uid_type_list$type)
 
   selected_docs <- idaifield_docs[typeindex]
-  selected_docs <- structure(selected_docs, class = "idaifield_resource")
+  selected_docs <- structure(selected_docs, class = "idaifield_resources")
 
   return(selected_docs)
 }

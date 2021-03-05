@@ -19,5 +19,5 @@ test_that("returns docs-lists", {
 
 test_that("returns resource-lists", {
   check <- check_if_idaifield(unnested_test_resource)
-  expect_identical(unname(check[1, "idaifield_resource"]), TRUE)
+  expect_identical(unname(check[1, "idaifield_resources"]), TRUE)
 })

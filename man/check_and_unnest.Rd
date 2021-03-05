@@ -17,7 +17,7 @@ the same list with the toplevel removed.
 \description{
 Checks if the object is already unnested, and if it isnt, does so.
 If it cant be processed, because it is not an idaifield_docs or
-idaifield_resource object, throws error.
+idaifield_resources object, throws error.
 }
 \examples{
 \dontrun{

@@ -18,7 +18,7 @@ point in time.}
 geometry-fields into R (TODO: this is not reachable from top level function)}
 }
 \value{
-a list of class idaifield_resource (same as idaifield_docs,
+a list of class idaifield_resources (same as idaifield_docs,
 but the top-level with meta-information has been removed to make the actual
 resource data more accessible)
 }
@@ -36,6 +36,6 @@ user = "R",
 pwd = "password",
 simplified = FALSE)
 
-idaifield_resources <- unnest_resource(idaifield_docs)
+idaifield_resourcess <- unnest_resource(idaifield_docs)
 }
 }

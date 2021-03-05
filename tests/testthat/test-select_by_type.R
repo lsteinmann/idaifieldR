@@ -3,7 +3,7 @@ source(file = "../load_testdata.R")
 
 test_that("returns resource object", {
   expect_identical(class(select_by_type(test_resource, "Pottery")),
-                   "idaifield_resource")
+                   "idaifield_resources")
 })
 
 test_that("returns less elements", {
