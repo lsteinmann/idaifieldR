@@ -1,8 +1,8 @@
 #' idaifield_as_matrix
 #'
-#' Converts an idaifield-list into a Matrix that contains lists where
-#' multiple selections have been made in idaifield, which can be more flexible
-#' than the dataframe-approach in idaifield_as_df.
+#' Converts an idaifield_docs/idaifield_resource-list into a Matrix that
+#' contains lists where multiple selections have been made in i.DAIfield 2,
+#' which can be more flexible than the dataframe-approach in idaifield_as_df.
 #'
 #' If the list containing all meta-info (i.e. the docs-list)
 #' is handed to the function it will automatically unnest to resource level).
@@ -24,6 +24,7 @@
 idaifield_as_matrix <- function(idaifield_docs) {
 
   resource_list <- check_and_unnest(idaifield_docs)
+  uidlist <- get_uid_list(idaifield_docs = idaifield_docs)
 
   names_list <- sapply(resource_list, names)
 
@@ -44,14 +45,17 @@ idaifield_as_matrix <- function(idaifield_docs) {
         if (!state) {
           res <- unname(single_resource[[i]])
           res <- na_if_empty(res)
+          res <- replace_uid(item = res, uidlist = uidlist)
           resource_matrix[listindex, colindex] <- res
         } else {
           res <- na_if_empty(single_resource[i])
+          res <- replace_uid(item = res, uidlist = uidlist)
           resource_matrix[listindex, colindex] <- res
         }
       } else {
         res <- unname(unlist(single_resource[[i]]))
         res <- na_if_empty(res)
+        res <- replace_uid(item = res, uidlist = uidlist)
         resource_matrix[listindex, colindex] <- res
       }
     }
