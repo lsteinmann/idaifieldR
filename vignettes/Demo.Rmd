@@ -108,7 +108,8 @@ pottery_mat
 
 library(dplyr)
 # sorry got to fix that whitespace some time, not present in matrix though
-#pottery_df$relations.liesWithin <- gsub("^\\s*", "", pottery_df$relations.liesWithin)
+#pottery_df$relations.liesWithin <- gsub("^\\s*", "", 
+#pottery_df$relations.liesWithin)
 # i give up
 
 pottery_df <- as.data.frame(pottery_mat)
@@ -116,7 +117,8 @@ match(pottery_df$relations.liesWithin, uidlist$UID)
 
 pottery_df$relations.liesWithin <- as.character(pottery_df$relations.liesWithin)
 
-pottery_df <- left_join(pottery_df, uidlist, by = c("relations.liesWithin" = "UID"),
+pottery_df <- left_join(pottery_df, uidlist, 
+                        by = c("relations.liesWithin" = "UID"),
                      suffix = c(".find", ".container"))
 
 head(pottery_df)

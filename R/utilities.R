@@ -267,7 +267,6 @@ check_for_sublist <- function(single_resource_field) {
     } else if (length(len) > 1) {
       return(TRUE)
     } else {
-      #print(single_resource_field)
       return(FALSE)
     }
   } else {
@@ -289,7 +288,8 @@ check_for_sublist <- function(single_resource_field) {
 check_if_uid <- function(string) {
   if (length(string) != 1) {
     string <- string[1]
-    warning("check_if_string() has been given more than 1 string, only evaluationg first.")
+    # no one needs this warning?
+    warning("check_if_string() has been given more than 1 string, only evaluating first.")
   }
   string <- as.character(string)
   is_uid <- grepl("\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}", string)
