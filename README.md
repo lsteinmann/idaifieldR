@@ -7,18 +7,19 @@
 [![Travis build status](https://travis-ci.com/lsteinmann/idaifieldR.svg?branch=main)](https://travis-ci.com/lsteinmann/idaifieldR)
 <!-- badges: end -->
 
-The goal of `idaifieldR` is to flexibly get data from the [i.DAIfield 2 database](https://github.com/dainst/idai-field) into R. The core functions of this package use [`sofa`](https://github.com/ropensci/sofa) (available on CRAN) to connect to a synching i.DAIfield 2-client and store the database in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the i.DAIfield 2-client itself.
+idaifieldR imports data from the [i.DAIfield 2 database](https://github.com/dainst/idai-field) into R. The core functions of this package use [sofa](https://github.com/ropensci/sofa) (available on CRAN) to connect to a syncing i.DAIfield 2-client and store the whole database in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the i.DAIfield 2-client itself.
 
 This is currently usable, but in the state of a raw draft that has not seen much testing (and next to no testing on 'real' data). I would be very happy if anyone interested contributes! 
 
-While the basic import to R (in form of List, matrix and data.frame) is already possible with this package, what I still want to do and would find very useful for others is: 
+While the basic import to R (in form of list, matrix and data.frame) is already possible with this package, what I still want to do and would find very useful for others is: 
 * improve on the documentation, so that the functions and workflow are more understandable
 * test with actual data 
+* include some reformatting specific to the kind of data returned by the client
 * I would also very much like to make it somewhat accessible to people not very (but somewhat) familiar with R, as the current output still requires some reformatting that might not be very easy for new users.
 
 ## Dependencies
 
-idaifieldR depends on the R-package [sofa](https://github.com/ropensci/sofa) (available on CRAN) and needs a synching [i.DAIfield 2-Client](https://github.com/dainst/idai-field) to work.
+idaifieldR depends on the R-package [sofa](https://github.com/ropensci/sofa) (available on CRAN) and needs a syncing [i.DAIfield 2-Client](https://github.com/dainst/idai-field) to work.
 
 ## Installation
 
