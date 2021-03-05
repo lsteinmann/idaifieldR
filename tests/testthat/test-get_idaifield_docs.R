@@ -1,13 +1,13 @@
 skip("Needs DB-connection")
 
 test_resource <- get_idaifield_docs(serverip = "192.168.2.21",
-                                    projectname = "milet",
+                                    projectname = "rtest",
                                     user = "R",
                                     pwd = "hallo",
                                     simplified = FALSE)
 
-unnested_test_resource <- get_idaifield_docs(serverip = "192.168.3.21",
-                                             projectname = "milet",
+unnested_test_resource <- get_idaifield_docs(serverip = "192.168.2.21",
+                                             projectname = "rtest",
                                              user = "R",
                                              pwd = "hallo",
                                              simplified = TRUE)

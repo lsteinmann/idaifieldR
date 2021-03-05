@@ -12,136 +12,135 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(knitr)
+
+knit_print.data.frame = function(x, ...) {
+  res = paste(c("", "", knitr::kable(x)), collapse = "\n")
+  knitr::asis_output(res)
+}
+
+registerS3method(
+  "knit_print", "data.frame", knit_print.data.frame,
+  envir = asNamespace("knitr")
+)
+
+library(dplyr)
 ```
 
 ```{r setup}
 library(idaifieldR)
 ```
 
-
-Testdata is included as an RDS in `inst/testdata` since I cannot use the database-connection in this vignette: 
-
-```{r}
+```{r echo = FALSE}
 idaifield_test_docs <- readRDS(system.file("testdata",
                                            "idaifield_test_docs.RDS",
                                            package = "idaifieldR"))
+# info for reference: The RDS is stored in its nested version, so:
 idaifield_test_docs <- unnest_resource(idaifield_test_docs)
 ```
 
-This object is essentially what one would get with the following call:
+The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in i.DAIfield 2 is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function:
 
 ```{r eval=FALSE}
-idaifield_test_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-                                          # ^ The IP listet in the idaifield-
-                                          # Client as "Eigene Adresse"
-                                          projectname = "testproj",
-                                          # ^ Name of the Project from said
-                                          # client that should be imported
-                                          user = "R",
-                                          # ^ Username to be used
-                                          # (inconsequential, as we are not
-                                          # going to write to the db)
-                                          # which would be possible with sofa,
-                                          # btw, and may be useful in some case!
-                                          pwd = "hallo",
-                                          # ^ The password as listed in the
-                                          # idaifield-Client
-                                          simplified = TRUE
-                                          # ^ default is TRUE, as it would
-                                          # otherwise pull the docs list with
-                                          # meta-info that I do not expect to
-                                          # be needed in R, I nonetheless made
-                                          # it possible to get it
-                                          )
+idaifield_test_docs <- get_idaifield_docs(
+  # The IP listet in the i.DAIfield 2-Client as "Eigene Adresse":
+  serverip = "192.168.1.21",
+  # You can but should typically not need to specify the port, as the
+  # default value is already i.DAIfield 2's default: 
+  port = 3000,
+  # Name of the Project from said client that should be imported:
+  projectname = "rtest",
+  # Username to be used. This is inconsequential, as long as you are not 
+  # planning on writing anything to the db, which would be possible with sofa,
+  # and may be useful in some cases!
+  user = "R",
+  # The password as listed in the i.DAIfield 2-client
+  pwd = "hallo",
+  # simplified = TRUE (which is the default) returns a list that is already 
+  # unnested to resource level. With simplified = FALSE it is possible to 
+  # obtain all the meta-info on each resource, i.e. the changelog of each
+  # resource.
+  simplified = TRUE
+  )
 ```
 
-This returns an object of (currently) class "idaifield_resource", which is a nested list: 
+This returns an object of class "idaifield_resources", which is a nested list: 
 
 ```{r}
-idaifield_test_docs[[200]]
+idaifield_test_docs[[1]]
 ```
-From the whole resource or docs list we can get a lookup-table that will be needed to display the resources correctly: 
+
+
+With `get_uid_list()`, it is possible to generate a reference or "lookup"-table, that is (currently) needed to display the relationships between resources in a readable format, and can also be used to select single resources more easily. The indices of this table correspond to the numbering of resource-lists in the idaifield_docs or idaifield_resources object it was generated from: 
 
 ```{r}
-head(get_uid_list(idaifield_test_docs))
+uidlist <- get_uid_list(idaifield_test_docs)
+
+uidlist %>% 
+  head()
 ```
 
 It can also incorporate the shortDescription if one wishes, as that may be a bit more readable in some cases:
 
 ```{r}
-head(get_uid_list(idaifield_test_docs, verbose = TRUE))
+idaifield_test_docs %>%
+  get_uid_list(verbose = TRUE) %>%
+  head()
 ```
 
-As most functions are "helpers", they do not need to be demonstrated here. Important, however, is the `select_by_type`:
+For any further processing and especially larger data sets, the `select_by_type()` function should be important:
 
 ```{r}
-pottery <- select_by_type(idaifield_test_docs, type = "Pottery")
-pottery[[1]]
+layers <- select_by_type(idaifield_test_docs, type = "Layer")
+layers[[5]] 
+```
+Relations are still recorded as UIDs. Replacing them is easiest with `sapply()` and idaifieldR's `replace_uid()`-function, which needs a uidlist for reference:
+
+```{r warning=FALSE}
+layers[[5]] %>%
+  sapply(function(x) replace_uid(x, uidlist = uidlist))
 ```
 
-The list of all Types present in the database can be gathered with `show_type_list`:
+A list of all resource-types present in the database can be gathered with `show_type_list()`. Only the internal names are referenced as types, and translations that you may see in the GUI can be different from these. They can be gathered in the i.DAIfield 2-Client from "Hilfe > Formularkonfiguration" (pink names in upper right corner).
 
 ```{r}
 show_type_list(idaifield_test_docs)
 ```
 
-And a selection or the whole list can be converted into a data.frame: 
+A selection of the whole list can be converted into a matrix of lists: 
 
 ```{r}
-pottery_df <- idaifield_as_df(pottery)
-head(pottery_df)
+pottery <- idaifield_test_docs %>%
+  select_by_type(type = "Pottery") %>%
+  idaifield_as_matrix()
+  
+pottery[1:5, 1:5]
+```
+(There is a function for data.frame conversion which pastes all entries from fields with multiple entries together, but I do not recommend it.)
+
+With this matrix, it is easy to plot any distributions or actually further select and analyse the data. First, the UIDs should be replaced. If one wants to visualize the frequency of pottery finds over their containing objects, the values from "relations.liesWithin" are of interest:
+
+```{r warning=FALSE}
+pottery_df <- pottery %>% 
+  as.data.frame() %>%
+  mutate(relations.liesWithin = replace_uid(relations.liesWithin, 
+                                            uidlist = uidlist))
+head(pottery_df[,c(1,25:29)])
 ```
 
-```{r}
-pottery_mat <- idaifield_as_matrix(pottery)
-head(pottery_mat)
-```
+And from the resulting data.frame, plotting with ggplot works without complications:
 
-I will fix the `relations`-problematic at some point, but it works and there is no problem, currently. (Well, liesWithin and isRecorded in may need to be fused.)
-
-But from the df it should now be easy - still with a little reformatting - to actually plot distributions and such. 
-
-```{r}
-uidlist <- get_uid_list(idaifield_test_docs, verbose = FALSE)
-
-pottery_mat
-
-library(dplyr)
-# sorry got to fix that whitespace some time, not present in matrix though
-#pottery_df$relations.liesWithin <- gsub("^\\s*", "", 
-#pottery_df$relations.liesWithin)
-# i give up
-
-pottery_df <- as.data.frame(pottery_mat)
-match(pottery_df$relations.liesWithin, uidlist$UID)
-
-pottery_df$relations.liesWithin <- as.character(pottery_df$relations.liesWithin)
-
-pottery_df <- left_join(pottery_df, uidlist, 
-                        by = c("relations.liesWithin" = "UID"),
-                     suffix = c(".find", ".container"))
-
-head(pottery_df)
-```
-
-
-And then, it is easy to plot e.g. the counts of finds per Layer: 
-
-```{r fig.width=8}
+```{r fig.width=7}
 library(ggplot2)
-ggplot(pottery_df, aes(x = identifier.container)) +
+ggplot(pottery_df, aes(x = relations.liesWithin)) +
   geom_bar()
 ```
+Though it may be required to reformat columns from list to character or factor:
 
-
-```{r fig.width=8}
+```{r fig.width=7}
 pottery_df$materialType <- as.character(pottery_df$materialType)
 
-ggplot(pottery_df, aes(x = identifier.container, fill = materialType)) +
+ggplot(pottery_df, aes(x = relations.liesWithin, fill = materialType)) +
   geom_bar()
 ```
-
-
-
-The dataframe contains all fields from idaifield that were filled out in at least one object of the same type. I have not included a way to automatically select by Operation (yet?), but I imagine anyone familiar with are should be able to do that with this basis. 
 
