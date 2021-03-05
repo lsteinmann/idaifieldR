@@ -27,3 +27,7 @@ test_that("relation naming works", {
   greps <- grepl("relations", names(unnested_test_resource[[item]]))
   expect_true(any(greps))
 })
+
+test_that("unnest_resource does not process non-idaifield-lists", {
+  expect_error(unnest_resource(unnested_test_resource), regexp = "unnested")
+})

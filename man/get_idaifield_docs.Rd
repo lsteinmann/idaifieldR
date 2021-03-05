@@ -48,11 +48,11 @@ Please note that synching has to be activated in i.DAIfield 2
 itself (Settings -> Synchronisation).
 }
 \details{
-This just wraps **sofa**s functions under another name, but with defaults that
-are useful for the import from i.DAIfield 2. Also, I am using
-unnest_resource() from this package here, as there seems to be no use in
-the unnested version. However, simplified = FALSE would allow to get
-the top-level version.
+This just wraps **sofa**s functions under another name,
+but with defaults that are useful for the import from i.DAIfield 2.
+Also, I am using unnest_resource() from this package here, as there
+seems to be no use in the unnested version. However,
+simplified = FALSE would allow to get the top-level version.
 }
 \examples{
 \dontrun{
