@@ -18,7 +18,7 @@ branches:
 
 matrix:
   include:
-    - r: 3.3
+    - r: 3.5
     - r: release
     - os: osx
 
