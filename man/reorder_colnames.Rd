@@ -20,3 +20,10 @@ a character vector
 \description{
 Reorders the column names for idaifield_as_matrix()
 }
+\examples{
+
+colnames <- c("materialType", "identifier", "shortDescription", "type")
+
+reorder_colnames(colnames, order = "default")
+
+}

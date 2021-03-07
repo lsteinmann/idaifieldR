@@ -2,21 +2,43 @@
 % Please edit documentation in R/simplify_idaifield_resources.R
 \name{simplify_idaifield}
 \alias{simplify_idaifield}
-\title{Title}
+\title{Simplify a list imported from an i.DAIfield-Database}
 \usage{
-simplify_idaifield(idaifield_docs, replace_uids = TRUE, uidlist = "generate")
+simplify_idaifield(
+  idaifield_docs,
+  keep_geometry = FALSE,
+  replace_uids = TRUE,
+  uidlist = NULL
+)
 }
 \arguments{
-\item{uidlist}{#'}
+\item{idaifield_docs}{An "idaifield_docs" or "idaifield_resources"-list as
+returned by `get_idaifield_docs()`.}
 
-\item{keep_geometry}{FALSE by default. TRUE if you wish to import the
-geometry-fields into R (TODO: this is not reachable from top level function)
+\item{keep_geometry}{logical. Should the geographical information be kept
+or removed? (Defaults to TRUE).}
 
-needs: keep_geometry; unnest relations}
+\item{replace_uids}{logical. Should UIDs be automatically replaced with the
+corresponding identifiers? (Defaults to TRUE).}
+
+\item{uidlist}{If NULL (default) the list of UIDs and identifiers is
+automatically generated within this function. This only makes sense if
+the list handed to `simplify_idaifield()` had not been selected yet. If it
+has been, you should supply a data.frame as returned by `get_uid_list()`.}
 }
 \value{
-
+a simplified "idaifield_resources"-list
 }
 \description{
-Title
+Simplify a list imported from an i.DAIfield-Database
+}
+\examples{
+\dontrun{
+idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+projectname = "testproj",
+user = "R",
+pwd = "password")
+
+simpler_idaifield <- simplify_idaifield(idaifield_docs)
+}
 }

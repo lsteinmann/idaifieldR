@@ -22,3 +22,8 @@ identifiers if replace_uids is set to TRUE).
 \description{
 Unnest the relations in a resource
 }
+\examples{
+\dontrun{
+new_relations_list <- fix_relations(resource, replace_uids = FALSE, uidlist = NULL)
+}
+}

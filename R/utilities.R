@@ -23,7 +23,6 @@ na_if_empty <- function(item) {
   }
 }
 
-
 #' check_if_idaifield
 #'
 #' For internal use... checks if an object can actually processed by
@@ -37,8 +36,9 @@ na_if_empty <- function(item) {
 #' @export
 #'
 #' @examples
-#' check_if_idaifield(list(1,1,1,list(2,2,2)))
 #' \dontrun{
+#' check_if_idaifield(list(1, 1, 1, list(2, 2, 2)))
+#'
 #' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
 #' projectname = "testproj",
 #' user = "R",
@@ -72,10 +72,10 @@ check_if_idaifield <- function(testobject) {
   return(result)
 
   # --------------
-  #' I didnt actually really want to create a class, as that might be
-  #' horribly impractical, but it seemed the quickest way to get a structure
-  #' check done without relying on too much poking.
-  #' However, I don't really like it and am thinking about changing it again.
+  # I didnt actually really want to create a class, as that might be
+  # horribly impractical, but it seemed the quickest way to get a structure
+  # check done without relying on too much poking.
+  # However, I don't really like it and am thinking about changing it again.
 }
 
 
@@ -127,6 +127,9 @@ check_and_unnest <- function(idaifield_docs) {
 #' @export
 #'
 #' @examples
+#' list <- list(1, 2, 3, list("börek", 2, 3))
+#'
+#' check_for_sublist(list)
 check_for_sublist <- function(single_resource_field) {
   if (is.list(single_resource_field)) {
     sublists <- vapply(single_resource_field,
@@ -152,6 +155,9 @@ check_for_sublist <- function(single_resource_field) {
 #' @export
 #'
 #' @examples
+#'
+#' check_if_uid(string = "0324141a-8201-c5dc-631b-4dded4552ac4")
+#' check_if_uid(string = "not a uid")
 check_if_uid <- function(string) {
   if (length(string) != 1) {
     string <- string[1]
@@ -181,6 +187,11 @@ check_if_uid <- function(string) {
 #' @export
 #'
 #' @examples
+#'
+#' colnames <- c("materialType", "identifier", "shortDescription", "type")
+#'
+#' reorder_colnames(colnames, order = "default")
+#'
 reorder_colnames <- function(colnames, order = "default") {
   if (order == "default") {
     order <- c("identifier", "type", "shortDescription")
