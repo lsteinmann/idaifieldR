@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{check_and_unnest}
 \alias{check_and_unnest}
-\title{check_and_unnest}
+\title{Check and unnest a list}
 \usage{
 check_and_unnest(idaifield_docs)
 }
@@ -15,9 +15,11 @@ if already unnested, the same object as handed to it. if not,
 the same list with the toplevel removed.
 }
 \description{
-Checks if the object is already unnested, and if it isnt, does so.
-If it cant be processed, because it is not an idaifield_docs or
+Checks for list of class "idaifield_docs" and if the object is already
+unnested (i.e. of class "idaifield_resources"); if it is not, does so.
+If it cannot be processed, because it is not an idaifield_docs or
 idaifield_resources object, throws error.
+TODO: wrap in trycatch to process anyway if possible
 }
 \examples{
 \dontrun{
