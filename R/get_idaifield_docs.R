@@ -58,15 +58,13 @@ get_idaifield_docs <- function(serverip    = "192.168.1.199",
                                             port = port,
                                             user = user,
                                             pwd = pwd)
-  sofa::db_info(idaifield_connection, projectname)
+
   idaifield_docs <- sofa::db_alldocs(idaifield_connection, projectname,
                                      include_docs = TRUE)$rows
   idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
 
-
   if (simplified) {
     idaifield_docs <- unnest_resource(idaifield_docs)
   }
-
   return(idaifield_docs)
 }
