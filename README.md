@@ -13,7 +13,7 @@ This is currently usable, but in the state of a raw draft that has not seen much
 
 While the basic import to R (in form of list, matrix and data.frame) is already possible with this package, what I still want to do and would find very useful for others is: 
 * improve on the documentation, so that the functions and workflow are more understandable
-* test with actual data 
+* test with actual data
 * include some reformatting specific to the kind of data returned by the client
 * I would also very much like to make it somewhat accessible to people not very (but somewhat) familiar with R, as the current output still requires some reformatting that might not be very easy for new users.
 
@@ -33,16 +33,20 @@ devtools::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
 
 ## Example / Basic 
 
-This is a basic example which shows you how to use idaifieldR. See the Demo.Rmd-vignette (`browseVignettes("idaifieldR")`, if it has been build) for a bit more explanation. In the example below, all the resources/documents from the project "testproj" are imported into a single list of lists. `select_by_type()` narrows down the initial list to one type -- Pottery in the example -- but still returns a list of lists. (Internal names have to be used here, translations for the GUI will not work.) `idaifield_as_matrix()` will produce a (depending on your data) large matrix containing lists, where every row is a database entry and every column a field. The matrix can without further issues be coerced to a data.frame. (`idaifield_as_df()` provides a version without lists, but fields with multiple entries will contain their values in a pasted format.) (Currently, relations are still referenced as UIDs. You can use `get_uid_list(idaifield_docs)` for a lookup table of UIDs, identifiers, types and "shortDescription"s.)
+This is a basic example which shows you how to use idaifieldR. See the Demo.Rmd-vignette (`browseVignettes("idaifieldR")`, if it has been build) for a bit more explanation. In the example below, all the resources/documents from the project "rtest" are imported into a single list of lists. `simplify_idaifield()` replaces the UIDs with identifiers and reduces the amount of unnecessary nesting.  `select_by_type()` narrows down the initial list to one type -- Pottery in the example -- but still returns a list of lists. (Internal names have to be used here, translations for the GUI will not work.) `idaifield_as_matrix()` will produce a (depending on your data) large matrix containing lists, where every row is a database entry (a resource) and every column a field. The matrix can without further issues be coerced to a data.frame, but depending on what you are doing it may be necessary do reduce the columns from lists to anything else.
 
 ``` r
 library(idaifieldR)
 idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-                                     projectname = "testproj", 
+                                     projectname = "rtest", 
                                      user = "R",
                                      pwd = "password")
                                      
-pottery <- select_by_type(idaifield_docs, "Pottery")
+idaifield <- simplify_idaifield(idaifield_docs = idaifield_docs,
+                                replace_uids = TRUE,
+                                keep_geometry = FALSE)
+
+pottery <- select_by_type(idaifield, "Pottery")
 
 pottery_mat <- idaifield_as_matrix(pottery)
 
