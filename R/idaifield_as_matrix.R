@@ -25,7 +25,7 @@ idaifield_as_matrix <- function(idaifield_docs) {
 
   resource_list <- check_and_unnest(idaifield_docs)
 
-  names_list <- sapply(resource_list, names)
+  names_list <- lapply(resource_list, names)
 
   colnames <- unique(unlist(names_list))
   colnames <- reorder_colnames(colnames)

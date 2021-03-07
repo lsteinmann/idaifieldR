@@ -113,31 +113,34 @@ A selection of the whole list can be converted into a matrix of lists:
 pottery <- idaifield_test_docs %>%
   select_by_type(type = "Pottery") %>%
   idaifield_as_matrix()
-  
+
 pottery[1:5, 1:5]
 ```
 (There is a function for data.frame conversion which pastes all entries from fields with multiple entries together, but I do not recommend it.)
 
 With this matrix, it is easy to plot any distributions or actually further select and analyse the data. First, the UIDs should be replaced. If one wants to visualize the frequency of pottery finds over their containing objects, the values from "relations.liesWithin" are of interest:
 
-```{r warning=FALSE}
+```{r warning=FALSE, eval = FALSE}
+# currently not working
 pottery_df <- pottery %>%
   as.data.frame() %>%
-  mutate(relations.liesWithin = replace_uid(relations.liesWithin,
-                                            uidlist = uidlist))
+  mutate(relation.liesWithin = replace_uid(relation.liesWithin,
+                                           uidlist = uidlist))
 head(pottery_df[,c(1, 25:29)])
 ```
 
 And from the resulting data.frame, plotting with ggplot works without complications:
 
-```{r fig.width=7}
+```{r fig.width=7, eval = FALSE}
+# currently not working
 library(ggplot2)
 ggplot(pottery_df, aes(x = relations.liesWithin)) +
   geom_bar()
 ```
 Though it may be required to reformat columns from list to character or factor:
 
-```{r fig.width=7}
+```{r fig.width=7, eval = FALSE}
+# currently not working
 pottery_df$materialType <- as.character(pottery_df$materialType)
 
 ggplot(pottery_df, aes(x = relations.liesWithin, fill = materialType)) +
