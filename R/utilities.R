@@ -80,11 +80,13 @@ check_if_idaifield <- function(testobject) {
 
 
 
-#' check_and_unnest
+#' Check and unnest a list
 #'
-#' Checks if the object is already unnested, and if it isnt, does so.
-#' If it cant be processed, because it is not an idaifield_docs or
+#' Checks for list of class "idaifield_docs" and if the object is already
+#' unnested (i.e. of class "idaifield_resources"); if it is not, does so.
+#' If it cannot be processed, because it is not an idaifield_docs or
 #' idaifield_resources object, throws error.
+#' TODO: wrap in trycatch to process anyway if possible
 #'
 #' @param idaifield_docs An object to be used by one of the
 #' functions in this package
@@ -165,4 +167,28 @@ check_if_uid <- function(string) {
   } else {
     return(FALSE)
   }
+}
+
+
+
+#' Title
+#'
+#' @param colnames
+#' @param order
+#'
+#' @return
+#' @export
+#'
+#' @examples
+reorder_colnames <- function(colnames, order = "default") {
+  if (order == "default") {
+    order <- c("identifier", "type", "shortDescription")
+  } else {
+    print("nope")
+  }
+  new_order <- match(order, colnames)
+  not_ordered <- colnames[-new_order]
+  new_order <- colnames[new_order]
+  colnames <- c(new_order, not_ordered)
+  return(colnames)
 }

@@ -28,6 +28,7 @@ idaifield_as_matrix <- function(idaifield_docs) {
   names_list <- sapply(resource_list, names)
 
   colnames <- unique(unlist(names_list))
+  colnames <- reorder_colnames(colnames)
   nrow <- length(resource_list)
   ncol <- length(colnames)
   resource_matrix <- matrix(rep(list(), nrow * ncol),
