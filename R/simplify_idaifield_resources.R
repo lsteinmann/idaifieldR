@@ -27,7 +27,7 @@ simplify_single_resource <- function(resource,
                                      ) {
 
   id <- resource$identifier
-  if(is.null(id)) {
+  if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
   }
 

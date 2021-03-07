@@ -17,17 +17,3 @@ test_that("replace_uid finds correct name", {
                                uidlist = uidlist),
                    uidlist$identifier[sample])
 })
-
-
-#sample <- sample(seq_len(nrow(uidlist)), 3)
-#list <- list(uidlist$UID[sample])
-
-#test_that("replace_uid finds correct name", {
-#  expect_identical(replace_uid(item = list,
-#                               uidlist = uidlist),
-#                   uidlist$identifier[sample])
-#})
-
-
-#sample <- sample(seq_len(nrow(uidlist)), 4)
-#replace_single_uid(item = uidlist$UID[sample], uidlist = uidlist)

@@ -126,7 +126,7 @@ With this matrix, it is easy to plot any distributions or actually further selec
 pottery_df <- pottery %>%
   as.data.frame() %>%
   mutate(relation.liesWithin = as.character(relation.liesWithin))
-head(pottery_df[,c(1, 25:29)])
+head(pottery_df[, c(1, 25:29)])
 ```
 
 And from the resulting data.frame, plotting with ggplot works without complications:

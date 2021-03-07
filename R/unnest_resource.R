@@ -36,8 +36,10 @@ unnest_resource <- function(idaifield_docs) {
   check_result <- check_if_idaifield(idaifield_docs)
 
   if (check_result["idaifield_docs"]) {
-    idaifield_resources <- lapply(idaifield_docs, function(docs) docs$doc$resource)
-    idaifield_resources <- structure(idaifield_resources, class = "idaifield_resources")
+    idaifield_resources <- lapply(idaifield_docs,
+                                  function(docs) docs$doc$resource)
+    idaifield_resources <- structure(idaifield_resources,
+                                     class = "idaifield_resources")
     return(idaifield_resources)
   } else if (check_result["idaifield_resources"]) {
     message("The list was already unnested to resource-level.")

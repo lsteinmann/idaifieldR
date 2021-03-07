@@ -43,7 +43,7 @@ idaifield_as_matrix <- function(idaifield_docs) {
       resource_matrix[listindex, colindex] <- single_resource[i]
     }
   }
-  null_vec <- which(sapply(resource_matrix, length) == 0)
+  null_vec <- which(lapply(resource_matrix, length) == 0)
   resource_matrix[null_vec] <- NA
   return(resource_matrix)
 }

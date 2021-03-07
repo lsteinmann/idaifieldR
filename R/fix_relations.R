@@ -13,7 +13,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' new_relations_list <- fix_relations(resource, replace_uids = FALSE, uidlist = NULL)
+#' new_relations_list <- fix_relations(resource,
+#' replace_uids = FALSE,
+#' uidlist = NULL)
 #' }
 fix_relations <- function(resource, replace_uids = TRUE, uidlist = NULL) {
   if (length(resource$relations) > 0) {

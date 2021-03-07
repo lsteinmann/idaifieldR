@@ -32,4 +32,3 @@ list <- list("börek", "kaffee", list(rep(1, 2, 3)))
 test_that("unnest_resource does not process non-idaifield-lists", {
   expect_error(unnest_resource(list), regexp = "cannot")
 })
-

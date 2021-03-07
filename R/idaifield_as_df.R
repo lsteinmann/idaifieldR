@@ -29,7 +29,7 @@ idaifield_as_df <- function(idaifield_docs) {
 
   resource_list <- check_and_unnest(idaifield_docs)
 
-  names_list <- sapply(resource_list, names)
+  names_list <- lapply(resource_list, names)
 
   colnames <- unique(unlist(names_list))
 
