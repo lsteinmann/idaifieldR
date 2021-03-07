@@ -14,18 +14,32 @@ simplify_single_resource <- function(resource,
                                      uidlist = uidlist,
                                      keep_geometry = FALSE
                                      ) {
-  if (nrow(uidlist) > 1) {
-    resource <- fix_relations(resource,
-                              replace_uids = TRUE,
-                              uidlist = uidlist)
-  } else {
-    stop("problem with uidlist")
-  }
+  stopifnot(nrow(uidlist) > 1)
+  resource <- fix_relations(resource,
+                            replace_uids = TRUE,
+                            uidlist = uidlist)
   if (!keep_geometry) {
     names <- names(resource)
     has_geom <- any(grepl("geometry", names))
     if (has_geom) {
       resource$geometry <- NULL
+    }
+  }
+
+  has_sublist <- suppressWarnings(vapply(resource,
+                 check_for_sublist,
+                 logical(1),
+                 USE.NAMES = FALSE))
+  has_sublist <- which(unlist(has_sublist) == TRUE)
+
+
+  for (i in seq_along(resource)) {
+    if (!i %in% has_sublist) {
+      res <- unname(unlist(resource[i]))
+      if (length(res) > 1) {
+        res <- list(res)
+      }
+      resource[i] <- na_if_empty(res)
     }
   }
   return(resource)
@@ -64,5 +78,7 @@ simplify_idaifield <- function(idaifield_docs,
     uidlist = uidlist,
     keep_geometry = FALSE)
     )
+
+  resources <- structure(resources, class = "idaifield_resources")
   return(resources)
 }
