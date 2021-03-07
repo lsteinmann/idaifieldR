@@ -171,22 +171,24 @@ check_if_uid <- function(string) {
 
 
 
-#' Title
+#' Reorders the column names for idaifield_as_matrix()
 #'
-#' @param colnames
-#' @param order
+#' @param colnames a character vector with colnames
+#' @param order either "default" for default order (first columns are
+#' "identifier", "type", "shortDescription" and the rest is as assembled) or
+#' a character vector with exact column names that will then place these as
+#' the first n columns of the matrix produced by idaifield_as_matrix()
 #'
-#' @return
+#' @return a character vector
 #' @export
 #'
 #' @examples
 reorder_colnames <- function(colnames, order = "default") {
   if (order == "default") {
     order <- c("identifier", "type", "shortDescription")
-  } else {
-    print("nope")
   }
   new_order <- match(order, colnames)
+  new_order <- new_order[!is.na(new_order)]
   not_ordered <- colnames[-new_order]
   new_order <- colnames[new_order]
   colnames <- c(new_order, not_ordered)
