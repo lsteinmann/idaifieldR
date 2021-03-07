@@ -34,13 +34,12 @@ na_if_empty <- function(item) {
 #' want to work with in R.
 #'
 #' @param idaifield_docs A list as provided by sofa::db_alldocs(...), or
-#' used within get_idaifield_docs(). The latter employs this function already,
-#' so mostly there is no need to deal with it. If one chooses
+#' used within `get_idaifield_docs()`. The latter employs this function already
+#' when setting `simplified = TRUE`, which is the default.
+#' So mostly there is no need to deal with it. If one chooses
 #' get_idaifield_docs(..., simplified  = FALSE), it is possible to use
-#' unnest_resource() later on in the resulting list to simplify it a later
-#' point in time.
-#' @param keep_geometry FALSE by default. TRUE if you wish to import the
-#' geometry-fields into R (TODO: this is not reachable from top level function)
+#' unnest_resource() later on in the resulting list to simplify it.
+#'
 #'
 #' @return a list of class idaifield_resources (same as idaifield_docs,
 #' but the top-level with meta-information has been removed to make the actual
@@ -55,35 +54,19 @@ na_if_empty <- function(item) {
 #' pwd = "password",
 #' simplified = FALSE)
 #'
-#' idaifield_resourcess <- unnest_resource(idaifield_docs)
+#' idaifield_resources <- unnest_resource(idaifield_docs)
 #' }
-unnest_resource <- function(idaifield_docs, keep_geometry = FALSE) {
+unnest_resource <- function(idaifield_docs) {
 
   check_result <- suppressMessages(check_if_idaifield(idaifield_docs))
 
   if (unname(check_result[1, "idaifield_docs"])) {
-    for (i in seq_along(idaifield_docs)) {
-      idaifield_docs[[i]] <- idaifield_docs[[i]]$doc$resource
-
-      if (length(idaifield_docs[[i]]$relations) > 0) {
-        new_relnames <- names(idaifield_docs[[i]]$relations)
-        new_relnames <- paste("relations.", new_relnames, sep = "")
-        names(idaifield_docs[[i]]$relations) <- new_relnames
-        idaifield_docs[[i]] <- c(idaifield_docs[[i]],
-                                 idaifield_docs[[i]]$relations)
-        idaifield_docs[[i]]$relations <- NULL
-      }
-      if (!keep_geometry) {
-        idaifield_docs[[i]]$geometry <- NULL
-        idaifield_docs[[i]]$georeference <- NULL
-      }
-    }
-
-    idaifield_docs <- structure(idaifield_docs, class = "idaifield_resources")
-    return(idaifield_docs)
-
+    idaifield_resources <- lapply(idaifield_docs, function(docs) docs$doc$resource)
+    idaifield_resources <- structure(idaifield_resources, class = "idaifield_resources")
+    return(idaifield_resources)
   } else if (unname(check_result[1, "idaifield_resources"])) {
-    stop("The list is already unnested to resource-level.")
+    message("The list was already unnested to resource-level.")
+    return(idaifield_docs)
   } else {
     stop("The object provided cannot be processed by this function.")
   }
