@@ -33,16 +33,18 @@
 #' }
 unnest_resource <- function(idaifield_docs) {
 
-  check_result <- suppressMessages(check_if_idaifield(idaifield_docs))
+  check_result <- check_if_idaifield(idaifield_docs)
 
-  if (unname(check_result[1, "idaifield_docs"])) {
+  if (check_result["idaifield_docs"]) {
     idaifield_resources <- lapply(idaifield_docs, function(docs) docs$doc$resource)
     idaifield_resources <- structure(idaifield_resources, class = "idaifield_resources")
     return(idaifield_resources)
-  } else if (unname(check_result[1, "idaifield_resources"])) {
+  } else if (check_result["idaifield_resources"]) {
     message("The list was already unnested to resource-level.")
     return(idaifield_docs)
   } else {
     stop("The object provided cannot be processed by this function.")
+    # could wrap everything in trycatch to allow people to use it without
+    # enforcing the class
   }
 }

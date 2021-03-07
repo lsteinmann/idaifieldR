@@ -24,57 +24,6 @@ na_if_empty <- function(item) {
 }
 
 
-
-
-#' unnest_resource: Remove doc-level of idaifield_docs-List
-#'
-#' This function somewhat unnests the lists provided by i.DAIfield 2.
-#' The actualy data of a resource is usually stored in a sub-list
-#' behind $doc$resource, which contains the data one would mostly
-#' want to work with in R.
-#'
-#' @param idaifield_docs A list as provided by sofa::db_alldocs(...), or
-#' used within `get_idaifield_docs()`. The latter employs this function already
-#' when setting `simplified = TRUE`, which is the default.
-#' So mostly there is no need to deal with it. If one chooses
-#' get_idaifield_docs(..., simplified  = FALSE), it is possible to use
-#' unnest_resource() later on in the resulting list to simplify it.
-#'
-#'
-#' @return a list of class idaifield_resources (same as idaifield_docs,
-#' but the top-level with meta-information has been removed to make the actual
-#' resource data more accessible)
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
-#' user = "R",
-#' pwd = "password",
-#' simplified = FALSE)
-#'
-#' idaifield_resources <- unnest_resource(idaifield_docs)
-#' }
-unnest_resource <- function(idaifield_docs) {
-
-  check_result <- suppressMessages(check_if_idaifield(idaifield_docs))
-
-  if (unname(check_result[1, "idaifield_docs"])) {
-    idaifield_resources <- lapply(idaifield_docs, function(docs) docs$doc$resource)
-    idaifield_resources <- structure(idaifield_resources, class = "idaifield_resources")
-    return(idaifield_resources)
-  } else if (unname(check_result[1, "idaifield_resources"])) {
-    message("The list was already unnested to resource-level.")
-    return(idaifield_docs)
-  } else {
-    stop("The object provided cannot be processed by this function.")
-  }
-}
-
-
-
-
 #' check_if_idaifield
 #'
 #' For internal use... checks if an object can actually processed by
@@ -99,30 +48,25 @@ unnest_resource <- function(idaifield_docs) {
 #' }
 check_if_idaifield <- function(testobject) {
 
-  result <- matrix(nrow = 1, ncol = 3)
-  colnames(result) <- c("idaifield_docs", "idaifield_resources", "list")
+  result <- rep(NA, 3)
+  names(result) <- c("idaifield_docs", "idaifield_resources", "list")
 
   if (class(testobject) == "idaifield_docs") {
-    message("The object provided is a docs-list as returned by ",
-            "get_idaifield_docs(..., simplified = FALSE).")
-    result[1, "idaifield_docs"] <- TRUE
+    result["idaifield_docs"] <- TRUE
   } else {
-    result[1, "idaifield_docs"] <- FALSE
+    result["idaifield_docs"] <- FALSE
   }
 
   if (class(testobject) == "idaifield_resources") {
-    message("The object provided is a resource-list as returned by ",
-            "get_idaifield_docs(..., simplified = TRUE) or unnest_resource().")
-    result[1, "idaifield_resources"] <- TRUE
+    result["idaifield_resources"] <- TRUE
   } else {
-    result[1, "idaifield_resources"] <- FALSE
+    result["idaifield_resources"] <- FALSE
   }
 
   if (class(testobject) == "list") {
-    message("The object is a list.")
-    result[1, "list"] <- TRUE
+    result["list"] <- TRUE
   } else {
-    result[1, "list"] <- FALSE
+    result["list"] <- FALSE
   }
 
   return(result)
@@ -159,11 +103,11 @@ check_if_idaifield <- function(testobject) {
 #' check_and_unnest(idaifield_docs)
 #' }
 check_and_unnest <- function(idaifield_docs) {
-  check <- suppressMessages(check_if_idaifield(idaifield_docs))
-  if (unname(check[1, "idaifield_docs"])) {
+  check <- check_if_idaifield(idaifield_docs)
+  if (check["idaifield_docs"]) {
     idaifield_docs <- unnest_resource(idaifield_docs)
     return(idaifield_docs)
-  } else if (unname(check[1, "idaifield_resources"])) {
+  } else if (check["idaifield_resources"]) {
     return(idaifield_docs)
   } else {
     stop("Cannot process the object.")

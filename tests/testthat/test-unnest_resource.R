@@ -28,6 +28,8 @@ test_that("relation naming works", {
   expect_true(any(greps))
 })
 
+list <- list("börek", "kaffee", list(rep(1, 2, 3)))
 test_that("unnest_resource does not process non-idaifield-lists", {
-  expect_error(unnest_resource(unnested_test_resource), regexp = "unnested")
+  expect_error(unnest_resource(list), regexp = "cannot")
 })
+
