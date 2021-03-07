@@ -2,21 +2,38 @@
 % Please edit documentation in R/simplify_idaifield_resources.R
 \name{simplify_single_resource}
 \alias{simplify_single_resource}
-\title{Title}
+\title{Simplifies a single resource from the i.DAIfield 2 Database}
 \usage{
 simplify_single_resource(
   resource,
   replace_uids = TRUE,
-  uidlist = uidlist,
+  uidlist = NULL,
   keep_geometry = FALSE
 )
 }
 \arguments{
-\item{keep_geometry}{}
+\item{resource}{One resource (element) from an idaifield_resources-list.}
+
+\item{replace_uids}{logical. Should UIDs be automatically replaced with the
+corresponding identifiers? (Defaults to TRUE).}
+
+\item{uidlist}{A data.frame as returned by `get_uid_list()`. If replace_uids
+is set to FALSE, there is no need to supply it.}
+
+\item{keep_geometry}{logical. Should the geographical information be kept
+or removed? (Defaults to TRUE).}
 }
 \value{
-
+A single resource (element) for an idaifield_resource-list.
 }
 \description{
-Title
+This function is a helper to `simplify_idaifield()`.
+}
+\examples{
+\dontrun{
+simpler_resource <- simplify_single_resource(resource,
+replace_uids = TRUE,
+uidlist = uidlist,
+keep_geometry = FALSE)
+}
 }

@@ -1,22 +1,38 @@
-#' Title
+#' Simplifies a single resource from the i.DAIfield 2 Database
 #'
-#' @param resource
-#' @param replace_uids
-#' @param uidlist
-#' @param keep_geometry
+#' This function is a helper to `simplify_idaifield()`.
 #'
-#' @return
+#' @param resource One resource (element) from an idaifield_resources-list.
+#' @param replace_uids logical. Should UIDs be automatically replaced with the
+#' corresponding identifiers? (Defaults to TRUE).
+#' @param uidlist A data.frame as returned by `get_uid_list()`. If replace_uids
+#' is set to FALSE, there is no need to supply it.
+#' @param keep_geometry logical. Should the geographical information be kept
+#' or removed? (Defaults to TRUE).
+#'
+#' @return A single resource (element) for an idaifield_resource-list.
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' simpler_resource <- simplify_single_resource(resource,
+#' replace_uids = TRUE,
+#' uidlist = uidlist,
+#' keep_geometry = FALSE)
+#' }
 simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
-                                     uidlist = uidlist,
+                                     uidlist = NULL,
                                      keep_geometry = FALSE
                                      ) {
-  stopifnot(nrow(uidlist) > 1)
+
+  id <- resource$identifier
+  if(is.null(id)) {
+    stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
+  }
+
   resource <- fix_relations(resource,
-                            replace_uids = TRUE,
+                            replace_uids = replace_uids,
                             uidlist = uidlist)
   if (!keep_geometry) {
     names <- names(resource)
@@ -49,35 +65,48 @@ simplify_single_resource <- function(resource,
 
 
 
-#' Title
+#' Simplify a list imported from an i.DAIfield-Database
 #'
-#' @param idaifield_docs
-#' @param replace_uids
-#' @param uidlist
-#'#'
-#' @param keep_geometry FALSE by default. TRUE if you wish to import the
-#' geometry-fields into R (TODO: this is not reachable from top level function)
+#' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
+#' returned by `get_idaifield_docs()`.
+#' @param replace_uids logical. Should UIDs be automatically replaced with the
+#' corresponding identifiers? (Defaults to TRUE).
+#' @param uidlist If NULL (default) the list of UIDs and identifiers is
+#' automatically generated within this function. This only makes sense if
+#' the list handed to `simplify_idaifield()` had not been selected yet. If it
+#' has been, you should supply a data.frame as returned by `get_uid_list()`.
+#' @param keep_geometry logical. Should the geographical information be kept
+#' or removed? (Defaults to TRUE).
 #'
-#' needs: keep_geometry; unnest relations
-#'
-#' @return
+#' @return a simplified "idaifield_resources"-list
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+#' projectname = "testproj",
+#' user = "R",
+#' pwd = "password")
+#'
+#' simpler_idaifield <- simplify_idaifield(idaifield_docs)
+#' }
 simplify_idaifield <- function(idaifield_docs,
+                               keep_geometry = FALSE,
                                replace_uids = TRUE,
-                               uidlist = "generate") {
-  if (uidlist == "generate") {
+                               uidlist = NULL) {
+  if (is.null(uidlist)) {
     uidlist <- get_uid_list(idaifield_docs)
   }
   resources <- check_and_unnest(idaifield_docs)
 
-  resources <- lapply(resources, function(x) simplify_single_resource(
-    x,
-    replace_uids = TRUE,
-    uidlist = uidlist,
-    keep_geometry = FALSE)
+  resources <- lapply(resources, function(x)
+    simplify_single_resource(
+      x,
+      replace_uids = replace_uids,
+      uidlist = uidlist,
+      keep_geometry = keep_geometry
     )
+  )
 
   resources <- structure(resources, class = "idaifield_resources")
   return(resources)
