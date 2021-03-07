@@ -40,21 +40,7 @@ idaifield_as_matrix <- function(idaifield_docs) {
     single_resource <- resource_list[[listindex]]
     for (i in seq_along(single_resource)) {
       colindex <- match(names(single_resource)[i], colnames)
-      if (class(single_resource[[i]]) == "list") {
-        state <- check_for_sublist(single_resource[[i]])
-        if (!state) {
-          res <- unname(single_resource[[i]])
-          res <- na_if_empty(res)
-          resource_matrix[listindex, colindex] <- res
-        } else {
-          res <- na_if_empty(single_resource[i])
-          resource_matrix[listindex, colindex] <- res
-        }
-      } else {
-        res <- unname(unlist(single_resource[[i]]))
-        res <- na_if_empty(res)
-        resource_matrix[listindex, colindex] <- res
-      }
+      resource_matrix[listindex, colindex] <- single_resource[i]
     }
   }
   null_vec <- which(sapply(resource_matrix, length) == 0)
