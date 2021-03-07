@@ -8,7 +8,7 @@ test_resources <- test_resources[-project]
 item <- sample(seq_along(test_docs), 1)
 
 resource <- fix_relations(test_resources[[2]],
-                          replace_uid = TRUE,
+                          replace_uids = TRUE,
                           uidlist = uidlist)
 
 test_that("names are working", {
@@ -18,12 +18,12 @@ test_that("names are working", {
 
 test_that("fails without uidlist", {
   expect_error(fix_relations(test_resources[[item]],
-                             replace_uid = TRUE),
+                             replace_uids = TRUE),
                "UID")
 })
 
 resource <- fix_relations(test_resources[[item]],
-                          replace_uid = FALSE)
+                          replace_uids = FALSE)
 
 test_that("does not replace uid", {
   item <- grep("relation", names(resource))

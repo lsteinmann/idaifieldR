@@ -4,20 +4,20 @@
 \alias{fix_relations}
 \title{Unnest the relations in a resource}
 \usage{
-fix_relations(resource, replace_uid = TRUE, uidlist = NULL)
+fix_relations(resource, replace_uids = TRUE, uidlist = NULL)
 }
 \arguments{
 \item{resource}{One item from a list of class idaifield_resources}
 
-\item{replace_uid}{logical. If TRUE, replaces the UIDs in each relation with
+\item{replace_uids}{logical. If TRUE, replaces the UIDs in each relation with
 the corresponding identifiers. If FALSE, just unnests the list.}
 
-\item{uidlist}{Only needs to be provided if replace_UID = TRUE. A data.frame
+\item{uidlist}{Only needs to be provided if replace_uids = TRUE. A data.frame
 as returned by `get_uid_list()`}
 }
 \value{
 The resource with its relations unnested (and replaced with
-identifiers if replace_uid is set to TRUE).
+identifiers if replace_uids is set to TRUE).
 }
 \description{
 Unnest the relations in a resource
