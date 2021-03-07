@@ -29,24 +29,24 @@ if (!check_db_availability()) {
 
 
 
-test_resource <- get_idaifield_docs(serverip = serverip,
-                                    projectname = "rtest",
-                                    user = "R",
-                                    pwd = "hallo",
-                                    simplified = FALSE)
+test_docs <- get_idaifield_docs(serverip = serverip,
+                                projectname = "rtest",
+                                user = "R",
+                                pwd = "hallo",
+                                simplified = FALSE)
 
-unnested_test_resource <- get_idaifield_docs(serverip = serverip,
-                                             projectname = "rtest",
-                                             user = "R",
-                                             pwd = "hallo",
-                                             simplified = TRUE)
+test_resources <- get_idaifield_docs(serverip = serverip,
+                                     projectname = "rtest",
+                                     user = "R",
+                                     pwd = "hallo",
+                                     simplified = TRUE)
 
 test_that("returns docs-lists", {
-  check <- check_if_idaifield(test_resource)
+  check <- check_if_idaifield(test_docs)
   expect_true(check["idaifield_docs"], TRUE)
 })
 
 test_that("returns resource-lists", {
-  check <- check_if_idaifield(unnested_test_resource)
+  check <- check_if_idaifield(test_resources)
   expect_true(check["idaifield_resources"], TRUE)
 })

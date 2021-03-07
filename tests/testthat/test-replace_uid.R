@@ -1,6 +1,6 @@
 source(file = "../load_testdata.R")
 
-uidlist <- get_uid_list(test_resource)
+uidlist <- get_uid_list(test_docs)
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 
 test_that("replace_uid does not touch non uid", {

@@ -1,16 +1,16 @@
 source(file = "../load_testdata.R")
 
 test_that("unnest_resource returns a list", {
-  expect_identical(class(unnest_resource(test_resource)), "idaifield_resources")
+  expect_identical(class(unnest_resource(test_docs)), "idaifield_resources")
 })
 
-item <- sample(seq_along(test_resource), 1)
+item <- sample(seq_along(test_docs), 1)
 
 test_that("unnested resource has same id", {
-  expect_identical(unnest_resource(test_resource)[[item]]$id,
-                   test_resource[[item]]$id)
-  expect_identical(unnest_resource(test_resource)[[item]]$id,
-                   test_resource[[item]]$doc$resource$id)
+  expect_identical(unnest_resource(test_docs)[[item]]$id,
+                   test_docs[[item]]$id)
+  expect_identical(unnest_resource(test_docs)[[item]]$id,
+                   test_docs[[item]]$doc$resource$id)
 })
 
 test_that("unnest_resource does not process non-list", {
@@ -24,7 +24,7 @@ test_that("unnest_resource does not process non-idaifield-lists", {
 })
 
 test_that("relation naming works", {
-  greps <- grepl("relations", names(unnested_test_resource[[item]]))
+  greps <- grepl("relations", names(test_resources[[item]]))
   expect_true(any(greps))
 })
 

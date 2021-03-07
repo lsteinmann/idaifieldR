@@ -1,4 +1,4 @@
 library(idaifieldR)
-test_resource <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
-                                     package = "idaifieldR"))
-unnested_test_resource <- unnest_resource(test_resource)
+test_docs <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
+                                 package = "idaifieldR"))
+test_resources <- unnest_resource(test_docs)
