@@ -128,19 +128,16 @@ check_and_unnest <- function(idaifield_docs) {
 #'
 #' @examples
 check_for_sublist <- function(single_resource_field) {
-  if (class(single_resource_field) == "list") {
-    len <- sapply(single_resource_field, length)
-    len <- unname(len)
-    if (length(len) == 1) {
-      return(FALSE)
-    } else if (length(len) > 1) {
-      return(TRUE)
-    } else {
-      return(FALSE)
-    }
+  if (is.list(single_resource_field)) {
+    sublists <- vapply(single_resource_field,
+                       function(x) is.list(x),
+                       FUN.VALUE = logical(1))
+    has_sublist <- any(sublists)
   } else {
-    return(FALSE)
+    warning("Object is not a list.")
+    has_sublist <- FALSE
   }
+  return(has_sublist)
 }
 
 
@@ -149,6 +146,7 @@ check_for_sublist <- function(single_resource_field) {
 #'
 #' @param string A character string that should be checked for being a UID
 #' as used in i.DAIfield 2 (expects a single character value!)
+#' TODO: any() with grepl and then blaaaa
 #'
 #' @return TRUE if UID, or FALSE if not
 #' @export
