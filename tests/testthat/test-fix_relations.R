@@ -1,40 +1,47 @@
 source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
-project <- which(uidlist$UID == "project")
 
-test_resources <- test_resources[-project]
+item <- sample(seq_along(test_docs), 1)
 
-# note: for some of the resources these tests seem to fail and
-# one day I should check why
-item <- 5#sample(seq_along(test_docs), 1)
 
-resource <- fix_relations(test_resources[[2]],
-                          replace_uids = TRUE,
-                          uidlist = uidlist)
+if (length(test_resources[[item]]$relations) > 0) {
+  resource <- fix_relations(test_resources[[item]],
+                            replace_uids = TRUE,
+                            uidlist = uidlist)
+  test_that("names are working", {
+    greps <- grepl("relation.", names(resource))
+    expect_true(any(greps))
+  })
 
-test_that("names are working", {
-  greps <- grepl("relation.", names(resource))
-  expect_true(any(greps))
+  resource <- fix_relations(test_resources[[item]],
+                            replace_uids = FALSE)
+
+
+
+  test_that("does not replace uid", {
+    item <- grep("relation", names(resource))
+    expect_true(check_if_uid(resource[[item[1]]]))
+  })
+
+}
+
+
+test_that("fails without uidlist for items with relations", {
+  if (length(test_resources[[item]]$relations) > 0) {
+    expect_error(fix_relations(test_resources[[item]],
+                               replace_uids = TRUE),
+                 "UID")
+  } else {
+    test <- fix_relations(test_resources[[item]],
+                          replace_uids = TRUE)
+    expect_null(test$relations)
+  }
 })
 
-test_that("fails without uidlist", {
-  expect_error(fix_relations(test_resources[[item]],
-                             replace_uids = TRUE),
-               "UID")
-})
 
-resource <- fix_relations(test_resources[[item]],
-                          replace_uids = FALSE)
 
-test_that("does not replace uid", {
-  item <- grep("relation", names(resource))
-  expect_true(check_if_uid(resource[[item[1]]]))
-})
 
 test_that("removes original list", {
   expect_identical(resource$relations, NULL)
 })
-
-
-

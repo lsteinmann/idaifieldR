@@ -32,6 +32,8 @@ fix_relations <- function(resource, replace_uids = TRUE, uidlist = NULL) {
     names(relations) <- paste("relation.", names(relations), sep = "")
     resource$relations <- NULL
     resource <- append(resource, relations)
+  } else {
+    resource$relations <- NULL
   }
   return(resource)
 }
