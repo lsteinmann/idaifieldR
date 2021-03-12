@@ -11,6 +11,13 @@
 #' seems to be no use in the unnested version. However,
 #' simplified = FALSE would allow to get the top-level version.
 #'
+#' NOTE: If you are planning on using the coordinates stored in the database,
+#' I strongly suggest you consider changing your R digits-setting to a higher
+#' value than the default. Depending on the projection used, coordinates may
+#' be represented by rather long numbers which R might automatically round on
+#' import. `options(digits = 20)` should do the trick. (That applies to
+#' other fields containing long numbers as well.)
+#'
 #'
 #' @param serverip The IP that the user can find in i.DAIfield 2's settings as
 #' "Eigene Adresse" without the port-specification

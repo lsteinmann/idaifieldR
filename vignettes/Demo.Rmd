@@ -146,3 +146,17 @@ ggplot(pottery_df, aes(x = relation.liesWithin, fill = materialType)) +
   geom_bar()
 ```
 
+
+# Notes
+
+If you are planing on using the coordinates from the geometry in iDAI.field 2, 
+I strongly suggest you modify your digit length in R before importing. Depending 
+on the projection used in the database, the import might omit some digits or 
+or round numbers. 
+
+Example: 
+
+```{r eval = FALSE}
+options(digits = 20)
+```
+
