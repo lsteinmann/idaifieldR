@@ -44,6 +44,20 @@ simplify_single_resource <- function(resource,
     resource$geometry <- reformat_geometry(resource$geometry)
   }
 
+  period <- resource$period
+  if (!is.null(period)) {
+    fixed_periods <- c(NA, NA)
+    names(fixed_periods) <- c("period.start", "period.end")
+    if (length(period) == 1) {
+      fixed_periods[1:2] <- rep(unlist(period), 2)
+    } else if (length(period) == 2) {
+      fixed_periods[1:2] <- unlist(period)
+    } else {
+      message("I did not see that coming.")
+    }
+    resource <- append(resource, fixed_periods)
+  }
+
   has_sublist <- suppressWarnings(vapply(resource,
                  check_for_sublist,
                  logical(1),
