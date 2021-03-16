@@ -1,6 +1,6 @@
 skip_on_cran()
 
-serverip <- "192.168.2.13"
+serverip <- "192.168.2.21"
 
 idaifield_connection <- sofa::Cushion$new(host = serverip,
                                           transport = "http",

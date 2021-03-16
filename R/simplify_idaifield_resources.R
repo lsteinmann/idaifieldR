@@ -40,6 +40,8 @@ simplify_single_resource <- function(resource,
     if (has_geom) {
       resource$geometry <- NULL
     }
+  } else {
+    resource$geometry <- reformat_geometry(resource$geometry)
   }
 
   has_sublist <- suppressWarnings(vapply(resource,
