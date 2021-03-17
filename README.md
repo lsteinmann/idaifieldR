@@ -4,7 +4,6 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/lsteinmann/idaifieldR/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/idaifieldR/actions)
 [![Codecov test coverage](https://codecov.io/gh/lsteinmann/idaifieldR/branch/main/graph/badge.svg)](https://codecov.io/gh/lsteinmann/idaifieldR?branch=main)
-[![Travis build status](https://travis-ci.com/lsteinmann/idaifieldR.svg?branch=main)](https://travis-ci.com/lsteinmann/idaifieldR)
 <!-- badges: end -->
 
 idaifieldR imports data from the [i.DAIfield 2 database](https://github.com/dainst/idai-field) into R. The core functions of this package use [sofa](https://github.com/ropensci/sofa) (available on CRAN) to connect to a syncing i.DAIfield 2-client and store the whole database in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the i.DAIfield 2-client itself.
