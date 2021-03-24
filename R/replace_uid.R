@@ -25,7 +25,7 @@ replace_uid <- function(item, uidlist) {
       index <- match(item[i], uidlist$UID)
       identifier[i] <- uidlist$identifier[index]
     } else {
-      identifier <- item[i]
+      identifier[i] <- item[i]
     }
   }
   return(identifier)

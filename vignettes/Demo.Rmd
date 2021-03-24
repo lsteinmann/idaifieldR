@@ -96,10 +96,10 @@ idaifield_test_docs %>%
   head()
 ```
 
-For any further processing and especially larger data sets, the `select_by_type()` function should be important:
+For any further processing and especially larger data sets, the `select_by()` function should be important:
 
 ```{r}
-layers <- select_by_type(idaifield_test_resources, type = "Layer")
+layers <- select_by(idaifield_test_resources, by = "type", value = "Layer")
 layers[[5]]
 ```
 
@@ -113,7 +113,7 @@ A selection of the whole list can be converted into a matrix of lists:
 
 ```{r}
 pottery <- idaifield_test_resources %>%
-  select_by_type(type = "Pottery") %>%
+  select_by(by = "type", value = "Pottery") %>%
   idaifield_as_matrix()
 
 pottery[1:5, 1:5]

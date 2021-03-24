@@ -34,23 +34,28 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
+  ncol <- 4
+  colnames <- c("type", "UID", "identifier", "isRecordedIn")
+
   if (verbose) {
-    ncol <- 4
-    colnames <- c("type", "UID", "identifier", "shortDescription")
-  } else {
-    ncol <- 3
-    colnames <- c("type", "UID", "identifier")
+    ncol <- 5
+    colnames <- c(colnames, "shortDescription")
   }
+
   uid_list <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
   colnames(uid_list) <- colnames
   for (i in seq_along(idaifield_docs)) {
     uid_list$UID[i] <- na_if_empty(idaifield_docs[[i]]$id)
     uid_list$type[i] <- na_if_empty(idaifield_docs[[i]]$type)
     uid_list$identifier[i] <- na_if_empty(idaifield_docs[[i]]$identifier)
+    isRecordedIn <- unlist(idaifield_docs[[i]]$relations$isRecordedIn)
+    uid_list$isRecordedIn[i] <- na_if_empty(isRecordedIn)
     if (verbose) {
       short_description <- idaifield_docs[[i]]$shortDescription
       uid_list$shortDescription[i] <- na_if_empty(short_description)
     }
   }
+
+  uid_list$isRecordedIn <- replace_uid(uid_list$isRecordedIn, uid_list)
   return(uid_list)
 }

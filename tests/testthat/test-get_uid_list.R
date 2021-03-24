@@ -19,10 +19,10 @@ test_that("uidlist has the short description when verbose", {
   expect_true(any(grepl("shortDescription", colnames)))
 })
 
-test_that("uidlist has 3 cols by default", {
-  expect_equal(ncol(get_uid_list(test_docs)), 3)
+test_that("uidlist has 4 cols by default", {
+  expect_equal(ncol(get_uid_list(test_docs)), 4)
 })
 
-test_that("uidlist has 4 cols when verbose", {
-  expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 4)
+test_that("uidlist has 5 cols when verbose", {
+  expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 5)
 })
