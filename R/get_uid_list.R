@@ -49,6 +49,9 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
     uid_list$type[i] <- na_if_empty(idaifield_docs[[i]]$type)
     uid_list$identifier[i] <- na_if_empty(idaifield_docs[[i]]$identifier)
     isRecordedIn <- unlist(idaifield_docs[[i]]$relations$isRecordedIn)
+    if (is.null(isRecordedIn)) {
+      isRecordedIn <- unlist(idaifield_docs[[i]]$relation.isRecordedIn)
+    }
     uid_list$isRecordedIn[i] <- na_if_empty(isRecordedIn)
     if (verbose) {
       short_description <- idaifield_docs[[i]]$shortDescription
