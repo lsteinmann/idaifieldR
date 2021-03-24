@@ -1,4 +1,4 @@
-#' Simplifies a single resource from the i.DAIfield 2 Database
+#' Simplifies a single resource from the iDAI.field 2 Database
 #'
 #' This function is a helper to `simplify_idaifield()`.
 #'
@@ -81,7 +81,7 @@ simplify_single_resource <- function(resource,
 
 
 
-#' Simplify a list imported from an i.DAIfield-Database
+#' Simplify a list imported from an iDAI.field-Database
 #'
 #' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
 #' returned by `get_idaifield_docs()`.

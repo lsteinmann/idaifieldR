@@ -1,6 +1,6 @@
 #' show_type_list
 #'
-#' Returns a list of types present in the i.DAIfield 2-database
+#' Returns a list of types present in the iDAI.field 2-database
 #' (for orientation) it would be nice to be able to embed the translations,
 #' but i am guessing thats only possible if the configuration was available
 #'
@@ -63,3 +63,6 @@ select_by_type <- function(idaifield_docs, type = "Pottery") {
 
   return(selected_docs)
 }
+
+
+

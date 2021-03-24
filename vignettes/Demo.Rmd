@@ -39,14 +39,14 @@ idaifield_test_docs <- readRDS(system.file("testdata",
 idaifield_test_docs <- unnest_resource(idaifield_test_docs)
 ```
 
-The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in i.DAIfield 2 is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function:
+The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in iDAI.field 2 is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function:
 
 ```{r eval=FALSE}
 idaifield_test_docs <- get_idaifield_docs(
-  # The IP listet in the i.DAIfield 2-Client as "Eigene Adresse":
+  # The IP listet in the iDAI.field 2-Client as "Eigene Adresse":
   serverip = "192.168.1.21",
   # You can but should typically not need to specify the port, as the
-  # default value is already i.DAIfield 2's default:
+  # default value is already iDAI.field 2's default:
   port = 3000,
   # Name of the Project from said client that should be imported:
   projectname = "rtest",
@@ -54,7 +54,7 @@ idaifield_test_docs <- get_idaifield_docs(
   # planning on writing anything to the db, which would be possible with sofa,
   # and may be useful in some cases!
   user = "R",
-  # The password as listed in the i.DAIfield 2-client
+  # The password as listed in the iDAI.field 2-client
   pwd = "hallo",
   # simplified = TRUE (which is the default) returns a list that is already
   # unnested to resource level. With simplified = FALSE it is possible to
@@ -103,7 +103,7 @@ layers <- select_by_type(idaifield_test_resources, type = "Layer")
 layers[[5]]
 ```
 
-A list of all resource-types present in the database can be gathered with `show_type_list()`. Only the internal names are referenced as types, and translations that you may see in the GUI can be different from these. They can be gathered in the i.DAIfield 2-Client from "Hilfe > Formularkonfiguration" (pink names in upper right corner).
+A list of all resource-types present in the database can be gathered with `show_type_list()`. Only the internal names are referenced as types, and translations that you may see in the GUI can be different from these. They can be gathered in the iDAI.field 2-Client from "Hilfe > Formularkonfiguration" (pink names in upper right corner).
 
 ```{r}
 show_type_list(idaifield_test_docs)

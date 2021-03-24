@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplify_idaifield_resources.R
 \name{simplify_idaifield}
 \alias{simplify_idaifield}
-\title{Simplify a list imported from an i.DAIfield-Database}
+\title{Simplify a list imported from an iDAI.field-Database}
 \usage{
 simplify_idaifield(
   idaifield_docs,
@@ -30,7 +30,7 @@ has been, you should supply a data.frame as returned by `get_uid_list()`.}
 a simplified "idaifield_resources"-list
 }
 \description{
-Simplify a list imported from an i.DAIfield-Database
+Simplify a list imported from an iDAI.field-Database
 }
 \examples{
 \dontrun{

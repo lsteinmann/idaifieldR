@@ -1,6 +1,6 @@
 #' Unnesting a idaifield_docs-List down to resource level
 #'
-#' This function unnests the lists provided by i.DAIfield 2.
+#' This function unnests the lists provided by iDAI.field 2.
 #' The actual data of a resource is usually stored in a sub-list
 #' behind $doc$resource, which contains the data one would mostly
 #' want to work with in R. The top level data contains information
@@ -8,7 +8,7 @@
 #' is irrelevant for any analysis of the database contents itself.
 #'
 #' @param idaifield_docs A list as provided by `sofa::db_alldocs(...)` when
-#' importing from an i.DAIfield 2-database using `get_idaifield_docs()`.
+#' importing from an iDAI.field 2-database using `get_idaifield_docs()`.
 #' `get_idaifield_docs()` employs this function already
 #' when setting `simplified = TRUE`, which is the default.
 #' Mostly there is no need to deal with `unnest_resource()`. If one chooses
