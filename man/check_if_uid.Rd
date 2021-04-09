@@ -8,11 +8,17 @@ check_if_uid(string)
 }
 \arguments{
 \item{string}{A character string that should be checked for being a UID
-as used in i.DAIfield 2 (expects a single character value!)}
+as used in iDAI.field 2 (expects a single character value!)
+TODO: any() with grepl and then blaaaa}
 }
 \value{
 TRUE if UID, or FALSE if not
 }
 \description{
 check_if_uid
+}
+\examples{
+
+check_if_uid(string = "0324141a-8201-c5dc-631b-4dded4552ac4")
+check_if_uid(string = "not a uid")
 }

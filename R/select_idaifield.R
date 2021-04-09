@@ -1,6 +1,6 @@
 #' show_type_list
 #'
-#' Returns a list of types present in the i.DAIfield 2-database
+#' Returns a list of types present in the iDAI.field 2-database
 #' (for orientation) it would be nice to be able to embed the translations,
 #' but i am guessing thats only possible if the configuration was available
 #'
@@ -30,15 +30,17 @@ show_type_list <- function(idaifield_docs) {
 }
 
 
-#' select_by_type
+#' select_by
 #'
-#' returns a subset of the docs list selected by type
+#' returns a subset of the docs list selected by type or isRecordedIn
 #'
 #' @param idaifield_docs An object as returned by get_idaifield_docs(...)
-#' @param type Character expected, should be the internal Name of the Type
+#' @param by must be either type (to select by resource type) or isRecordedIn
+#' (to select by container-resource (Survey-Area, Trench))
+#' @param value Character expected, should be the internal Name of the Type
 #' that will be selected for (e.g. "Layer", "Pottery")
 #'
-#' @return a list of class idaifield_resource containing the resources
+#' @return a list of class idaifield_resources containing the resources
 #' which are of the selected type
 #' @export
 #'
@@ -49,17 +51,29 @@ show_type_list <- function(idaifield_docs) {
 #' user = "R",
 #' pwd = "password"))
 #'
-#' idaifield_layers <- select_by_type(idaifield_docs, type = "Layer")
+#' idaifield_layers <- select_by_type(idaifield_docs,
+#' by = "type",
+#' value = "Layer")
 #' }
-select_by_type <- function(idaifield_docs, type = "Pottery") {
+select_by <- function(idaifield_docs, by = c("type", "isRecordedIn"), value = NULL) {
+
+  if (length(by) > 1) {
+    message("Please select only one of 'type' or 'isRecordedIn' (using first)")
+    by <- by[1]
+  }
+  if (is.null(value)) {
+    stop("No value given for selection.")
+  }
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
   uid_type_list <- get_uid_list(idaifield_docs)
 
-  typeindex <- grep(type, uid_type_list$type)
+  col <- colnames(uid_type_list) == by
+
+  typeindex <- grep(value, uid_type_list[, col])
 
   selected_docs <- idaifield_docs[typeindex]
-  selected_docs <- structure(selected_docs, class = "idaifield_resource")
+  selected_docs <- structure(selected_docs, class = "idaifield_resources")
 
   return(selected_docs)
 }

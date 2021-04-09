@@ -1,15 +1,23 @@
 Type: Package
 Package: idaifieldR
-Title: An interface for i.DAIfield 2 in R
+Title: Importing Data from iDAI.field 2 into R
 Version: 0.1.0
 Author: Lisa Steinmann
 Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
-Description: Importing data from the i.DAIfield 2-Client into R.
+Description: idaifieldR imports data from the iDAI.field 2
+    database into R.  The core functions of this package use sofa
+    (available on CRAN) to connect to a syncing iDAI.field 2-client and
+    store the whole database in a list in R (in memory), avoiding the
+    csv-export that would otherwise be needed and gathering all documents
+    at once, which is not possible with said csv-export.  Any R-Script
+    using idaifieldR to import the database can be re-run and updated with
+    new data flexibly without exporting from the iDAI.field 2-Client
+    itself.
+License: GPL (>= 3)
 URL: https://github.com/lsteinmann/idaifieldR
 BugReports: https://github.com/lsteinmann/idaifieldR/issues
-License: GPL (>= 3)
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
 Imports:
     sofa
 Suggests: 
@@ -21,7 +29,6 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
-Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

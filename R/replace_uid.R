@@ -19,11 +19,14 @@
 #' replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
 #' }
 replace_uid <- function(item, uidlist) {
-  if (check_if_uid(item)) {
-    index <- match(item, uidlist$UID)
-    identifier <- uidlist$identifier[index]
-    return(identifier)
-  } else {
-    return(item)
+  identifier <- rep(NA, length(item))
+  for (i in seq_along(item)) {
+    if (check_if_uid(item[i])) {
+      index <- match(item[i], uidlist$UID)
+      identifier[i] <- uidlist$identifier[index]
+    } else {
+      identifier[i] <- item[i]
+    }
   }
+  return(identifier)
 }

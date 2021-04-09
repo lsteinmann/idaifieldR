@@ -18,3 +18,15 @@ For internal use... checks if an object can actually processed by
 the functions in this package which need the specific format that is
 returned by the core function get_idaifield_docs(...).
 }
+\examples{
+\dontrun{
+check_if_idaifield(list(1, 1, 1, list(2, 2, 2)))
+
+idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
+projectname = "testproj",
+user = "R",
+pwd = "password")
+
+check_if_idaifield(idaifield_docs)
+}
+}

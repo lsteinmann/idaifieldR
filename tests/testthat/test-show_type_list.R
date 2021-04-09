@@ -3,12 +3,12 @@ source(file = "../load_testdata.R")
 
 
 test_that("returns a vector and works for nested and unnested", {
-  expect_vector(show_type_list(test_resource))
-  expect_vector(show_type_list(unnested_test_resource))
+  expect_vector(show_type_list(test_docs))
+  expect_vector(show_type_list(test_resources))
 })
 
 
 test_that("same for nested and unnested", {
-  expect_equal(show_type_list(test_resource),
-               show_type_list(unnested_test_resource))
+  expect_equal(show_type_list(test_docs),
+               show_type_list(test_resources))
 })
