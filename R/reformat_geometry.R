@@ -4,9 +4,16 @@
 #' in the iDAI.field 2 database
 #'
 #' @return a matrix that displays the same polygon
-#' @export
 #'
 #' @examples
+#' \dontrun{
+#' test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),
+#' list(list(1), list(2)),
+#' list(list(2), list(2)),
+#' list(list(1), list(1))))
+#'
+#' convert_polygon(test_2$coordinates)
+#' }
 convert_polygon <- function(geometry_polygon) {
   if (length(geometry_polygon) == 1) {
     geometry_polygon <- geometry_polygon[[1]]
@@ -28,8 +35,15 @@ convert_polygon <- function(geometry_polygon) {
 #' tools like the sp-package to produce polygons etc.
 #'
 #' @export
+#' @keywords internal
 #'
 #' @examples
+#' test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),
+#' list(list(1), list(2)),
+#' list(list(2), list(2)),
+#' list(list(1), list(1))))
+#'
+#' reformat_geometry(test_2)
 reformat_geometry <- function (geometry) {
   type <- geometry$type
 

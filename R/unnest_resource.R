@@ -15,11 +15,12 @@
 #' `get_idaifield_docs(..., simplified  = FALSE)`, it is possible to use
 #' `unnest_resource()` on the resulting list to simplify it.
 #'
+#' @export
+#'
 #'
 #' @return a list of class idaifield_resources (same as idaifield_docs,
 #' but the top-level with meta-information has been removed to make the actual
 #' resource data more accessible)
-#' @export
 #'
 #' @examples
 #' \dontrun{

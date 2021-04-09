@@ -8,13 +8,16 @@
 #'
 #' @param item any object whatsoever
 #'
+#' @keywords internal
+#'
 #' @return NA if empty, or the object that has been handed to it
-#' @export
 #'
 #' @examples
+#' \dontrun{
 #' na_if_empty(1)
 #' na_if_empty(list(2,3,4,list(4,5,4)))
 #' na_if_empty(NULL)
+#' }
 na_if_empty <- function(item) {
   if (length(item) == 0) {
     return(NA)
@@ -33,7 +36,8 @@ na_if_empty <- function(item) {
 #'
 #' @return a matrix that allows other functions to determine which type of
 #' list the object is
-#' @export
+#'
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -91,7 +95,8 @@ check_if_idaifield <- function(testobject) {
 #'
 #' @return if already unnested, the same object as handed to it. if not,
 #' the same list with the toplevel removed.
-#' @export
+#'
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -122,12 +127,16 @@ check_and_unnest <- function(idaifield_docs) {
 #' @param single_resource_field a list to be checked
 #'
 #' @return TRUE/FALSE
-#' @export
+#'
+#' @keywords internal
+#'
 #'
 #' @examples
+#' \dontrun{
 #' list <- list(1, 2, 3, list("börek", 2, 3))
 #'
 #' check_for_sublist(list)
+#' }
 check_for_sublist <- function(single_resource_field) {
   if (is.list(single_resource_field)) {
     sublists <- vapply(single_resource_field,
@@ -150,12 +159,14 @@ check_for_sublist <- function(single_resource_field) {
 #' TODO: any() with grepl and then blaaaa
 #'
 #' @return TRUE if UID, or FALSE if not
-#' @export
+#'
+#' @keywords internal
 #'
 #' @examples
-#'
+#' \dontrun{
 #' check_if_uid(string = "0324141a-8201-c5dc-631b-4dded4552ac4")
 #' check_if_uid(string = "not a uid")
+#' }
 check_if_uid <- function(string) {
   if (length(string) != 1) {
     string <- string[1]
@@ -182,14 +193,15 @@ check_if_uid <- function(string) {
 #' the first n columns of the matrix produced by idaifield_as_matrix()
 #'
 #' @return a character vector
-#' @export
+#'
+#' @keywords internal
 #'
 #' @examples
-#'
+#' \dontrun{
 #' colnames <- c("materialType", "identifier", "shortDescription", "type")
 #'
 #' reorder_colnames(colnames, order = "default")
-#'
+#' }
 reorder_colnames <- function(colnames, order = "default") {
   if (order == "default") {
     order <- c("identifier", "type", "shortDescription")

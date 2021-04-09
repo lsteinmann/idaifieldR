@@ -16,3 +16,12 @@ tools like the sp-package to produce polygons etc.
 \description{
 reformat the geometry of an iDAI.field 2 resource
 }
+\examples{
+test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),
+list(list(1), list(2)),
+list(list(2), list(2)),
+list(list(1), list(1))))
+
+reformat_geometry(test_2)
+}
+\keyword{internal}

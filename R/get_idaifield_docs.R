@@ -20,7 +20,7 @@
 #' @param projectname The name of the project in iDAI.field 2 that one
 #' wishes to load.
 #'
-#'
+#' @param keep_geometry TRUE if the geometry should be kept
 #'
 #' @param simplified Defaults to TRUE. If you do not wish to automatically
 #' unnest (i.e. remove a level of the list that contains some metadata which is
@@ -45,6 +45,7 @@ get_idaifield_docs <- function(connection = connect_idaifield(
                                               serverip = "192.168.2.21",
                                               user = "R", pwd = "hallo"),
                                projectname = "projektname",
+                               keep_geometry = TRUE,
                                simplified  = TRUE) {
 
   idaifield_docs <- sofa::db_alldocs(connection, projectname,
@@ -52,7 +53,8 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
 
   if (simplified) {
-    idaifield_docs <- unnest_resource(idaifield_docs)
+    idaifield_docs <- simplify_idaifield(idaifield_docs = idaifield_docs,
+                                         keep_geometry = keep_geometry)
   }
   return(idaifield_docs)
 }

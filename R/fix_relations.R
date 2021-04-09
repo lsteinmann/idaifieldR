@@ -10,6 +10,7 @@
 #' identifiers if replace_uids is set to TRUE).
 #'
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{

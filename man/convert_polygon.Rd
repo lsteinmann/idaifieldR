@@ -16,3 +16,13 @@ a matrix that displays the same polygon
 \description{
 Converts a polygon list to a matrix
 }
+\examples{
+\dontrun{
+test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),
+list(list(1), list(2)),
+list(list(2), list(2)),
+list(list(1), list(1))))
+
+convert_polygon(test_2$coordinates)
+}
+}

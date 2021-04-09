@@ -18,7 +18,9 @@ TRUE if UID, or FALSE if not
 check_if_uid
 }
 \examples{
-
+\dontrun{
 check_if_uid(string = "0324141a-8201-c5dc-631b-4dded4552ac4")
 check_if_uid(string = "not a uid")
 }
+}
+\keyword{internal}

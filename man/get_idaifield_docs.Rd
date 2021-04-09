@@ -7,6 +7,7 @@
 get_idaifield_docs(
   connection = connect_idaifield(serverip = "192.168.2.21", user = "R", pwd = "hallo"),
   projectname = "projektname",
+  keep_geometry = TRUE,
   simplified = TRUE
 )
 }
@@ -15,6 +16,8 @@ get_idaifield_docs(
 
 \item{projectname}{The name of the project in iDAI.field 2 that one
 wishes to load.}
+
+\item{keep_geometry}{TRUE if the geometry should be kept}
 
 \item{simplified}{Defaults to TRUE. If you do not wish to automatically
 unnest (i.e. remove a level of the list that contains some metadata which is

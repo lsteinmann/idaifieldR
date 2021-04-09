@@ -19,7 +19,10 @@ corresponding field if a list or any kind of object handed to it is
 of length 0. Otherwise, it returns the input untouched.
 }
 \examples{
+\dontrun{
 na_if_empty(1)
 na_if_empty(list(2,3,4,list(4,5,4)))
 na_if_empty(NULL)
 }
+}
+\keyword{internal}

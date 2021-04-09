@@ -10,7 +10,9 @@
 #' @param uidlist a uidlist as returned by get_uid_list()
 #'
 #' @return The corresponding identifier(s) (a character string/vector)
+#'
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{

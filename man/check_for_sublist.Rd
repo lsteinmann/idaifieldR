@@ -16,7 +16,10 @@ TRUE/FALSE
 Checks if a list has sublists and returns TRUE if so
 }
 \examples{
+\dontrun{
 list <- list(1, 2, 3, list("bÃ¶rek", 2, 3))
 
 check_for_sublist(list)
 }
+}
+\keyword{internal}

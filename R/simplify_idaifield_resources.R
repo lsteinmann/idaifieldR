@@ -11,7 +11,6 @@
 #' or removed? (Defaults to TRUE).
 #'
 #' @return A single resource (element) for an idaifield_resource-list.
-#' @export
 #'
 #' @examples
 #' \dontrun{

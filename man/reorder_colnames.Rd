@@ -21,9 +21,10 @@ a character vector
 Reorders the column names for idaifield_as_matrix()
 }
 \examples{
-
+\dontrun{
 colnames <- c("materialType", "identifier", "shortDescription", "type")
 
 reorder_colnames(colnames, order = "default")
-
 }
+}
+\keyword{internal}
