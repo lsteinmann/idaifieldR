@@ -13,10 +13,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
+#' idaifield_docs <- get_idaifield_docs(projectname = "testproj",
+#' connection = connect_idaifield(serverip = "192.168.1.21",
 #' user = "R",
-#' pwd = "password")
+#' pwd = "password"))
 #'
 #' show_type_list(idaifield_docs)
 #' }
@@ -44,10 +44,10 @@ show_type_list <- function(idaifield_docs) {
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
+#' idaifield_docs <- get_idaifield_docs(projectname = "testproj",
+#' connection = connect_idaifield(serverip = "192.168.1.21",
 #' user = "R",
-#' pwd = "password")
+#' pwd = "password"))
 #'
 #' idaifield_layers <- select_by_type(idaifield_docs, type = "Layer")
 #' }

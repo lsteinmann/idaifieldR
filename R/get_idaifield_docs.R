@@ -2,9 +2,6 @@
 #'
 #' Imports all resources from an idaifield-database that is currently running
 #' and synching into a list-object for further processing in R.
-#' Please note that synching has to be activated in i.DAIfield 2
-#' itself (Settings -> Synchronisation).
-#'
 #' This just wraps **sofa**s functions under another name,
 #' but with defaults that are useful for the import from i.DAIfield 2.
 #' Also, I am using unnest_resource() from this package here, as there
@@ -41,25 +38,17 @@
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
-#' user = "R",
-#' pwd = "password")
+#' conn <- connect_idaifield(serverip = "192.168.2.21",
+#' user = "R", pwd = "hallo")
+#' idaifield_docs <- get_idaifield_docs(connection = conn,
+#' projectname = "testproj")
 #' }
 #'
-get_idaifield_docs <- function(serverip    = "192.168.1.199",
+get_idaifield_docs <- function(connection = connect_idaifield(...),
                                projectname = "projektname",
-                               user        = "Anna Allgemeinperson",
-                               pwd         = "password",
-                               port        = 3000,
                                simplified  = TRUE) {
-  idaifield_connection <- sofa::Cushion$new(host = serverip,
-                                            transport = "http",
-                                            port = port,
-                                            user = user,
-                                            pwd = pwd)
-  sofa::db_info(idaifield_connection, projectname)
-  idaifield_docs <- sofa::db_alldocs(idaifield_connection, projectname,
+
+  idaifield_docs <- sofa::db_alldocs(connection, projectname,
                                      include_docs = TRUE)$rows
   idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
 

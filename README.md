@@ -37,10 +37,10 @@ This is a basic example which shows you how to use idaifieldR. See the Demo.Rmd-
 
 ``` r
 library(idaifieldR)
-idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-                                     projectname = "testproj", 
-                                     user = "R",
-                                     pwd = "password")
+idaifield_docs <- get_idaifield_docs(projectname = "testproj",
+  connection = connect_idaifield(serverip = "192.168.1.21",
+                                 user = "R", 
+                                 pwd = "password"))
                                      
 pottery <- select_by_type(idaifield_docs, "Pottery")
 

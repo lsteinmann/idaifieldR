@@ -49,11 +49,11 @@ na_if_empty <- function(item) {
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
+#' idaifield_docs <- get_idaifield_docs(projectname = "testproj",
+#' simplified = FALSE,
+#' connection = connect_idaifield(serverip = "192.168.1.21",
 #' user = "R",
-#' pwd = "password",
-#' simplified = FALSE)
+#' pwd = "password"))
 #'
 #' idaifield_resources <- unnest_resource(idaifield_docs)
 #' }
@@ -107,10 +107,10 @@ unnest_resource <- function(idaifield_docs, keep_geometry = FALSE) {
 #' @examples
 #' check_if_idaifield(list(1,1,1,list(2,2,2)))
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
+#' idaifield_docs <- get_idaifield_docs(projectname = "testproj",
+#' connection = connect_idaifield(serverip = "192.168.1.21",
 #' user = "R",
-#' pwd = "password")
+#' pwd = "password"))
 #'
 #' check_if_idaifield(idaifield_docs)
 #' }
@@ -168,10 +168,10 @@ check_if_idaifield <- function(testobject) {
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
+#' idaifield_docs <- get_idaifield_docs(projectname = "testproj",
+#' connection = connect_idaifield(serverip = "192.168.1.21",
 #' user = "R",
-#' pwd = "password")
+#' pwd = "password"))
 #'
 #' check_and_unnest(idaifield_docs)
 #' }
@@ -214,10 +214,10 @@ check_and_unnest <- function(idaifield_docs) {
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
+#' idaifield_docs <- get_idaifield_docs(projectname = "testproj",
+#' connection = connect_idaifield(serverip = "192.168.1.21",
 #' user = "R",
-#' pwd = "password")
+#' pwd = "password"))
 #'
 #' uid_list <- get_uid_list(idaifield_docs, verbose = TRUE)
 #' }

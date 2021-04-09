@@ -18,10 +18,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
+#' idaifield_docs <- get_idaifield_docs(projectname = "testproj",
+#' connection = connect_idaifield(serverip = "192.168.1.21",
 #' user = "R",
-#' pwd = "password")
+#' pwd = "password"))
 #'
 #' idaifield_df <- idaifield_as_df(idaifield_docs)
 #' }
