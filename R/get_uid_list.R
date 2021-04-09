@@ -23,10 +23,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-#' projectname = "testproj",
-#' user = "R",
-#' pwd = "password")
+#' connection <- connect_idaifield(serverip = "192.168.2.21",
+#' user = "R", pwd = "hallo")
+#' idaifield_docs <- get_idaifield_docs(connection = connection,
+#' projectname = "rtest", simplified = FALSE)
 #'
 #' uid_list <- get_uid_list(idaifield_docs, verbose = TRUE)
 #' }

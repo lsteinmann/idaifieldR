@@ -42,24 +42,24 @@ idaifield_test_docs <- unnest_resource(idaifield_test_docs)
 The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in iDAI.field 2 is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function:
 
 ```{r eval=FALSE}
-idaifield_test_docs <- get_idaifield_docs(
+connection <- connect_idaifield(
   # The IP listet in the iDAI.field 2-Client as "Eigene Adresse":
   serverip = "192.168.1.21",
-  # You can but should typically not need to specify the port, as the
-  # default value is already iDAI.field 2's default:
-  port = 3000,
-  # Name of the Project from said client that should be imported:
-  projectname = "rtest",
   # Username to be used. This is inconsequential, as long as you are not
   # planning on writing anything to the db, which would be possible with sofa,
   # and may be useful in some cases!
   user = "R",
   # The password as listed in the iDAI.field 2-client
-  pwd = "hallo",
+  pwd = "hallo"
+  )
+
   # simplified = TRUE (which is the default) returns a list that is already
   # unnested to resource level. With simplified = FALSE it is possible to
   # obtain all the meta-info on each resource, i.e. the changelog of each
   # resource.
+idaifield_test_docs <- get_idaifield_docs(
+  connection = connection,
+  projectname = "rtest",
   simplified = TRUE
   )
 ```

@@ -14,10 +14,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(projectname = "testproj",
-#' connection = connect_idaifield(serverip = "192.168.1.21",
-#' user = "R",
-#' pwd = "password"))
+#' connection <- connect_idaifield(serverip = "192.168.2.21",
+#' user = "R", pwd = "hallo")
+#' idaifield_docs <- get_idaifield_docs(connection = connection,
+#' projectname = "rtest", simplified = TRUE)
 #'
 #' idaifield_mat <- idaifield_as_matrix(idaifield_docs)
 #' }

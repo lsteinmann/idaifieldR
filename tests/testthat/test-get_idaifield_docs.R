@@ -28,17 +28,15 @@ if (!check_db_availability()) {
 }
 
 
+connection <- connect_idaifield(serverip = "192.168.2.21",
+                                user = "R", pwd = "hallo")
 
-test_docs <- get_idaifield_docs(serverip = serverip,
-                                projectname = "rtest",
-                                user = "R",
-                                pwd = "hallo",
+test_docs <- get_idaifield_docs(projectname = "rtest",
+                                connection = connection,
                                 simplified = FALSE)
 
-test_resources <- get_idaifield_docs(serverip = serverip,
-                                     projectname = "rtest",
-                                     user = "R",
-                                     pwd = "hallo",
+test_resources <- get_idaifield_docs(projectname = "rtest",
+                                     connection = connection,
                                      simplified = TRUE)
 
 test_that("returns docs-lists", {
