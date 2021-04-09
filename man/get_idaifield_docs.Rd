@@ -5,30 +5,16 @@
 \title{get_idaifield_docs}
 \usage{
 get_idaifield_docs(
-  serverip = "192.168.1.199",
+  connection = connect_idaifield(serverip = "192.168.2.21", user = "R", pwd = "hallo"),
   projectname = "projektname",
-  user = "Anna Allgemeinperson",
-  pwd = "password",
-  port = 3000,
   simplified = TRUE
 )
 }
 \arguments{
-\item{serverip}{The IP that the user can find in iDAI.field 2's settings as
-"Eigene Adresse" without the port-specification}
+\item{connection}{A connection object as returned by `connect_idaifield()`}
 
 \item{projectname}{The name of the project in iDAI.field 2 that one
 wishes to load.}
-
-\item{user}{A user name (anything works, really.)}
-
-\item{pwd}{The Password as it is displayed in the iDAI.field 2-settings
-as "Eigenes Passwort"}
-
-\item{port}{The port that is specified by iDAI.field 2's setting below
-"Eigene Adresse" (the format there would be: "http://192.168.2.21:3000")
-and port refers to the number behind ":". There is no need to specify this
-as the default works. Included for fringe-cases.}
 
 \item{simplified}{Defaults to TRUE. If you do not wish to automatically
 unnest (i.e. remove a level of the list that contains some metadata which is
@@ -44,16 +30,13 @@ resources in the selected project.
 \description{
 Imports all resources from an idaifield-database that is currently running
 and synching into a list-object for further processing in R.
-Please note that synching has to be activated in iDAI.field 2
-itself (Settings -> Synchronisation).
-}
-\details{
 This just wraps **sofa**s functions under another name,
 but with defaults that are useful for the import from iDAI.field 2.
 Also, I am using unnest_resource() from this package here, as there
-seems to be no use in the unnested version. However,
+seems to be no use in the nested version. However,
 simplified = FALSE would allow to get the top-level version.
-
+}
+\details{
 NOTE: If you are planning on using the coordinates stored in the database,
 I strongly suggest you consider changing your R digits-setting to a higher
 value than the default. Depending on the projection used, coordinates may
@@ -63,10 +46,10 @@ other fields containing long numbers as well.)
 }
 \examples{
 \dontrun{
-idaifield_docs <- get_idaifield_docs(serverip = "192.168.1.21",
-projectname = "testproj",
-user = "R",
-pwd = "password")
+conn <- connect_idaifield(serverip = "192.168.2.21",
+user = "R", pwd = "hallo")
+idaifield_docs <- get_idaifield_docs(connection = conn,
+projectname = "rtest")
 }
 
 }
