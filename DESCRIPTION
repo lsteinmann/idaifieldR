@@ -2,6 +2,12 @@ Type: Package
 Package: idaifieldR
 Title: Importing Data from iDAI.field 2 into R
 Version: 0.1.1
+Authors@R: 
+    person(given = "Lisa",
+           family = "Steinmann",
+           role = c("aut", "cre"),
+           email = "lisa.steinmann@rub.de",
+           comment = c(ORCID = "0000-0002-2215-1243"))
 Author: Lisa Steinmann
 Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
 Description: idaifieldR imports data from the iDAI.field 2 database into
@@ -29,9 +35,6 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
-Author@R: person(given = "Lisa", family = "Steinmann", role = c("aut",
-    "cre"), email = "lisa.steinmann@rub.de", comment = c(ORCID =
-    "0000-0002-2215-1243"))
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

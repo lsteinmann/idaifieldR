@@ -25,6 +25,11 @@ for (item in items) {
       expect_true(check_if_uid(resource[[item[1]]]))
     })
 
+
+    test_that("removes original list", {
+      expect_identical(resource$relations, NULL)
+    })
+
   }
 
 
@@ -38,13 +43,6 @@ for (item in items) {
                             replace_uids = TRUE)
       expect_null(test$relations)
     }
-  })
-
-
-
-
-  test_that("removes original list", {
-    expect_identical(resource$relations, NULL)
   })
 
 }
