@@ -28,9 +28,16 @@
 #' If you wish to take a look at it and then later unnest, you can always use
 #' unnest_resource() from this package.
 #'
+#' @param json default FALSE; if TRUE output cannot be simplified with the
+#' functions from this package and is instead of a list returned in json format
+#' that can freely be manipulated using e.g. the jsonlite package.
+#' (Might be more useful for some users.)
+#'
 #' @return an object (list) of class "idaifield_docs" (if simplified = FALSE)
 #' or "idaifield_resources" (if simplified = TRUE) that contains the
-#' resources in the selected project.
+#' resources in the selected project. (If json is set to TRUE, returns a
+#' character string in json-format.)
+#'
 #' @export
 #'
 #' @examples
@@ -46,15 +53,30 @@ get_idaifield_docs <- function(connection = connect_idaifield(
                                               user = "R", pwd = "hallo"),
                                projectname = "projektname",
                                keep_geometry = TRUE,
-                               simplified  = TRUE) {
+                               simplified  = TRUE,
+                               json = FALSE) {
+
+  if (json) {
+    simplified <- FALSE
+    output_format <- "json"
+  } else {
+    output_format <- "list"
+  }
 
   idaifield_docs <- sofa::db_alldocs(connection, projectname,
-                                     include_docs = TRUE)$rows
-  idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
+                                     include_docs = TRUE,
+                                     as = output_format)
+
+  if (!json) {
+    idaifield_docs <- idaifield_docs$rows
+    idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
+  }
 
   if (simplified) {
     idaifield_docs <- simplify_idaifield(idaifield_docs = idaifield_docs,
-                                         keep_geometry = keep_geometry)
+                                         keep_geometry = keep_geometry,
+                                         replace_uids = TRUE)
   }
+
   return(idaifield_docs)
 }

@@ -1,3 +1,74 @@
+#' Find the Layer a resource is contained in
+#'
+#' Warning: recursive and currently no error handling
+#'
+#' Helper to simplify_single_resource(). Traces the liesWithin fields to
+#' find the one that is a Layer and returns the corresponding identifier.
+#'
+#' #TODO: Somehow this is super convoluted.
+#'
+#'
+#' @param resource One resource (element) from an idaifield_resources-list.
+#' @param uidlist A data.frame as returned by `get_uid_list()`.
+#' @param liesWithin Only for recursion: a dataframe this function hands
+#' to itself, otherwith usually NULL
+#' @param strict TRUE/FALSE (currently only for testing)
+#'
+#' @return chr
+#' @keywords internal
+find_layer <- function(resource = resource,
+                       uidlist = NULL,
+                       liesWithin = NULL,
+                       strict = TRUE) {
+  if (is.null(uidlist)) {
+    warning("find_layer() called but no uidlist supplied")
+    return(NA)
+  }
+
+  liesWithin_index <- which(resource$relation.liesWithin == uidlist$identifier)
+  liesWithin_identifier <- uidlist$identifier[liesWithin_index]
+  liesWithin_type <- uidlist$type[liesWithin_index]
+
+  if (!is.data.frame(liesWithin)) {
+    liesWithin <- data.frame(liesWithin_index = liesWithin_index,
+                             liesWithin_identifier = liesWithin_identifier,
+                             liesWithin_type = liesWithin_type)
+  }
+
+  # Add section in demo, explain how to configure the type lists and
+  # also set up how this is handed down here from main function.
+  # This is a possible feature but currently only exists so my tests will
+  # be easier.
+  layer_type_list <- getOption("idaifield_types")$layers_strict
+  if (!strict) {
+    layer_type_list <- getOption("idaifield_types")$layers
+  }
+
+  is_context <- liesWithin$liesWithin_type %in% layer_type_list
+  if (any(is_context)) {
+    in_layer <- which(is_context)
+    in_layer <- liesWithin$liesWithin_identifier[in_layer]
+    return(in_layer)
+  } else {
+    current <- nrow(liesWithin)
+    current <- liesWithin$liesWithin_index[current]
+    next_liesWithin_identifier <- uidlist$liesWithin[current]
+
+    if (is.na(next_liesWithin_identifier) || length(current) == 0) {
+      return(NA)
+    } else {
+      next_liesWithin_index <- which(uidlist$identifier == next_liesWithin_identifier)
+      next_liesWithin_type <- uidlist$type[next_liesWithin_index]
+      liesWithin <- rbind(liesWithin, c(next_liesWithin_index,
+                                        next_liesWithin_identifier,
+                                        next_liesWithin_type))
+      find_layer(resource = resource,
+                 uidlist = uidlist,
+                 liesWithin = liesWithin)
+    }
+  }
+}
+
 #' Simplifies a single resource from the iDAI.field 2 Database
 #'
 #' This function is a helper to `simplify_idaifield()`.
@@ -12,6 +83,8 @@
 #'
 #' @return A single resource (element) for an idaifield_resource-list.
 #'
+#' @keywords internal
+#'
 #' @examples
 #' \dontrun{
 #' simpler_resource <- simplify_single_resource(resource,
@@ -24,15 +97,25 @@ simplify_single_resource <- function(resource,
                                      uidlist = NULL,
                                      keep_geometry = FALSE
                                      ) {
-
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
   }
 
+
+
   resource <- fix_relations(resource,
                             replace_uids = replace_uids,
                             uidlist = uidlist)
+
+  if (replace_uids) {
+    liesWithinLayer <- find_layer(resource = resource,
+                                  uidlist = uidlist,
+                                  liesWithin = NULL)
+    resource <- append(resource, list(relation.liesWithinLayer = liesWithinLayer))
+  }
+
+
   if (!keep_geometry) {
     names <- names(resource)
     has_geom <- any(grepl("geometry", names))
@@ -75,7 +158,6 @@ simplify_single_resource <- function(resource,
   }
   return(resource)
 }
-
 
 
 

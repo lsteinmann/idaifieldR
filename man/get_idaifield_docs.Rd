@@ -8,7 +8,8 @@ get_idaifield_docs(
   connection = connect_idaifield(serverip = "192.168.2.21", user = "R", pwd = "hallo"),
   projectname = "projektname",
   keep_geometry = TRUE,
-  simplified = TRUE
+  simplified = TRUE,
+  json = FALSE
 )
 }
 \arguments{
@@ -24,11 +25,17 @@ unnest (i.e. remove a level of the list that contains some metadata which is
 IMO not useful when processing in R) just put FALSE (or anything but TRUE).
 If you wish to take a look at it and then later unnest, you can always use
 unnest_resource() from this package.}
+
+\item{json}{default FALSE; if TRUE output cannot be simplified with the
+functions from this package and is instead of a list returned in json format
+that can freely be manipulated using e.g. the jsonlite package.
+(Might be more useful for some users.)}
 }
 \value{
 an object (list) of class "idaifield_docs" (if simplified = FALSE)
 or "idaifield_resources" (if simplified = TRUE) that contains the
-resources in the selected project.
+resources in the selected project. (If json is set to TRUE, returns a
+character string in json-format.)
 }
 \description{
 Imports all resources from an idaifield-database that is currently running

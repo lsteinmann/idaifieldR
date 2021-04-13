@@ -2,8 +2,11 @@ source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
 
-item <- sample(seq_along(test_docs), 1)
+#item <- sample(seq_along(test_docs), 1)
 
+for (i in seq_along(test_docs)) {
+
+  item <- i
 
 if (length(test_resources[[item]]$relations) > 0) {
   resource <- fix_relations(test_resources[[item]],
@@ -45,3 +48,6 @@ test_that("fails without uidlist for items with relations", {
 test_that("removes original list", {
   expect_identical(resource$relations, NULL)
 })
+
+
+}

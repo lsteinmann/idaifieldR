@@ -69,6 +69,9 @@ This returns an object of class "idaifield_resources", which is a nested list:
 ```{r}
 idaifield_test_resources[[1]]
 ```
+
+
+
 For any further processing and especially larger data sets, the `select_by()` function should be important:
 
 ```{r}
@@ -96,6 +99,7 @@ pottery[1:5, 1:5]
 With this matrix, it is easy to plot any distributions or actually further select and analyse the data. The matric can be coerced to a data.frame that will be easier for handling plotting functions.
 
 ```{r warning=FALSE}
+library(dplyr)
 pottery_df <- pottery %>%
   as.data.frame() %>%
   mutate_all(~ as.character(.))
@@ -131,3 +135,22 @@ Example:
 options(digits = 20)
 ```
 
+
+
+# Alternatives
+
+In case you wish to work with the whole database in json-format, I suggest you use the jsonlite package which has similar capabilities to e.g. flatten any lists and output. You can get the whole database in json format via: 
+
+```{r eval = FALSE}
+connection <- connect_idaifield(serverip = "192.168.1.21", 
+                                user = "R",
+                                pwd = "hallo")
+json_output <- get_idaifield_docs(projectname = "rtest",
+                                  connection = connection,
+                                  json = TRUE)
+library(jsonlite)
+nested_df <- fromJSON(json_output)$rows
+flattened_df <- flatten(nested_df)
+```
+
+Since I prepared this package mostly to suit my own need you might be happier with this output. Most functions from this package however will probably not work with the flattened/converted json-outputs, but it should not be hard to find replace the UIDs etc, for which some internal functions in this package may still be useful.

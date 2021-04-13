@@ -34,11 +34,11 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
-  ncol <- 4
-  colnames <- c("type", "UID", "identifier", "isRecordedIn")
+  ncol <- 5
+  colnames <- c("type", "UID", "identifier", "isRecordedIn", "liesWithin")
 
   if (verbose) {
-    ncol <- 5
+    ncol <- 6
     colnames <- c(colnames, "shortDescription")
   }
 
@@ -48,11 +48,19 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
     uid_list$UID[i] <- na_if_empty(idaifield_docs[[i]]$id)
     uid_list$type[i] <- na_if_empty(idaifield_docs[[i]]$type)
     uid_list$identifier[i] <- na_if_empty(idaifield_docs[[i]]$identifier)
+
     isRecordedIn <- unlist(idaifield_docs[[i]]$relations$isRecordedIn)
     if (is.null(isRecordedIn)) {
       isRecordedIn <- unlist(idaifield_docs[[i]]$relation.isRecordedIn)
     }
     uid_list$isRecordedIn[i] <- na_if_empty(isRecordedIn)
+
+    liesWithin <- unlist(idaifield_docs[[i]]$relations$liesWithin)
+    if (is.null(liesWithin)) {
+      liesWithin <- unlist(idaifield_docs[[i]]$relation.liesWithin)
+    }
+    uid_list$liesWithin[i] <- na_if_empty(liesWithin)
+
     if (verbose) {
       short_description <- idaifield_docs[[i]]$shortDescription
       uid_list$shortDescription[i] <- na_if_empty(short_description)
@@ -60,5 +68,6 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
   }
 
   uid_list$isRecordedIn <- replace_uid(uid_list$isRecordedIn, uid_list)
+  uid_list$liesWithin <- replace_uid(uid_list$liesWithin, uid_list)
   return(uid_list)
 }
