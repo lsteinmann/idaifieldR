@@ -38,3 +38,4 @@ projectname = "rtest", simplified = FALSE)
 idaifield_resources <- unnest_resource(idaifield_docs)
 }
 }
+\keyword{internal}

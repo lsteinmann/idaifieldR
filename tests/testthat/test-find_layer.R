@@ -12,7 +12,16 @@ test_that("returns na for project", {
                    NA)
 })
 
-for (i in pottery_in) {
+test_that("returns na without uidlist", {
+  expect_warning(find_layer(resource = test_resources[[pottery_in[5]]],
+                              uidlist = NULL),
+                   "uidlist")
+  test <- suppressWarnings(find_layer(resource = test_resources[[pottery_in[5]]],
+                                      uidlist = NULL))
+  expect_identical(test, NA)
+})
+
+for (i in sample(pottery_in, size = 10)) {
   if (is.null(test_resources[[i]]$relations$liesWithin)) {
     next
   } else {

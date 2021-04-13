@@ -55,7 +55,9 @@ show_type_list <- function(idaifield_docs) {
 #' by = "type",
 #' value = "Layer")
 #' }
-select_by <- function(idaifield_docs, by = c("type", "isRecordedIn"), value = NULL) {
+select_by <- function(idaifield_docs,
+                      by = c("type", "isRecordedIn"),
+                      value = NULL) {
 
   if (length(by) > 1) {
     message("Please select only one of 'type' or 'isRecordedIn' (using first)")

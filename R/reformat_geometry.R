@@ -5,6 +5,8 @@
 #'
 #' @return a matrix that displays the same coordinates
 #'
+#' @keywords internal
+#'
 #' @examples
 #' \dontrun{
 #' test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),
@@ -44,7 +46,7 @@ convert_to_coordmat <- function(coordinates) {
 #' list(list(1), list(1))))
 #'
 #' reformat_geometry(test_2)
-reformat_geometry <- function (geometry) {
+reformat_geometry <- function(geometry) {
   type <- geometry$type
 
   if (!is.null(type)) {
@@ -55,7 +57,7 @@ reformat_geometry <- function (geometry) {
       geometry$coordinates <- list(convert_to_coordmat(geometry$coordinates))
     } else if (type %in% c("MultiPolygon", "MultiLineString")) {
       geometry$coordinates <- lapply(geometry$coordinates,
-                                     function (x) convert_to_coordmat(x))
+                                     function(x) convert_to_coordmat(x))
     }
   }
   return(geometry)

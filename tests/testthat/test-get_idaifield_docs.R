@@ -46,4 +46,3 @@ test_that("returns json", {
                                json = TRUE)
   expect_true(jsonlite::validate(output))
 })
-

@@ -26,3 +26,4 @@ list(list(1), list(1))))
 convert_polygon(test_2$coordinates)
 }
 }
+\keyword{internal}

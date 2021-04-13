@@ -24,7 +24,6 @@
 idaifield_as_matrix <- function(idaifield_docs) {
 
   resource_list <- check_and_unnest(idaifield_docs)
-  uidlist <- get_uid_list(idaifield_docs = idaifield_docs)
 
   names_list <- lapply(resource_list, names)
 

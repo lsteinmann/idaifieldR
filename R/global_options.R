@@ -1,4 +1,5 @@
 #' Title
+#' @keywords internal
 #' @param libname libname
 #' @param pkgname pkgname
 #'

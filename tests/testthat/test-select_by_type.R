@@ -17,8 +17,25 @@ test_that("returns less elements", {
 selection <- "Layer"
 layers <- select_by(test_docs, by = "type", value = selection)
 
-item <- sample(length(layers), 1)
+items <- sample(seq_along(layers), size = 5)
 
-test_that("selection is true", {
-  expect_identical(layers[[item]]$type, selection)
-})
+for (item in items) {
+  test_that("selection is true", {
+    expect_identical(layers[[item]]$type, selection)
+  })
+
+
+  test_that("message when more than one value in by", {
+    expect_message(select_by(test_resources,
+                             by = c("type", "isRecordedIn"),
+                             value = "Pottery"))
+  })
+
+
+  test_that("fails withour value", {
+    expect_error(select_by(test_resources,
+                           by = "type"))
+  })
+}
+
+

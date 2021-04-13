@@ -1,7 +1,6 @@
 source(file = "../load_testdata.R")
 
 
-item <- sample(seq_along(test_resources), 1)
 
 
 
@@ -9,8 +8,9 @@ test_that("handles emptiness", {
   expect_null(reformat_geometry(NULL))
 })
 
+items <- sample(seq_along(test_resources), size = 5)
 
-for (i in seq_along(test_resources)) {
+for (i in items) {
   test <- test_resources[[i]]$geometry
 
   if (!is.null(test)) {

@@ -16,6 +16,7 @@
 #' `unnest_resource()` on the resulting list to simplify it.
 #'
 #' @export
+#' @keywords internal
 #'
 #'
 #' @return a list of class idaifield_resources (same as idaifield_docs,

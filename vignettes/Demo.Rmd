@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 library(knitr)
 
-knit_print.data.frame = function(x, ...) {
+knit_print.data.frame <- function(x, ...) {
   res <- paste(c("", "", knitr::kable(x)), collapse = "\n")
   knitr::asis_output(res)
 }
@@ -43,7 +43,7 @@ The package includes test data as an RDS file in `inst/testdata`, for the purpos
 
 When importing data your first step would be to build a connection object, where serverip corresponds to the IP listet in the iDAI.field 2-Client as "Eigene Adresse", user can be anything you wish and will only be important if you intend to write to the database, as the client does not employ user-specific passwords. pwd should be the password as listed in the iDAI.field 2-client.
 ```{r eval=FALSE}
-connection <- connect_idaifield(serverip = "192.168.1.21", 
+connection <- connect_idaifield(serverip = "192.168.1.21",
                                 user = "R",
                                 pwd = "hallo")
 ```
