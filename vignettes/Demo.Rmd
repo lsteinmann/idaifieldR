@@ -135,7 +135,9 @@ Example:
 options(digits = 20)
 ```
 
+# Geometry
 
+As a comment: `simplify_idaifield()` or `get_idaifield_docs(..., simplified = TRUE)` by default reformats the geometry entries so that the coordinates are stored in a matrix. This can be reformatted with the `sp`-package to display in R-leaflet maps etc. (You will still need to add the CRS.)
 
 # Alternatives
 

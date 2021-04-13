@@ -25,7 +25,7 @@ for (i in seq_along(test_resources)) {
 
     if (test$type == "Polygon") {
       test_that("returns matrix for polygon", {
-        matrix <- convert_polygon(test$coordinates)
+        matrix <- convert_to_coordmat(test$coordinates)
         grepl <- grepl("matrix", class(matrix))
         expect_true(any(grepl))
       })

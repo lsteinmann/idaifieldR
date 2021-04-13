@@ -124,6 +124,8 @@ check_and_unnest <- function(idaifield_docs) {
 #'
 #' Checks if a list has sublists and returns TRUE if so
 #'
+#' # TODO absolutely stupid
+#'
 #' @param single_resource_field a list to be checked
 #'
 #' @return TRUE/FALSE
@@ -209,6 +211,7 @@ reorder_colnames <- function(colnames, order = "default") {
   new_order <- match(order, colnames)
   new_order <- new_order[!is.na(new_order)]
   not_ordered <- colnames[-new_order]
+  not_ordered <- sort(not_ordered)
   new_order <- colnames[new_order]
   colnames <- c(new_order, not_ordered)
   return(colnames)

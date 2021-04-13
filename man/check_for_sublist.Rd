@@ -15,6 +15,9 @@ TRUE/FALSE
 \description{
 Checks if a list has sublists and returns TRUE if so
 }
+\details{
+# TODO absolutely stupid
+}
 \examples{
 \dontrun{
 list <- list(1, 2, 3, list("bÃ¶rek", 2, 3))
