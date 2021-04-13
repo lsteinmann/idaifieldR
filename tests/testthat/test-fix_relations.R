@@ -33,16 +33,10 @@ for (item in items) {
   }
 
 
-  test_that("fails without uidlist for items with relations", {
-    if (length(test_resources[[item]]$relations) > 0) {
-      expect_error(fix_relations(test_resources[[item]],
-                                 replace_uids = TRUE),
-                   "UID")
-    } else {
-      test <- fix_relations(test_resources[[item]],
-                            replace_uids = TRUE)
-      expect_null(test$relations)
-    }
+  test_that("fails without uidlist", {
+    expect_error(fix_relations(test_resources[[item]],
+                               replace_uids = TRUE),
+                 "*.UID.*")
   })
 
 }

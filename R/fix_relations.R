@@ -19,12 +19,12 @@
 #' uidlist = NULL)
 #' }
 fix_relations <- function(resource, replace_uids = TRUE, uidlist = NULL) {
+  if (replace_uids == TRUE && !is.data.frame(uidlist)) {
+    stop("replace_uids = TRUE but no concordance of UIDs supplied")
+  }
   if (length(resource$relations) > 0) {
     relations <- resource$relations
     if (replace_uids) {
-      if (length(uidlist) == 0) {
-        stop("Please provide a list of UIDs and identifiers (get_uid_list()")
-      }
       relations <- lapply(relations,
                           function(x) replace_uid(x, uidlist = uidlist))
     } else if (!replace_uids) {

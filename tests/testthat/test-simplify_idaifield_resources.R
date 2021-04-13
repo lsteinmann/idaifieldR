@@ -5,6 +5,8 @@ uidlist <- get_uid_list(test_docs)
 items <- sample(seq_along(test_resources), size = 5)
 
 for (item in items) {
+  print(paste("-----------------------------------------------###### Nr.: ", item))
+
   test_that("error when no identifier", {
     expect_error(simplify_single_resource(test_docs[[item]]),
                  "valid")
@@ -19,7 +21,7 @@ for (item in items) {
   test_that("pass without uidlist when replaceuid = F", {
     test <- simplify_single_resource(test_resources[[item]],
                                      replace_uids = FALSE,
-                                     uidlist = "meh")
+                                     uidlist = NULL)
     expect_identical(class(test), "list")
   })
 

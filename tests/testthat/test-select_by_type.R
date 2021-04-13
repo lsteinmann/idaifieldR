@@ -32,7 +32,7 @@ for (item in items) {
   })
 
 
-  test_that("fails withour value", {
+  test_that("fails without value", {
     expect_error(select_by(test_resources,
                            by = "type"))
   })
