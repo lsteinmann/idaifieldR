@@ -13,7 +13,8 @@ select_by(idaifield_docs, by = c("type", "isRecordedIn"), value = NULL)
 (to select by container-resource (Survey-Area, Trench))}
 
 \item{value}{Character expected, should be the internal Name of the Type
-that will be selected for (e.g. "Layer", "Pottery")}
+that will be selected for (e.g. "Layer", "Pottery"), can be vector of
+multiple Types / Operations}
 }
 \value{
 a list of class idaifield_resources containing the resources

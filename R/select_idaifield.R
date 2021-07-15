@@ -38,7 +38,8 @@ show_type_list <- function(idaifield_docs) {
 #' @param by must be either type (to select by resource type) or isRecordedIn
 #' (to select by container-resource (Survey-Area, Trench))
 #' @param value Character expected, should be the internal Name of the Type
-#' that will be selected for (e.g. "Layer", "Pottery")
+#' that will be selected for (e.g. "Layer", "Pottery"), can be vector of
+#' multiple Types / Operations
 #'
 #' @return a list of class idaifield_resources containing the resources
 #' which are of the selected type
@@ -72,7 +73,7 @@ select_by <- function(idaifield_docs,
 
   col <- colnames(uid_type_list) == by
 
-  typeindex <- grep(value, uid_type_list[, col])
+  typeindex <- which(uid_type_list[, col] %in% value)
 
   selected_docs <- idaifield_docs[typeindex]
   selected_docs <- structure(selected_docs, class = "idaifield_resources")

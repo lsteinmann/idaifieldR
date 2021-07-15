@@ -13,6 +13,12 @@ test_that("returns less elements", {
             length(test_docs))
 })
 
+test_that("works with multiple values", {
+  expect_lt(length(select_by(test_docs, by = "type",
+                             value = c("Pottery", "Layer"))),
+            length(test_docs))
+})
+
 
 selection <- "Layer"
 layers <- select_by(test_docs, by = "type", value = selection)
