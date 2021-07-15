@@ -20,6 +20,14 @@ for (sample in samples) {
     expect_true(any(grepl("shortDescription", colnames)))
   })
 
+  colnames <- colnames(get_uid_list(test_docs,
+                                    verbose = TRUE,
+                                    gather_trenches = TRUE))
+
+  test_that("uidlist is able to group trenches by place", {
+    expect_true(any(grepl("Place", colnames)))
+  })
+
   test_that("uidlist has 5 cols by default", {
     expect_equal(ncol(get_uid_list(test_docs)), 5)
   })
@@ -28,5 +36,3 @@ for (sample in samples) {
     expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 6)
   })
 }
-
-

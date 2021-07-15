@@ -4,7 +4,7 @@
 \alias{get_uid_list}
 \title{get_uid_list}
 \usage{
-get_uid_list(idaifield_docs, verbose = FALSE)
+get_uid_list(idaifield_docs, verbose = FALSE, gather_trenches = FALSE)
 }
 \arguments{
 \item{idaifield_docs}{An object as returned by get_idaifield_docs}
@@ -12,6 +12,10 @@ get_uid_list(idaifield_docs, verbose = FALSE)
 \item{verbose}{TRUE or FALSE (= anything but TRUE), TRUE returns a list
 including identifier and shorttitle which is more convenient for humans,
 and FALSE returns only UID and type, which is enough for internal selections}
+
+\item{gather_trenches}{defaults to FALSE. If TRUE, adds another column that
+records the Place each corresponding Trench and its sub-resources lie within.
+(Useful for grouping the finds of several trenches.)}
 }
 \value{
 a list of UIDs and their Types, Identifiers and shortDescriptions

@@ -17,6 +17,9 @@
 #' @param verbose TRUE or FALSE (= anything but TRUE), TRUE returns a list
 #' including identifier and shorttitle which is more convenient for humans,
 #' and FALSE returns only UID and type, which is enough for internal selections
+#' @param gather_trenches defaults to FALSE. If TRUE, adds another column that
+#' records the Place each corresponding Trench and its sub-resources lie within.
+#' (Useful for grouping the finds of several trenches.)
 #'
 #' @return a list of UIDs and their Types, Identifiers and shortDescriptions
 #' @export
@@ -30,7 +33,8 @@
 #'
 #' uid_list <- get_uid_list(idaifield_docs, verbose = TRUE)
 #' }
-get_uid_list <- function(idaifield_docs, verbose = FALSE) {
+get_uid_list <- function(idaifield_docs, verbose = FALSE,
+                         gather_trenches = FALSE) {
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
@@ -69,5 +73,22 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE) {
 
   uid_list$isRecordedIn <- replace_uid(uid_list$isRecordedIn, uid_list)
   uid_list$liesWithin <- replace_uid(uid_list$liesWithin, uid_list)
+
+  if (gather_trenches) {
+    uid_list$Place <- uid_list$isRecordedIn
+    for (i in seq_len(nrow(uid_list))) {
+      temp_place <- uid_list$Place[i]
+      temp_place <- which(uid_list$identifier == temp_place)
+      temp_place <- uid_list[temp_place,]
+
+      if (nrow(temp_place) == 0) {
+        next
+      } else if (temp_place$type == "Trench") {
+        uid_list$Place[i] <- temp_place$liesWithin[1]
+      }
+    }
+  }
+
+
   return(uid_list)
 }
