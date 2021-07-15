@@ -75,7 +75,9 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
   uid_list$liesWithin <- replace_uid(uid_list$liesWithin, uid_list)
 
   if (gather_trenches) {
-    uid_list$Place <- uid_list$isRecordedIn
+    uid_list$Place <- ifelse(is.na(uid_list$isRecordedIn),
+                             uid_list$liesWithin,
+                             uid_list$isRecordedIn)
     for (i in seq_len(nrow(uid_list))) {
       temp_place <- uid_list$Place[i]
       temp_place <- which(uid_list$identifier == temp_place)

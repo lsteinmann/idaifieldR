@@ -1,6 +1,6 @@
 skip_on_cran()
 
-connection <- connect_idaifield(serverip = "192.168.2.21",
+connection <- connect_idaifield(serverip = "127.0.0.1",
                                 user = "R", pwd = "hallo")
 
 check_db_availability <- function() {
