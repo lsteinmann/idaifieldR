@@ -20,10 +20,15 @@ convert_to_coordmat <- function(coordinates) {
   if (length(coordinates) == 1) {
     coordinates <- coordinates[[1]]
   }
-  coordmat <- matrix(nrow = length(coordinates), ncol = 2)
+  coordmat <- matrix(nrow = length(coordinates), ncol = 3)
   for (i in seq_along(coordinates)) {
     coordmat[i, 1] <- unlist(coordinates[[i]][[1]])
     coordmat[i, 2] <- unlist(coordinates[[i]][[2]])
+    if (length(coordinates[[i]]) == 3) {
+      coordmat[i, 3] <- unlist(coordinates[[i]][[3]])
+    } else {
+      coordmat[i, 3] <- 0
+    }
   }
   return(coordmat)
 }
@@ -51,8 +56,16 @@ reformat_geometry <- function(geometry) {
 
   if (!is.null(type)) {
     if (type == "Point") {
-      geometry$coordinates <- list(matrix(unlist(geometry$coordinates),
-                                          ncol = 2))
+      p_coords <- unlist(geometry$coordinates)
+      if (length(p_coords) %% 2 == 0) {
+        geometry$coordinates <- list(matrix(p_coords,
+                                            ncol = 2))
+        geometry$coordinates[[1]] <- cbind(geometry$coordinates[[1]], 0)
+      } else {
+        geometry$coordinates <- list(matrix(p_coords,
+                                            ncol = 3))
+      }
+
     } else if (type %in% c("Polygon", "LineString", "MultiPoint")) {
       geometry$coordinates <- list(convert_to_coordmat(geometry$coordinates))
     } else if (type %in% c("MultiPolygon", "MultiLineString")) {
