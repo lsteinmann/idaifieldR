@@ -30,7 +30,7 @@ is irrelevant for any analysis of the database contents itself.
 }
 \examples{
 \dontrun{
-connection <- connect_idaifield(serverip = "192.168.2.21",
+connection <- connect_idaifield(serverip = "127.0.0.1",
 user = "R", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = connection,
 projectname = "rtest", simplified = FALSE)

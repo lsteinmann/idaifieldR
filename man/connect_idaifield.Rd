@@ -5,7 +5,7 @@
 \title{Establishes a connection to the iDAI.field 2 Client.}
 \usage{
 connect_idaifield(
-  serverip = "192.168.1.199",
+  serverip = "127.0.0.1",
   user = "Anna Allgemeinperson",
   pwd = "password"
 )
@@ -26,6 +26,6 @@ a connection object
 Establishes a connection to the iDAI.field 2 Client.
 }
 \examples{
-conn <- connect_idaifield(serverip = "192.168.2.21",
+conn <- connect_idaifield(serverip = "127.0.0.1",
 user = "R", pwd = "hallo")
 }

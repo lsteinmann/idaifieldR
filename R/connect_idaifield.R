@@ -10,9 +10,9 @@
 #' @export
 #'
 #' @examples
-#' conn <- connect_idaifield(serverip = "192.168.2.21",
+#' conn <- connect_idaifield(serverip = "127.0.0.1",
 #' user = "R", pwd = "hallo")
-connect_idaifield <- function(serverip    = "192.168.1.199",
+connect_idaifield <- function(serverip    = "127.0.0.1",
                               user        = "Anna Allgemeinperson",
                               pwd         = "password") {
 

@@ -1,12 +1,9 @@
 Type: Package
 Package: idaifieldR
 Title: Importing Data from iDAI.field 2 into R
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: 
-    person(given = "Lisa",
-           family = "Steinmann",
-           role = c("aut", "cre"),
-           email = "lisa.steinmann@rub.de",
+    person("Lisa", "Steinmann", , "lisa.steinmann@rub.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2215-1243"))
 Author: Lisa Steinmann
 Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
@@ -37,4 +34,4 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

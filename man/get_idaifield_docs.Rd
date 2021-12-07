@@ -5,7 +5,7 @@
 \title{get_idaifield_docs}
 \usage{
 get_idaifield_docs(
-  connection = connect_idaifield(serverip = "192.168.2.21", user = "R", pwd = "hallo"),
+  connection = connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo"),
   projectname = "projektname",
   keep_geometry = TRUE,
   simplified = TRUE,
@@ -56,7 +56,7 @@ other fields containing long numbers as well.)
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "192.168.2.21",
+conn <- connect_idaifield(serverip = "127.0.0.1",
 user = "R", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = conn,
 projectname = "rtest")

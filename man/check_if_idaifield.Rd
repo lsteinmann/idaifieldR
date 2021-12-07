@@ -21,7 +21,7 @@ returned by the core function get_idaifield_docs(...).
 \examples{
 \dontrun{
 idaifield_docs <- get_idaifield_docs(projectname = "rtest",
-connection = connect_idaifield(serverip = "192.168.1.21",
+connection = connect_idaifield(serverip = "127.0.0.1",
 user = "R",
 pwd = "password"))
 

@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "192.168.2.21",
+#' connection <- connect_idaifield(serverip = "127.0.0.1",
 #' user = "R", pwd = "hallo")
 #' idaifield_docs <- get_idaifield_docs(connection = connection,
 #' projectname = "rtest")
@@ -47,7 +47,7 @@ show_type_list <- function(idaifield_docs) {
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "192.168.2.21",
+#' connection <- connect_idaifield(serverip = "127.0.0.1",
 #' user = "R", pwd = "hallo")
 #' idaifield_docs <- get_idaifield_docs(connection = connection,
 #' projectname = "rtest")

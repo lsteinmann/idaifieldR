@@ -43,7 +43,7 @@ The package includes test data as an RDS file in `inst/testdata`, for the purpos
 
 When importing data your first step would be to build a connection object, where serverip corresponds to the IP listet in the iDAI.field 2-Client as "Eigene Adresse", user can be anything you wish and will only be important if you intend to write to the database, as the client does not employ user-specific passwords. pwd should be the password as listed in the iDAI.field 2-client.
 ```{r eval=FALSE}
-connection <- connect_idaifield(serverip = "192.168.1.21",
+connection <- connect_idaifield(serverip = "127.0.0.1",
                                 user = "R",
                                 pwd = "hallo")
 ```
@@ -137,14 +137,14 @@ options(digits = 20)
 
 # Geometry
 
-As a comment: `simplify_idaifield()` or `get_idaifield_docs(..., simplified = TRUE)` by default reformats the geometry entries so that the coordinates are stored in a matrix. This can be reformatted with the `sp`-package to display in R-leaflet maps etc. (You will still need to add the CRS.)
+As a comment: `simplify_idaifield()` or `get_idaifield_docs(..., simplified = TRUE)` by default reformats the geometry entries so that the coordinates are stored in a matrix. This can be reformatted with the `sp`-package to display in R-leaflet maps etc. (You will still need to add the CRS.) The geometry-matrix has 3 columns for x, y and z values. If there are only two-dimensional data in the database, height will be set to 0.
 
 # Alternatives
 
 In case you wish to work with the whole database in json-format, I suggest you use the jsonlite package which has similar capabilities to e.g. flatten any lists and output. You can get the whole database in json format via: 
 
 ```{r eval = FALSE}
-connection <- connect_idaifield(serverip = "192.168.1.21", 
+connection <- connect_idaifield(serverip = "127.0.0.1", 
                                 user = "R",
                                 pwd = "hallo")
 json_output <- get_idaifield_docs(projectname = "rtest",

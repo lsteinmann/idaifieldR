@@ -37,7 +37,7 @@ None of these functions have any respect for language configuration!
 }
 \examples{
 \dontrun{
-connection <- connect_idaifield(serverip = "192.168.2.21",
+connection <- connect_idaifield(serverip = "127.0.0.1",
 user = "R", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = connection,
 projectname = "rtest", simplified = FALSE)

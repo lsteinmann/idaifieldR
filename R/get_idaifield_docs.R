@@ -42,14 +42,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "192.168.2.21",
+#' conn <- connect_idaifield(serverip = "127.0.0.1",
 #' user = "R", pwd = "hallo")
 #' idaifield_docs <- get_idaifield_docs(connection = conn,
 #' projectname = "rtest")
 #' }
 #'
 get_idaifield_docs <- function(connection = connect_idaifield(
-                                              serverip = "192.168.2.21",
+                                              serverip = "127.0.0.1",
                                               user = "R", pwd = "hallo"),
                                projectname = "projektname",
                                keep_geometry = TRUE,
