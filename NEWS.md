@@ -1,3 +1,11 @@
+# idaifieldR 0.2.0 _2022-02-10_
+
+* Version number changed to 0.2, to reflect the dramatic changes (that have not yet taken place).
+* Added `idf_query()`, todo: will rely more on couchDB-queries in the future and therefore need to redo a lot of the package
+* Demo.Rmd updated to begin working on that.
+
+I stated that I don't intend any structural changes, but that - apparently - was a stupid idea. However, the old functions remain as they were.
+
 # idaifieldR 0.1.3 _2021-12-07_
 
 * Updated docs

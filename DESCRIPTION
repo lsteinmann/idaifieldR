@@ -1,7 +1,7 @@
 Type: Package
 Package: idaifieldR
 Title: Importing Data from iDAI.field 2 into R
-Version: 0.1.3
+Version: 0.2.0
 Authors@R: 
     person("Lisa", "Steinmann", , "lisa.steinmann@rub.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2215-1243"))
