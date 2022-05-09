@@ -39,14 +39,27 @@ idaifield_test_docs <- readRDS(system.file("testdata",
 idaifield_test_resources <- simplify_idaifield(idaifield_test_docs)
 ```
 
-The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in iDAI.field 2 is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function.
+The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in iDAI.field 2 / Field Desktop is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function.
 
-When importing data your first step would be to build a connection object, where serverip corresponds to the IP listet in the iDAI.field 2-Client as "Eigene Adresse", user can be anything you wish and will only be important if you intend to write to the database, as the client does not employ user-specific passwords. pwd should be the password as listed in the iDAI.field 2-client.
+When importing data your first step would be to build a connection object, where serverip corresponds to the IP listet in the Field Client as "Eigene Adresse", user can be anything you wish and will only be important if you intend to write to the database, as the client does not employ user-specific passwords. pwd should be the password as listed in the Field-client.
+
+
+
 ```{r eval=FALSE}
 connection <- connect_idaifield(serverip = "127.0.0.1",
                                 user = "R",
                                 pwd = "hallo")
 ```
+
+*Note*: The default options are set for Field Desktop (iDAI.field 3). If you continue to use iDAI.field 2, you need to add the version number to `connect_idaifield()`, otherwise the connection cannot be established!
+
+```{r eval=FALSE}
+connection <- connect_idaifield(serverip = "127.0.0.1",
+                                user = "R",
+                                pwd = "hallo",
+                                version = 2)
+```
+
 
 Sofa can help you get a list of all the projects that are stored in the database:
 
@@ -79,7 +92,7 @@ layers <- select_by(idaifield_test_resources, by = "type", value = "Layer")
 layers[[5]]
 ```
 
-A list of all resource-types present in the database can be gathered with `show_type_list()`. Only the internal names are referenced as types, and translations that you may see in the GUI can be different from these. They can be gathered in the iDAI.field 2-Client from "Hilfe > Formularkonfiguration" (pink names in upper right corner).
+A list of all resource-types present in the database can be gathered with `show_type_list()`. Only the internal names are referenced as types, and translations that you may see in the GUI can be different from these. They can be gathered in the Field Client from "Hilfe > Formularkonfiguration" (pink names in upper right corner).
 
 ```{r}
 show_type_list(idaifield_test_resources)
@@ -124,7 +137,7 @@ ggplot(pottery_df, aes(x = relation.liesWithin, fill = materialType)) +
 
 # Notes
 
-If you are planing on using the coordinates from the geometry in iDAI.field 2, 
+If you are planing on using the coordinates from the geometry in iDAI.field 2 / Field Desktop, 
 I strongly suggest you modify your digit length in R before importing. Depending 
 on the projection used in the database, the import might omit some digits or 
 or round numbers. 

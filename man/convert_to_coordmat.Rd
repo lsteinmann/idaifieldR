@@ -8,7 +8,7 @@ convert_to_coordmat(coordinates)
 }
 \arguments{
 \item{coordinates}{a list of the format that any coordinateslist has
-in the iDAI.field 2 database}
+in the iDAI.field 2 / Field Desktop database}
 }
 \value{
 a matrix that displays the same coordinates

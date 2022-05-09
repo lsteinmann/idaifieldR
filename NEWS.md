@@ -1,3 +1,8 @@
+# idaifieldR 0.1.4 _2021-12-07_
+
+* add version to connect_idaifield()-function since options have changed with the switch to Field Desktop (iDAI.field 3)
+
+
 # idaifieldR 0.1.3 _2021-12-07_
 
 * Updated docs

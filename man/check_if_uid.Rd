@@ -8,7 +8,7 @@ check_if_uid(string)
 }
 \arguments{
 \item{string}{A character string that should be checked for being a UID
-as used in iDAI.field 2 (expects a single character value!)
+as used in iDAI.field 2 / Field Desktop (expects a single character value!)
 TODO: any() with grepl and then blaaaa}
 }
 \value{

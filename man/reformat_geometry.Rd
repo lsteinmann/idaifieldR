@@ -2,7 +2,7 @@
 % Please edit documentation in R/reformat_geometry.R
 \name{reformat_geometry}
 \alias{reformat_geometry}
-\title{reformat the geometry of an iDAI.field 2 resource}
+\title{reformat the geometry of an iDAI.field resource}
 \usage{
 reformat_geometry(geometry)
 }
@@ -14,7 +14,7 @@ the same data in a more handy format that can be processed with
 tools like the sp-package to produce polygons etc.
 }
 \description{
-reformat the geometry of an iDAI.field 2 resource
+reformat the geometry of an iDAI.field resource
 }
 \examples{
 test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),

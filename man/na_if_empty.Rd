@@ -14,9 +14,10 @@ NA if empty, or the object that has been handed to it
 }
 \description{
 This is a helper function in defense against empty list items from
-iDAI.field 2, which sometimes occur. It simply writes NA in the
-corresponding field if a list or any kind of object handed to it is
-of length 0. Otherwise, it returns the input untouched.
+iDAI.field 2 / Field Desktop, which sometimes occur.
+It simply writes NA in the corresponding field if a list or any
+kind of object handed to it is of length 0. Otherwise,
+it returns the input untouched.
 }
 \examples{
 \dontrun{

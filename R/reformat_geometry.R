@@ -1,7 +1,7 @@
 #' Converts coordinate list from idaifield to a matrix
 #'
 #' @param coordinates a list of the format that any coordinateslist has
-#' in the iDAI.field 2 database
+#' in the iDAI.field 2 / Field Desktop database
 #'
 #' @return a matrix that displays the same coordinates
 #'
@@ -34,7 +34,7 @@ convert_to_coordmat <- function(coordinates) {
 }
 
 
-#' reformat the geometry of an iDAI.field 2 resource
+#' reformat the geometry of an iDAI.field resource
 #'
 #' @param geometry the list in docs$resource$geometry
 #'

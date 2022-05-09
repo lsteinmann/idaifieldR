@@ -15,7 +15,7 @@ a character vector with the types represented in
 the idaifield_docs/resource
 }
 \description{
-Returns a list of types present in the iDAI.field 2-database
+Returns a list of types present in the iDAI.field 2 / Field Desktop database
 (for orientation) it would be nice to be able to embed the translations,
 but i am guessing thats only possible if the configuration was available
 }
