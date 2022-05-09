@@ -41,11 +41,9 @@ idaifield_test_resources <- simplify_idaifield(idaifield_test_docs)
 
 The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in iDAI.field 2 / Field Desktop is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function.
 
-When importing data your first step would be to build a connection object, where serverip corresponds to the IP listet in the Field Client as "Eigene Adresse", user can be anything you wish and will only be important if you intend to write to the database, as the client does not employ user-specific passwords. pwd should be the password as listed in the Field-client.
-
-
-
 When importing data your first step would be to build a connection object, where **serverip** corresponds to the IP listed in the Field Client as "*Eigene Adresse*" when using the client in a network, **user** can be anything you wish and will only be important if you intend to write to the database, as the client does not employ user-specific passwords. **pwd** should be the password as listed in the Field Client. If you run the Client on the same computer as you R-Script, you can use the localhost address (*127.0.0.1*).
+
+
 
 ```{r eval=FALSE}
 connection <- connect_idaifield(serverip = "127.0.0.1",
@@ -71,16 +69,42 @@ sofa::db_list(connection)
 
 # Getting your DB-Entries into R 
 
-The project database you are using can either be imported in total (see below), or queried. The functions demonstrated here are wrapping the queries possible with `sofa` in other functions as to make it more accessible to people using iDAI.field 2. 
+The project database you are using can either be imported in total (see below), or queried. The functions demonstrated here are wrapping the queries possible with `sofa` in other functions as to make it more accessible to people using iDAI.field 2 / Field Desktop. If you want more complex queries, I suggest to use sofa directly.
+
+For almost any function of this package, you will need a "uidlist". It serves as an index to the database and as a way of replacing UIDs with their respective identifiers for readability. You can obtain this uidlist / the index as follows:
+
+```{r eval=FALSE}
+all_resources <- get_idaifield_docs(
+  connection = connection,
+  projectname = "rtest",
+  simplified = TRUE
+)
+uidlist <- get_uid_list(all_resources)
+```
+
+With the `idf_query()`-function, you can then query the database with some of the fields and variables. This will not work for everything: e.g. relations cannot be queried in this way. 
 
 ```{r eval = FALSE}
 layers <- idf_query(connection = connection, 
+                    uidlist = uidlist,
                     project = "rtest", 
                     field = "type", 
                     value = "Layer")
 ```
 
-This is a work in progress. I plan on restructuring a lot of this package to make it more efficient and less time and memory consuming for larger databases. All functions from v1 still work (see below).
+Another example, this time querying for "Farbe" in the radioButton field "distinguishingCriteria":
+
+```{r eval = FALSE}
+layers <- idf_query(connection = connection, 
+                    uidlist = uidlist,
+                    project = "rtest", 
+                    field = "distinguishingCriteria", 
+                    value = "Farbe")
+```
+
+However, these queries will only work for fields that cannot have more than one value (i.e. radio Buttons, Dropdown lists, names). With Sofa, searching for Regular Expressions etc. is possible. If you intend to do that, I would recommend to use sofa directly. 
+
+
 
 
 # The Inefficient Way (deprecated functions)
@@ -97,11 +121,13 @@ idaifield_test_resources <- get_idaifield_docs(
   )
 ```
 
-This returns an object of class "idaifield_resources", which is a nested list:
+This returns an object of class "idaifield_resources", which is a nested list: 
 
 ```{r}
 idaifield_test_resources[[1]]
 ```
+
+
 
 For any further processing and especially larger data sets, the `select_by()` function should be important:
 
@@ -116,7 +142,7 @@ A list of all resource-types present in the database can be gathered with `show_
 show_type_list(idaifield_test_resources)
 ```
 
-A selection of the whole list can be converted into a matrix of lists:
+A selection of the whole list can be converted into a matrix of lists: 
 
 ```{r}
 pottery <- idaifield_test_resources %>%
@@ -125,7 +151,6 @@ pottery <- idaifield_test_resources %>%
 
 pottery[1:5, 1:5]
 ```
-
 (There is a function for data.frame conversion which pastes all entries from fields with multiple entries together, but I do not recommend it and frankly it might not even work anymore, as I have changes many things.)
 
 With this matrix, it is easy to plot any distributions or actually further select and analyse the data. The matric can be coerced to a data.frame that will be easier for handling plotting functions.
@@ -146,13 +171,13 @@ library(ggplot2)
 ggplot(pottery_df, aes(x = relation.liesWithin)) +
   geom_bar()
 ```
-
 Though it may be required to reformat columns from list to character or factor:
 
 ```{r fig.width=7}
 ggplot(pottery_df, aes(x = relation.liesWithin, fill = materialType)) +
   geom_bar()
 ```
+
 
 # Notes
 
@@ -161,7 +186,7 @@ I strongly suggest you modify your digit length in R before importing. Depending
 on the projection used in the database, the import might omit some digits or 
 or round numbers. 
 
-Example:
+Example: 
 
 ```{r eval = FALSE}
 options(digits = 20)
@@ -173,7 +198,7 @@ As a comment: `simplify_idaifield()` or `get_idaifield_docs(..., simplified = TR
 
 # Alternatives
 
-In case you wish to work with the whole database in json-format, I suggest you use the jsonlite package which has similar capabilities to e.g. flatten any lists and output. You can get the whole database in json format via:
+In case you wish to work with the whole database in json-format, I suggest you use the jsonlite package which has similar capabilities to e.g. flatten any lists and output. You can get the whole database in json format via: 
 
 ```{r eval = FALSE}
 connection <- connect_idaifield(serverip = "127.0.0.1", 
@@ -188,7 +213,6 @@ flattened_df <- flatten(nested_df)
 ```
 
 Since I prepared this package mostly to suit my own need you might be happier with this output. Most functions from this package however will probably not work with the flattened/converted json-outputs, but it should not be hard to find replace the UIDs etc, for which some internal functions in this package may still be useful.
-
 
 # Other Notes
 
