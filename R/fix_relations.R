@@ -20,7 +20,7 @@
 #' }
 fix_relations <- function(resource, replace_uids = TRUE, uidlist = NULL) {
   if (replace_uids == TRUE && !is.data.frame(uidlist)) {
-    stop("replace_uids = TRUE but no concordance of UIDs supplied")
+    stop("replace_uids = TRUE but no UIDlist supplied")
   }
   if (length(resource$relations) > 0) {
     relations <- resource$relations

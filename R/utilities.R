@@ -116,7 +116,7 @@ check_and_unnest <- function(idaifield_docs) {
   } else if (check["idaifield_resources"]) {
     return(idaifield_docs)
   } else {
-    stop("Cannot process the object.")
+    warning("Processing may be incorrect.")
   }
 }
 
@@ -207,7 +207,8 @@ check_if_uid <- function(string) {
 #' }
 reorder_colnames <- function(colnames, order = "default") {
   if (order == "default") {
-    order <- c("identifier", "type", "shortDescription")
+    order <- c("identifier", "type", "shortDescription",
+               "processor", "campaign", "relation.isRecordedIn")
   }
   new_order <- match(order, colnames)
   new_order <- new_order[!is.na(new_order)]

@@ -13,13 +13,12 @@ idaifield_as_matrix(idaifield_docs)
 a matrix (depending on selection and database it can be very large)
 }
 \description{
-Converts an idaifield_docs/idaifield_resource-list into a Matrix that
-contains lists where multiple selections have been made in i.DAIfield 2,
-which can be more flexible than the dataframe-approach in idaifield_as_df.
+Converts an idaifield_docs/idaifield_resource-list into a Matrix.
 }
 \details{
 If the list containing all meta-info (i.e. the docs-list)
-is handed to the function it will automatically unnest to resource level).
+is handed to the function it will automatically unnest and simplify if
+necessary to resource level).
 }
 \examples{
 \dontrun{
