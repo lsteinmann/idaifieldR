@@ -15,7 +15,7 @@ get_idaifield_docs(
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
 
-\item{projectname}{The name of the project in iDAI.field 2 that one
+\item{projectname}{The name of the project in the Field Client that one
 wishes to load.}
 
 \item{keep_geometry}{TRUE if the geometry should be kept}
@@ -41,7 +41,8 @@ character string in json-format.)
 Imports all resources from an idaifield-database that is currently running
 and synching into a list-object for further processing in R.
 This just wraps **sofa**s functions under another name,
-but with defaults that are useful for the import from iDAI.field 2.
+but with defaults that are useful for the import from iDAI.field 2 or
+Field Desktop.
 Also, I am using unnest_resource() from this package here, as there
 seems to be no use in the nested version. However,
 simplified = FALSE would allow to get the top-level version.

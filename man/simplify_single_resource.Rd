@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplify_idaifield_resources.R
 \name{simplify_single_resource}
 \alias{simplify_single_resource}
-\title{Simplifies a single resource from the iDAI.field 2 Database}
+\title{Simplifies a single resource from the iDAI.field 2 / Field Desktop Database}
 \usage{
 simplify_single_resource(
   resource,

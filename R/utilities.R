@@ -1,9 +1,10 @@
 #' na_if_empty: returns NA if an object handed to the function is empty
 #'
 #' This is a helper function in defense against empty list items from
-#' iDAI.field 2, which sometimes occur. It simply writes NA in the
-#' corresponding field if a list or any kind of object handed to it is
-#' of length 0. Otherwise, it returns the input untouched.
+#' iDAI.field 2 / Field Desktop, which sometimes occur.
+#' It simply writes NA in the corresponding field if a list or any
+#' kind of object handed to it is of length 0. Otherwise,
+#' it returns the input untouched.
 #'
 #'
 #' @param item any object whatsoever
@@ -157,7 +158,7 @@ check_for_sublist <- function(single_resource_field) {
 #' check_if_uid
 #'
 #' @param string A character string that should be checked for being a UID
-#' as used in iDAI.field 2 (expects a single character value!)
+#' as used in iDAI.field 2 / Field Desktop (expects a single character value!)
 #' TODO: any() with grepl and then blaaaa
 #'
 #' @return TRUE if UID, or FALSE if not

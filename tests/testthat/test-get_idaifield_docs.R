@@ -22,6 +22,35 @@ if (!check_db_availability()) {
   skip("Test skipped, needs DB-connection")
 }
 
+
+test_that("works with 2", {
+  conn2 <- connect_idaifield(serverip = "127.0.0.1",
+                             user = "R", pwd = "hallo",
+                             version = 2)
+  expect_equal(conn2$port, 3000)
+})
+
+test_that("works with 3", {
+  conn2 <- connect_idaifield(serverip = "127.0.0.1",
+                             user = "R", pwd = "hallo",
+                             version = 3)
+  expect_equal(conn2$port, 3001)
+})
+
+test_that("works with '3'", {
+  conn2 <- connect_idaifield(serverip = "127.0.0.1",
+                             user = "R", pwd = "hallo",
+                             version = "3")
+  expect_equal(conn2$port, 3001)
+})
+
+test_that("error when using character", {
+  expect_error(connect_idaifield(serverip = "127.0.0.1",
+                                 user = "R", pwd = "hallo",
+                                 version = "kuchen"))
+})
+
+
 test_docs <- get_idaifield_docs(projectname = "rtest",
                                 connection = connection,
                                 simplified = FALSE)

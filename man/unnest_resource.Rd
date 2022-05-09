@@ -8,7 +8,8 @@ unnest_resource(idaifield_docs)
 }
 \arguments{
 \item{idaifield_docs}{A list as provided by `sofa::db_alldocs(...)` when
-importing from an iDAI.field 2-database using `get_idaifield_docs()`.
+importing from an iDAI.field 2 / Field Desktop-database
+using `get_idaifield_docs()`.
 `get_idaifield_docs()` employs this function already
 when setting `simplified = TRUE`, which is the default.
 Mostly there is no need to deal with `unnest_resource()`. If one chooses
@@ -21,7 +22,7 @@ but the top-level with meta-information has been removed to make the actual
 resource data more accessible)
 }
 \description{
-This function unnests the lists provided by iDAI.field 2.
+This function unnests the lists provided by iDAI.field 2 / Field Desktop.
 The actual data of a resource is usually stored in a sub-list
 behind $doc$resource, which contains the data one would mostly
 want to work with in R. The top level data contains information

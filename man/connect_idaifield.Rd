@@ -2,28 +2,32 @@
 % Please edit documentation in R/connect_idaifield.R
 \name{connect_idaifield}
 \alias{connect_idaifield}
-\title{Establishes a connection to the iDAI.field 2 Client.}
+\title{Establishes a connection to the iDAI.field 2 / Field Desktop Client.}
 \usage{
 connect_idaifield(
   serverip = "127.0.0.1",
   user = "Anna Allgemeinperson",
-  pwd = "password"
+  pwd = "password",
+  version = 3
 )
 }
 \arguments{
-\item{serverip}{The IP that the user can find in iDAI.field 2's settings as
+\item{serverip}{The IP that the user can find in the Field Clients settings as
 "Eigene Adresse" without the port-specification}
 
 \item{user}{A user name (anything works, really.)}
 
-\item{pwd}{The Password as it is displayed in the iDAI.field 2-settings
+\item{pwd}{The Password as it is displayed in the Field Clients settings
 as "Eigenes Passwort"}
+
+\item{version}{2 if iDAI.field 2 is used, 3 if you are using
+Field Desktop (default, integer).}
 }
 \value{
 a connection object
 }
 \description{
-Establishes a connection to the iDAI.field 2 Client.
+Establishes a connection to the iDAI.field 2 / Field Desktop Client.
 }
 \examples{
 conn <- connect_idaifield(serverip = "127.0.0.1",

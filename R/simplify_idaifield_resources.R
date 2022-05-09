@@ -69,7 +69,7 @@ find_layer <- function(resource = resource,
   }
 }
 
-#' Simplifies a single resource from the iDAI.field 2 Database
+#' Simplifies a single resource from the iDAI.field 2 / Field Desktop Database
 #'
 #' This function is a helper to `simplify_idaifield()`.
 #'

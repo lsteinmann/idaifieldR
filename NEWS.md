@@ -6,6 +6,11 @@
 
 I stated that I don't intend any structural changes, but that - apparently - was a stupid idea. However, the old functions remain as they were.
 
+# idaifieldR 0.1.4 _2021-05-09_
+
+* add version to connect_idaifield()-function since options have changed with the switch to Field Desktop (iDAI.field 3)
+* update documentation accordingly
+
 # idaifieldR 0.1.3 _2021-12-07_
 
 * Updated docs
