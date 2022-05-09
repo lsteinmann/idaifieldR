@@ -42,14 +42,12 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
   colnames <- c("type", "UID", "identifier", "isRecordedIn", "liesWithin")
 
   if (verbose) {
-    ncol <- 6
-    colnames <- c(colnames, "shortDescription")
+    ncol <- 7
+    colnames <- c(colnames, "shortDescription", "liesWithinLayer")
   }
 
   uid_list <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
   colnames(uid_list) <- colnames
-
-
 
   uid_list$UID <- unlist(lapply(idaifield_docs,
                                 FUN = function(x) na_if_empty(x$id)))
@@ -60,19 +58,31 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
   uid_list$identifier <- unlist(lapply(idaifield_docs,
                                        FUN = function(x) na_if_empty(x$identifier)))
 
+  # have to check double for relations, as processed db resources are different
+  # from the raw version
   uid_list$isRecordedIn <- unlist(lapply(idaifield_docs,
-                                         function(x) na_if_empty(x$relation.isRecordedIn)))
-
+                                         function(x) na_if_empty(x$relations$isRecordedIn)))
+  if (all(is.na(uid_list$isRecordedIn))) {
+    uid_list$isRecordedIn <- unlist(lapply(idaifield_docs,
+                                           function(x) na_if_empty(x$relation.isRecordedIn)))
+  }
   uid_list$liesWithin <- unlist(lapply(idaifield_docs,
-                                       function(x) na_if_empty(x$relation.liesWithin)))
+                                       function(x) na_if_empty(x$relations$liesWithin)))
+  if (all(is.na(uid_list$liesWithin))) {
+    uid_list$liesWithin <- unlist(lapply(idaifield_docs,
+                                         function(x) na_if_empty(x$relation.liesWithin)))
+  }
+
 
   if (verbose) {
     uid_list$shortDescription <- unlist(lapply(idaifield_docs,
-                                         function(x) na_if_empty(x$shortDescription)))
+                                               function(x) na_if_empty(x$shortDescription)))
+    uid_list$liesWithinLayer <- unlist(lapply(idaifield_docs,
+                                              function(x) na_if_empty(x$relation.liesWithinLayer)))
   }
 
-  #uid_list$isRecordedIn <- replace_uid(uid_list$isRecordedIn, uid_list)
-  #uid_list$liesWithin <- replace_uid(uid_list$liesWithin, uid_list)
+  uid_list$isRecordedIn <- replace_uid(uid_list$isRecordedIn, uid_list)
+  uid_list$liesWithin <- replace_uid(uid_list$liesWithin, uid_list)
 
   if (gather_trenches) {
     uid_list$Place <- ifelse(is.na(uid_list$isRecordedIn),

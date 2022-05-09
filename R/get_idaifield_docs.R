@@ -50,12 +50,12 @@
 #' }
 #'
 get_idaifield_docs <- function(connection = connect_idaifield(
-                                              serverip = "127.0.0.1",
-                                              user = "R", pwd = "hallo"),
-                               projectname = "projektname",
-                               keep_geometry = TRUE,
-                               simplified  = TRUE,
-                               json = FALSE) {
+  serverip = "127.0.0.1",
+  user = "R", pwd = "hallo"),
+  projectname = "projectname",
+  keep_geometry = TRUE,
+  simplified  = TRUE,
+  json = FALSE) {
 
   if (json) {
     simplified <- FALSE
@@ -63,7 +63,7 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   } else {
     output_format <- "list"
   }
-
+  options(digits = 20)
   idaifield_docs <- sofa::db_alldocs(connection, projectname,
                                      include_docs = TRUE,
                                      as = output_format)

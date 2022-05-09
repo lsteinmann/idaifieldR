@@ -19,7 +19,7 @@
 find_layer <- function(resource = resource,
                        uidlist = NULL,
                        liesWithin = NULL,
-                       strict = TRUE) {
+                       strict = FALSE) {
   if (is.null(uidlist)) {
     warning("find_layer() called but no uidlist supplied")
     return(NA)
@@ -39,9 +39,9 @@ find_layer <- function(resource = resource,
   # also set up how this is handed down here from main function.
   # This is a possible feature but currently only exists so my tests will
   # be easier.
-  layer_type_list <- getOption("idaifield_types")$layers_strict
-  if (!strict) {
-    layer_type_list <- getOption("idaifield_types")$layers
+  layer_type_list <- getOption("idaifield_types")$layers
+  if (strict) {
+    layer_type_list <- getOption("idaifield_types")$layers_strict
   }
 
   is_context <- liesWithin$liesWithin_type %in% layer_type_list
@@ -134,9 +134,6 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
 }
 
 
-
-
-
 #' Simplifies a single resource from the iDAI.field 2 / Field Desktop Database
 #'
 #' This function is a helper to `simplify_idaifield()`.
@@ -163,14 +160,11 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
 simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
                                      uidlist = NULL,
-                                     keep_geometry = TRUE
-                                     ) {
+                                     keep_geometry = TRUE) {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
   }
-
-
 
   resource <- fix_relations(resource,
                             replace_uids = replace_uids,
@@ -208,7 +202,6 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, fixed_periods)
   }
 
-
   list_names <- names(resource)
   dim_names <- list_names[grep("dimension", list_names)]
 
@@ -227,9 +220,9 @@ simplify_single_resource <- function(resource,
 
 
   has_sublist <- suppressWarnings(vapply(resource,
-                 check_for_sublist,
-                 logical(1),
-                 USE.NAMES = FALSE))
+                                         check_for_sublist,
+                                         logical(1),
+                                         USE.NAMES = FALSE))
   has_sublist <- which(unlist(has_sublist) == TRUE)
 
 
@@ -274,7 +267,7 @@ simplify_single_resource <- function(resource,
 #' simpler_idaifield <- simplify_idaifield(idaifield_docs)
 #' }
 simplify_idaifield <- function(idaifield_docs,
-                               keep_geometry = FALSE,
+                               keep_geometry = TRUE,
                                replace_uids = TRUE,
                                uidlist = NULL) {
   if (is.null(uidlist)) {
