@@ -69,6 +69,74 @@ find_layer <- function(resource = resource,
   }
 }
 
+
+#' Break down a list from a dimension field to a single value
+#'
+#' This function is a helper to `simplify_single_resource()`.
+#'
+#' @param dimensionList A list from one of the measurement fields
+#' (dimensionLength, dimensionWidth, etc.) from a single resource (element).
+#' @param name The name of the corresponding dimension List.
+#'
+#' @return A list containing simple values for each measured dimension from
+#' the list; note: if a range was entered, it returns the mean without further
+#' comment.
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' dimensionLength_new <- idf_sepdim(idaifield[[1]]$dimensionLength,
+#' "dimensionLength")
+#' }
+idf_sepdim <- function(dimensionList, name = "dimensionLength") {
+  dimno <- length(dimensionList)
+  get_dim_value <- function(x) {
+    if (is.null(x$value)) {
+      # There is a problem with old entries, as the system was changed at some
+      # point. Therefore we have to check if the there is an entry calles
+      # "inputValue" first, because it may not be a range though value had not
+      # been converted. If inputValue doesn't exist, it should be a range.
+      if (is.null(x$inputValue)) {
+        range <- c(x$rangeMin, x$rangeMax)
+        value <- mean(range)/10000
+        return(value)
+      } else {
+        # And then we need to do unit conversion...
+        unit <- x$inputUnit
+        value <- x$inputValue
+        if (unit == "m") {
+          value <- value * 100
+          return(value)
+        } else if (unit == "mm") {
+          value <- value / 10
+          return(value)
+        } else if (unit == "cm") {
+          return(value)
+        }
+      }
+    } else {
+      value <- x$value/10000
+      return(value)
+    }
+  }
+
+  if ("rangeMin" %in% names(dimensionList[[1]])) {
+    name <- paste(name, "_mean", sep = "")
+  }
+
+  dims <- unlist(lapply(dimensionList, FUN = get_dim_value))
+  names(dims) <- c(paste(name, "cm",
+                         seq(from = 1, to = dimno, by = 1),
+                         sep = "_"))
+  dims <- as.list(dims)
+  return(dims)
+}
+
+
+
+
+
 #' Simplifies a single resource from the iDAI.field 2 / Field Desktop Database
 #'
 #' This function is a helper to `simplify_idaifield()`.
@@ -95,7 +163,7 @@ find_layer <- function(resource = resource,
 simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
                                      uidlist = NULL,
-                                     keep_geometry = FALSE
+                                     keep_geometry = TRUE
                                      ) {
   id <- resource$identifier
   if (is.null(id)) {
@@ -139,6 +207,24 @@ simplify_single_resource <- function(resource,
     }
     resource <- append(resource, fixed_periods)
   }
+
+
+  list_names <- names(resource)
+  dim_names <- list_names[grep("dimension", list_names)]
+
+  if (length(dim_names) >= 1) {
+    new_dims <- as.list(1)
+    for(dim in dim_names) {
+      new_dims <- append(new_dims, idf_sepdim(resource[[dim]], dim))
+    }
+    new_dims <- as.list(unlist(new_dims[-1]))
+
+
+    resource[dim_names] <- NULL
+
+    resource <- append(resource, new_dims)
+  }
+
 
   has_sublist <- suppressWarnings(vapply(resource,
                  check_for_sublist,

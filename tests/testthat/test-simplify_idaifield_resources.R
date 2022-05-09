@@ -2,13 +2,15 @@ source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
 
-items <- sample(seq_along(test_resources), size = 5)
 
+
+items <- sample(seq_along(test_resources), size = 5)
 for (item in items) {
   print(paste("-----------------------------------------------###### Nr.: ", item))
 
   test_that("error when no identifier", {
-    expect_error(simplify_single_resource(test_docs[[item]]),
+    test_resources[[item]]$identifier <- NULL
+    expect_error(simplify_single_resource(test_resources[[item]]),
                  "valid")
   })
 
@@ -27,7 +29,9 @@ for (item in items) {
 
   if (!is.null(test_resources[[item]]$geometry)) {
     test_that("geomtry is gone", {
-      test <- simplify_single_resource(test_resources[[item]], uidlist = uidlist)
+      test <- simplify_single_resource(test_resources[[item]],
+                                       uidlist = uidlist,
+                                       keep_geometry = FALSE)
       expect_null(test$geometry)
     })
 
@@ -40,12 +44,21 @@ for (item in items) {
     })
   }
 
+  if (!is.null(test_resources[[item]]$dimensionLength)) {
+    test_that("dimension is replaced", {
+      test <- simplify_single_resource(test_resources[[item]], uidlist = uidlist)
+      expect_true(any(grepl("_cm_1", names(test))))
+    })
+  }
 
-
-
-  test_that("runs without uidlist", {
-    expect_s3_class(simplify_idaifield(test_docs), "idaifield_resources")
-  })
+  if (!is.null(test_resources[[item]]$dimensionThickness)) {
+    test_that("dimension is replaced", {
+      test <- simplify_single_resource(test_resources[[item]], uidlist = uidlist)
+      expect_true(any(grepl("_cm_1", names(test))))
+    })
+  }
 }
 
-
+test_that("runs without uidlist", {
+  expect_s3_class(simplify_idaifield(test_docs), "idaifield_resources")
+})
