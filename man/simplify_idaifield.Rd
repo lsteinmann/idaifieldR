@@ -6,7 +6,7 @@
 \usage{
 simplify_idaifield(
   idaifield_docs,
-  keep_geometry = FALSE,
+  keep_geometry = TRUE,
   replace_uids = TRUE,
   uidlist = NULL
 )

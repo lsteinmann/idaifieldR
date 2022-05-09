@@ -8,7 +8,7 @@ find_layer(
   resource = resource,
   uidlist = NULL,
   liesWithin = NULL,
-  strict = TRUE
+  strict = FALSE
 )
 }
 \arguments{

@@ -28,11 +28,20 @@ for (sample in samples) {
     expect_true(any(grepl("Place", colnames)))
   })
 
+
+  test_that("uidlist has relation.liesWithin", {
+    expect_false(all(is.na(uidlist$liesWithin)))
+  })
+
+  test_that("uidlist has relation.isRecordedIn", {
+    expect_false(all(is.na(uidlist$isRecordedIn)))
+  })
+
   test_that("uidlist has 5 cols by default", {
     expect_equal(ncol(get_uid_list(test_docs)), 5)
   })
 
-  test_that("uidlist has 6 cols when verbose", {
-    expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 6)
+  test_that("uidlist has 7 cols when verbose", {
+    expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 7)
   })
 }

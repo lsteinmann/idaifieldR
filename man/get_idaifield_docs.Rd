@@ -6,7 +6,7 @@
 \usage{
 get_idaifield_docs(
   connection = connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo"),
-  projectname = "projektname",
+  projectname = "projectname",
   keep_geometry = TRUE,
   simplified = TRUE,
   json = FALSE
