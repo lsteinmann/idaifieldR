@@ -48,31 +48,31 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
 
   uid_list <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
   colnames(uid_list) <- colnames
-  for (i in seq_along(idaifield_docs)) {
-    uid_list$UID[i] <- na_if_empty(idaifield_docs[[i]]$id)
-    uid_list$type[i] <- na_if_empty(idaifield_docs[[i]]$type)
-    uid_list$identifier[i] <- na_if_empty(idaifield_docs[[i]]$identifier)
 
-    isRecordedIn <- unlist(idaifield_docs[[i]]$relations$isRecordedIn)
-    if (is.null(isRecordedIn)) {
-      isRecordedIn <- unlist(idaifield_docs[[i]]$relation.isRecordedIn)
-    }
-    uid_list$isRecordedIn[i] <- na_if_empty(isRecordedIn)
 
-    liesWithin <- unlist(idaifield_docs[[i]]$relations$liesWithin)
-    if (is.null(liesWithin)) {
-      liesWithin <- unlist(idaifield_docs[[i]]$relation.liesWithin)
-    }
-    uid_list$liesWithin[i] <- na_if_empty(liesWithin)
 
-    if (verbose) {
-      short_description <- idaifield_docs[[i]]$shortDescription
-      uid_list$shortDescription[i] <- na_if_empty(short_description)
-    }
+  uid_list$UID <- unlist(lapply(idaifield_docs,
+                                FUN = function(x) na_if_empty(x$id)))
+
+  uid_list$type <- unlist(lapply(idaifield_docs,
+                                 FUN = function(x) na_if_empty(x$type)))
+
+  uid_list$identifier <- unlist(lapply(idaifield_docs,
+                                       FUN = function(x) na_if_empty(x$identifier)))
+
+  uid_list$isRecordedIn <- unlist(lapply(idaifield_docs,
+                                         function(x) na_if_empty(x$relation.isRecordedIn)))
+
+  uid_list$liesWithin <- unlist(lapply(idaifield_docs,
+                                       function(x) na_if_empty(x$relation.liesWithin)))
+
+  if (verbose) {
+    uid_list$shortDescription <- unlist(lapply(idaifield_docs,
+                                         function(x) na_if_empty(x$shortDescription)))
   }
 
-  uid_list$isRecordedIn <- replace_uid(uid_list$isRecordedIn, uid_list)
-  uid_list$liesWithin <- replace_uid(uid_list$liesWithin, uid_list)
+  #uid_list$isRecordedIn <- replace_uid(uid_list$isRecordedIn, uid_list)
+  #uid_list$liesWithin <- replace_uid(uid_list$liesWithin, uid_list)
 
   if (gather_trenches) {
     uid_list$Place <- ifelse(is.na(uid_list$isRecordedIn),
