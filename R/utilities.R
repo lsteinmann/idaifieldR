@@ -116,7 +116,8 @@ check_and_unnest <- function(idaifield_docs) {
   } else if (check["idaifield_resources"]) {
     return(idaifield_docs)
   } else {
-    warning("Processing may be incorrect.")
+    return(idaifield_docs)
+    warning("Not processed, did nothing.")
   }
 }
 
