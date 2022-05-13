@@ -28,7 +28,7 @@ get_configuration <- function(connection, projectname = "rtest") {
     return(config)
   },
   error = function(e) {
-    message("Error: No Configuration found!")
+    message("No Configuration found!")
     return(NA)
   })
 }

@@ -49,3 +49,4 @@ po/*~
 
 # testing and notes
 priv_testing_dir/
+inst/doc

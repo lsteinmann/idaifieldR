@@ -1,0 +1,75 @@
+---
+title: "Essential Workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{essentials}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(idaifieldR)
+```
+
+```{r echo = FALSE}
+idaifield_test_docs <- readRDS(system.file("testdata",
+                                           "idaifield_test_docs.RDS",
+                                           package = "idaifieldR"))
+# info for reference: The RDS is stored in its nested version, so:
+all_resources <- suppressMessages(simplify_idaifield(idaifield_test_docs))
+pottery <- select_by(all_resources, by = "type", value = "Pottery")
+```
+
+```{r eval=FALSE}
+connection <- connect_idaifield(serverip = "127.0.0.1",
+                                user = "R",
+                                pwd = "hallo")
+```
+
+```{r eval=FALSE}
+all_resources <- get_idaifield_docs(connection = connection, 
+                                    projectname = "rtest")
+```
+
+
+```{r eval=TRUE}
+uidlist <- get_uid_list(all_resources)
+head(uidlist)
+```
+
+
+```{r eval=TRUE}
+all_resources <- idaifield_as_matrix(all_resources)
+str(all_resources)
+```
+
+# Queries 
+
+```{r eval=FALSE}
+pottery <- idf_query(connection, projectname = "rtest", 
+                     field = "type", 
+                     value = "Pottery")
+```
+```{r eval=TRUE}
+pottery <- idaifield_as_matrix(pottery)
+head(pottery[,1:10])
+```
+```{r fig.width=7}
+library(ggplot2)
+pottery <- as.data.frame(pottery)
+ggplot(pottery, aes(x = relation.liesWithin)) +
+  geom_bar()
+```
+
+
+```{r fig.width=7}
+ggplot(pottery, aes(x = specificType)) +
+  geom_bar()
+```
