@@ -8,7 +8,8 @@ simplify_single_resource(
   resource,
   replace_uids = TRUE,
   uidlist = NULL,
-  keep_geometry = TRUE
+  keep_geometry = TRUE,
+  config = NULL
 )
 }
 \arguments{

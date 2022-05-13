@@ -80,6 +80,7 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   }
 
   attr(idaifield_docs, "connection") <- connection
+  attr(idaifield_docs, "projectname") <- projectname
 
   return(idaifield_docs)
 }

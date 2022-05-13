@@ -44,6 +44,8 @@ unnest_docs <- function(idaifield_docs) {
                                      class = "idaifield_resources")
     attr(idaifield_resources, "connection") <- attr(idaifield_docs,
                                                     "connection")
+    attr(idaifield_resources, "projectname") <- attr(idaifield_docs,
+                                                     "projectname")
     return(idaifield_resources)
   } else if (check_result["idaifield_resources"]) {
     message("The list was already unnested to resource-level.")

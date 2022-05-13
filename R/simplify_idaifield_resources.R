@@ -209,7 +209,8 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
 simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
                                      uidlist = NULL,
-                                     keep_geometry = TRUE) {
+                                     keep_geometry = TRUE,
+                                     config = NULL) {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -267,6 +268,11 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, new_dims)
   }
 
+  if (is.list(config)) {
+    resource <- convert_to_onehot(resource = resource,
+                                  config = config)
+  }
+
 
   has_sublist <- suppressWarnings(vapply(resource,
                                          check_for_sublist,
@@ -322,6 +328,20 @@ simplify_idaifield <- function(idaifield_docs,
   if (is.null(uidlist)) {
     uidlist <- get_uid_list(idaifield_docs)
   }
+
+
+
+  if (!is.null(attr(idaifield_docs, "connection"))) {
+    connection <- attr(idaifield_docs, "connection")
+    projectname <- attr(idaifield_docs, "projectname")
+    config <- get_configuration(connection = connection,
+                                projectname = projectname)
+  }
+
+  if (!exists("config")) {
+    config <- NA
+  }
+
   resources <- check_and_unnest(idaifield_docs)
 
   resources <- lapply(resources, function(x)
@@ -329,7 +349,8 @@ simplify_idaifield <- function(idaifield_docs,
       x,
       replace_uids = replace_uids,
       uidlist = uidlist,
-      keep_geometry = keep_geometry
+      keep_geometry = keep_geometry,
+      config = config
     )
   )
 
