@@ -111,7 +111,7 @@ check_if_idaifield <- function(testobject) {
 check_and_unnest <- function(idaifield_docs) {
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_docs"]) {
-    idaifield_docs <- unnest_resource(idaifield_docs)
+    idaifield_docs <- unnest_docs(idaifield_docs)
     return(idaifield_docs)
   } else if (check["idaifield_resources"]) {
     return(idaifield_docs)

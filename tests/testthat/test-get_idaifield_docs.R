@@ -3,24 +3,10 @@ skip_on_cran()
 connection <- connect_idaifield(serverip = "127.0.0.1",
                                 user = "R", pwd = "hallo")
 
-check_db_availability <- function() {
-  connection_exists <- tryCatch({
-    sofa::ping(connection)
-  },
-  error = function(cond) {
-    return(NA)
-  })
-
-  if (length(connection_exists) > 1) {
-    connection_exists <- TRUE
-  } else {
-    connection_exists <- FALSE
-  }
-}
-
-if (!check_db_availability()) {
-  skip("Test skipped, needs DB-connection")
-}
+tryCatch({sofa::ping(connection)},
+         error = function(cond) {
+           skip("Test skipped, needs DB-connection")
+         })
 
 
 test_that("works with 2", {
@@ -75,4 +61,11 @@ test_that("returns json", {
                                json = TRUE)
   expect_true(jsonlite::validate(output))
 })
+
+test_that("attaches connection as attribute", {
+  test_conn <- attr(test_docs, "connection")
+  pinglist <- sofa::ping(test_conn)
+  expect_true(is.list(pinglist))
+})
+
 

@@ -16,6 +16,6 @@ test_that("checking works for resource-lists", {
 })
 
 test_that("checking works for resource-lists", {
-  check <- check_if_idaifield(unnest_resource(test_docs))
+  check <- check_if_idaifield(unnest_docs(test_docs))
   expect_true(check["idaifield_resources"])
 })

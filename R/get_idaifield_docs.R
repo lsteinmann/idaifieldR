@@ -5,7 +5,7 @@
 #' This just wraps **sofa**s functions under another name,
 #' but with defaults that are useful for the import from iDAI.field 2 or
 #' Field Desktop.
-#' Also, I am using unnest_resource() from this package here, as there
+#' Also, I am using unnest_docs() from this package here, as there
 #' seems to be no use in the nested version. However,
 #' simplified = FALSE would allow to get the top-level version.
 #'
@@ -27,7 +27,7 @@
 #' unnest (i.e. remove a level of the list that contains some metadata which is
 #' IMO not useful when processing in R) just put FALSE (or anything but TRUE).
 #' If you wish to take a look at it and then later unnest, you can always use
-#' unnest_resource() from this package.
+#' unnest_docs() from this package.
 #'
 #' @param json default FALSE; if TRUE output cannot be simplified with the
 #' functions from this package and is instead of a list returned in json format
@@ -78,6 +78,8 @@ get_idaifield_docs <- function(connection = connect_idaifield(
                                          keep_geometry = keep_geometry,
                                          replace_uids = TRUE)
   }
+
+  attr(idaifield_docs, "connection") <- connection
 
   return(idaifield_docs)
 }

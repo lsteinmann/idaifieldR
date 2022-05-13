@@ -12,9 +12,9 @@
 #' using `get_idaifield_docs()`.
 #' `get_idaifield_docs()` employs this function already
 #' when setting `simplified = TRUE`, which is the default.
-#' Mostly there is no need to deal with `unnest_resource()`. If one chooses
+#' Mostly there is no need to deal with `unnest_docs()`. If one chooses
 #' `get_idaifield_docs(..., simplified  = FALSE)`, it is possible to use
-#' `unnest_resource()` on the resulting list to simplify it.
+#' `unnest_docs()` on the resulting list to simplify it.
 #'
 #' @export
 #' @keywords internal
@@ -31,9 +31,9 @@
 #' idaifield_docs <- get_idaifield_docs(connection = connection,
 #' projectname = "rtest", simplified = FALSE)
 #'
-#' idaifield_resources <- unnest_resource(idaifield_docs)
+#' idaifield_resources <- unnest_docs(idaifield_docs)
 #' }
-unnest_resource <- function(idaifield_docs) {
+unnest_docs <- function(idaifield_docs) {
 
   check_result <- check_if_idaifield(idaifield_docs)
 
@@ -42,6 +42,8 @@ unnest_resource <- function(idaifield_docs) {
                                   function(docs) docs$doc$resource)
     idaifield_resources <- structure(idaifield_resources,
                                      class = "idaifield_resources")
+    attr(idaifield_resources, "connection") <- attr(idaifield_docs,
+                                                    "connection")
     return(idaifield_resources)
   } else if (check_result["idaifield_resources"]) {
     message("The list was already unnested to resource-level.")
