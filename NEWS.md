@@ -1,8 +1,13 @@
 # idaifieldR 0.2.0 _2022-02-10_
 
-* Version number changed to 0.2, to reflect the dramatic changes (that have not yet taken place).
+* Version number changed to 0.2, to reflect the rather dramatic changes.
 * Faster `get_uid_list()` using `lapply()`
-* Added `idf_query()`, todo: will rely more on couchDB-queries in the future and therefore need to redo a lot of the package
+* Added `idf_query()` to specifically query the db for groups without first downloading everything
+* Added `idf_index_query()` to specifically query the db for things that are only available in the uidlist (needs a uidlist to do that)
+* `simplified = TRUE` (`simplify_idaifield()`) will now convert checkbox field to multiple columns. I should probably make this an option.  
+* make it possible to import the configuration file (needed for some new functions; will only work with idaifield3 and up, hopefully); connection and projectname are now attributes of the "idaifield_docs" and "idaifield_resources" objects.
+* `idaifield_as_matrix()` now returns a matrix with character values, not lists
+* dimension lists will be imported as a single value - this is still studip, actually, but I can't currently think of a better way.
 * Demo.Rmd updated to begin working on that.
 
 I stated that I don't intend any structural changes, but that - apparently - was a stupid idea. However, the old functions remain as they were.
