@@ -22,7 +22,7 @@ This function is a helper to `simplify_single_resource()`.
 }
 \examples{
 \dontrun{
-dimensionLength_new <- idf_sepdim(idaifield[[1]]$dimensionLength,
+dimensionLength_new <- idf_sepdim(idaifield_resources[[1]]$dimensionLength,
 "dimensionLength")
 }
 }
