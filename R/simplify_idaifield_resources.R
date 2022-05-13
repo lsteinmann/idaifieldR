@@ -69,6 +69,55 @@ find_layer <- function(resource = resource,
   }
 }
 
+#' Break down a list from a checkbox field to onehot-coded values
+#'
+#' This function is a helper to `simplify_single_resource()`.
+#'
+#' @param resource A list from one of the measurement fields
+#' (dimensionLength, dimensionWidth, etc.) from a single resource (element).
+#' @param config A configuration list as returned by `get_configuration()`
+#'
+#' @return The resource object with the checkboxes seperated
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' conn <- connect_idaifield(serverip = "127.0.0.1",
+#' user = "R", pwd = "hallo")
+#' config <- get_configuration(connection = conn,
+#' projectname = "rtest")
+#' idaifield_resources[[1]] <- convert_to_onehot(config,
+#' idaifield_resources[[1]])
+#' }
+convert_to_onehot <- function(resource, config) {
+  # get the inputType list
+  checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
+
+  # find which fields actually belong to the resource type
+  correct_type <- which(checkboxes[,"type"] == resource$type)
+  # manually add Feature and Find type because of problems
+  correct_type <- c(correct_type,
+                    which(checkboxes[,"type"] %in% c("Feature", "Find")))
+  # get the index of the resource that should be converted
+  index_to_convert <- which(names(resource) %in% checkboxes[correct_type,"field"])
+  # add campaign field manually
+  index_to_convert <- c(index_to_convert, which(names(resource) == "campaign"))
+
+  # loop over the index to replace the checkbox-variable
+  # with one-hot-coded versions
+  for (i in index_to_convert) {
+    var_name <- names(resource[i])
+    var <- resource[[i]]
+    new_vars <- rep(TRUE, length(var))
+    names(new_vars) <- paste(var_name,".", var, sep = "")
+    resource <- append(resource, new_vars)
+  }
+  # remove the old ones
+  resource[index_to_convert] <- NULL
+  return(resource)
+}
+
 
 #' Break down a list from a dimension field to a single value
 #'
@@ -86,7 +135,7 @@ find_layer <- function(resource = resource,
 #'
 #' @examples
 #' \dontrun{
-#' dimensionLength_new <- idf_sepdim(idaifield[[1]]$dimensionLength,
+#' dimensionLength_new <- idf_sepdim(idaifield_resources[[1]]$dimensionLength,
 #' "dimensionLength")
 #' }
 idf_sepdim <- function(dimensionList, name = "dimensionLength") {
