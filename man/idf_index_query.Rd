@@ -6,7 +6,7 @@
 \usage{
 idf_index_query(
   connection,
-  project,
+  projectname,
   field = "type",
   value = "Brick",
   keep_geometry = TRUE,
@@ -16,7 +16,7 @@ idf_index_query(
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
 
-\item{project}{The name of the project to be queried.}
+\item{projectname}{The name of the project to be queried.}
 
 \item{field}{The resource field that should be selected for (options are
 limited to the columns names of the uidlist).}
@@ -36,7 +36,7 @@ Queries resources from an iDAI.field database that is currently running
 }
 \examples{
 \dontrun{
-idf_index_query(connection, project = "milet", field = "type", value = "Brick")
+idf_index_query(connection, projectname = "milet", field = "type", value = "Brick")
 }
 
 }
