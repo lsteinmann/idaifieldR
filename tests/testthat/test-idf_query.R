@@ -14,7 +14,7 @@ test_that("returns list", {
   res <- idf_query(connection, project = "rtest",
                    field = "type", value = "Layer",
                    uidlist = uidlist)
-  expect_true(is.list(res))
+  expect_equal(class(res), "idaifield_resources")
 })
 
 test_that("returns appropriate entries", {

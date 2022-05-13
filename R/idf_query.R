@@ -3,7 +3,7 @@
 #' Queries resources from an iDAI.field database that is currently running
 #'
 #' @param connection A connection object as returned by `connect_idaifield()`
-#' @param project The name of the project to be queried.
+#' @param projectname The name of the project to be queried.
 #' @param field The resource field that should be selected for (i.e. "type" for
 #' the type of resource (Pottery, Brick, Layer)).
 #' @param value The value to be selected for in the specified field (i.e.
@@ -18,10 +18,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' idf_query(connection, project = "milet", field = "type", value = "Brick")
+#' idf_query(connection, projectname = "rtest", field = "type", value = "Brick")
 #' }
 #'
-idf_query <- function(connection, project,
+idf_query <- function(connection, projectname,
                       field = "type",
                       value = "Brick",
                       uidlist = NULL,
@@ -31,8 +31,11 @@ idf_query <- function(connection, project,
                  field, '": "', value, '"}}', sep = "")
 
   result <- sofa::db_query(cushion = connection,
-                           dbname = project,
+                           dbname = projectname,
                            query = query)
+
+
+  config <- get_configuration(connection, projectname)
 
   result <- lapply(result[[1]],
                    function(x) x$resource)
@@ -40,7 +43,12 @@ idf_query <- function(connection, project,
                    function(x) simplify_single_resource(x,
                                                         uidlist = uidlist,
                                                         replace_uids = TRUE,
-                                                        keep_geometry = keep_geometry))
+                                                        keep_geometry = keep_geometry,
+                                                        config = config))
+
+  attr(result, "connection") <- connection
+  attr(result, "projectname") <- projectname
+  result <- structure(result, class = "idaifield_resources")
 
   return(result)
 }
@@ -51,7 +59,7 @@ idf_query <- function(connection, project,
 #' Queries resources from an iDAI.field database that is currently running
 #'
 #' @param connection A connection object as returned by `connect_idaifield()`
-#' @param project The name of the project to be queried.
+#' @param projectname The name of the project to be queried.
 #' @param field The resource field that should be selected for (options are
 #' limited to the columns names of the uidlist).
 #' @param value The value to be selected for in the specified field.
@@ -65,10 +73,10 @@ idf_query <- function(connection, project,
 #'
 #' @examples
 #' \dontrun{
-#' idf_index_query(connection, project = "milet", field = "type", value = "Brick")
+#' idf_index_query(connection, projectname = "milet", field = "type", value = "Brick")
 #' }
 #'
-idf_index_query <- function(connection, project,
+idf_index_query <- function(connection, projectname,
                       field = "type",
                       value = "Brick",
                       keep_geometry = TRUE,
@@ -86,8 +94,11 @@ idf_index_query <- function(connection, project,
                  sep = "")
 
   result <- sofa::db_query(cushion = connection,
-                           dbname = project,
+                           dbname = projectname,
                            query = query)
+
+
+  config <- get_configuration(connection, projectname)
 
   result <- lapply(result[[1]],
                    function(x) x$resource)
@@ -95,7 +106,12 @@ idf_index_query <- function(connection, project,
                    function(x) simplify_single_resource(x,
                                                         uidlist = uidlist,
                                                         replace_uids = TRUE,
-                                                        keep_geometry = keep_geometry))
+                                                        keep_geometry = keep_geometry,
+                                                        config = config))
+
+  attr(result, "connection") <- connection
+  attr(result, "projectname") <- projectname
+  result <- structure(result, class = "idaifield_resources")
 
   return(result)
 }
