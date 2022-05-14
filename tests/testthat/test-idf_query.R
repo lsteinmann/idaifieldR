@@ -3,10 +3,12 @@ skip_on_cran()
 connection <- connect_idaifield(serverip = "127.0.0.1",
                                 user = "R", pwd = "hallo")
 
-tryCatch({sofa::ping(connection)},
-         error = function(cond) {
-           skip("Test skipped, needs DB-connection")
-         })
+tryCatch({
+  sofa::ping(connection)
+},
+error = function(cond) {
+  skip("Test skipped, needs DB-connection")
+})
 
 uidlist <- get_uid_list(get_idaifield_docs(connection, projectname = "rtest"))
 

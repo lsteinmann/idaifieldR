@@ -43,5 +43,3 @@ for (item in items) {
                            by = "type"))
   })
 }
-
-

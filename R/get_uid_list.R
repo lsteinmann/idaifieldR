@@ -91,7 +91,7 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
     for (i in seq_len(nrow(uid_list))) {
       temp_place <- uid_list$Place[i]
       temp_place <- which(uid_list$identifier == temp_place)
-      temp_place <- uid_list[temp_place,]
+      temp_place <- uid_list[temp_place, ]
 
       if (nrow(temp_place) == 0) {
         next

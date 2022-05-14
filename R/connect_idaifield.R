@@ -29,9 +29,9 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
   }
   # use result to set the port according to the version
   if (version >= 3) {
-    port = 3001
+    port <- 3001
   } else {
-    port = 3000
+    port <- 3000
   }
 
   idaifield_connection <- sofa::Cushion$new(host = serverip,

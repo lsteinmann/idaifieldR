@@ -49,7 +49,3 @@ idaifield_as_matrix <- function(idaifield_docs) {
 
   return(resource_matrix)
 }
-
-
-
-

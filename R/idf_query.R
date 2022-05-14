@@ -41,10 +41,10 @@ idf_query <- function(connection, projectname,
                    function(x) x$resource)
   result <- lapply(result,
                    function(x) simplify_single_resource(x,
-                                                        uidlist = uidlist,
-                                                        replace_uids = TRUE,
-                                                        keep_geometry = keep_geometry,
-                                                        config = config))
+                                              uidlist = uidlist,
+                                              replace_uids = TRUE,
+                                              keep_geometry = keep_geometry,
+                                              config = config))
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
@@ -73,7 +73,10 @@ idf_query <- function(connection, projectname,
 #'
 #' @examples
 #' \dontrun{
-#' idf_index_query(connection, projectname = "milet", field = "type", value = "Brick")
+#' idf_index_query(connection,
+#' projectname = "milet",
+#' field = "type",
+#' value = "Brick")
 #' }
 #'
 idf_index_query <- function(connection, projectname,
@@ -86,7 +89,7 @@ idf_index_query <- function(connection, projectname,
     stop("Supply a field that corresponds to the columns in the UID-List.")
   }
 
-  doc_ids <- uidlist$UID[which(uidlist[,field] == value)]
+  doc_ids <- uidlist$UID[which(uidlist[, field] == value)]
 
   doc_ids <- paste('"', doc_ids, '"', collapse = ", ", sep = "")
 
@@ -115,5 +118,3 @@ idf_index_query <- function(connection, projectname,
 
   return(result)
 }
-
-
