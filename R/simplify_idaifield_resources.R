@@ -355,5 +355,8 @@ simplify_idaifield <- function(idaifield_docs,
   )
 
   resources <- structure(resources, class = "idaifield_resources")
+  attr(resources, "connection") <- connection
+  attr(resources, "projectname") <- projectname
+
   return(resources)
 }

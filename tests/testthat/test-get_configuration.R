@@ -9,7 +9,7 @@ tryCatch({sofa::ping(connection)},
          })
 
 test_that("returns NA for missing config", {
-  config <- get_configuration(connection, projectname = "rtest")
+  config <- get_configuration(connection, projectname = "test")
   expect_equal(config, NA)
 })
 

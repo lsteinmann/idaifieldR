@@ -44,6 +44,16 @@ test_docs <- get_idaifield_docs(projectname = "rtest",
 test_resources <- get_idaifield_docs(projectname = "rtest",
                                      connection = connection,
                                      simplified = TRUE)
+test_that("has connection as attribute", {
+  test <- attr(test_docs, "connection")
+  expect_true("Cushion" %in% class(test))
+})
+
+test_that("has connection as attribute", {
+  test <- attr(test_resources, "connection")
+  expect_true("Cushion" %in% class(test))
+})
+
 
 test_that("returns docs-lists", {
   check <- check_if_idaifield(test_docs)
