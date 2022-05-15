@@ -36,7 +36,10 @@ Queries resources from an iDAI.field database that is currently running
 }
 \examples{
 \dontrun{
-idf_index_query(connection, projectname = "milet", field = "type", value = "Brick")
+idf_index_query(connection,
+projectname = "milet",
+field = "type",
+value = "Brick")
 }
 
 }
