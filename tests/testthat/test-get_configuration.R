@@ -49,3 +49,16 @@ test_that("returns all if not existing", {
   fields <- get_field_inputtypes(config, inputType = 3)
   expect_gt(length(unique(fields[, 3])), 1)
 })
+
+empty_config <- readRDS(system.file("testdata", "empty_config.RDS",
+                                 package = "idaifieldR"))
+
+test_that("warning for empty config", {
+  expect_warning(get_field_inputtypes(empty_config))
+})
+
+test_that("empty matrix for empty config", {
+  expect_equal(nrow(suppressWarnings(get_field_inputtypes(empty_config))), 0)
+})
+
+
