@@ -12,7 +12,7 @@ When using the defaults, the entries are automatically formatted for easier proc
 
 ## Dependencies
 
-idaifieldR depends on the R-package [sofa](https://github.com/ropensci/sofa) (available on CRAN) and needs a syncing [iDAI.field 2-Client](https://github.com/dainst/idai-field) to work.
+idaifieldR depends on the R-package [sofa](https://github.com/ropensci/sofa) (available on CRAN) and needs a syncing [iDAI.field/Field Desktop-Client](https://github.com/dainst/idai-field) to work.
 
 ## Installation
 
