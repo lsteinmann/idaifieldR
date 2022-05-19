@@ -2,6 +2,7 @@ source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
+uidlist <- uidlist[-which(uidlist$UID == "configuration"), ]
 
 samples <- sample(seq_len(nrow(uidlist)), size = 5)
 
