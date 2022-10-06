@@ -73,14 +73,16 @@ get_idaifield_docs <- function(connection = connect_idaifield(
     idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
   }
 
+
+  attr(idaifield_docs, "connection") <- connection
+  attr(idaifield_docs, "projectname") <- projectname
+
   if (simplified) {
     idaifield_docs <- simplify_idaifield(idaifield_docs = idaifield_docs,
                                          keep_geometry = keep_geometry,
                                          replace_uids = TRUE)
   }
 
-  attr(idaifield_docs, "connection") <- connection
-  attr(idaifield_docs, "projectname") <- projectname
 
   return(idaifield_docs)
 }

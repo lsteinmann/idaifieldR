@@ -108,12 +108,12 @@ convert_to_onehot <- function(resource, config) {
   checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
 
   # find which fields actually belong to the resource type
-  correct_type <- which(checkboxes[,"type"] == resource$type)
+  correct_type <- which(checkboxes[, "type"] == resource$type)
   # manually add Feature and Find type because of problems
   correct_type <- c(correct_type,
-                    which(checkboxes[,"type"] %in% c("Feature", "Find")))
+                    which(checkboxes[, "type"] %in% c("Feature", "Find")))
   # get the index of the resource that should be converted
-  index_to_convert <- which(names(resource) %in% checkboxes[correct_type,"field"])
+  index_to_convert <- which(names(resource) %in% checkboxes[correct_type, "field"])
   # add campaign field manually
   index_to_convert <- c(index_to_convert, which(names(resource) == "campaign"))
 
@@ -123,7 +123,7 @@ convert_to_onehot <- function(resource, config) {
     var_name <- names(resource[i])
     var <- resource[[i]]
     new_vars <- rep(TRUE, length(var))
-    names(new_vars) <- paste(var_name,".", var, sep = "")
+    names(new_vars) <- paste(var_name, ".", var, sep = "")
     resource <- append(resource, new_vars)
   }
   # remove the old ones
@@ -161,7 +161,7 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
       # been converted. If inputValue doesn't exist, it should be a range.
       if (is.null(x$inputValue)) {
         range <- c(x$rangeMin, x$rangeMax)
-        value <- mean(range)/10000
+        value <- mean(range) / 10000
         return(value)
       } else {
         # And then we need to do unit conversion...
@@ -178,7 +178,7 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
         }
       }
     } else {
-      value <- x$value/10000
+      value <- x$value / 10000
       return(value)
     }
   }
@@ -303,7 +303,7 @@ simplify_single_resource <- function(resource,
 
   if (length(dim_names) >= 1) {
     new_dims <- as.list(1)
-    for(dim in dim_names) {
+    for (dim in dim_names) {
       new_dims <- append(new_dims, idf_sepdim(resource[[dim]], dim))
     }
     new_dims <- as.list(unlist(new_dims[-1]))
@@ -401,5 +401,8 @@ simplify_idaifield <- function(idaifield_docs,
   )
 
   resources <- structure(resources, class = "idaifield_resources")
+  attr(resources, "connection") <- connection
+  attr(resources, "projectname") <- projectname
+
   return(resources)
 }

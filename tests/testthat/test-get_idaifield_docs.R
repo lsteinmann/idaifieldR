@@ -3,10 +3,12 @@ skip_on_cran()
 connection <- connect_idaifield(serverip = "127.0.0.1",
                                 user = "R", pwd = "hallo")
 
-tryCatch({sofa::ping(connection)},
-         error = function(cond) {
-           skip("Test skipped, needs DB-connection")
-         })
+tryCatch({
+  sofa::ping(connection)
+},
+error = function(cond) {
+  skip("Test skipped, needs DB-connection")
+})
 
 
 test_that("works with 2", {
@@ -44,6 +46,16 @@ test_docs <- get_idaifield_docs(projectname = "rtest",
 test_resources <- get_idaifield_docs(projectname = "rtest",
                                      connection = connection,
                                      simplified = TRUE)
+test_that("has connection as attribute", {
+  test <- attr(test_docs, "connection")
+  expect_true("Cushion" %in% class(test))
+})
+
+test_that("has connection as attribute", {
+  test <- attr(test_resources, "connection")
+  expect_true("Cushion" %in% class(test))
+})
+
 
 test_that("returns docs-lists", {
   check <- check_if_idaifield(test_docs)
@@ -67,5 +79,3 @@ test_that("attaches connection as attribute", {
   pinglist <- sofa::ping(test_conn)
   expect_true(is.list(pinglist))
 })
-
-

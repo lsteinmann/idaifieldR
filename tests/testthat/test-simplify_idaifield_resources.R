@@ -6,7 +6,7 @@ uidlist <- get_uid_list(test_docs)
 
 items <- sample(seq_along(test_resources), size = 5)
 for (item in items) {
-  print(paste("-----------------------------------------------###### Nr.: ", item))
+  print(paste("--------------------------###### Nr.: ", item))
 
   test_that("error when no identifier", {
     test_resources[[item]]$identifier <- NULL
@@ -46,14 +46,16 @@ for (item in items) {
 
   if (!is.null(test_resources[[item]]$dimensionLength)) {
     test_that("dimension is replaced", {
-      test <- simplify_single_resource(test_resources[[item]], uidlist = uidlist)
+      test <- simplify_single_resource(test_resources[[item]],
+                                       uidlist = uidlist)
       expect_true(any(grepl("_cm_1", names(test))))
     })
   }
 
   if (!is.null(test_resources[[item]]$dimensionThickness)) {
     test_that("dimension is replaced", {
-      test <- simplify_single_resource(test_resources[[item]], uidlist = uidlist)
+      test <- simplify_single_resource(test_resources[[item]],
+                                       uidlist = uidlist)
       expect_true(any(grepl("_cm_1", names(test))))
     })
   }

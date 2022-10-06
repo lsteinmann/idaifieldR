@@ -61,16 +61,19 @@ get_configuration <- function(connection, projectname = "rtest") {
 get_field_inputtypes <- function(config, inputType = "all") {
   fields <- lapply(config$forms, FUN = function(x) (unlist(x$fields)))
   fields <- unlist(fields)
-  names(fields) <- gsub(".inputType", "",names(fields))
-  names(fields) <- gsub(":default", "",names(fields))
-  if (inputType %in% unique(fields)) {
-    fields <- fields[fields == inputType]
+  if (is.null(fields)) {
+    warning("No custom fields found in configuration!")
+  } else {
+    names(fields) <- gsub(".inputType", "", names(fields))
+    names(fields) <- gsub(":default", "", names(fields))
+    if (inputType %in% unique(fields)) {
+      fields <- fields[fields == inputType]
+    }
   }
   fields_mat <- matrix(nrow = length(fields), ncol = 3)
   colnames(fields_mat) <- c("type", "field", "inputType")
-  fields_mat[,1] <- gsub("\\..*", "", names(fields))
-  fields_mat[,2] <- gsub(".*\\.", "", names(fields))
-  fields_mat[,3] <- unname(fields)
+  fields_mat[, 1] <- gsub("\\..*", "", names(fields))
+  fields_mat[, 2] <- gsub(".*\\.", "", names(fields))
+  fields_mat[, 3] <- unname(fields)
   return(fields_mat)
 }
-
