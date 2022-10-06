@@ -1,3 +1,7 @@
+# idaifieldR 0.2.1 _2022-05-15_
+* Fixed `find_layer()` (internal), seems to work as intended now.
+* With the editor for the project configuration in iDAI.field 3, new fields and objects started to be named according to their configurations, e.g. "milet:temperType" etc., if the fields have been newly created. From now on those config specific names are removed from all fields, so that only the part after the double dot remains (e.g. "milet:temperType" becomes "temperType").
+
 # idaifieldR 0.2.0 _2022-05-15_
 
 * Version number changed to 0.2, to reflect the rather dramatic changes.
@@ -7,8 +11,6 @@
 * `simplified = TRUE` (`simplify_idaifield()`) will now convert checkbox field to multiple columns. I should probably make this an option in the future, but I need to clean up that function first (TODO).
 * make it possible to import the configuration file (needed for some new functions; will only work with idaifield3 and up, hopefully); connection and projectname are now attributes of the "idaifield_docs" and "idaifield_resources" objects.
 * `idaifield_as_matrix()` now returns a matrix with character values, not lists
-* Fixed `find_layer()` (internal), seems to work as intended now.
-* With the editor for the project configuration in iDAI.field 3, new fields and objects started to be named according to their configurations, e.g. "milet:temperType" etc., if the fields have been newly created. From now on those config specific names are removed from all fields, so that only the part after the double dot remains (e.g. "milet:temperType" becomes "temperType").
 * Dimension lists will be imported as a single value - this is still stupid, actually, but I can't currently think of a better way.
 * Two Vignettes: Demo.Rmd with essential workflow, about.Rmd explaining a bit more. Demo.Rmd updated to begin working on that.
 
