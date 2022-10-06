@@ -6,7 +6,7 @@
 \usage{
 idf_query(
   connection,
-  project,
+  projectname,
   field = "type",
   value = "Brick",
   uidlist = NULL,
@@ -16,7 +16,7 @@ idf_query(
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
 
-\item{project}{The name of the project to be queried.}
+\item{projectname}{The name of the project to be queried.}
 
 \item{field}{The resource field that should be selected for (i.e. "type" for
 the type of resource (Pottery, Brick, Layer)).}
@@ -37,7 +37,7 @@ Queries resources from an iDAI.field database that is currently running
 }
 \examples{
 \dontrun{
-idf_query(connection, project = "milet", field = "type", value = "Brick")
+idf_query(connection, projectname = "rtest", field = "type", value = "Brick")
 }
 
 }
