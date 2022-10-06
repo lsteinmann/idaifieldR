@@ -25,10 +25,13 @@ find_layer <- function(resource = resource,
     return(NA)
   }
 
+  # get identifier, index and type of the parent resource
   liesWithin_index <- which(resource$relation.liesWithin == uidlist$identifier)
   liesWithin_identifier <- uidlist$identifier[liesWithin_index]
   liesWithin_type <- uidlist$type[liesWithin_index]
 
+  # if there is no df names "liesWithin" yet (i.e. liesWithin = NULL), create
+  # one with the data gathered above
   if (!is.data.frame(liesWithin)) {
     liesWithin <- data.frame(liesWithin_index = liesWithin_index,
                              liesWithin_identifier = liesWithin_identifier,
@@ -44,24 +47,34 @@ find_layer <- function(resource = resource,
     layer_type_list <- getOption("idaifield_types")$layers_strict
   }
 
+  # is any of the parent resources in the liesWithin-df a Layer?
   is_context <- liesWithin$liesWithin_type %in% layer_type_list
   if (any(is_context)) {
+    # return the layer/context if there is one
     in_layer <- which(is_context)
     in_layer <- liesWithin$liesWithin_identifier[in_layer]
     return(in_layer)
   } else {
+    # get the next row of the df to find its parent resources
     current <- nrow(liesWithin)
-    current <- liesWithin$liesWithin_index[current]
+    # will not work with chr value as it has to be the index
+    current <- as.numeric(liesWithin$liesWithin_index[current])
+    # get the identifier of the next parent resource
     next_liesWithin_identifier <- uidlist$liesWithin[current]
 
     if (is.na(next_liesWithin_identifier) || length(current) == 0) {
+      # this happens if there is no parent resource or no df
       return(NA)
     } else {
+      # get the index and type of the parent
       next_liesWithin_index <- which(uidlist$identifier == next_liesWithin_identifier)
       next_liesWithin_type <- uidlist$type[next_liesWithin_index]
+      # add as a row to the data.frame
       liesWithin <- rbind(liesWithin, c(next_liesWithin_index,
                                         next_liesWithin_identifier,
                                         next_liesWithin_type))
+      # recursively call the function again to find the next parent, this
+      # time with the data.frame already existing
       find_layer(resource = resource,
                  uidlist = uidlist,
                  liesWithin = liesWithin)
@@ -182,6 +195,29 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
   return(dims)
 }
 
+#' Remove everything before the : in a character vector
+#'
+#' This function is a helper to `simplify_single_resource()`.
+#'
+#' @param nameslist a character vector
+#'
+#' @return same character vector without everything before
+#' the ":" including the ":"
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' nameslist <- c("relation.liesWithin","relation.liesWithinLayer",
+#' "campaign.2022","milet:test")
+#' nameslist <- remove_config_names(nameslist)
+#' nameslist
+#' }
+remove_config_names <- function(nameslist = c("identifier","configname:test")) {
+  nameslist <- gsub("^.*:", "", nameslist)
+  return(nameslist)
+}
+
 
 #' Simplifies a single resource from the iDAI.field 2 / Field Desktop Database
 #'
@@ -211,6 +247,8 @@ simplify_single_resource <- function(resource,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
                                      config = NULL) {
+
+
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -252,7 +290,15 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, fixed_periods)
   }
 
+
+
   list_names <- names(resource)
+
+  if (any(grepl(":", list_names))) {
+    list_names <- remove_config_names(list_names)
+    names(resource) <- list_names
+  }
+
   dim_names <- list_names[grep("dimension", list_names)]
 
   if (length(dim_names) >= 1) {
