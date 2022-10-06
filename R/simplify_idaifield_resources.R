@@ -182,6 +182,29 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
   return(dims)
 }
 
+#' Remove everything before the : in a character vector
+#'
+#' This function is a helper to `simplify_single_resource()`.
+#'
+#' @param nameslist a character vector
+#'
+#' @return same character vector without everything before
+#' the ":" including the ":"
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' nameslist <- c("relation.liesWithin","relation.liesWithinLayer",
+#' "campaign.2022","milet:test")
+#' nameslist <- remove_config_names(nameslist)
+#' nameslist
+#' }
+remove_config_names <- function(nameslist = c("identifier","configname:test")) {
+  nameslist <- gsub("^.*:", "", nameslist)
+  return(nameslist)
+}
+
 
 #' Simplifies a single resource from the iDAI.field 2 / Field Desktop Database
 #'
@@ -211,6 +234,8 @@ simplify_single_resource <- function(resource,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
                                      config = NULL) {
+
+
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -252,7 +277,15 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, fixed_periods)
   }
 
+
+
   list_names <- names(resource)
+
+  if (any(grepl(":", list_names))) {
+    list_names <- remove_config_names(list_names)
+    names(resource) <- list_names
+  }
+
   dim_names <- list_names[grep("dimension", list_names)]
 
   if (length(dim_names) >= 1) {
