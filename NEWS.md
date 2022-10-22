@@ -1,6 +1,9 @@
 # idaifieldR 0.2.1 _2022-05-15_
 * Fixed `find_layer()` (internal), seems to work as intended now.
 * With the editor for the project configuration in iDAI.field 3, new fields and objects started to be named according to their configurations, e.g. "milet:temperType" etc., if the fields have been newly created. From now on those config specific names are removed from all fields, so that only the part after the double dot remains (e.g. "milet:temperType" becomes "temperType").
+* check_if_uid() now handles vectors
+* Speed up `get_uid_list()` and `replace_uid()` (a lot)
+
 
 # idaifieldR 0.2.0 _2022-05-15_
 

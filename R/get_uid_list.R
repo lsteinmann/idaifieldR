@@ -35,7 +35,6 @@
 #' }
 get_uid_list <- function(idaifield_docs, verbose = FALSE,
                          gather_trenches = FALSE) {
-
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
   ncol <- 5
@@ -81,26 +80,25 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
                                               function(x) na_if_empty(x$relation.liesWithinLayer)))
   }
 
-  uid_list$isRecordedIn <- replace_uid(uid_list$isRecordedIn, uid_list)
-  uid_list$liesWithin <- replace_uid(uid_list$liesWithin, uid_list)
+  uid_list$isRecordedIn <- replace_uid(which(colnames(uid_list) == "isRecordedIn"), uid_list)
+  uid_list$liesWithin <- replace_uid(which(colnames(uid_list) == "liesWithin"), uid_list)
 
   if (gather_trenches) {
-    uid_list$Place <- ifelse(is.na(uid_list$isRecordedIn),
+
+    gather_mat <- matrix(ncol = 3, nrow = nrow(uid_list))
+    gather_mat[,1] <- ifelse(is.na(uid_list$isRecordedIn),
                              uid_list$liesWithin,
                              uid_list$isRecordedIn)
-    for (i in seq_len(nrow(uid_list))) {
-      temp_place <- uid_list$Place[i]
-      temp_place <- which(uid_list$identifier == temp_place)
-      temp_place <- uid_list[temp_place, ]
+    gather_mat[,2] <- uid_list$type[match(gather_mat[,1],
+                                          uid_list$identifier)]
+    gather_mat[,3] <- uid_list$liesWithin[match(gather_mat[,1],
+                                          uid_list$identifier)]
 
-      if (nrow(temp_place) == 0) {
-        next
-      } else if (temp_place$type == "Trench") {
-        uid_list$Place[i] <- temp_place$liesWithin[1]
-      }
-    }
+    uid_list$Place <- ifelse(gather_mat[,2] == "Trench",
+                             gather_mat[,3],
+                             gather_mat[,1])
+
   }
-
 
   return(uid_list)
 }

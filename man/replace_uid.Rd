@@ -4,10 +4,11 @@
 \alias{replace_uid}
 \title{replace_uid}
 \usage{
-replace_uid(item, uidlist)
+replace_uid(uidvector, uidlist)
 }
 \arguments{
-\item{item}{A vector (does not handle lists)}
+\item{uidvector}{a vector of UIDs to be replaced with their identifiers (if
+numeric, the corresponging column of the uidlist is processed)}
 
 \item{uidlist}{a uidlist as returned by get_uid_list()}
 }
