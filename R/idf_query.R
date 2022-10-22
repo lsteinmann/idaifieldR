@@ -103,18 +103,10 @@ idf_index_query <- function(connection, projectname,
 
   config <- get_configuration(connection, projectname)
 
-  result <- lapply(result[[1]],
-                   function(x) x$resource)
-  result <- lapply(result,
-                   function(x) simplify_single_resource(x,
-                                                        uidlist = uidlist,
-                                                        replace_uids = TRUE,
-                                                        keep_geometry = keep_geometry,
-                                                        config = config))
-
-  attr(result, "connection") <- connection
-  attr(result, "projectname") <- projectname
-  result <- structure(result, class = "idaifield_resources")
+  result <- simplify_idaifield(idaifield_docs = result,
+                               keep_geometry = keep_geometry,
+                               replace_uids = TRUE,
+                               uidlist = uidlist)
 
   return(result)
 }
