@@ -4,10 +4,11 @@
 \alias{idaifield_as_matrix}
 \title{idaifield_as_matrix}
 \usage{
-idaifield_as_matrix(idaifield_docs)
+idaifield_as_matrix(idaifield)
 }
 \arguments{
-\item{idaifield_docs}{An object as returned by get_idaifield_docs(...)}
+\item{idaifield}{An object as returned by get_idaifield_docs(...)
+or simplify_idaifield(...)}
 }
 \value{
 a matrix (depending on selection and database it can be very large)
@@ -17,16 +18,16 @@ Converts an idaifield_docs/idaifield_resource-list into a Matrix.
 }
 \details{
 If the list containing all meta-info (i.e. the docs-list)
-is handed to the function it will automatically unnest and simplify if
-necessary to resource level).
+is handed to the function it will automatically unnest to resource level).
 }
 \examples{
 \dontrun{
 connection <- connect_idaifield(serverip = "127.0.0.1",
 user = "R", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = connection,
-projectname = "rtest", simplified = TRUE)
-
-idaifield_mat <- idaifield_as_matrix(idaifield_docs)
+projectname = "rtest")
+pottery <- select_by(idaifield_docs, by = "type", value = "Pottery")
+pottery <- simplify_idaifield(pottery, uidlist = get_uid_list(idaifield_docs))
+pottery <- idaifield_as_matrix(pottery)
 }
 }

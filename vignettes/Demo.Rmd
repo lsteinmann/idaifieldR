@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 library(idaifieldR)
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, warning = FALSE, message = FALSE}
 idaifield_test_docs <- readRDS(system.file("testdata",
                                            "idaifield_test_docs.RDS",
                                            package = "idaifieldR"))
@@ -51,7 +51,7 @@ all_resources[[1]]
 
 Additionally, using the object that contains all resources, you can generate an index of the database which is handy for some other functions or to get a general impression of what is there:
 ```{r eval=TRUE}
-uidlist <- get_uid_list(all_resources)
+uidlist <- get_uid_list(all_resources, verbose = TRUE, gather_trenches = TRUE)
 head(uidlist)
 ```
 
@@ -69,7 +69,8 @@ If the import of all resources takes too long, it is possible to query the datab
 ```{r eval=FALSE}
 pottery <- idf_query(connection, projectname = "rtest", 
                      field = "type", 
-                     value = "Pottery")
+                     value = "Pottery",
+                     uidlist = uidlist)
 ```
 ```{r eval=TRUE}
 pottery <- idaifield_as_matrix(pottery)

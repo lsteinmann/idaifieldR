@@ -7,8 +7,7 @@
 get_idaifield_docs(
   connection = connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo"),
   projectname = "projectname",
-  keep_geometry = TRUE,
-  simplified = TRUE,
+  raw = TRUE,
   json = FALSE
 )
 }
@@ -18,13 +17,8 @@ get_idaifield_docs(
 \item{projectname}{The name of the project in the Field Client that one
 wishes to load.}
 
-\item{keep_geometry}{TRUE if the geometry should be kept}
-
-\item{simplified}{Defaults to TRUE. If you do not wish to automatically
-unnest (i.e. remove a level of the list that contains some metadata which is
-IMO not useful when processing in R) just put FALSE (or anything but TRUE).
-If you wish to take a look at it and then later unnest, you can always use
-unnest_docs() from this package.}
+\item{raw}{default FALSE. If you wish to get an unnested version of only
+the resources, without the metadata (i.e. changes by user), set it to TRUE}
 
 \item{json}{default FALSE; if TRUE output cannot be simplified with the
 functions from this package and is instead of a list returned in json format
@@ -40,12 +34,14 @@ character string in json-format.)
 \description{
 Imports all resources from an idaifield-database that is currently running
 and synching into a list-object for further processing in R.
-This just wraps **sofa**s functions under another name,
-but with defaults that are useful for the import from iDAI.field 2 or
-Field Desktop.
-Also, I am using unnest_docs() from this package here, as there
-seems to be no use in the nested version. However,
-simplified = FALSE would allow to get the top-level version.
+This wraps **sofa**s functions and slightly processes the output.
+The function is only useful for the import from iDAI.field 2 or
+Field Desktop with the respective client running on the same computer as
+the R-script.
+raw = TRUE (the default) will allow you to get all the changes for each
+resource, i.e. which user changed something in the resource at what time,
+and who created it. Setting raw to FALSE will only return a list of the
+actual data.
 }
 \details{
 NOTE: If you are planning on using the coordinates stored in the database,

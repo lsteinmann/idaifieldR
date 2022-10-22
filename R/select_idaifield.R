@@ -78,5 +78,7 @@ select_by <- function(idaifield_docs,
   selected_docs <- idaifield_docs[typeindex]
   selected_docs <- structure(selected_docs, class = "idaifield_resources")
 
+  attributes(selected_docs) <- attributes(idaifield_docs)
+
   return(selected_docs)
 }

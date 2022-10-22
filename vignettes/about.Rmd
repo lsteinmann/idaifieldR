@@ -31,12 +31,14 @@ library(dplyr)
 library(idaifieldR)
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, message = FALSE, warning = FALSE}
 idaifield_test_docs <- readRDS(system.file("testdata",
                                            "idaifield_test_docs.RDS",
                                            package = "idaifieldR"))
 # info for reference: The RDS is stored in its nested version, so:
 idaifield_test_resources <- simplify_idaifield(idaifield_test_docs)
+all_resources <- idaifield_test_docs
+uidlist <- get_uid_list(idaifield_test_resources)
 ```
 
 The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in iDAI.field 2 / Field Desktop is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function.
@@ -77,7 +79,7 @@ For almost any function of this package, you will need a "uidlist". It serves as
 all_resources <- get_idaifield_docs(
   connection = connection,
   projectname = "rtest",
-  simplified = TRUE
+  raw = FALSE
 )
 uidlist <- get_uid_list(all_resources)
 ```
@@ -104,7 +106,15 @@ layers <- idf_query(connection = connection,
 
 However, these queries will only work for fields that cannot have more than one value (i.e. radio Buttons, Dropdown lists, names). With Sofa, searching for Regular Expressions etc. is possible. If you intend to do that, I would recommend to use sofa directly. 
 
+# Working with the data
 
+The lists as they are usually returned by the database are not always very useful or easy to work with. The functions `simplify_idaifield()` aims to alleviate this somewhat by replacing all UIDs with identifiers, reformating the coordinates to make them usable, and spread columns from multiple choice fields. As the processing takes some time, I do not recommend using this function on the whole database if you have a large amount of resources. Instead, try using it on the results of queries or a selection of the database obtained with `select_by()`.
+
+```{r eval = TRUE}
+pottery <- select_by(all_resources, by = "type", value = "Pottery")
+pottery <- simplify_idaifield(pottery, uidlist = uidlist)
+head(idaifield_as_matrix(pottery))
+```
 
 
 # The Inefficient Way (deprecated functions)
@@ -117,7 +127,7 @@ And `get_idaifield_docs()` imports all documents from the project. `simplified =
 idaifield_test_resources <- get_idaifield_docs(
   connection = connection,
   projectname = "rtest",
-  simplified = TRUE
+  raw = FALSE
   )
 ```
 

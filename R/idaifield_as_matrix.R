@@ -3,11 +3,10 @@
 #' Converts an idaifield_docs/idaifield_resource-list into a Matrix.
 #'
 #' If the list containing all meta-info (i.e. the docs-list)
-#' is handed to the function it will automatically unnest and simplify if
-#' necessary to resource level).
+#' is handed to the function it will automatically unnest to resource level).
 #'
-#' @param idaifield_docs An object as returned by get_idaifield_docs(...)
-
+#' @param idaifield An object as returned by get_idaifield_docs(...)
+#' or simplify_idaifield(...)
 #'
 #' @return a matrix (depending on selection and database it can be very large)
 #' @export
@@ -17,13 +16,14 @@
 #' connection <- connect_idaifield(serverip = "127.0.0.1",
 #' user = "R", pwd = "hallo")
 #' idaifield_docs <- get_idaifield_docs(connection = connection,
-#' projectname = "rtest", simplified = TRUE)
-#'
-#' idaifield_mat <- idaifield_as_matrix(idaifield_docs)
+#' projectname = "rtest")
+#' pottery <- select_by(idaifield_docs, by = "type", value = "Pottery")
+#' pottery <- simplify_idaifield(pottery, uidlist = get_uid_list(idaifield_docs))
+#' pottery <- idaifield_as_matrix(pottery)
 #' }
-idaifield_as_matrix <- function(idaifield_docs) {
+idaifield_as_matrix <- function(idaifield) {
 
-  resource_list <- check_and_unnest(idaifield_docs)
+  resource_list <- check_and_unnest(idaifield)
 
   names_list <- lapply(resource_list, names)
 

@@ -35,7 +35,7 @@ for (item in items) {
       expect_null(test$geometry)
     })
 
-    test_that("geomtry is matrix", {
+    test_that("geometry is matrix", {
       test <- simplify_single_resource(test_resources[[item]],
                                        uidlist = uidlist,
                                        keep_geometry = TRUE)
@@ -62,5 +62,5 @@ for (item in items) {
 }
 
 test_that("runs without uidlist", {
-  expect_s3_class(simplify_idaifield(test_docs), "idaifield_resources")
+  expect_s3_class(simplify_idaifield(test_docs), "idaifield_simple")
 })

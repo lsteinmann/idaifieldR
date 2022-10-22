@@ -51,8 +51,9 @@ na_if_empty <- function(item) {
 #' }
 check_if_idaifield <- function(testobject) {
 
-  result <- rep(NA, 3)
-  names(result) <- c("idaifield_docs", "idaifield_resources", "list")
+  result <- rep(NA, 4)
+  names(result) <- c("idaifield_docs", "idaifield_resources",
+                     "idaifield_simple", "list")
 
   if (class(testobject) == "idaifield_docs") {
     result["idaifield_docs"] <- TRUE
@@ -64,6 +65,12 @@ check_if_idaifield <- function(testobject) {
     result["idaifield_resources"] <- TRUE
   } else {
     result["idaifield_resources"] <- FALSE
+  }
+
+  if (class(testobject) == "idaifield_simple") {
+    result["idaifield_simple"] <- TRUE
+  } else {
+    result["idaifield_simple"] <- FALSE
   }
 
   if (class(testobject) == "list") {
@@ -114,6 +121,8 @@ check_and_unnest <- function(idaifield_docs) {
     idaifield_docs <- unnest_docs(idaifield_docs)
     return(idaifield_docs)
   } else if (check["idaifield_resources"]) {
+    return(idaifield_docs)
+  } else if (check["idaifield_simple"]) {
     return(idaifield_docs)
   } else {
     warning("Not processed, did nothing.")

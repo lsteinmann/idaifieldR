@@ -247,8 +247,6 @@ simplify_single_resource <- function(resource,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
                                      config = NULL) {
-
-
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -264,7 +262,6 @@ simplify_single_resource <- function(resource,
                                   liesWithin = NULL)
     resource <- append(resource, list(relation.liesWithinLayer = liesWithinLayer))
   }
-
 
   if (!keep_geometry) {
     names <- names(resource)
@@ -291,7 +288,6 @@ simplify_single_resource <- function(resource,
   }
 
 
-
   list_names <- names(resource)
 
   if (any(grepl(":", list_names))) {
@@ -304,6 +300,7 @@ simplify_single_resource <- function(resource,
   if (length(dim_names) >= 1) {
     new_dims <- as.list(1)
     for (dim in dim_names) {
+      print(dim)
       new_dims <- append(new_dims, idf_sepdim(resource[[dim]], dim))
     }
     new_dims <- as.list(unlist(new_dims[-1]))
@@ -319,28 +316,8 @@ simplify_single_resource <- function(resource,
                                   config = config)
   }
 
-
-  has_sublist <- suppressWarnings(vapply(resource,
-                                         check_for_sublist,
-                                         logical(1),
-                                         USE.NAMES = FALSE))
-  has_sublist <- which(unlist(has_sublist) == TRUE)
-
-
-  for (i in seq_along(resource)) {
-    if (!i %in% has_sublist) {
-      res <- unname(unlist(resource[i]))
-      if (length(res) > 1) {
-        res <- list(res)
-      }
-      resource[i] <- na_if_empty(res)
-    }
-  }
   return(resource)
 }
-
-
-
 
 #' Simplify a list imported from an iDAI.field-Database
 #'
@@ -371,10 +348,16 @@ simplify_idaifield <- function(idaifield_docs,
                                keep_geometry = TRUE,
                                replace_uids = TRUE,
                                uidlist = NULL) {
+
+
+  check <- check_if_idaifield(idaifield_docs)
+  if (check["idaifield_simple"] == TRUE) {
+    return(idaifield_docs)
+  }
+
   if (is.null(uidlist)) {
     uidlist <- get_uid_list(idaifield_docs)
   }
-
 
 
   if (!is.null(attr(idaifield_docs, "connection"))) {
@@ -383,14 +366,15 @@ simplify_idaifield <- function(idaifield_docs,
     config <- get_configuration(connection = connection,
                                 projectname = projectname)
   }
-
   if (!exists("config")) {
     config <- NA
   }
+# 0.8 seconds to here
+  idaifield_docs <- check_and_unnest(idaifield_docs)
 
-  resources <- check_and_unnest(idaifield_docs)
-
-  resources <- lapply(resources, function(x)
+  # 0.02 sec to here
+ #tic()
+  idaifield_docs <- lapply(idaifield_docs, function(x)
     simplify_single_resource(
       x,
       replace_uids = replace_uids,
@@ -399,10 +383,15 @@ simplify_idaifield <- function(idaifield_docs,
       config = config
     )
   )
+#toc()
+# try 1: 39.7 sec to here
+# try 2: 27.66 sec to here
+# try 3: 24.82 sec to here
 
-  resources <- structure(resources, class = "idaifield_resources")
-  attr(resources, "connection") <- connection
-  attr(resources, "projectname") <- projectname
 
-  return(resources)
+  idaifield_docs <- structure(idaifield_docs, class = "idaifield_simple")
+  attr(idaifield_docs, "connection") <- connection
+  attr(idaifield_docs, "projectname") <- projectname
+
+  return(idaifield_docs)
 }
