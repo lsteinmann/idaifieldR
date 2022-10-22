@@ -7,12 +7,12 @@
 check_if_uid(string)
 }
 \arguments{
-\item{string}{A character string that should be checked for being a UID
-as used in iDAI.field 2 / Field Desktop (expects a single character value!)
-TODO: any() with grepl and then blaaaa}
+\item{string}{A character string or vector of character strings that should
+be checked for being a UID as used in iDAI.field 2 / Field Desktop}
 }
 \value{
-TRUE if UID, or FALSE if not
+a vector of the same length as string containing TRUE if
+the corresponding item in string is a UID, FALSE if not
 }
 \description{
 check_if_uid

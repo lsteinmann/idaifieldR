@@ -158,11 +158,11 @@ check_for_sublist <- function(single_resource_field) {
 
 #' check_if_uid
 #'
-#' @param string A character string that should be checked for being a UID
-#' as used in iDAI.field 2 / Field Desktop (expects a single character value!)
-#' TODO: any() with grepl and then blaaaa
+#' @param string A character string or vector of character strings that should
+#' be checked for being a UID as used in iDAI.field 2 / Field Desktop
 #'
-#' @return TRUE if UID, or FALSE if not
+#' @return a vector of the same length as string containing TRUE if
+#' the corresponding item in string is a UID, FALSE if not
 #'
 #' @keywords internal
 #'
@@ -172,18 +172,8 @@ check_for_sublist <- function(single_resource_field) {
 #' check_if_uid(string = "not a uid")
 #' }
 check_if_uid <- function(string) {
-  if (length(string) != 1) {
-    string <- string[1]
-    # no one needs this warning?
-    warning("check_if_string() has been given more than 1 string, only evaluating first.")
-  }
-  string <- as.character(string)
   is_uid <- grepl("\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}", string)
-  if (is_uid) {
-    return(TRUE)
-  } else {
-    return(FALSE)
-  }
+  return(is_uid)
 }
 
 
