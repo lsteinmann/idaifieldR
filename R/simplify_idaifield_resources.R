@@ -79,7 +79,6 @@ simplify_single_resource <- function(resource,
   if (length(dim_names) >= 1) {
     new_dims <- as.list(1)
     for (dim in dim_names) {
-      print(dim)
       new_dims <- append(new_dims, idf_sepdim(resource[[dim]], dim))
     }
     new_dims <- as.list(unlist(new_dims[-1]))
@@ -148,11 +147,8 @@ simplify_idaifield <- function(idaifield_docs,
   if (!exists("config")) {
     config <- NA
   }
-# 0.8 seconds to here
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
-  # 0.02 sec to here
- #tic()
   idaifield_docs <- lapply(idaifield_docs, function(x)
     simplify_single_resource(
       x,
@@ -162,10 +158,6 @@ simplify_idaifield <- function(idaifield_docs,
       config = config
     )
   )
-#toc()
-# try 1: 39.7 sec to here
-# try 2: 27.66 sec to here
-# try 3: 24.82 sec to here
 
 
   idaifield_docs <- structure(idaifield_docs, class = "idaifield_simple")
