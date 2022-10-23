@@ -23,16 +23,16 @@ fix_relations <- function(resource, replace_uids = TRUE, uidlist = NULL) {
     stop("replace_uids = TRUE but no UIDlist supplied")
   }
   if (length(resource$relations) > 0) {
-    relations <- resource$relations
+    relationslist <- unlist(resource$relations)
+    names <- gsub("\\d", "", names(relationslist))
     if (replace_uids) {
-      relations <- lapply(relations,
-                          function(x) replace_uid(x, uidlist = uidlist))
-    } else if (!replace_uids) {
-      relations <- lapply(relations, unlist)
+      relationslist <- replace_uid(relationslist, uidlist)
     }
-    names(relations) <- paste("relation.", names(relations), sep = "")
+    names <- paste("relation.", names, sep = "")
+    names(relationslist) <- names
+    tmp_n <- split(unname(relationslist), names(relationslist))
     resource$relations <- NULL
-    resource <- append(resource, relations)
+    resource <- append(resource, relationslist)
   } else {
     resource$relations <- NULL
   }
