@@ -6,7 +6,7 @@
 \usage{
 idf_query(
   connection,
-  projectname,
+  projectname = "NULL",
   field = "type",
   value = "Brick",
   uidlist = NULL,

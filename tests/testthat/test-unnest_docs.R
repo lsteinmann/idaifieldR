@@ -54,7 +54,7 @@ error = function(cond) {
 
 test_docs <- get_idaifield_docs(projectname = "rtest",
                                 connection = connection,
-                                simplified = FALSE)
+                                raw = TRUE)
 
 test_that("preserves connection as attribute", {
   test_resources <- unnest_docs(test_docs)

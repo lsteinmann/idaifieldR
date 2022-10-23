@@ -6,7 +6,7 @@
 \usage{
 idf_index_query(
   connection,
-  projectname,
+  projectname = "NULL",
   field = "type",
   value = "Brick",
   keep_geometry = TRUE,

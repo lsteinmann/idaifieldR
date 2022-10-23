@@ -38,16 +38,19 @@ test_that("error when using character", {
                                  version = "kuchen"))
 })
 
-
-test_docs <- get_idaifield_docs(projectname = "rtest",
+test_docs_raw <- get_idaifield_docs(projectname = "rtest",
                                 connection = connection,
-                                simplified = FALSE)
+                                raw = TRUE)
 
 test_resources <- get_idaifield_docs(projectname = "rtest",
-                                     connection = connection,
-                                     simplified = TRUE)
+                                connection = connection,
+                                raw = FALSE)
+
+test_simple <- simplify_idaifield(test_docs)
+
+
 test_that("has connection as attribute", {
-  test <- attr(test_docs, "connection")
+  test <- attr(test_resources, "connection")
   expect_true("Cushion" %in% class(test))
 })
 
@@ -58,13 +61,19 @@ test_that("has connection as attribute", {
 
 
 test_that("returns docs-lists", {
-  check <- check_if_idaifield(test_docs)
+  check <- check_if_idaifield(test_docs_raw)
   expect_true(check["idaifield_docs"], TRUE)
 })
 
 test_that("returns resource-lists", {
   check <- check_if_idaifield(test_resources)
   expect_true(check["idaifield_resources"], TRUE)
+})
+
+
+test_that("returns simple-lists", {
+  check <- check_if_idaifield(test_simple)
+  expect_true(check["idaifield_simple"], TRUE)
 })
 
 test_that("returns json", {
@@ -75,7 +84,7 @@ test_that("returns json", {
 })
 
 test_that("attaches connection as attribute", {
-  test_conn <- attr(test_docs, "connection")
+  test_conn <- attr(test_docs_raw, "connection")
   pinglist <- sofa::ping(test_conn)
   expect_true(is.list(pinglist))
 })
