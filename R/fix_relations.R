@@ -30,7 +30,7 @@ fix_relations <- function(resource, replace_uids = TRUE, uidlist = NULL) {
     }
     names <- paste("relation.", names, sep = "")
     names(relationslist) <- names
-    tmp_n <- split(unname(relationslist), names(relationslist))
+    relationslist <- split(unname(relationslist), names(relationslist))
     resource$relations <- NULL
     resource <- append(resource, relationslist)
   } else {
