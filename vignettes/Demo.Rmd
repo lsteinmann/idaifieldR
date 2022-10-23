@@ -25,8 +25,7 @@ idaifield_test_docs <- readRDS(system.file("testdata",
                                            "idaifield_test_docs.RDS",
                                            package = "idaifieldR"))
 # info for reference: The RDS is stored in its nested version, so:
-all_resources <- simplify_idaifield(idaifield_test_docs)
-pottery <- select_by(all_resources, by = "type", value = "Pottery")
+all_resources <- check_and_unnest(idaifield_test_docs)
 ```
 
 After loading the package, you first need to establish a connection to the database. This will only work if the Client is running. This is done with a connection object that is produced by `connect_idaifield()`: 
@@ -41,7 +40,8 @@ If you wish to import the complete database into R, you can use `get_idaifield_d
 
 ```{r eval=FALSE}
 all_resources <- get_idaifield_docs(connection = connection, 
-                                    projectname = "rtest")
+                                    projectname = "rtest",
+                                    raw = FALSE)
 ```
 
 This will return a list that still resembles the original JSON-format of Fields database:
@@ -55,7 +55,16 @@ uidlist <- get_uid_list(all_resources, verbose = TRUE, gather_trenches = TRUE)
 head(uidlist)
 ```
 
-`idaifieldR` contains a custom function to convert the list returned by the import functions `get_idaifield_docs()`, `idf_query()` and `idf_index_query()` into a matrix. For you convenience, you should probably convert this into a data.frame and try to assign the column type automatically: 
+To make the list more usable and to fix the values of fields that may otherwise display UIDs (as relations are stored this way in the database), you can use the function `simplify_idaifield()`. Depending on the size of you database it may take a while to process. You can decide whether you want to replace the UIDs with their corresponding identifiers, and whether you want to use the geometry attached to each resource.
+
+```{r eval=TRUE}
+all_resources <- simplify_idaifield(all_resources, 
+                                    keep_geometry = FALSE, 
+                                    replace_uids = TRUE)
+all_resources[[1]]
+```
+
+`idaifieldR` contains a custom function to convert the list returned by the import functions `simplify_idaifield()`, `idf_query()` and `idf_index_query()` into a matrix. For your convenience, you should probably convert this into a data.frame and try to assign the column type automatically: 
 ```{r eval=TRUE}
 all_resources <- idaifield_as_matrix(all_resources)
 df <- as.data.frame(all_resources)
@@ -65,6 +74,13 @@ str(df[,1:10])
 
 # Queries 
 If the import of all resources takes too long, it is possible to query the database: 
+```{r eval=TRUE, echo=FALSE, message = FALSE, warning=FALSE}
+pottery <- select_by(idaifield_test_docs, by = "type", value = "Pottery")
+pottery <- simplify_idaifield(pottery, 
+                              keep_geometry = FALSE, 
+                              replace_uids = TRUE, 
+                              uidlist = uidlist)
+```
 
 ```{r eval=FALSE}
 pottery <- idf_query(connection, projectname = "rtest", 
