@@ -1,9 +1,10 @@
 # idaifieldR 0.2.1 _2022-05-15_
 * Fixed `find_layer()` (internal), seems to work as intended now.
 * With the editor for the project configuration in iDAI.field 3, new fields and objects started to be named according to their configurations, e.g. "milet:temperType" etc., if the fields have been newly created. From now on those config specific names are removed from all fields, so that only the part after the double dot remains (e.g. "milet:temperType" becomes "temperType").
-* check_if_uid() now handles vectors
+* `check_if_uid()` now handles vectors
 * Speed up `get_uid_list()`, `replace_uid()`, `convert_to_onehot()`, and `fix_relations()` (a lot)
 * split up import with `get_idaifield_docs()` and processing to be more usable with `simplify_idaifield()`, with advice to use the latter only on subsets so the time is more manageable. 
+* add `check_and_unnest()` to export
 
 
 # idaifieldR 0.2.0 _2022-05-15_
