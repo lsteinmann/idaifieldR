@@ -27,7 +27,8 @@ user = "R", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = connection,
 projectname = "rtest")
 pottery <- select_by(idaifield_docs, by = "type", value = "Pottery")
-pottery <- simplify_idaifield(pottery, uidlist = get_uid_list(idaifield_docs))
+pottery <- simplify_idaifield(pottery,
+                              uidlist = get_uid_list(idaifield_docs))
 pottery <- idaifield_as_matrix(pottery)
 }
 }

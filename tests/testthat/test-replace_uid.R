@@ -25,4 +25,3 @@ test_that("replace_uid finds correct name when vector", {
                                uidlist = uidlist),
                    uidlist$identifier[sample])
 })
-

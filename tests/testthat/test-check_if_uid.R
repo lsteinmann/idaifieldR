@@ -1,4 +1,3 @@
-
 test_that("check_if_uid identifies UID", {
   expect_true(check_if_uid(string = "0324141a-8201-c5dc-631b-4dded4552ac4"))
 })
@@ -18,5 +17,3 @@ test_that("check_if_uid identifies UIDs in vector", {
                                        "185d08b6-b9a5-7464-9e44-ecf2fe29bc36",
                                        2))[3])
 })
-
-

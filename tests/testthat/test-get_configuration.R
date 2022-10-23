@@ -60,5 +60,3 @@ test_that("warning for empty config", {
 test_that("empty matrix for empty config", {
   expect_equal(nrow(suppressWarnings(get_field_inputtypes(empty_config))), 0)
 })
-
-

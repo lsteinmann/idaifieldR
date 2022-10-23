@@ -105,7 +105,7 @@ find_layer <- function(resource = resource,
 #' }
 convert_to_onehot <- function(resource, fieldtypes) {
   # get the inputType list
-  checkboxes <- fieldtypes[which(fieldtypes[,"inputType"] == "checkboxes"),]
+  checkboxes <- fieldtypes[which(fieldtypes[, "inputType"] == "checkboxes"), ]
 
   # find which fields actually belong to the resource type
   correct_type <- which(checkboxes[, "type"] == resource$type)
@@ -214,9 +214,7 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
 #' nameslist <- remove_config_names(nameslist)
 #' nameslist
 #' }
-remove_config_names <- function(nameslist = c("identifier","configname:test")) {
+remove_config_names <- function(nameslist = c("identifier", "configname:test")) {
   nameslist <- gsub("^.*:", "", nameslist)
   return(nameslist)
 }
-
-

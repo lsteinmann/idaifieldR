@@ -6,7 +6,7 @@ uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 config <- which(uidlist$UID == "configuration")
 
 if (length(config) == 1) {
-  uidlist <- uidlist[-config,]
+  uidlist <- uidlist[-config, ]
 }
 
 

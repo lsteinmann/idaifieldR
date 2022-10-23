@@ -25,16 +25,16 @@ replace_uid <- function(uidvector, uidlist) {
 
   check_if_uid(uidvector)
 
-  if(is.numeric(uidvector)) {
-    uidvector <- uidlist[,uidvector]
+  if (is.numeric(uidvector)) {
+    uidvector <- uidlist[, uidvector]
   }
 
   mat <- matrix(ncol = 2, nrow = length(uidvector))
-  mat[,1] <- as.character(uidvector)
-  matches <- match(mat[,1], uidlist$UID)
-  mat[,2] <- ifelse(check_if_uid(mat[,1]),
+  mat[, 1] <- as.character(uidvector)
+  matches <- match(mat[, 1], uidlist$UID)
+  mat[, 2] <- ifelse(check_if_uid(mat[, 1]),
                     uidlist$identifier[matches],
-                    mat[,1])
+                    mat[, 1])
 
-  return(mat[,2])
+  return(mat[, 2])
 }

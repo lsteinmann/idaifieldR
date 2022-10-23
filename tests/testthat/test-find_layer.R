@@ -26,8 +26,12 @@ for (i in sample(pottery_in, size = 10)) {
     next
   } else {
     test_that("returns chr when resource lies within layer", {
-      resource <- fix_relations(test_resources[[i]], replace_uids = TRUE, uidlist = uidlist)
-      layer <- find_layer(resource = resource, uidlist = uidlist, strict = FALSE)
+      resource <- fix_relations(test_resources[[i]],
+                                replace_uids = TRUE,
+                                uidlist = uidlist)
+      layer <- find_layer(resource = resource,
+                          uidlist = uidlist,
+                          strict = FALSE)
       expect_type(layer,
                   "character")
     })

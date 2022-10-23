@@ -86,17 +86,17 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
   if (gather_trenches) {
 
     gather_mat <- matrix(ncol = 3, nrow = nrow(uid_list))
-    gather_mat[,1] <- ifelse(is.na(uid_list$isRecordedIn),
+    gather_mat[, 1] <- ifelse(is.na(uid_list$isRecordedIn),
                              uid_list$liesWithin,
                              uid_list$isRecordedIn)
-    gather_mat[,2] <- uid_list$type[match(gather_mat[,1],
+    gather_mat[, 2] <- uid_list$type[match(gather_mat[, 1],
                                           uid_list$identifier)]
-    gather_mat[,3] <- uid_list$liesWithin[match(gather_mat[,1],
+    gather_mat[, 3] <- uid_list$liesWithin[match(gather_mat[, 1],
                                           uid_list$identifier)]
 
-    uid_list$Place <- ifelse(gather_mat[,2] == "Trench",
-                             gather_mat[,3],
-                             gather_mat[,1])
+    uid_list$Place <- ifelse(gather_mat[, 2] == "Trench",
+                             gather_mat[, 3],
+                             gather_mat[, 1])
 
   }
 

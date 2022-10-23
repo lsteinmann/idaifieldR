@@ -35,4 +35,3 @@ test_that("returns appropriate number of entries", {
                          uidlist = uidlist)
   expect_equal(length(res), count)
 })
-

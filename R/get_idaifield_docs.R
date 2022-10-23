@@ -54,7 +54,6 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   json = FALSE) {
 
   if (json) {
-    simplified <- FALSE
     output_format <- "json"
   } else {
     output_format <- "list"
