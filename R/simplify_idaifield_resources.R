@@ -25,7 +25,7 @@ simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
-                                     config = NULL) {
+                                     fieldtypes = NULL) {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -89,9 +89,9 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, new_dims)
   }
 
-  if (is.list(config)) {
+  if (is.matrix(fieldtypes)) {
     resource <- convert_to_onehot(resource = resource,
-                                  config = config)
+                                  fieldtypes = fieldtypes)
   }
 
   return(resource)
@@ -144,8 +144,11 @@ simplify_idaifield <- function(idaifield_docs,
     config <- get_configuration(connection = connection,
                                 projectname = projectname)
   }
-  if (!exists("config")) {
-    config <- NA
+  is.na(config)
+  if (is.na(config)) {
+    fieldtypes <- NA
+  } else {
+    fieldtypes <- get_field_inputtypes(config, inputType = "all")
   }
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
@@ -155,10 +158,9 @@ simplify_idaifield <- function(idaifield_docs,
       replace_uids = replace_uids,
       uidlist = uidlist,
       keep_geometry = keep_geometry,
-      config = config
+      fieldtypes = fieldtypes
     )
   )
-
 
   idaifield_docs <- structure(idaifield_docs, class = "idaifield_simple")
   attr(idaifield_docs, "connection") <- connection

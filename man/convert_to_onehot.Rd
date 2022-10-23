@@ -4,7 +4,7 @@
 \alias{convert_to_onehot}
 \title{Break down a list from a checkbox field to onehot-coded values}
 \usage{
-convert_to_onehot(resource, config)
+convert_to_onehot(resource, fieldtypes)
 }
 \arguments{
 \item{resource}{A list from one of the measurement fields

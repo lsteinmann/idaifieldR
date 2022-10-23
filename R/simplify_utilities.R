@@ -103,13 +103,14 @@ find_layer <- function(resource = resource,
 #' idaifield_resources[[1]] <- convert_to_onehot(config,
 #' idaifield_resources[[1]])
 #' }
-convert_to_onehot <- function(resource, config) {
+convert_to_onehot <- function(resource, fieldtypes) {
   # get the inputType list
-  checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
+  checkboxes <- fieldtypes[which(fieldtypes[,"inputType"] == "checkboxes"),]
 
   # find which fields actually belong to the resource type
   correct_type <- which(checkboxes[, "type"] == resource$type)
   # manually add Feature and Find type because of problems
+  # wtf does that even mean
   correct_type <- c(correct_type,
                     which(checkboxes[, "type"] %in% c("Feature", "Find")))
   # get the index of the resource that should be converted

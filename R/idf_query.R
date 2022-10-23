@@ -40,12 +40,17 @@ idf_query <- function(connection,
 
   result <- lapply(result[[1]],
                    function(x) x$resource)
+  if (is.na(config)) {
+    fieldtypes <- NA
+  } else {
+    fieldtypes <- get_field_inputtypes(config, inputType = "all")
+  }
   result <- lapply(result,
                    function(x) simplify_single_resource(x,
                                               uidlist = uidlist,
                                               replace_uids = TRUE,
                                               keep_geometry = keep_geometry,
-                                              config = config))
+                                              fieldtypes = fieldtypes))
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
@@ -105,12 +110,18 @@ idf_index_query <- function(connection, projectname = "NULL",
 
   result <- lapply(result[[1]],
                    function(x) x$resource)
+
+  if (is.na(config)) {
+    fieldtypes <- NA
+  } else {
+    fieldtypes <- get_field_inputtypes(config, inputType = "all")
+  }
   result <- lapply(result,
                    function(x) simplify_single_resource(x,
                                               uidlist = uidlist,
                                               replace_uids = TRUE,
                                               keep_geometry = keep_geometry,
-                                              config = config))
+                                              fieldtypes = fieldtypes))
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname

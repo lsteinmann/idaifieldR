@@ -9,7 +9,7 @@ simplify_single_resource(
   replace_uids = TRUE,
   uidlist = NULL,
   keep_geometry = TRUE,
-  config = NULL
+  fieldtypes = NULL
 )
 }
 \arguments{
