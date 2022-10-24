@@ -40,7 +40,7 @@ idf_query <- function(connection,
 
   result <- lapply(result[[1]],
                    function(x) x$resource)
-  if (is.na(config)) {
+  if (is.na(config[1])) {
     fieldtypes <- NA
   } else {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
@@ -111,7 +111,7 @@ idf_index_query <- function(connection, projectname = "NULL",
   result <- lapply(result[[1]],
                    function(x) x$resource)
 
-  if (is.na(config)) {
+  if (is.na(config[1])) {
     fieldtypes <- NA
   } else {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")

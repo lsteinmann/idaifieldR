@@ -144,8 +144,8 @@ simplify_idaifield <- function(idaifield_docs,
     config <- get_configuration(connection = connection,
                                 projectname = projectname)
   }
-  is.na(config)
-  if (is.na(config)) {
+
+  if (is.na(config[1])) {
     fieldtypes <- NA
   } else {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
