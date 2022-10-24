@@ -64,3 +64,10 @@ for (item in items) {
 test_that("runs without uidlist", {
   expect_s3_class(simplify_idaifield(test_docs), "idaifield_simple")
 })
+
+simple <- simplify_idaifield(test_docs)
+
+test_that("contains no special config names in columns", {
+  expect_false(any(grepl(":", names(simple))))
+})
+

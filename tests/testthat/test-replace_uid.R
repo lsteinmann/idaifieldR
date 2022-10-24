@@ -2,6 +2,7 @@ source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
+uidlist <- uidlist[-which(uidlist$UID == "configuration"), ]
 
 test_that("replace_uid does not touch non uid", {
   item <- "börek"

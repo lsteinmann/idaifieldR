@@ -74,6 +74,10 @@ simplify_single_resource <- function(resource,
     names(resource) <- list_names
   }
 
+  if (any(grepl(":", resource$type))) {
+    resource$type <- remove_config_names(resource$type)
+  }
+
   dim_names <- list_names[grep("dimension", list_names)]
 
   if (length(dim_names) >= 1) {

@@ -1,18 +1,28 @@
 source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
+
+
+test_that("project exists", {
+  expect_true("project" %in% uidlist$UID)
+})
+
+test_that("config exists", {
+  expect_true("configuration" %in% uidlist$UID)
+})
+
+
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
+uidlist <- uidlist[-which(uidlist$UID == "configuration"), ]
 
-config <- which(uidlist$UID == "configuration")
-
-if (length(config) == 1) {
-  uidlist <- uidlist[-config, ]
-}
-
+test_that("contains no special config names", {
+  expect_false(any(grepl(":", unique(uidlist$type))))
+})
 
 samples <- sample(seq_len(nrow(uidlist)), size = 5)
 
 for (sample in samples) {
+
   test_that("returns uids in correct column", {
     expect_true(check_if_uid(uidlist$UID[sample]))
   })

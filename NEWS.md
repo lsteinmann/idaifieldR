@@ -1,5 +1,5 @@
 # idaifieldR 0.2.2 _2022_
-* 
+* config specific names now removed everywhere (colnames and type, in UID-lists as well)
 
 # idaifieldR 0.2.1 _2022-10-23_
 * Fixed `find_layer()` (internal), seems to work as intended now.
