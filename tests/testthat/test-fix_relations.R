@@ -22,7 +22,8 @@ for (item in items) {
 
     test_that("does not replace uid", {
       item <- grep("relation", names(resource))
-      expect_true(check_if_uid(resource[[item[1]]]))
+      check <- all(check_if_uid(resource[[item[1]]]))
+      expect_true(check)
     })
 
 
