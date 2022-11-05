@@ -107,6 +107,13 @@ convert_to_onehot <- function(resource, fieldtypes) {
   # get the inputType list
   checkboxes <- fieldtypes[which(fieldtypes[, "inputType"] == "checkboxes"), ]
 
+  if (!is.matrix(checkboxes)) {
+    checkboxes_new <- matrix(nrow = 1, ncol = ncol(fieldtypes))
+    checkboxes_new[1,] <- checkboxes
+    colnames(checkboxes_new) <- names(checkboxes)
+    checkboxes <- checkboxes_new
+  }
+
   # find which fields actually belong to the resource type
   correct_type <- which(checkboxes[, "type"] == resource$type)
   # manually add Feature and Find type because of problems
