@@ -37,12 +37,26 @@ test_that("removes configname from field", {
 
 
 
-test_simple <- simplify_idaifield(test_resources,
-                                  keep_geometry = TRUE,
-                                  replace_uids = TRUE)
+test_that("dimensions are spread", {
+  test_simple <- simplify_idaifield(test_resources,
+                                    keep_geometry = TRUE,
+                                    replace_uids = TRUE)
+  names <- unique(unlist(lapply(test_simple, names)))
+  names <- names[grepl("dimension", names)]
+  expect_gt(length(names), 1)
+})
 
-mat <- idaifield_as_matrix(test_simple)
-colnames(mat)
+test_that("colnames from checkboxes are spread", {
+  test_simple <- simplify_idaifield(test_resources,
+                                    keep_geometry = TRUE,
+                                    replace_uids = TRUE)
+  names <- unique(unlist(lapply(test_simple, names)))
+  names <- names[grepl("testAnkreuzfeld", names)]
+  expect_gt(length(names), 1)
+})
+
+#mat <- idaifield_as_matrix(test_simple)
+#colnames(mat)
 
 items <- sample(seq_along(test_resources), size = 5)
 for (item in items) {
