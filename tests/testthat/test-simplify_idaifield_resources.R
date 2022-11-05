@@ -108,3 +108,8 @@ test_that("contains no special config names in columns", {
   expect_false(any(grepl(":", names(simple))))
 })
 
+test_that("returns same object if already simple", {
+  simple1 <- simplify_idaifield(simple)
+  expect_identical(simple, simple1)
+})
+
