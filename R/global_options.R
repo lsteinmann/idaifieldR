@@ -18,5 +18,3 @@
     )
   )
 }
-
-getOption("idaifield_types")
