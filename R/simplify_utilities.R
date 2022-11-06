@@ -160,9 +160,11 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
       # point. Therefore we have to check if the there is an entry calles
       # "inputValue" first, because it may not be a range though value had not
       # been converted. If inputValue doesn't exist, it should be a range.
-      if (is.null(x$inputValue)) {
+      if (!is.null(x$rangeMin)) {
         range <- c(x$rangeMin, x$rangeMax)
         value <- mean(range) / 10000
+        # set name here for later add underscore for later naming
+        names(value) <- "mean_"
         return(value)
       } else {
         # And then we need to do unit conversion...
@@ -184,14 +186,13 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
     }
   }
 
-  if ("rangeMin" %in% names(dimensionList[[1]])) {
-    name <- paste(name, "_mean", sep = "")
-  }
-
+  # get named vector with all values, avoid name when normal measurement
   dims <- unlist(lapply(dimensionList, FUN = get_dim_value))
-  names(dims) <- c(paste(name, "cm",
-                         seq(from = 1, to = dimno, by = 1),
-                         sep = "_"))
+  names <- rep(name, length(dims))
+  names <- paste(names, "_cm_", names(dims),
+                 seq(from = 1, to = dimno, by = 1),
+                 sep = "")
+  names(dims) <- names
   dims <- as.list(dims)
   return(dims)
 }
