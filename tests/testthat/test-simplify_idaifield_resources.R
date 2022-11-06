@@ -75,7 +75,7 @@ for (item in items) {
     test_that("dimension is replaced", {
       test <- simplify_single_resource(test_resources[[item]],
                                        uidlist = uidlist)
-      expect_true(any(grepl("_cm_1", names(test))))
+      expect_true(any(grepl("cm", names(test))))
     })
   }
 
@@ -83,7 +83,7 @@ for (item in items) {
     test_that("dimension is replaced", {
       test <- simplify_single_resource(test_resources[[item]],
                                        uidlist = uidlist)
-      expect_true(any(grepl("_cm_1", names(test))))
+      expect_true(any(grepl("cm", names(test))))
     })
   }
 }
