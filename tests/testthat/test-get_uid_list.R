@@ -62,3 +62,15 @@ for (sample in samples) {
     expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 7)
   })
 }
+
+test_that("gets uidlist from simplified list", {
+  test <- get_uid_list(simplify_idaifield(test_resources))
+  expect_true("Schnitt 1" %in% test$isRecordedIn)
+})
+
+test_that("gets uidlist from simplified list", {
+  test <- get_uid_list(simplify_idaifield(test_resources))
+  expect_true("Befund_6" %in% test$liesWithin)
+})
+
+

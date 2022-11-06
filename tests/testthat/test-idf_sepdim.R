@@ -2,11 +2,6 @@ source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
 
-item <- grep("meas_dimTest", uidlist$identifier)
-names <- uidlist$identifier[item]
-
-names
-
 test_that("leaves cm as cm", {
   resource <- test_resources[[which(uidlist$identifier == "MOLLUSK_cm_meas_dimTest")]]
   dimlist <- idf_sepdim(resource$dimensionHeight)

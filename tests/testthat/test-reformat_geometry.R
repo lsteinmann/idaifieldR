@@ -36,135 +36,140 @@ for (i in items) {
 testobjekte <- c("Terrakotta mit Polygon", "Keramik mit Multipolygon",
                  "Knochen mit Line", "Knochen mit Polyline",
                  "Knochen mit MultiLine",
-                 "Keramik mit Punkt 1", "Keramik mit Multipunkt")
+                 "Keramik mit Punkt 1", "Keramik mit Multipunkt",
+                 "Ziegel Polygon mit Höhen", "Keramik mit Punkt und Höhe")
 uidlist <- get_uid_list(test_docs)
 index <- match(testobjekte, uidlist$identifier)
 names(index) <- testobjekte
 rm(testobjekte)
 
 ## Polygone
-testres <- test_resources[[index["Terrakotta mit Polygon"]]]$geometry
-testres <- reformat_geometry(testres)
+testdata <- test_resources[[index["Terrakotta mit Polygon"]]]$geometry
 test_that("returns 'polygon' in type list", {
-  expect_identical(testres$type, "Polygon")
+  expect_identical(reformat_geometry(testdata)$type, "Polygon")
 })
 test_that("returns a list", {
-  expect_type(testres$coordinates, "list")
+  expect_type(reformat_geometry(testdata)$coordinates, "list")
 })
 test_that("returns only one matrix (for one polygon)", {
-  expect_equal(length(testres$coordinates), 1)
+  expect_equal(length(reformat_geometry(testdata)$coordinates), 1)
 })
 test_that("returns a matrix", {
-  expect_true(is.matrix(testres$coordinates[[1]]))
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[1]]))
 })
 
-testres <- test_resources[[index["Keramik mit Multipolygon"]]]$geometry
-testres <- reformat_geometry(testres)
+testdata <- test_resources[[index["Keramik mit Multipolygon"]]]$geometry
 test_that("returns 'polygon' in type list", {
-  expect_identical(testres$type, "MultiPolygon")
+  expect_identical(reformat_geometry(testdata)$type, "MultiPolygon")
 })
 test_that("returns a list", {
-  expect_type(testres$coordinates, "list")
+  expect_type(reformat_geometry(testdata)$coordinates, "list")
 })
 test_that("returns two polygons", {
-  expect_equal(length(testres$coordinates), 2)
+  expect_equal(length(reformat_geometry(testdata)$coordinates), 2)
 })
 test_that("returns a matrix", {
-  expect_true(is.matrix(testres$coordinates[[1]]))
-  expect_true(is.matrix(testres$coordinates[[2]]))
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[1]]))
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[2]]))
 })
 
 ### Lines
-testres <- test_resources[[index["Knochen mit Line"]]]$geometry
-testres <- reformat_geometry(testres)
+testdata <- test_resources[[index["Knochen mit Line"]]]$geometry
 test_that("returns 'LineString' in type list", {
-  expect_identical(testres$type, "LineString")
+  expect_identical(reformat_geometry(testdata)$type, "LineString")
 })
 test_that("returns a list", {
-  expect_type(testres$coordinates, "list")
+  expect_type(reformat_geometry(testdata)$coordinates, "list")
 })
 test_that("returns one line / matrix", {
-  expect_equal(length(testres$coordinates), 1)
+  expect_equal(length(reformat_geometry(testdata)$coordinates), 1)
 })
-test_that("returns a matrix", {
-  expect_true(is.matrix(testres$coordinates[[1]]))
+test_that("returns a matrix with two sets of coords", {
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[1]]))
+  expect_equal(nrow(reformat_geometry(testdata)$coordinates[[1]]), 2)
 })
-test_that("has two coordinates", {
-  expect_equal(nrow(testres$coordinates[[1]]), 2)
-})
-testres <- test_resources[[index["Knochen mit Polyline"]]]$geometry
-testres <- reformat_geometry(testres)
+testdata <- test_resources[[index["Knochen mit Polyline"]]]$geometry
 test_that("returns 'LineString' in type list", {
-  expect_identical(testres$type, "LineString")
+  expect_identical(reformat_geometry(testdata)$type, "LineString")
 })
 test_that("returns a list", {
-  expect_type(testres$coordinates, "list")
+  expect_type(reformat_geometry(testdata)$coordinates, "list")
 })
 test_that("returns one line / matrix", {
-  expect_equal(length(testres$coordinates), 1)
+  expect_equal(length(reformat_geometry(testdata)$coordinates), 1)
 })
 test_that("returns a matrix", {
-  expect_true(is.matrix(testres$coordinates[[1]]))
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[1]]))
 })
-test_that("has four coordinates", {
-  expect_equal(nrow(testres$coordinates[[1]]), 4)
+test_that("has four sets of coordinates", {
+  expect_equal(nrow(reformat_geometry(testdata)$coordinates[[1]]), 4)
 })
-testres <- test_resources[[index["Knochen mit MultiLine"]]]$geometry
-testres <- reformat_geometry(testres)
+testdata <- test_resources[[index["Knochen mit MultiLine"]]]$geometry
 test_that("returns 'MultiLineString' in type list", {
-  expect_identical(testres$type, "MultiLineString")
+  expect_identical(reformat_geometry(testdata)$type, "MultiLineString")
 })
 test_that("returns a list", {
-  expect_type(testres$coordinates, "list")
+  expect_type(reformat_geometry(testdata)$coordinates, "list")
 })
 test_that("returns two lines/matrices", {
-  expect_equal(length(testres$coordinates), 2)
+  expect_equal(length(reformat_geometry(testdata)$coordinates), 2)
 })
-test_that("returns a matrix each", {
-  expect_true(is.matrix(testres$coordinates[[1]]))
-  expect_true(is.matrix(testres$coordinates[[2]]))
-})
-test_that("has 2 coordinates each", {
-  expect_equal(nrow(testres$coordinates[[1]]), 2)
-  expect_equal(nrow(testres$coordinates[[2]]), 2)
+test_that("returns a matrix with 2 sets of coords each", {
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[1]]))
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[2]]))
+  expect_equal(nrow(reformat_geometry(testdata)$coordinates[[1]]), 2)
+  expect_equal(nrow(reformat_geometry(testdata)$coordinates[[2]]), 2)
 })
 
 ## Points
-testres <- test_resources[[index["Keramik mit Punkt 1"]]]$geometry
-testres <- reformat_geometry(testres)
+testdata <- test_resources[[index["Keramik mit Punkt 1"]]]$geometry
 test_that("returns 'Point' in type list", {
-  expect_identical(testres$type, "Point")
+  expect_identical(reformat_geometry(testdata)$type, "Point")
 })
 test_that("returns a list", {
-  expect_type(testres$coordinates, "list")
+  expect_type(reformat_geometry(testdata)$coordinates, "list")
 })
 test_that("returns one point / matrix", {
-  expect_equal(length(testres$coordinates), 1)
+  expect_equal(length(reformat_geometry(testdata)$coordinates), 1)
 })
 test_that("returns a matrix", {
-  expect_true(is.matrix(testres$coordinates[[1]]))
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[1]]))
 })
 test_that("has one set of coordinates", {
-  expect_equal(nrow(testres$coordinates[[1]]), 1)
+  expect_equal(nrow(reformat_geometry(testdata)$coordinates[[1]]), 1)
 })
-testres <- test_resources[[index["Keramik mit Multipunkt"]]]$geometry
-testres <- reformat_geometry(testres)
+testdata <- test_resources[[index["Keramik mit Multipunkt"]]]$geometry
 test_that("returns 'MultiPoint' in type list", {
-  expect_identical(testres$type, "MultiPoint")
+  expect_identical(reformat_geometry(testdata)$type, "MultiPoint")
 })
 test_that("returns a list", {
-  expect_type(testres$coordinates, "list")
+  expect_type(reformat_geometry(testdata)$coordinates, "list")
 })
-test_that("returns three points/matrices", {
-  expect_equal(length(testres$coordinates), 3)
+test_that("returns one matrix", {
+  expect_equal(length(reformat_geometry(testdata)$coordinates), 1)
+  expect_true(is.matrix(reformat_geometry(testdata)$coordinates[[1]]))
 })
-test_that("returns a matrix each", {
-  expect_true(is.matrix(testres$coordinates[[1]]))
-  expect_true(is.matrix(testres$coordinates[[2]]))
-  expect_true(is.matrix(testres$coordinates[[3]]))
+test_that("has three sets of coordinates", {
+  expect_equal(nrow(reformat_geometry(testdata)$coordinates[[1]]), 3)
 })
-test_that("has one set of coordinates each", {
-  expect_equal(nrow(testres$coordinates[[1]]), 1)
-  expect_equal(nrow(testres$coordinates[[2]]), 1)
-  expect_equal(nrow(testres$coordinates[[3]]), 1)
+
+
+## height values
+testdata <- test_resources[[index["Ziegel Polygon mit Höhen"]]]$geometry
+test_that("keeps height values", {
+  expect_equal(reformat_geometry(testdata)$coordinates[[1]][,3],
+               c(10, 11, 12, 13))
 })
+testdata <- test_resources[[index["Knochen mit Polyline"]]]$geometry
+test_that("adds zero for height values", {
+  expect_equal(reformat_geometry(testdata)$coordinates[[1]][,3],
+               c(0, 0, 0, 0))
+})
+
+testdata <- test_resources[[index["Keramik mit Punkt und Höhe"]]]$geometry
+test_that("keeps height values", {
+  expect_equal(reformat_geometry(testdata)$coordinates[[1]][,3],
+               10)
+})
+
+
