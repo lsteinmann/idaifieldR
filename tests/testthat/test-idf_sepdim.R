@@ -28,13 +28,11 @@ test_that("converts m to cm", {
 test_that("puts mean in name", {
   resource <- test_resources[[which(uidlist$identifier == "MOLLUSK_m_range_dimTest")]]
   dimlist <- idf_sepdim(resource$dimensionLength)
-  expect_true(grepl("mean", names(dimlist)))
+  expect_true(any(grepl("mean", names(dimlist))))
 })
 
-
-test_that("calculates mean", {
+test_that("calculates mean (data is range of 1m and 2m)", {
   resource <- test_resources[[which(uidlist$identifier == "MOLLUSK_m_range_dimTest")]]
   dimlist <- idf_sepdim(resource$dimensionLength)
-  #  TODO it does not currently do that
-  expect_true(grepl("mean", names(dimlist)))
+  expect_equal(dimlist$dimensionLength_cm_mean_1, 150)
 })
