@@ -35,15 +35,15 @@ test_that("removes configname from field", {
   expect_false(any(grepl(":", names(test))))
 })
 
-
-test_that("colnames from checkboxes are spread", {
+test_that("dimensions are spread", {
   test_simple <- simplify_idaifield(test_resources,
                                     keep_geometry = TRUE,
                                     replace_uids = TRUE)
   names <- unique(unlist(lapply(test_simple, names)))
-  names <- names[grepl("testAnkreuzfeld", names)]
-  expect_gt(length(names), 1)
+  names <- names[grepl("dimension", names)]
+  expect_true(any(grepl("_cm", names)))
 })
+
 
 #mat <- idaifield_as_matrix(test_simple)
 #colnames(mat)
@@ -116,11 +116,11 @@ error = function(cond) {
   skip("Test skipped, needs DB-connection")
 })
 
-test_that("dimensions are spread", {
+test_that("colnames from checkboxes are spread", {
   test_simple <- simplify_idaifield(test_resources,
                                     keep_geometry = TRUE,
                                     replace_uids = TRUE)
   names <- unique(unlist(lapply(test_simple, names)))
-  names <- names[grepl("dimension", names)]
-  expect_true(any(grepl("_cm", names)))
+  names <- names[grepl("testAnkreuzfeld", names)]
+  expect_gt(length(names), 1)
 })
