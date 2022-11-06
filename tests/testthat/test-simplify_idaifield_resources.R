@@ -43,7 +43,7 @@ test_that("dimensions are spread", {
                                     replace_uids = TRUE)
   names <- unique(unlist(lapply(test_simple, names)))
   names <- names[grepl("dimension", names)]
-  expect_gt(length(names), 1)
+  expect_true(any(grepl("_cm", names)))
 })
 
 test_that("colnames from checkboxes are spread", {
