@@ -36,16 +36,6 @@ test_that("removes configname from field", {
 })
 
 
-
-test_that("dimensions are spread", {
-  test_simple <- simplify_idaifield(test_resources,
-                                    keep_geometry = TRUE,
-                                    replace_uids = TRUE)
-  names <- unique(unlist(lapply(test_simple, names)))
-  names <- names[grepl("dimension", names)]
-  expect_true(any(grepl("_cm", names)))
-})
-
 test_that("colnames from checkboxes are spread", {
   test_simple <- simplify_idaifield(test_resources,
                                     keep_geometry = TRUE,
@@ -113,3 +103,24 @@ test_that("returns same object if already simple", {
   expect_identical(simple, simple1)
 })
 
+
+skip_on_cran()
+
+connection <- connect_idaifield(serverip = "127.0.0.1",
+                                user = "R", pwd = "hallo")
+
+tryCatch({
+  sofa::ping(connection)
+},
+error = function(cond) {
+  skip("Test skipped, needs DB-connection")
+})
+
+test_that("dimensions are spread", {
+  test_simple <- simplify_idaifield(test_resources,
+                                    keep_geometry = TRUE,
+                                    replace_uids = TRUE)
+  names <- unique(unlist(lapply(test_simple, names)))
+  names <- names[grepl("dimension", names)]
+  expect_true(any(grepl("_cm", names)))
+})
