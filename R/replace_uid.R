@@ -29,9 +29,9 @@ replace_uid <- function(uidvector, uidlist) {
   identifiers <- ifelse(is.na(matches), uidvector, uidlist$identifier[matches])
 
   # Check for remaining UUIDs in uidvector
-  is_uid <- check_if_uid(identifiers)
-  if (any(is_uid)) {
-    message("Not all UIDs were replaced.")
-  }
+  #is_uid <- check_if_uid(identifiers)
+  #if (any(is_uid)) {
+  #  message("Not all UIDs were replaced.")
+  #}
   return(identifiers)
 }
