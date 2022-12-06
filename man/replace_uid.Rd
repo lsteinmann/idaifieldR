@@ -7,8 +7,7 @@
 replace_uid(uidvector, uidlist)
 }
 \arguments{
-\item{uidvector}{a vector of UIDs to be replaced with their identifiers (if
-numeric, the corresponging column of the uidlist is processed)}
+\item{uidvector}{a vector of UIDs to be replaced with their identifiers}
 
 \item{uidlist}{a uidlist as returned by get_uid_list()}
 }
