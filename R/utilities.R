@@ -138,7 +138,7 @@ check_for_sublist <- function(single_resource_field) {
 #' check_if_uid(string = "not a uid")
 #' }
 check_if_uid <- function(string) {
-  is_uid <- grepl("\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}", string)
+  is_uid <- grepl("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", string)
   return(is_uid)
 }
 
