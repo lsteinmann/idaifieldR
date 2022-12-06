@@ -1,7 +1,6 @@
 # idaifieldR 0.2.2 _2022_
 * config specific names now removed everywhere 
-* make `find_layer()` faster by replacing `which()` with `match()` and avoiding `rbind()`
-* make `check_if_uid()` faster by being more specific
+* speed up `find_layer()`, `replace_uid()` and `check_if_uid()` 
 * more tests
 
 # idaifieldR 0.2.1 _2022-10-23_
