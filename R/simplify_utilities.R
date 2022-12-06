@@ -20,13 +20,17 @@ find_layer <- function(resource = resource,
                        uidlist = NULL,
                        liesWithin = NULL,
                        strict = FALSE) {
+  # The function first checks if a uidlist has been supplied,
+  # and if not it outputs a warning message and returns NA.
   if (is.null(uidlist)) {
     warning("find_layer() called but no uidlist supplied")
     return(NA)
   }
 
   # get identifier, index and type of the parent resource
-  liesWithin_index <- which(resource$relation.liesWithin == uidlist$identifier)
+  # match should be fine here as identifiers are unique and liesWithin can only
+  # have one value as well
+  liesWithin_index <- match(resource$relation.liesWithin, uidlist$identifier)
   liesWithin_identifier <- uidlist$identifier[liesWithin_index]
   liesWithin_type <- uidlist$type[liesWithin_index]
 
@@ -67,12 +71,13 @@ find_layer <- function(resource = resource,
       return(NA)
     } else {
       # get the index and type of the parent
-      next_liesWithin_index <- which(uidlist$identifier == next_liesWithin_identifier)
+      # match should be fine here as identifiers are unique
+      next_liesWithin_index <- match(next_liesWithin_identifier, uidlist$identifier)
       next_liesWithin_type <- uidlist$type[next_liesWithin_index]
       # add as a row to the data.frame
-      liesWithin <- rbind(liesWithin, c(next_liesWithin_index,
-                                        next_liesWithin_identifier,
-                                        next_liesWithin_type))
+      liesWithin[nrow(liesWithin)+1,] <- c(next_liesWithin_index,
+                                           next_liesWithin_identifier,
+                                           next_liesWithin_type)
       # recursively call the function again to find the next parent, this
       # time with the data.frame already existing
       find_layer(resource = resource,
