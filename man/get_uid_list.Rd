@@ -42,6 +42,6 @@ user = "R", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = connection,
 projectname = "rtest", simplified = FALSE)
 
-uid_list <- get_uid_list(idaifield_docs, verbose = TRUE)
+uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
 }
 }

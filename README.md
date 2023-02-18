@@ -2,7 +2,7 @@
 # idaifieldR
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/lsteinmann/idaifieldR/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/idaifieldR/actions)
+[![R-CMD-check](https://github.com/lsteinmann/idaifieldR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lsteinmann/idaifieldR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/lsteinmann/idaifieldR/branch/main/graph/badge.svg)](https://codecov.io/gh/lsteinmann/idaifieldR?branch=main)
 <!-- badges: end -->
 
@@ -16,7 +16,7 @@ idaifieldR depends on the R-package [sofa](https://github.com/ropensci/sofa) (av
 
 ## Installation
 
-You can install the current version of idaifieldR from github using devtools:
+You can install the current version of idaifieldR from github using `devtools` or `remotes`:
 
 ``` r
 devtools::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
