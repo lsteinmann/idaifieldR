@@ -55,25 +55,25 @@ check_if_idaifield <- function(testobject) {
   names(result) <- c("idaifield_docs", "idaifield_resources",
                      "idaifield_simple", "list")
 
-  if (class(testobject) == "idaifield_docs") {
+  if (inherits(testobject, "idaifield_docs")) {
     result["idaifield_docs"] <- TRUE
   } else {
     result["idaifield_docs"] <- FALSE
   }
 
-  if (class(testobject) == "idaifield_resources") {
+  if (inherits(testobject, "idaifield_resources")) {
     result["idaifield_resources"] <- TRUE
   } else {
     result["idaifield_resources"] <- FALSE
   }
 
-  if (class(testobject) == "idaifield_simple") {
+  if (inherits(testobject, "idaifield_simple")) {
     result["idaifield_simple"] <- TRUE
   } else {
     result["idaifield_simple"] <- FALSE
   }
 
-  if (class(testobject) == "list") {
+  if (inherits(testobject, "list")) {
     result["list"] <- TRUE
   } else {
     result["list"] <- FALSE
@@ -138,7 +138,7 @@ check_for_sublist <- function(single_resource_field) {
 #' check_if_uid(string = "not a uid")
 #' }
 check_if_uid <- function(string) {
-  is_uid <- grepl("\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}", string)
+  is_uid <- grepl("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", string)
   return(is_uid)
 }
 

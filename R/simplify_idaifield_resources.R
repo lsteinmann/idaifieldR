@@ -35,6 +35,11 @@ simplify_single_resource <- function(resource,
                             replace_uids = replace_uids,
                             uidlist = uidlist)
 
+  # checks the value of the replace_uids argument, if it is TRUE,
+  # calls the find_layer() function on the resource with resource, uidlist,
+  # and NULL as arguments. The resulting value is assigned to the
+  # liesWithinLayer variable and appended to the resource as a new field
+  # called relation.liesWithinLayer.
   if (replace_uids) {
     liesWithinLayer <- find_layer(resource = resource,
                                   uidlist = uidlist,
@@ -42,6 +47,12 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, list(relation.liesWithinLayer = liesWithinLayer))
   }
 
+  # checks the value of the keep_geometry argument, which determines whether
+  # to keep the geometry field in the resource or not. If keep_geometry is
+  # FALSE, the function checks if the resource has a field called geometry and,
+  # if so, removes it. If keep_geometry is TRUE, the reformat_geometry()-
+  # function is called on the resource's geometry field and the resulting value
+  # is assigned back to the geometry field of the resource.
   if (!keep_geometry) {
     names <- names(resource)
     has_geom <- any(grepl("geometry", names))
@@ -52,6 +63,15 @@ simplify_single_resource <- function(resource,
     resource$geometry <- reformat_geometry(resource$geometry)
   }
 
+  # Next, the function checks if the resource has a field called period, and
+  # if so, assigns it to the period variable. If period is not NULL,
+  # the function creates a new fixed_periods variable with two elements,
+  # named period.start and period.end. If period has only one element,
+  # both elements of fixed_periods are set to this value. If period has two
+  # elements, the elements of fixed_periods are set to these values.
+  # If period has more than two elements, a message is printed saying
+  # "I did not see that coming." and the values of fixed_periods are not
+  # modified. The fixed_periods variable is then appended to the resource.
   period <- resource$period
   if (!is.null(period)) {
     fixed_periods <- c(NA, NA)
@@ -66,7 +86,13 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, fixed_periods)
   }
 
-
+  # The function then gets the names of all the fields in the resource,
+  # and checks if any of them contain a colon (:). If so, the
+  # remove_config_names() function is applied to the list of field names
+  # to remove the portion after the colon. The resulting list of field names
+  # is then assigned back to the resource. If the type field of the resource
+  # contains a colon, the remove_config_names() function is also applied to
+  # this field to remove the portion after the colon
   list_names <- names(resource)
 
   if (any(grepl(":", list_names))) {
@@ -74,6 +100,22 @@ simplify_single_resource <- function(resource,
     names(resource) <- list_names
   }
 
+  if (any(grepl(":", resource$type))) {
+    resource$type <- remove_config_names(resource$type)
+  }
+
+
+  # Next, the function gets all the field names in the resource that contain
+  # the string "dimension", and assigns them to the dim_names variable.
+  # If dim_names has at least one element, the function creates a new new_dims
+  # list with a single element (1), and then iterates over each element of
+  # dim_names. For each dim in dim_names, the idf_sepdim() function is called,
+  # passing dim (the name of the field in question) as an additional argument.
+  # The result is appended to the new_dims list. Once all elements of dim_names
+  # have been processed, the new_dims list is converted to a flat list
+  # (i.e., all sub-lists are removed) and the fields in resource with names
+  # from dim_names are removed. The new_dims list is then appended
+  # to the resource.
   dim_names <- list_names[grep("dimension", list_names)]
 
   if (length(dim_names) >= 1) {
@@ -89,11 +131,17 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, new_dims)
   }
 
+  # Finally, the function checks if the fieldtypes argument is a matrix,
+  # and if so, calls the convert_to_onehot() function on the resource with
+  # fieldtypes as an additional argument. This converts the values in the
+  # fields of resource to one-hot encoded vectors based on the
+  # specified fieldtypes.
   if (is.matrix(fieldtypes)) {
     resource <- convert_to_onehot(resource = resource,
                                   fieldtypes = fieldtypes)
   }
 
+  # Then, returns the modified resource.
   return(resource)
 }
 
@@ -144,8 +192,8 @@ simplify_idaifield <- function(idaifield_docs,
     config <- get_configuration(connection = connection,
                                 projectname = projectname)
   }
-  is.na(config)
-  if (is.na(config)) {
+
+  if (is.na(config[1])) {
     fieldtypes <- NA
   } else {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")

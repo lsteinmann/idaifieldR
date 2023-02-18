@@ -1,4 +1,12 @@
-# idaifieldR 0.2.1 _2022-05-15_
+# idaifieldR 0.2.2 _2023-02-18_
+* config specific names now removed everywhere
+* fixed problem with if-condition when config exists
+* fixed problem with the calculation of means for ranged measurements
+* comments in the code in some places
+* speed up `find_layer()`, `replace_uid()` and `check_if_uid()` 
+* more tests
+
+# idaifieldR 0.2.1 _2022-10-23_
 * Fixed `find_layer()` (internal), seems to work as intended now.
 * With the editor for the project configuration in iDAI.field 3, new fields and objects started to be named according to their configurations, e.g. "milet:temperType" etc., if the fields have been newly created. From now on those config specific names are removed from all fields, so that only the part after the double dot remains (e.g. "milet:temperType" becomes "temperType").
 * `check_if_uid()` now handles vectors

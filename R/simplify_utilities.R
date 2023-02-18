@@ -20,13 +20,17 @@ find_layer <- function(resource = resource,
                        uidlist = NULL,
                        liesWithin = NULL,
                        strict = FALSE) {
+  # The function first checks if a uidlist has been supplied,
+  # and if not it outputs a warning message and returns NA.
   if (is.null(uidlist)) {
     warning("find_layer() called but no uidlist supplied")
     return(NA)
   }
 
   # get identifier, index and type of the parent resource
-  liesWithin_index <- which(resource$relation.liesWithin == uidlist$identifier)
+  # match should be fine here as identifiers are unique and liesWithin can only
+  # have one value as well
+  liesWithin_index <- match(resource$relation.liesWithin, uidlist$identifier)
   liesWithin_identifier <- uidlist$identifier[liesWithin_index]
   liesWithin_type <- uidlist$type[liesWithin_index]
 
@@ -67,12 +71,13 @@ find_layer <- function(resource = resource,
       return(NA)
     } else {
       # get the index and type of the parent
-      next_liesWithin_index <- which(uidlist$identifier == next_liesWithin_identifier)
+      # match should be fine here as identifiers are unique
+      next_liesWithin_index <- match(next_liesWithin_identifier, uidlist$identifier)
       next_liesWithin_type <- uidlist$type[next_liesWithin_index]
       # add as a row to the data.frame
-      liesWithin <- rbind(liesWithin, c(next_liesWithin_index,
-                                        next_liesWithin_identifier,
-                                        next_liesWithin_type))
+      liesWithin[nrow(liesWithin)+1,] <- c(next_liesWithin_index,
+                                           next_liesWithin_identifier,
+                                           next_liesWithin_type)
       # recursively call the function again to find the next parent, this
       # time with the data.frame already existing
       find_layer(resource = resource,
@@ -106,6 +111,13 @@ find_layer <- function(resource = resource,
 convert_to_onehot <- function(resource, fieldtypes) {
   # get the inputType list
   checkboxes <- fieldtypes[which(fieldtypes[, "inputType"] == "checkboxes"), ]
+
+  if (!is.matrix(checkboxes)) {
+    checkboxes_new <- matrix(nrow = 1, ncol = ncol(fieldtypes))
+    checkboxes_new[1,] <- checkboxes
+    colnames(checkboxes_new) <- names(checkboxes)
+    checkboxes <- checkboxes_new
+  }
 
   # find which fields actually belong to the resource type
   correct_type <- which(checkboxes[, "type"] == resource$type)
@@ -160,9 +172,11 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
       # point. Therefore we have to check if the there is an entry calles
       # "inputValue" first, because it may not be a range though value had not
       # been converted. If inputValue doesn't exist, it should be a range.
-      if (is.null(x$inputValue)) {
+      if (!is.null(x$rangeMin)) {
         range <- c(x$rangeMin, x$rangeMax)
         value <- mean(range) / 10000
+        # set name here for later add underscore for later naming
+        names(value) <- "mean_"
         return(value)
       } else {
         # And then we need to do unit conversion...
@@ -184,14 +198,13 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
     }
   }
 
-  if ("rangeMin" %in% names(dimensionList[[1]])) {
-    name <- paste(name, "_mean", sep = "")
-  }
-
+  # get named vector with all values, avoid name when normal measurement
   dims <- unlist(lapply(dimensionList, FUN = get_dim_value))
-  names(dims) <- c(paste(name, "cm",
-                         seq(from = 1, to = dimno, by = 1),
-                         sep = "_"))
+  names <- rep(name, length(dims))
+  names <- paste(names, "_cm_", names(dims),
+                 seq(from = 1, to = dimno, by = 1),
+                 sep = "")
+  names(dims) <- names
   dims <- as.list(dims)
   return(dims)
 }

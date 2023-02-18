@@ -6,8 +6,7 @@
 #'
 #'
 #'
-#' @param uidvector a vector of UIDs to be replaced with their identifiers (if
-#' numeric, the corresponging column of the uidlist is processed)
+#' @param uidvector a vector of UIDs to be replaced with their identifiers
 #' @param uidlist a uidlist as returned by get_uid_list()
 #'
 #' @return The corresponding identifier(s) (a character string/vector)
@@ -22,19 +21,17 @@
 #' replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
 #' }
 replace_uid <- function(uidvector, uidlist) {
+  # Create a logical vector indicating which entries in uidvector are in uidlist
+  matches <- match(uidvector, uidlist$UID)
 
-  check_if_uid(uidvector)
+  # Return the corresponding entries in uidlist,
+  # or the original entries if no match is found
+  identifiers <- ifelse(is.na(matches), uidvector, uidlist$identifier[matches])
 
-  if (is.numeric(uidvector)) {
-    uidvector <- uidlist[, uidvector]
-  }
-
-  mat <- matrix(ncol = 2, nrow = length(uidvector))
-  mat[, 1] <- as.character(uidvector)
-  matches <- match(mat[, 1], uidlist$UID)
-  mat[, 2] <- ifelse(check_if_uid(mat[, 1]),
-                    uidlist$identifier[matches],
-                    mat[, 1])
-
-  return(mat[, 2])
+  # Check for remaining UUIDs in uidvector
+  #is_uid <- check_if_uid(identifiers)
+  #if (any(is_uid)) {
+  #  message("Not all UIDs were replaced.")
+  #}
+  return(identifiers)
 }
