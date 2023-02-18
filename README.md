@@ -16,7 +16,7 @@ idaifieldR depends on the R-package [sofa](https://github.com/ropensci/sofa) (av
 
 ## Installation
 
-You can install the current version of idaifieldR from github using devtools:
+You can install the current version of idaifieldR from github using `devtools` or `remotes`:
 
 ``` r
 devtools::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
