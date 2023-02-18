@@ -120,7 +120,7 @@ test_that("colnames from checkboxes are spread", {
   test_simple <- simplify_idaifield(test_resources,
                                     keep_geometry = TRUE,
                                     replace_uids = TRUE)
-  names <- unique(unlist(lapply(test_simple, names)))
-  names <- names[grepl("testAnkreuzfeld", names)]
-  expect_gt(length(names), 1)
+  namesvec <- unique(unlist(lapply(test_simple, names)))
+  namesvec <- namesvec[grepl("testAnkreuzfeld", namesvec)]
+  expect_gt(length(namesvec), 1)
 })
