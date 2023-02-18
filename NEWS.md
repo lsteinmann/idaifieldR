@@ -1,5 +1,8 @@
-# idaifieldR 0.2.2 _2022_
-* config specific names now removed everywhere 
+# idaifieldR 0.2.2 _2023-02-18_
+* config specific names now removed everywhere
+* fixed problem with if-condition when config exists
+* fixed problem with the calculation of means for ranged measurements
+* comments in the code in some places
 * speed up `find_layer()`, `replace_uid()` and `check_if_uid()` 
 * more tests
 
