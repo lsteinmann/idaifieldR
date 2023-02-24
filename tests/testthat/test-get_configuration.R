@@ -60,12 +60,23 @@ test_that("warning for empty config", {
 test_that("empty matrix for empty config", {
   expect_equal(nrow(suppressWarnings(get_field_inputtypes(empty_config))), 0)
 })
+
 test_docs_noconf <- attributes(test_docs)
 attributes(test_docs_noconf)$connection <- NULL
-test_that("message for missing config", {
+
+test_that("error when not working", {
   expect_equal(get_configuration(attributes(test_docs_noconf)$connection,
                                  projectname = "testproj"), NA)
   expect_message(get_configuration(attributes(test_docs_noconf)$connection,
                                    projectname = "testproj"),
-                 "No Configuration")
+                 "Error")
 })
+
+test_that("error for missing config not working", {
+  expect_equal(get_configuration(connection,
+                                 projectname = "test"), NA)
+  expect_message(get_configuration(connection,
+                                   projectname = "test"),
+                 "no configuration")
+})
+

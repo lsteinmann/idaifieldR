@@ -28,7 +28,13 @@ get_configuration <- function(connection, projectname = "rtest") {
     return(config)
   },
   error = function(e) {
-    message("No Configuration found!")
+    if (any(grepl("db_query", e))) {
+      message("Error in get_configuration(), returning NA:
+              Project has no configuration!")
+    } else {
+      message(paste("Error in get_configuration(), returning NA:", e))
+    }
+    #
     return(NA)
   })
 }
