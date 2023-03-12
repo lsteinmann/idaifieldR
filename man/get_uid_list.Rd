@@ -4,7 +4,12 @@
 \alias{get_uid_list}
 \title{get_uid_list}
 \usage{
-get_uid_list(idaifield_docs, verbose = FALSE, gather_trenches = FALSE)
+get_uid_list(
+  idaifield_docs,
+  verbose = FALSE,
+  gather_trenches = FALSE,
+  language = "en"
+)
 }
 \arguments{
 \item{idaifield_docs}{An object as returned by get_idaifield_docs}
@@ -16,6 +21,9 @@ and FALSE returns only UID and type, which is enough for internal selections}
 \item{gather_trenches}{defaults to FALSE. If TRUE, adds another column that
 records the Place each corresponding Trench and its sub-resources lie within.
 (Useful for grouping the finds of several trenches.)}
+
+\item{language}{the short name (e.g. "en", "de", "fr") of the language that
+is preferred for the fields, defaults to english ("en")}
 }
 \value{
 a list of UIDs and their Types, Identifiers and shortDescriptions

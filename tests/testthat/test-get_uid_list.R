@@ -73,4 +73,18 @@ test_that("gets uidlist from simplified list", {
   expect_true("Befund_6" %in% test$liesWithin)
 })
 
+data("idaifieldr_demodata")
+test_that("works with multilang demodata from default config", {
+  test <- get_uid_list(idaifieldr_demodata)
+  expect_true("LAYER_1" %in% test$liesWithin)
+})
 
+test_that("works with multilang demodata from default config when verbose", {
+  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE)
+  expect_true("Another Trench" %in% test$shortDescription)
+})
+
+test_that("works with multilang demodata from default config when verbose", {
+  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE, language = "de")
+  expect_true("Ein Erdbefund" %in% test$shortDescription)
+})

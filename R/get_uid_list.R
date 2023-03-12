@@ -20,6 +20,8 @@
 #' @param gather_trenches defaults to FALSE. If TRUE, adds another column that
 #' records the Place each corresponding Trench and its sub-resources lie within.
 #' (Useful for grouping the finds of several trenches.)
+#' @param language the short name (e.g. "en", "de", "fr") of the language that
+#' is preferred for the fields, defaults to english ("en")
 #'
 #' @return a list of UIDs and their Types, Identifiers and shortDescriptions
 #' @export
@@ -34,7 +36,8 @@
 #' uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
 #' }
 get_uid_list <- function(idaifield_docs, verbose = FALSE,
-                         gather_trenches = FALSE) {
+                         gather_trenches = FALSE,
+                         language = "en") {
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
   ncol <- 5
@@ -44,6 +47,7 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
     ncol <- 7
     colnames <- c(colnames, "shortDescription", "liesWithinLayer")
   }
+
 
   uidlist <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
   colnames(uidlist) <- colnames
@@ -74,10 +78,10 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
                                         function(x) na_if_empty(x$relation.liesWithin)))
   }
 
-
   if (verbose) {
-    uidlist$shortDescription <- unlist(lapply(idaifield_docs,
-                                              function(x) na_if_empty(x$shortDescription)))
+    # get all entries for shortDescription
+    desc <- lapply(idaifield_docs, function(x) na_if_empty(x$shortDescription))
+    uidlist$shortDescription <- gather_languages(desc, language = language)
     uidlist$liesWithinLayer <- unlist(lapply(idaifield_docs,
                                              function(x) na_if_empty(x$relation.liesWithinLayer)))
   }
