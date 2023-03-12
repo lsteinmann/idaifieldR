@@ -25,7 +25,8 @@ simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
-                                     fieldtypes = NULL) {
+                                     fieldtypes = NULL,
+                                     language = "all") {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -131,6 +132,20 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, new_dims)
   }
 
+  if (language != "all") {
+    resource <- lapply(resource, function(x) {
+      names <- names(x)
+      names <- grepl("^[a-z]{2}$", names)
+      if (length(names) > 1) {
+        gather_languages(list(x), language = language, silent = TRUE)
+      } else {
+        x
+      }
+    })
+  }
+
+
+
   # Finally, the function checks if the fieldtypes argument is a matrix,
   # and if so, calls the convert_to_onehot() function on the resource with
   # fieldtypes as an additional argument. This converts the values in the
@@ -173,7 +188,8 @@ simplify_single_resource <- function(resource,
 simplify_idaifield <- function(idaifield_docs,
                                keep_geometry = TRUE,
                                replace_uids = TRUE,
-                               uidlist = NULL) {
+                               uidlist = NULL,
+                               language = "all") {
 
 
   check <- check_if_idaifield(idaifield_docs)
@@ -197,22 +213,37 @@ simplify_idaifield <- function(idaifield_docs,
     fieldtypes <- NA
   } else {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
+    languages <- unlist(config$projectLanguages)
+    if (language != "all") {
+      if (language %in% languages) {
+        message(paste("Keeping input values of selected language (",
+                      language, ") where possible.",
+                      sep = ""))
+      } else {
+        message(paste("Selected language (",
+                      language, ") not available.",
+                      sep = ""))
+      }
+    } else {
+      message("Keeping all languages for input fields.")
+    }
   }
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
-  idaifield_docs <- lapply(idaifield_docs, function(x)
+  idaifield_simple <- lapply(idaifield_docs, function(x)
     simplify_single_resource(
       x,
       replace_uids = replace_uids,
       uidlist = uidlist,
       keep_geometry = keep_geometry,
-      fieldtypes = fieldtypes
+      fieldtypes = fieldtypes,
+      language = language
     )
   )
 
-  idaifield_docs <- structure(idaifield_docs, class = "idaifield_simple")
-  attr(idaifield_docs, "connection") <- connection
-  attr(idaifield_docs, "projectname") <- projectname
+  idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
+  attr(idaifield_simple, "connection") <- connection
+  attr(idaifield_simple, "projectname") <- projectname
 
-  return(idaifield_docs)
+  return(idaifield_simple)
 }

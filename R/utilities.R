@@ -182,6 +182,8 @@ reorder_colnames <- function(colnames, order = "default") {
 #' sublists for each language
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the fields, defaults to english ("en")
+#' @param silant TRUE/FALSE: Should gather_languages()
+#' issue messages and warnings?
 #'
 #' @return a vector containing the values
 #'
@@ -193,7 +195,7 @@ reorder_colnames <- function(colnames, order = "default") {
 #'                    list("en" = "Another english text", "de" = "Weiterer dt. Text"))
 #' gather_languages(input_list, language = "de")
 #' }
-gather_languages <- function(input_list, language = "en") {
+gather_languages <- function(input_list, language = "en", silent = FALSE) {
   # if this has a sublist / more than one entry, it means that there is
   # more than one language
   if (check_for_sublist(input_list)) {
@@ -201,8 +203,10 @@ gather_languages <- function(input_list, language = "en") {
     res <- lapply(input_list, function(x) na_if_empty(unlist(x[language])))
     res <- unlist(res)
     if (all(is.na(res))) {
-      # issue warning is this does not work
-      warning("No language selected or selected language not available, using first entry")
+      if (!silent) {
+        # issue warning is this does not work
+        warning("No language selected or selected language not available, using first entry")
+      }
       # instead get the first entry
       res <- unlist(lapply(input_list, function(x) x[1]))
     }

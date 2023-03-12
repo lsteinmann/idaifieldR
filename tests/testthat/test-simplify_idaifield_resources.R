@@ -124,3 +124,52 @@ test_that("colnames from checkboxes are spread", {
   namesvec <- namesvec[grepl("testAnkreuzfeld", namesvec)]
   expect_gt(length(namesvec), 1)
 })
+
+# language support
+data("idaifieldr_demodata")
+
+test_that("notify for config", {
+  expect_warning(simplify_idaifield(idaifieldr_demodata,
+                                    uidlist = get_uid_list(idaifieldr_demodata),
+                                    keep_geometry = FALSE,
+                                    language = "en",
+                                    replace_uids = TRUE),
+                 "custom")
+})
+
+
+test_that("notify for language", {
+  lang <- "de"
+  expect_message(suppressWarnings(simplify_idaifield(idaifieldr_demodata,
+                                                     uidlist = get_uid_list(idaifieldr_demodata),
+                                                     keep_geometry = FALSE,
+                                                     language = lang,
+                                                     replace_uids = TRUE)),
+                 lang)
+})
+
+test_that("return correct language", {
+  lang <- "de"
+  val <- idaifieldr_demodata[[1]]$doc$resource$shortDescription$de
+  test <- suppressWarnings(simplify_idaifield(idaifieldr_demodata,
+                                              uidlist = get_uid_list(idaifieldr_demodata),
+                                              keep_geometry = FALSE,
+                                              language = lang,
+                                              replace_uids = TRUE))
+  expect_identical(test[[1]]$shortDescription, val)
+})
+
+
+test_that("return all languages", {
+  lang <- "all"
+  expect_message(test <- suppressWarnings(
+    simplify_idaifield(idaifieldr_demodata,
+                       uidlist = get_uid_list(idaifieldr_demodata),
+                       keep_geometry = FALSE,
+                       language = lang,
+                       replace_uids = TRUE)),
+    "all languages")
+  expect_true(all(c("en", "de") %in% names(test[[1]]$shortDescription)))
+})
+
+
