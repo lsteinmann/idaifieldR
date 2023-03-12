@@ -1,6 +1,6 @@
 # idaifieldR 0.2.3 _2023-02-18_
-* add language list lookup preparation
-* add language management for input fields
+* add language list lookup preparation (get_language_lookup()) for custom config fields
+* add language management for input fields when project has more than one project language
 * new demodata
 
 # idaifieldR 0.2.2 _2023-02-18_
