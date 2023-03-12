@@ -1,5 +1,6 @@
 # idaifieldR 0.2.3 _2023-02-18_
 * add language list lookup preparation
+* new demodata
 
 # idaifieldR 0.2.2 _2023-02-18_
 * config specific names now removed everywhere
