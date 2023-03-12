@@ -9,6 +9,8 @@
 #' is set to FALSE, there is no need to supply it.
 #' @param keep_geometry logical. Should the geographical information be kept
 #' or removed? (Defaults to TRUE).
+#' @param language the short name (e.g. "en", "de", "fr") of the language that
+#' is preferred for the fields, defaults to english ("en")
 #'
 #' @return A single resource (element) for an idaifield_resource-list.
 #'
@@ -172,6 +174,8 @@ simplify_single_resource <- function(resource,
 #' has been, you should supply a data.frame as returned by `get_uid_list()`.
 #' @param keep_geometry logical. Should the geographical information be kept
 #' or removed? (Defaults to TRUE).
+#' @param language the short name (e.g. "en", "de", "fr") of the language that
+#' is preferred for the fields, defaults to english ("en")
 #'
 #' @return a simplified "idaifield_resources"-list
 #' @export

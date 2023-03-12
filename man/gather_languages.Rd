@@ -4,7 +4,7 @@
 \alias{gather_languages}
 \title{Gather multilanguage fields}
 \usage{
-gather_languages(input_list, language = "en")
+gather_languages(input_list, language = "en", silent = FALSE)
 }
 \arguments{
 \item{input_list}{a list with character values containing (or not)
@@ -12,6 +12,9 @@ sublists for each language}
 
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the fields, defaults to english ("en")}
+
+\item{silant}{TRUE/FALSE: Should gather_languages()
+issue messages and warnings?}
 }
 \value{
 a vector containing the values

@@ -8,7 +8,8 @@ simplify_idaifield(
   idaifield_docs,
   keep_geometry = TRUE,
   replace_uids = TRUE,
-  uidlist = NULL
+  uidlist = NULL,
+  language = "all"
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ corresponding identifiers? (Defaults to TRUE).}
 automatically generated within this function. This only makes sense if
 the list handed to `simplify_idaifield()` had not been selected yet. If it
 has been, you should supply a data.frame as returned by `get_uid_list()`.}
+
+\item{language}{the short name (e.g. "en", "de", "fr") of the language that
+is preferred for the fields, defaults to english ("en")}
 }
 \value{
 a simplified "idaifield_resources"-list

@@ -104,27 +104,6 @@ test_that("returns same object if already simple", {
 })
 
 
-skip_on_cran()
-
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R", pwd = "hallo")
-
-tryCatch({
-  sofa::ping(connection)
-},
-error = function(cond) {
-  skip("Test skipped, needs DB-connection")
-})
-
-test_that("colnames from checkboxes are spread", {
-  test_simple <- simplify_idaifield(test_resources,
-                                    keep_geometry = TRUE,
-                                    replace_uids = TRUE)
-  namesvec <- unique(unlist(lapply(test_simple, names)))
-  namesvec <- namesvec[grepl("testAnkreuzfeld", namesvec)]
-  expect_gt(length(namesvec), 1)
-})
-
 # language support
 data("idaifieldr_demodata")
 
@@ -147,6 +126,17 @@ test_that("notify for language", {
                                                      replace_uids = TRUE)),
                  lang)
 })
+
+test_that("notify for unavailable language", {
+  lang <- "tr"
+  expect_message(suppressWarnings(simplify_idaifield(idaifieldr_demodata,
+                                                     uidlist = get_uid_list(idaifieldr_demodata),
+                                                     keep_geometry = FALSE,
+                                                     language = lang,
+                                                     replace_uids = TRUE)),
+                 lang)
+})
+
 
 test_that("return correct language", {
   lang <- "de"
@@ -172,4 +162,28 @@ test_that("return all languages", {
   expect_true(all(c("en", "de") %in% names(test[[1]]$shortDescription)))
 })
 
+
+
+## with db connection
+
+skip_on_cran()
+
+connection <- connect_idaifield(serverip = "127.0.0.1",
+                                user = "R", pwd = "hallo")
+
+tryCatch({
+  sofa::ping(connection)
+},
+error = function(cond) {
+  skip("Test skipped, needs DB-connection")
+})
+
+test_that("colnames from checkboxes are spread", {
+  test_simple <- simplify_idaifield(test_resources,
+                                    keep_geometry = TRUE,
+                                    replace_uids = TRUE)
+  namesvec <- unique(unlist(lapply(test_simple, names)))
+  namesvec <- namesvec[grepl("testAnkreuzfeld", namesvec)]
+  expect_gt(length(namesvec), 1)
+})
 
