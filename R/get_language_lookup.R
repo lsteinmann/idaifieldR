@@ -1,4 +1,4 @@
-#' prep_language_list(): Prepare a Language List as a Lookup Table
+#' get_language_lookup(): Prepare a Language List as a Lookup Table
 #'
 #' @param lang_list A list in the format used by iDAI.fields configuration,
 #' containing a separate list for each language with its short
@@ -16,11 +16,9 @@
 #' conn <- connect_idaifield(serverip = "127.0.0.1",
 #'                           user = "R", pwd = "hallo")
 #' config <- get_configuration(connection = conn, projectname = "rtest")
-#' lookup <- prep_language_list(config$languages, language = "en")
+#' lookup <- get_language_lookup(config$languages, language = "en")
 #' }
-
-
-prep_language_list <- function(lang_list, language = "en") {
+get_language_lookup <- function(lang_list, language = "en") {
   # if any of the reversed results of grepl are true, we need to skip because
   # the names are not in language-list forma, e.g. "en", "de", "fr"
   # (the reverse/any combination is weird, but we have to reverse the matches
@@ -76,5 +74,8 @@ prep_language_list <- function(lang_list, language = "en") {
   result <- result[match(unique(result$var), result$var),]
   # reset rownames
   rownames(result) <- 1:nrow(result)
+
+  result$var <- remove_config_names(result$var)
+
   return(result)
 }
