@@ -1,7 +1,8 @@
-# idaifieldR 0.2.3 _2023-02-18_
+# idaifieldR 0.2.3 _tba, wip_
 * add language list lookup preparation (get_language_lookup()) for custom config fields
-* add language management for input fields when project has more than one project language
-* new demodata
+* add language management for multi-language input fields when project has more than one project language
+* new demodata (`data("idaifieldr_demodata")`)
+* updated documentation
 
 # idaifieldR 0.2.2 _2023-02-18_
 * config specific names now removed everywhere

@@ -1,31 +1,30 @@
-#' get_idaifield_docs
+#' get_idaifield_docs: Import all docs from an iDAI.field / Field Desktop project
 #'
-#' Imports all resources from an idaifield-database that is currently running
+#' Imports all docs from an idaifield-database that is currently running
 #' and synching into a list-object for further processing in R.
-#' This wraps **sofa**s functions and slightly processes the output.
+#' This wraps **sofa**s functions and very slightly processes the output.
 #' The function is only useful for the import from iDAI.field 2 or
 #' Field Desktop with the respective client running on the same computer as
 #' the R-script.
-#' raw = TRUE (the default) will allow you to get all the changes for each
-#' resource, i.e. which user changed something in the resource at what time,
-#' and who created it. Setting raw to FALSE will only return a list of the
-#' actual data.
+#' When using `raw = TRUE` (the default) this function will allow you to
+#' get all the changes for each resource, i.e. which user changed something
+#' in the resource at what time and who created it. Setting raw to FALSE
+#' will only return a list of the actual data. You can do this at a later time
+#' using `check_and_unnest()` from this package.
 #'
 #' NOTE: If you are planning on using the coordinates stored in the database,
 #' I strongly suggest you consider changing your R digits-setting to a higher
 #' value than the default. Depending on the projection used, coordinates may
 #' be represented by rather long numbers which R might automatically round on
-#' import. `options(digits = 20)` should do the trick. (That applies to
-#' other fields containing long numbers as well.)
+#' import. `options(digits = 20)` should more than do the trick. (That applies
+#' to other fields containing long numbers as well.)
 #'
 #'
 #' @param connection A connection object as returned by `connect_idaifield()`
 #' @param projectname The name of the project in the Field Client that one
 #' wishes to load.
-#'
 #' @param raw default FALSE. If you wish to get an unnested version of only
 #' the resources, without the metadata (i.e. changes by user), set it to TRUE
-#'
 #' @param json default FALSE; if TRUE output cannot be simplified with the
 #' functions from this package and is instead of a list returned in json format
 #' that can freely be manipulated using e.g. the jsonlite package.

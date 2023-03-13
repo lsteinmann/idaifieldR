@@ -1,6 +1,6 @@
 #' idaifieldR Demodata
 #'
-#' Test and Demonstration Data to illustrate the packages functionality, has
+#' Test and demonstration data to illustrate the packages functionality, has
 #' no real world representation.
 #'
 #' @format ## `idaifieldr_demodata`

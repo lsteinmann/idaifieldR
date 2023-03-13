@@ -1,10 +1,8 @@
 #' show_type_list
 #'
-#' Returns a list of types present in the iDAI.field 2 / Field Desktop database
-#' (for orientation) it would be nice to be able to embed the translations,
-#' but i am guessing thats only possible if the configuration was available
+#' Returns a list of types present in the iDAI.field 2 / Field Desktop database.
 #'
-#' @param idaifield_docs An object as returned by get_idaifield_docs(...);
+#' @param idaifield_docs An object as returned by `get_idaifield_docs(...)`;
 #' unnests to resource level if it didn't already happen.
 #'
 #' @return a character vector with the types represented in
@@ -14,9 +12,10 @@
 #' @examples
 #' \dontrun{
 #' connection <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
+#'                                 user = "R",
+#'                                 pwd = "hallo")
 #' idaifield_docs <- get_idaifield_docs(connection = connection,
-#' projectname = "rtest")
+#'                                      projectname = "rtest")
 #'
 #' show_type_list(idaifield_docs)
 #' }

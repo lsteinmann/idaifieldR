@@ -1,18 +1,16 @@
 #' replace_uid
 #'
 #' When handed an item (a vector or a single variable) first checks if it is
-#' actually a UID as defined in check_if_uid() and if so, replaces it with
+#' actually a UUID as defined in check_if_uid() and if so, replaces it with
 #' the corresponding identifier from the uidlist (also handed to the function).
 #'
 #'
-#'
-#' @param uidvector a vector of UIDs to be replaced with their identifiers
-#' @param uidlist a uidlist as returned by get_uid_list()
+#' @param uidvector a vector of UUIDs to be replaced with their identifiers
+#' @param uidlist a uidlist resp. index of as returned by get_uid_list()
 #'
 #' @return The corresponding identifier(s) (a character string/vector)
 #'
 #' @export
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{

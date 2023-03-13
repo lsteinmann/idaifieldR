@@ -16,7 +16,7 @@ simplify_single_resource(
 \arguments{
 \item{resource}{One resource (element) from an idaifield_resources-list.}
 
-\item{replace_uids}{logical. Should UIDs be automatically replaced with the
+\item{replace_uids}{logical. Should UUIDs be automatically replaced with the
 corresponding identifiers? (Defaults to TRUE).}
 
 \item{uidlist}{A data.frame as returned by `get_uid_list()`. If replace_uids

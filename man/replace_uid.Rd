@@ -7,16 +7,16 @@
 replace_uid(uidvector, uidlist)
 }
 \arguments{
-\item{uidvector}{a vector of UIDs to be replaced with their identifiers}
+\item{uidvector}{a vector of UUIDs to be replaced with their identifiers}
 
-\item{uidlist}{a uidlist as returned by get_uid_list()}
+\item{uidlist}{a uidlist resp. index of as returned by get_uid_list()}
 }
 \value{
 The corresponding identifier(s) (a character string/vector)
 }
 \description{
 When handed an item (a vector or a single variable) first checks if it is
-actually a UID as defined in check_if_uid() and if so, replaces it with
+actually a UUID as defined in check_if_uid() and if so, replaces it with
 the corresponding identifier from the uidlist (also handed to the function).
 }
 \examples{
@@ -26,4 +26,3 @@ uidlist <- get_uid_list(idaifield_docs)
 replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
 }
 }
-\keyword{internal}

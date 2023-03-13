@@ -3,8 +3,7 @@
 #' Checks for list of class "idaifield_docs" and if the object is already
 #' unnested (i.e. of class "idaifield_resources"); if it is not, does so.
 #' If it cannot be processed, because it is not an idaifield_docs or
-#' idaifield_resources object, throws error.
-#' TODO: wrap in trycatch to process anyway if possible
+#' idaifield_resources object, issues a warning and returns the same object.
 #'
 #' @param idaifield_docs An object to be used by one of the
 #' functions in this package

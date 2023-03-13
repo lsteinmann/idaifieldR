@@ -3,7 +3,7 @@
 #' This function is a helper to `simplify_idaifield()`.
 #'
 #' @param resource One resource (element) from an idaifield_resources-list.
-#' @param replace_uids logical. Should UIDs be automatically replaced with the
+#' @param replace_uids logical. Should UUIDs be automatically replaced with the
 #' corresponding identifiers? (Defaults to TRUE).
 #' @param uidlist A data.frame as returned by `get_uid_list()`. If replace_uids
 #' is set to FALSE, there is no need to supply it.
@@ -164,9 +164,27 @@ simplify_single_resource <- function(resource,
 
 #' Simplify a list imported from an iDAI.field-Database
 #'
+#' The function will take a list as returned by `get_idaifield_docs()` and
+#' process it to make the list more useable. It will unnest a view lists,
+#' including the dimension-lists and the period-list to provide single values
+#' for later processing with `idaifield_as_matrix()`. If a connection to the
+#' database can be established, the function will get the relevant project
+#' configuration and convert custom checkboxes-fields to multiple lists,
+#' each for every value from the respective valuelist, to make them more
+#' accessible during the conversion with `idaifield_as_matrix()`. It will also
+#' remove the custom configuration field names that are in use since
+#' iDAI.field 3 / Field Desktop and consist of "projectname:fieldName". Only
+#' the "projectname:"-part will be removed.
+#'
+#' Please note: The function will need an Index (i.e. uidlist as provided
+#' by `get_uid_list()`) of the complete project database to correctly replace
+#' the UUIDs with their corresponding identifiers! Especially if a selected
+#' list is passed to `simplify_idaifield()`, you need to supply the uidlist
+#' of the complete project database as well.
+#'
 #' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
 #' returned by `get_idaifield_docs()`.
-#' @param replace_uids logical. Should UIDs be automatically replaced with the
+#' @param replace_uids logical. Should UUIDs be automatically replaced with the
 #' corresponding identifiers? (Defaults to TRUE).
 #' @param uidlist If NULL (default) the list of UIDs and identifiers is
 #' automatically generated within this function. This only makes sense if
@@ -175,9 +193,10 @@ simplify_single_resource <- function(resource,
 #' @param keep_geometry logical. Should the geographical information be kept
 #' or removed? (Defaults to TRUE).
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
-#' is preferred for the fields, defaults to english ("en")
+#' is preferred for the multi-language input fields, defaults to keeping all
+#' languages as sub-lists ("all").
 #'
-#' @return a simplified "idaifield_resources"-list
+#' @return an "idaifield_simple" list
 #' @export
 #'
 #' @examples
@@ -248,6 +267,7 @@ simplify_idaifield <- function(idaifield_docs,
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
   attr(idaifield_simple, "connection") <- connection
   attr(idaifield_simple, "projectname") <- projectname
+  attr(idaifield_simple, "language") <- language
 
   return(idaifield_simple)
 }

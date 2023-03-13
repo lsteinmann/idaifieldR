@@ -1,16 +1,20 @@
-#' Unnest the relations in a resource
+#' Unnest the relations in a resource and replace the UUIDs with identifiers
+#'
+#' The function will flatten the relations list to more non-nested lists with
+#' with "relation."-prefix and replace the UUIDs in the lists values with
+#' the corresponding identifiers from the uidlist using `replace_uid()`
+#' to make the result more readable.
 #'
 #' @param resource One item from a list of class idaifield_resources
-#' @param replace_uids logical. If TRUE, replaces the UIDs in each relation with
+#' @param replace_uids logical. If TRUE, replaces the UUIDs in each relation with
 #' the corresponding identifiers. If FALSE, just unnests the list.
 #' @param uidlist Only needs to be provided if replace_uids = TRUE. A data.frame
 #' as returned by `get_uid_list()`
 #'
-#' @return The resource with its relations unnested (and replaced with
+#' @return The same resource with its relations unnested (and replaced with
 #' identifiers if replace_uids is set to TRUE).
 #'
 #' @export
-#' @keywords internal
 #'
 #' @examples
 #' \dontrun{

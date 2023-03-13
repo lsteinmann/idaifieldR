@@ -7,25 +7,29 @@
 idaifield_as_matrix(idaifield)
 }
 \arguments{
-\item{idaifield}{An object as returned by get_idaifield_docs(...)
-or simplify_idaifield(...)}
+\item{idaifield}{An object as returned by `get_idaifield_docs(...)`,
+`check_and_unnest(...)` or `simplify_idaifield(...)`}
 }
 \value{
-a matrix (depending on selection and database it can be very large)
+a matrix (depending on selection and project database
+it can be very large)
 }
 \description{
-Converts an idaifield_docs/idaifield_resource-list into a Matrix.
-}
-\details{
-If the list containing all meta-info (i.e. the docs-list)
-is handed to the function it will automatically unnest to resource level).
+Converts a list of class `idaifield_docs`, `idaifield_resource` or
+`idaifield_simple` into a matrix. Recomennded to use with
+`idaifield_simple`-lists as returned by `simplify_idaifield()`.
+If given a list of class `idaifield_docs` containing all meta-info,
+it will automatically unnest to resource level. It is recommended to
+select the list first using `select_by()` from this package to reduce
+the amount of columns returned. See example.
 }
 \examples{
 \dontrun{
 connection <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo")
+                                user = "R",
+                                pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = connection,
-projectname = "rtest")
+                                     projectname = "rtest")
 pottery <- select_by(idaifield_docs, by = "type", value = "Pottery")
 pottery <- simplify_idaifield(pottery,
                               uidlist = get_uid_list(idaifield_docs))
