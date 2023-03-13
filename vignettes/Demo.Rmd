@@ -36,7 +36,7 @@ connection <- connect_idaifield(serverip = "127.0.0.1",
                                 pwd = "hallo")
 ```
 
-If you wish to import the complete database into R, you can use `get_idaifield_docs()` with the default options. Be aware that this can take **a long time** depending on the size of your database. Just to give you an impressing: I regularly work with ca. 4000 resources, and the import takes roughly 20 seconds while the resulting `idaifield_resources`-object is around 20MB in size.
+If you wish to import the complete database into R, you can use `get_idaifield_docs()` with the default options. Be aware that this can take some time depending on the size of your database. Just to give you an impression: I regularly work with ca. 10000 resources, and the import takes roughly 5 seconds while the resulting `idaifield_resources`-object is around 40MB in size.
 
 ```{r eval=FALSE}
 all_resources <- get_idaifield_docs(connection = connection, 
@@ -55,12 +55,13 @@ uidlist <- get_uid_list(all_resources, verbose = TRUE, gather_trenches = TRUE)
 head(uidlist)
 ```
 
-To make the list more usable and to fix the values of fields that may otherwise display UIDs (as relations are stored this way in the database), you can use the function `simplify_idaifield()`. Depending on the size of you database it may take a while to process. You can decide whether you want to replace the UIDs with their corresponding identifiers, and whether you want to use the geometry attached to each resource.
+To make the list more usable and to fix the values of fields that may otherwise display UUIDs (as relations are stored this way in the database), you can use the function `simplify_idaifield()`. Depending on the size of you database it may take a while to process. You can decide whether you want to replace the UUIDs with their corresponding identifiers, and whether you want to use the geometry attached to each resource. Selecting a language will result in the function trying to retain the corresponding values in that language from multi-language text input fields.
 
 ```{r eval=TRUE}
 all_resources <- simplify_idaifield(all_resources, 
                                     keep_geometry = FALSE, 
-                                    replace_uids = TRUE)
+                                    replace_uids = TRUE,
+                                    language = "de")
 all_resources[[1]]
 ```
 
@@ -119,4 +120,4 @@ ggplot(pottery, aes(x = specificType)) +
 ggplot(pottery, aes(x = condition)) +
   geom_bar()
 ```
-You can do this with basically anthing that is in the database. Some variables may need reformating and cleaning, depending on your configuration and the state of the data. 
+You can do this with basically anything that is in the database. Some variables may need reformatting and cleaning, depending on your configuration and the state of the data. 

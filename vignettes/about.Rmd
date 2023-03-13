@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE, warning=FALSE, message=FALSE}
+```{r, include = FALSE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -41,21 +41,19 @@ all_resources <- idaifield_test_docs
 uidlist <- get_uid_list(idaifield_test_resources)
 ```
 
-The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in iDAI.field 2 / Field Desktop is included as well, for reference. Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds to what can be obtained with the `get_idaifield_docs()` function.
+The package includes test data as an RDS file in `inst/testdata`, for the purpose of building this vignette. A backup with the same data that can be imported in iDAI.field 2 / Field Desktop is included as well, for reference ("inst/testdata/rtest.jsonl"). Since it is impossible to use the actual database connection when building this vignette, data is loaded from this file, but corresponds exactly to what can be obtained with the `get_idaifield_docs()` function.
 
-When importing data your first step would be to build a connection object, where **serverip** corresponds to the IP listed in the Field Client as "*Eigene Adresse*" when using the client in a network, **user** can be anything you wish and will only be important if you intend to write to the database, as the client does not employ user-specific passwords. **pwd** should be the password as listed in the Field Client. If you run the Client on the same computer as you R-Script, you can use the localhost address (*127.0.0.1*).
+When importing data your first step would be to build a connection object, where **serverip** corresponds to the IP listed in the Field Client as '*Your address*' when using the client in a network or the localhost-IP '127.0.0.1', which is the default value, when running the Client on the same computer as R. **user** can be omitted or anything you wish as the client does not employ user-specific passwords. **pwd** should be the password as listed in the Field Client as '*Your password*'. 
 
-
-
-```{r eval=FALSE}
+```{r eval = FALSE}
 connection <- connect_idaifield(serverip = "127.0.0.1",
                                 user = "R",
                                 pwd = "hallo")
 ```
 
-*Note*: The default options are set for Field Desktop (iDAI.field 3). If you continue to use iDAI.field 2, you need to add the version number to `connect_idaifield()`, otherwise the connection cannot be established!
+*Note*: The default options are set for Field Desktop (iDAI.field 3). If you continue to use iDAI.field 2, you need to add the version number to `connect_idaifield()`, otherwise the connection cannot be established! For example:
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 connection <- connect_idaifield(serverip = "127.0.0.1",
                                 user = "R",
                                 pwd = "hallo",
@@ -63,9 +61,9 @@ connection <- connect_idaifield(serverip = "127.0.0.1",
 ```
 
 
-Sofa can help you get a list of all the projects that are stored in the database:
+The R-package [sofa](https://cran.r-project.org/web/packages/sofa/index.html), on which idaifieldR depends, can help you get a list of all the projects that are stored in the database:
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 sofa::db_list(connection)
 ```
 
@@ -73,9 +71,9 @@ sofa::db_list(connection)
 
 The project database you are using can either be imported in total (see below), or queried. The functions demonstrated here are wrapping the queries possible with `sofa` in other functions as to make it more accessible to people using iDAI.field 2 / Field Desktop. If you want more complex queries, I suggest to use sofa directly.
 
-For almost any function of this package, you will need a "uidlist". It serves as an index to the database and as a way of replacing UIDs with their respective identifiers for readability. You can obtain this uidlist / the index as follows:
+For almost any function of this package, you will need a "uidlist". It serves as an index to the database and as a way of replacing UUIDs (*Universally Unique Identifier*) with their respective identifiers for readability. You can obtain this uidlist / the index as follows:
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 all_resources <- get_idaifield_docs(
   connection = connection,
   projectname = "rtest",
@@ -104,24 +102,22 @@ layers <- idf_query(connection = connection,
                     value = "Farbe")
 ```
 
-However, these queries will only work for fields that cannot have more than one value (i.e. radio Buttons, Dropdown lists, names). With Sofa, searching for Regular Expressions etc. is possible. If you intend to do that, I would recommend to use sofa directly. 
+However, these queries will only work for fields that cannot have more than one value (i.e. radio buttons, dropdown lists, names). With sofa, searching for Regular Expressions etc. is possible. If you intend to do that, I would recommend to use sofa directly. 
 
 # Working with the data
 
-The lists as they are usually returned by the database are not always very useful or easy to work with. The functions `simplify_idaifield()` aims to alleviate this somewhat by replacing all UIDs with identifiers, reformating the coordinates to make them usable, and spread columns from multiple choice fields. As the processing takes some time, I do not recommend using this function on the whole database if you have a large amount of resources. Instead, try using it on the results of queries or a selection of the database obtained with `select_by()`.
+The lists as they are usually returned by the database are not always very accessible and easy to work with, as they reflect the original json-structure of the project database. The function `simplify_idaifield()` aims to alleviate this somewhat by replacing all UUIDs with their identifiers, reformatting the coordinates to make them usable with other R-packages, and spread columns from multiple choice fields. As the processing takes some time, I do not recommend using this function on the whole database if you have a large amount of resources. Instead, try using it on the results of queries or a selection of the database obtained with `select_by()`. Be sure to supply a complete uidlist/index to `select_by()` - otherwise it will not be able to replace all UUIDs with their respective identifiers.
 
 ```{r eval = TRUE}
 pottery <- select_by(all_resources, by = "type", value = "Pottery")
 pottery <- simplify_idaifield(pottery, uidlist = uidlist)
-head(idaifield_as_matrix(pottery))
+head(idaifield_as_matrix(pottery)[, 1:5])
 ```
 
 
-# The Inefficient Way (deprecated functions)
+# Working with the Complete Project Database
 
-The following explanations and functions will no longer be used after a complete re-structuring of this package. However, I am leaving them here as to not ruin the day of any person that may have used this at some point. 
-
-And `get_idaifield_docs()` imports all documents from the project. `simplified = TRUE` (which is the default) returns a list that is already unnested to resource level. With simplified = FALSE it is possible to obtain all the meta-info on each resource, i.e. the changelog of each resource.
+As mentioned `get_idaifield_docs()` imports all documents from the project. `raw = FALSE` returns a list that is already unnested to resource level. With `raw = TRUE` it is possible to obtain all the meta-info on each resource, i.e. the changelog of each resource containing information about who made changes to it at what time.
 
 ```{r eval=FALSE}
 idaifield_test_resources <- get_idaifield_docs(
@@ -137,33 +133,35 @@ This returns an object of class "idaifield_resources", which is a nested list:
 idaifield_test_resources[[1]]
 ```
 
+You will still want to use `simplify_idaifield()` to make the output more readable, but this may take a while for larger projects: 
 
+```{r}
+idaifield_simple <- simplify_idaifield(idaifield_test_resources, uidlist = uidlist)
+```
 
 For any further processing and especially larger data sets, the `select_by()` function should be important:
 
 ```{r}
-layers <- select_by(idaifield_test_resources, by = "type", value = "Layer")
+layers <- select_by(idaifield_simple, by = "type", value = "Layer")
 layers[[5]]
 ```
 
-A list of all resource-types present in the database can be gathered with `show_type_list()`. Only the internal names are referenced as types, and translations that you may see in the GUI can be different from these. They can be gathered in the Field Client from "Hilfe \> Formularkonfiguration" (pink names in upper right corner).
+A list of all resource-types present in the database can be gathered with `show_type_list()`. Only the internal names are referenced as types, and translations that you may see in the GUI can be different from these. They can be gathered in the Field Client from "Tools \> Project configuration" (pink names in upper right corner).
 
 ```{r}
-show_type_list(idaifield_test_resources)
+show_type_list(idaifield_simple)
 ```
 
-A selection of the whole list can be converted into a matrix of lists: 
+A selection of the whole list can be converted into a matrix, with many fields now being spread to multiple columns, e.g. in the case of checkbox-fields: 
 
 ```{r}
-pottery <- idaifield_test_resources %>%
+pottery <- idaifield_simple %>%
   select_by(by = "type", value = "Pottery") %>%
   idaifield_as_matrix()
 
 pottery[1:5, 1:5]
 ```
-(There is a function for data.frame conversion which pastes all entries from fields with multiple entries together, but I do not recommend it and frankly it might not even work anymore, as I have changes many things.)
-
-With this matrix, it is easy to plot any distributions or actually further select and analyse the data. The matric can be coerced to a data.frame that will be easier for handling plotting functions.
+With this matrix, it is easy to plot any distributions or actually further select and analyse the data. The matrix can be coerced to a data.frame that will be easier for handling plotting functions.
 
 ```{r warning=FALSE}
 library(dplyr)
@@ -204,11 +202,11 @@ options(digits = 20)
 
 # Geometry
 
-As a comment: `simplify_idaifield()` or `get_idaifield_docs(..., simplified = TRUE)` by default reformats the geometry entries so that the coordinates are stored in a matrix. This can be reformatted with the `sp`-package to display in R-leaflet maps etc. (You will still need to add the CRS.) The geometry-matrix has 3 columns for x, y and z values. If there are only two-dimensional data in the database, height will be set to 0.
+As a comment: `simplify_idaifield(..., keep_geometry = TRUE)` reformats the geometry entries so that the coordinates are stored in a matrix. This can be reformatted with the `sp`-package to display in R-leaflet maps etc. (You will still need to add the CRS.) The geometry-matrix has 3 columns for x, y and z values. If there are only two-dimensional data in the database, height (z-value) will always be set to 0.
 
 # Alternatives
 
-In case you wish to work with the whole database in json-format, I suggest you use the jsonlite package which has similar capabilities to e.g. flatten any lists and output. You can get the whole database in json format via: 
+In case you wish to work with the whole database in its original json-format, I suggest you use the jsonlite package which has similar capabilities to e.g. flatten any lists and output. You can get the whole database in json format via: 
 
 ```{r eval = FALSE}
 connection <- connect_idaifield(serverip = "127.0.0.1", 
@@ -222,16 +220,23 @@ nested_df <- fromJSON(json_output)$rows
 flattened_df <- flatten(nested_df)
 ```
 
-Since I prepared this package mostly to suit my own need you might be happier with this output. Most functions from this package however will probably not work with the flattened/converted json-outputs, but it should not be hard to find replace the UIDs etc, for which some internal functions in this package may still be useful.
+Since I prepared this package mostly to suit my own need you might be happier with this output. Most functions from this package however will probably not work with the flattened/converted json-outputs, but it should not be hard to find replace the UUIDs etc., for which some of the functions in this package may still be useful, such as `replace_UID()`.
 
 # Other Notes
 
-Since version 3 (Field Desktop / iDAI.field 3) the Configuration itself can be extracted from the database. You can possibly use this to incorporate translations into plots, though I have yet to figure out a way how. 
+Since version 3 (Field Desktop / iDAI.field 3) the Configuration itself can be extracted from the database. You can possibly use this to incorporate translations into plots.
 
 This will return a matrix with nested lists representing the whole project configuration: 
 
 ```{r eval = FALSE}
-config <- get_idaifield_docs(connection = connection,
-                             projectname = "rtest") %>% 
-  select_by(by = "type", value = "Configuration") 
+config <- get_configuration(connection = connection, projectname = "rtest")
 ```
+
+You can use the configuration to produce a simple lookup-table for one language using the `get_language_lookup()`-function with the language list of the config as such: 
+
+
+```{r eval = FALSE}
+get_language_lookup(config$languages, language = "en")
+```
+This will return the background name of each custom field in the `var` column, and the translation you selected with `language = "en"` in the `label`-column. You can use this to replace labels in plots, though currently it is not possible to get the basic translation of default values or older project configurations in here as well. 
+
