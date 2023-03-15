@@ -3,6 +3,7 @@
 * add language management for multi-language input fields when project has more than one project language
 * new demodata (`data("idaifieldr_demodata")`)
 * updated documentation
+* `connect_idaifield()` will now ping the connection to check for possible errors and notify accordingly
 
 # idaifieldR 0.2.2 _2023-02-18_
 * config specific names now removed everywhere
