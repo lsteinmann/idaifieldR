@@ -1,3 +1,44 @@
+#' Create a data.frame from a list of labels and descriptions from iDAI.field
+#'
+#' Helper to get_language_lookup()
+#'
+#'
+#' @param fields_list A named list that contains one or two other
+#' named lists ("label" and "description") with the translation / display
+#' language of the respective internal value (i.e. the name of the list)
+#' @param language
+#'
+#' @return a data frame with the column "var" and "label" containing the
+#' value in var and its respective translation / display value in "label"
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' fields_list <- list("category" = list("label" = "Category"),
+#' "identifier" = list("label" = "Name / ID (unique)",
+#' "description" = "Description of the field"))
+#' df <- extract_field_names(fields_list)
+#' }
+extract_field_names <- function(fields_list) {
+  fields_list <- unlist(lapply(fields_list,
+                               function (x) {
+                                 try <- try(x$label, silent = TRUE)
+                                 if (inherits(try, "try-error")) {
+                                   NA
+                                 } else {
+                                   try
+                                 }
+                               }),
+                        use.names = TRUE)
+  # and reformat to df for later use
+  fields_df <- data.frame("var" = names(fields_list), "label" = fields_list)
+
+  fields_df <- fields_df[!is.na(fields_df$label), ]
+
+  return(fields_df)
+}
+
 #' get_language_lookup(): Prepare a Language List as a Lookup Table
 #'
 #' @param lang_list A list in the format used by iDAI.fields configuration,
@@ -34,47 +75,40 @@ get_language_lookup <- function(lang_list, language = "en") {
          Your configuration may not have custom language settings.")
   }
 
-  # Extract the data from various sub-lists ...
-  commons <- unlist(lapply(lang_list$commons,
-                           function (x) x$label),
-                    use.names = TRUE)
-  # and reformat to df for later use
-  commons <- data.frame("var" = names(commons), "label" = commons)
+  names <- names(lang_list)
+  result <- data.frame("var" = 1, "label" = 1)
+  for (name in names) {
+    if (name ==  "groups") {
+      next
+    }
+    label_df <- extract_field_names(lang_list[[name]])
 
-  # categories work the same as commons
-  categories <- unlist(lapply(lang_list$categories,
-                              function (x) x$label),
-                       use.names = TRUE)
-  categories <- data.frame("var" = names(categories),
-                           "label" = categories)
+    check <- lapply(lang_list[[name]], check_for_sublist)
+    check <- unlist(check)
+    check <- any(check)
 
-  # fields need to be treated slightly different, as they are more
-  # nested that the other two types - first we get the fields from inside
-  # all categories
-  fields <- lapply(lang_list$categories,
-                   function (x) lapply(x$fields,
-                                       function(y) y$label))
+    if (check) {
+      sublist <- unlist(lang_list[[name]], recursive = FALSE, use.names = FALSE)
+      ind <- unlist(lapply(sublist, function(x) is.null(names(x))))
+      ind <- which(ind)
+      sublist <- sublist[-ind]
+      sublist <- unlist(sublist, recursive = FALSE, use.names = TRUE)
+      label_df_sec <- extract_field_names(sublist)
+      label_df <- rbind(label_df, label_df_sec)
+    }
+    result <- rbind(result, label_df)
+  }
+  result <- result[-1, ]
 
-  # then we get the original values from the db backend
-  fields_int <- unlist(lapply(fields,
-                              function(x) names(x)),
-                       use.names = FALSE)
-  # and the language-specific labels
-  fields_labels <- unlist(fields, use.names = FALSE)
-
-  # store in df again
-  fields <- data.frame("var" = fields_int,
-                       "label" = fields_labels)
-
-  # bind the results in one data.frame
-  result <- rbind(commons, categories, fields)
   # reduce multiple values - Attention: if two things have the same name
   # in the background of the db but you use different translations
   # this will result in only one of the translations being used
-  result <- result[match(unique(result$var), result$var),]
+  # I am leaving it here as a todo/note, but it is not a good idea.
+  #result <- result[match(unique(result$var), result$var),]
   # reset rownames
-  rownames(result) <- 1:nrow(result)
-
+  if (nrow(result) != 0) {
+    rownames(result) <- 1:nrow(result)
+  }
   result$var <- remove_config_names(result$var)
 
   return(result)

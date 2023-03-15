@@ -1,6 +1,4 @@
 
-
-
 emptylist <- config$languages
 emptylist$en <- list()
 
