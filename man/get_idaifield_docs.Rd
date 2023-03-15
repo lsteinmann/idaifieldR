@@ -26,10 +26,12 @@ that can freely be manipulated using e.g. the jsonlite package.
 (Might be more useful for some users.)}
 }
 \value{
-an object (list) of class "idaifield_docs" (if simplified = FALSE)
-or "idaifield_resources" (if simplified = TRUE) that contains the
-resources in the selected project. (If json is set to TRUE, returns a
-character string in json-format.)
+an object (list) of class "idaifield_docs" if raw = TRUE and
+"idaifield_resources" if raw = FALSE that contains all docs/resources
+in the selected project except for the Project Configuration.
+The connection, projectname and configuration are attached as
+attributes for later use.(If json is set to TRUE, returns a character
+string in json-format.)
 }
 \description{
 Imports all docs from an idaifield-database that is currently running
@@ -39,7 +41,7 @@ The function is only useful for the import from iDAI.field 2 or
 Field Desktop with the respective client running on the same computer as
 the R-script.
 When using `raw = TRUE` (the default) this function will allow you to
-get all the changes for each resource, i.e. which user changed something
+get the changelog for each resource, i.e. which user changed something
 in the resource at what time and who created it. Setting raw to FALSE
 will only return a list of the actual data. You can do this at a later time
 using `check_and_unnest()` from this package.

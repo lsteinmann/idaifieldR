@@ -7,13 +7,12 @@ test_that("project exists", {
   expect_true("project" %in% uidlist$UID)
 })
 
-test_that("config exists", {
-  expect_true("configuration" %in% uidlist$UID)
+test_that("config does not exist", {
+  expect_false("configuration" %in% uidlist$UID)
 })
 
 
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
-uidlist <- uidlist[-which(uidlist$UID == "configuration"), ]
 
 test_that("contains no special config names", {
   expect_false(any(grepl(":", unique(uidlist$type))))

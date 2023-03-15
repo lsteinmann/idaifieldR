@@ -54,15 +54,7 @@ test_that("error when not working", {
 
 skip_on_cran()
 
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R", pwd = "hallo")
-
-tryCatch({
-  sofa::ping(connection)
-},
-error = function(cond) {
-  skip("Test skipped, needs DB-connection")
-})
+connection <- skip_if_no_connection()
 
 test_that("returns NA for missing config", {
   config <- get_configuration(connection, projectname = "test")

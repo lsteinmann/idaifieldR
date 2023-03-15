@@ -217,25 +217,24 @@ simplify_idaifield <- function(idaifield_docs,
 
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_simple"] == TRUE) {
+    message("Already of class 'idaifield_simple', did nothing.")
     return(idaifield_docs)
   }
 
   if (is.null(uidlist)) {
+    message("No UID-List supplied, generating from this list.")
     uidlist <- get_uid_list(idaifield_docs)
   }
 
+  config <- attr(idaifield_docs, "config")
+  projectname <- attr(idaifield_docs, "projectname")
 
-  if (!is.null(attr(idaifield_docs, "connection"))) {
-    connection <- attr(idaifield_docs, "connection")
-    projectname <- attr(idaifield_docs, "projectname")
-    config <- get_configuration(connection = connection,
-                                projectname = projectname)
-  }
-
-  if (is.na(config[1])) {
+  if (inherits(config, "try-error")) {
     fieldtypes <- NA
   } else {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
+
+    ## Language handling
     languages <- unlist(config$projectLanguages)
     if (language != "all") {
       if (language %in% languages) {
@@ -265,8 +264,9 @@ simplify_idaifield <- function(idaifield_docs,
   )
 
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
-  attr(idaifield_simple, "connection") <- connection
-  attr(idaifield_simple, "projectname") <- projectname
+  attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
+  attr(idaifield_simple, "projectname") <- attr(idaifield_docs, "projectname")
+  attr(idaifield_simple, "config") <- config
   attr(idaifield_simple, "language") <- language
 
   return(idaifield_simple)

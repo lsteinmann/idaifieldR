@@ -4,6 +4,8 @@
 * new demodata (`data("idaifieldr_demodata")`)
 * updated documentation
 * `connect_idaifield()` will now ping the connection to check for possible errors and notify accordingly
+* `get_idaifield_docs()` will now remove the Configuration as a doc and attach it as attribute to all custom classes, thus `simplify_idaifield()` will use the configuration-attribute directly and works without connection. 
+* #TODO? May have created problems for iDAI.field 2, but hopefully no one uses that?
 
 # idaifieldR 0.2.2 _2023-02-18_
 * config specific names now removed everywhere
