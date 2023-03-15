@@ -219,6 +219,9 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
         res_sec <- lapply(input_list, function(x) na_if_empty(unlist(x[languages[i]])))
         res_sec <- unlist(res_sec)
         res <- ifelse(is.na(res), res_sec, res)
+        no_list_ind <- unlist(lapply(input_list, is.character))
+        no_list_ind <- which(no_list_ind)
+        res[no_list_ind] <- unlist(input_list)[no_list_ind]
       }
     }
   } else {

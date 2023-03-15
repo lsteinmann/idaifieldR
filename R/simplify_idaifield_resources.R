@@ -136,9 +136,10 @@ simplify_single_resource <- function(resource,
 
   if (language != "all") {
     resource <- lapply(resource, function(x) {
+      pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
       names <- names(x)
-      names <- grepl("^[a-z]{2}$", names)
-      if (length(names) > 1) {
+      names <- grepl(paste0(pat, collapse = "|"), names)
+      if (all(names)) {
         gather_languages(list(x), language = language, silent = TRUE)
       } else {
         x
