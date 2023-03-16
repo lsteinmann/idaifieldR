@@ -3,6 +3,18 @@ test_that("raw has connection as attribute", {
   expect_error(get_idaifield_docs(conn))
 })
 
+source(file = "../load_testdata.R")
+
+test_that("items are named", {
+  rnr <- sample(1:length(test_docs), 1)
+  expect_identical(names(test_docs)[rnr],
+                   test_docs[[rnr]]$doc$resource$identifier)
+})
+
+
+
+
+
 skip_on_cran()
 connection <- skip_if_no_connection()
 

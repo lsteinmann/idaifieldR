@@ -45,6 +45,13 @@ test_that("dimensions are spread", {
 })
 
 
+test_that("keeps names", {
+  expect_identical(names(test_resources),
+                   names(simplify_idaifield(test_resources,
+                                            replace_uids = TRUE)))
+})
+
+
 #mat <- idaifield_as_matrix(test_simple)
 #colnames(mat)
 

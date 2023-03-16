@@ -30,3 +30,8 @@ test_that("keeps attributes", {
   expect_identical(attr(test_docs, "projectname"), attr(test, "projectname"))
 })
 
+
+test_that("keeps names", {
+  expect_identical(names(test_docs), names(check_and_unnest(test_docs)))
+})
+
