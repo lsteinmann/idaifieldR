@@ -241,14 +241,14 @@ simplify_idaifield <- function(idaifield_docs,
     languages <- unlist(config$projectLanguages)
     if (language != "all") {
       if (language %in% languages) {
-        message(paste("Keeping input values of selected language (",
-                      language, ") where possible.",
+        message(paste("Keeping input values of selected language ('",
+                      language, "') where possible.",
                       sep = ""))
       } else {
         new_language <- sort(languages[grepl("^[a-z]{2}$", languages)])
-        new_language <- ifelse(new_language[1] == "", "all", new_language[1])
-        message(paste("Selected language (",
-                      language, ") not available. Trying '", new_language,
+        new_language <- ifelse(is.null(new_language), "all", new_language[1])
+        message(paste("Selected language ('",
+                      language, "') not available. Trying '", new_language,
                       "' instead.", sep = ""))
         language <- new_language
       }
