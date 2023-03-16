@@ -91,6 +91,10 @@ way to get to your data quickly.</p>
 <span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span>,</span>
 <span>                         projectname <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span>
 <span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_uid_list.html">get_uid_list</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="selection-and-simplify-example">Selection and Simplify: Example<a class="anchor" aria-label="anchor" href="#selection-and-simplify-example"></a>
+</h2>
 <p>Using the following few lines and all default arguments while
 selecting from the whole database:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -102,11 +106,14 @@ selecting from the whole database:</p>
 <span>  <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span>uidlist <span class="op">=</span> <span class="va">index</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/idaifield_as_matrix.html">idaifield_as_matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="query-and-simplify-example">Query and Simplify: Example<a class="anchor" aria-label="anchor" href="#query-and-simplify-example"></a>
+</h2>
 <p>Or using the following few lines with direct queries to the
 database:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idf_query.html">idf_query</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span>,</span>
-<span>                     uidlist <span class="op">=</span> <span class="va">index</span>,</span>
 <span>                     project <span class="op">=</span> <span class="st">"idaifieldr-demo"</span>, </span>
 <span>                     field <span class="op">=</span> <span class="st">"type"</span>, </span>
 <span>                     value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -114,7 +121,31 @@ database:</p>
 <span>  <span class="fu"><a href="../reference/idaifield_as_matrix.html">idaifield_as_matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="language-lookup-example">Language Lookup: Example<a class="anchor" aria-label="anchor" href="#language-lookup-example"></a>
+</h2>
+<p>Downloading translations and converting them into a lookup table:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">core_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_language_list.html">download_language_list</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"core"</span>, language <span class="op">=</span> <span class="st">"de"</span><span class="op">)</span></span>
+<span><span class="va">pergamon_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_language_list.html">download_language_list</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"Pergamon"</span>, language <span class="op">=</span> <span class="st">"de"</span><span class="op">)</span></span>
+<span><span class="va">config_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">db</span>, <span class="st">"config"</span><span class="op">)</span></span>
+<span><span class="va">config_lang_list</span> <span class="op">&lt;-</span> <span class="va">config_lang_list</span><span class="op">$</span><span class="va">languages</span></span>
+<span></span>
+<span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">core_lang_list</span>, language <span class="op">=</span> <span class="st">"de"</span><span class="op">)</span></span>
+<span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">lookup</span>, <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">pergamon_lang_list</span>, language <span class="op">=</span> <span class="st">"de"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">lookup</span>, <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">config_lang_list</span>, language <span class="op">=</span> <span class="st">"de"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lookup</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pottery</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">translated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pottery</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">translated</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">lookup</span><span class="op">$</span><span class="va">label</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">translated</span>, <span class="va">lookup</span><span class="op">$</span><span class="va">var</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">translated</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

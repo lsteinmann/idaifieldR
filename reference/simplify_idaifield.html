@@ -93,7 +93,8 @@ the "projectname:"-part will be removed.</p>
 <span>  keep_geometry <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  replace_uids <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  uidlist <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  language <span class="op">=</span> <span class="st">"all"</span></span>
+<span>  language <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  spread_fields <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -105,8 +106,8 @@ returned by `get_idaifield_docs()`.</p></dd>
 
 
 <dt>keep_geometry</dt>
-<dd><p>logical. Should the geographical information be kept
-or removed? (Defaults to TRUE).</p></dd>
+<dd><p>logical. (Defaults to TRUE) Should the geographical
+information be kept or removed?</p></dd>
 
 
 <dt>replace_uids</dt>
@@ -125,6 +126,12 @@ has been, you should supply a data.frame as returned by `get_uid_list()`.</p></d
 <dd><p>the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the multi-language input fields, defaults to keeping all
 languages as sub-lists ("all").</p></dd>
+
+
+<dt>spread_fields</dt>
+<dd><p>logical. (Defaults to TRUE) Should checkbox-fields be
+spread across multiple lists to facilitate boolean-columns for each value
+of a checkbox-field?</p></dd>
 
 </dl></div>
     <div class="section level2">

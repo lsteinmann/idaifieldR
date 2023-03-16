@@ -144,17 +144,18 @@ configuration to demonstrate relevant functions.</p>
 <span>                                          projectname <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span></code></pre></div>
 <p>If you are using RStudio, you can get a convenient look at the result
 using <code>View(idaifield_test_docs)</code> or by clicking on the list
-in the Environment-window. It is a nested list with the custom class
-<code>idaifield_docs</code> that contains one element for each resource
-in the database and reflects the original <code>json</code>-structure.
-The <code>doc$resource</code> sub-list contains the actual entry for
-each resource, while the other sub-lists contain information about the
-changes made to each resource along with its basic data such as the
-<em>UUID</em> that Field Desktop uses internally as the unique name of
-each resource. You can use this list to visualize changes made to
-database entries on a time axis sorted by users, etc., but we will
-continue to utilize <code>idaifieldR</code>s functions to work with the
-actual data.</p>
+in the Environment-window. It is a named nested list with the custom
+class <code>idaifield_docs</code> that contains one element for each
+resource in the database and reflects the original
+<code>json</code>-structure. The name of each list is the identifier of
+the associated resource. The <code>doc$resource</code> sub-list contains
+the actual entry for each resource, while the other sub-lists contain
+information about the changes made to each resource along with its basic
+data such as the <em>UUID</em> that Field Desktop uses internally as the
+unique name of each resource. You can use this list to visualize changes
+made to database entries on a time axis sorted by users, etc., but we
+will continue to utilize <code>idaifieldR</code>s functions to work with
+the actual data.</p>
 <p>Though it is not necessary for further processing, you can use
 <code>idaifieldR</code>s <code><a href="../reference/check_and_unnest.html">check_and_unnest()</a></code>-function (see
 <code>?check_and_unnest()</code>) to reduce the list to the resource
@@ -286,8 +287,9 @@ list.</p>
 <span>                                            keep_geometry <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                            replace_uids <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                                            uidlist <span class="op">=</span> <span class="va">index</span>,</span>
-<span>                                            language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Keeping input values of selected language (en) where possible.</span></span></code></pre></div>
+<span>                                            language <span class="op">=</span> <span class="st">"en"</span>,</span>
+<span>                                            spread_fields <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Keeping input values of selected language ('en') where possible.</span></span></code></pre></div>
 <p>The function will also notify you that it tries to use the English
 values from multi-language input fields if possible. If the respective
 input field has no English value, <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> will
@@ -297,10 +299,14 @@ keep all languages from the multi-language input fields, you can use
 removes all coordinate information from the resources.
 <code>replace_uids</code> is set to <code>TRUE</code> by default and
 replaces UUIDs in the data with their corresponding identifiers to be
-more readable. If you process the complete database with this function,
-there is no need to supply the index as we did just now, because it will
-generate its own index. If, however, you choose to process only a subset
-of all data, you need to supply an index of the complete database.</p>
+more readable. Checkbox fields as well as the campaign field are
+automatically spread across multiple entries, so that they will be
+stored in multiple columns in a matrix. If you dislike this behaviour,
+set the argument <code>spread_fields</code> to <code>FALSE</code>. If
+you process the complete database with this function, there is no need
+to supply the index as we did just now, because it will generate its own
+index. If, however, you choose to process only a subset of all data, you
+need to supply an index of the complete database.</p>
 <p>The list now has the <code>idaifield_simple</code> class. Browse the
 resulting list by clicking on it in your Environment-window in RStudio
 or use <code>View(idaifield_test_simple)</code>. All
@@ -321,18 +327,21 @@ this for us (see the documentation at <code>?select_by()</code>)</p>
 <h3 id="queries">Queries<a class="anchor" aria-label="anchor" href="#queries"></a>
 </h3>
 <p>The same outcome can be achieved by querying the database directly.
-This may be useful when you frequently want to update your data, but
-have a large amount of resources in the database:</p>
+See the documentation of <code>?idf_index_query()</code> and
+<code>?idf_query()</code>. This may be useful when you frequently want
+to update your data, but have a large amount of resources in the
+database of which you only need a small subset:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idf_query.html">idf_query</a></span><span class="op">(</span><span class="va">conn</span>, </span>
 <span>                          projectname <span class="op">=</span> <span class="st">"rtest"</span>, </span>
 <span>                          field <span class="op">=</span> <span class="st">"type"</span>, </span>
 <span>                          value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span></span></code></pre></div>
 <p>The query-functions will return <code>idaifield_docs</code>-lists
-that (if you so wish) you still need to simplify. You need to supply the
-index as “uidlist”, otherwise UUIDs of relations cannot be replaced:</p>
+that (if you so wish) you still need to simplify. <strong>You need to
+supply the index to the <code>uidlist</code>-argument, otherwise UUIDs
+of relations cannot be replaced</strong>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pottery_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span><span class="va">pottery_docs</span>, uidlist <span class="op">=</span> <span class="va">index</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pottery_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span><span class="va">pottery_docs</span>, uidlist <span class="op">=</span> <span class="va">index</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="transform-the-lists-to-a-matrix-data-frame">Transform the Lists to a Matrix / data.frame<a class="anchor" aria-label="anchor" href="#transform-the-lists-to-a-matrix-data-frame"></a>
@@ -347,7 +356,7 @@ into a data.frame to make plots easier:</p>
 notice that the campaign-field has been converted to multiple columns.
 If a custom configuration is present, this will happen to all custom
 checkbox-fields, as there is no other way to conveniently deal with such
-fields in a data frame. To make different or better you of it, try to
+fields in a data frame. To make different or better use of it, try to
 format the original list itself according to your needs.</p>
 <p>From the data frame, we can produce some basic plots and take a look
 at the distribution of periods across our layers:</p>
@@ -380,7 +389,7 @@ prepared everything. You can prepare a lookup-table like this:</p>
 <span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">lookup</span>, <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">milet_lang_list</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>To get the translations from the Project configuration, you can use
 the config-attribute from any <code>idaifield_...</code>-list. This will
-also give you an impression of how the lookup-table is setup:</p>
+also give you an impression of how the lookup-table is set up:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">idaifield_test_simple</span>, <span class="st">"config"</span><span class="op">)</span></span>
 <span><span class="va">lookup_conf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">languages</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span></code></pre></div>
