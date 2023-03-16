@@ -216,7 +216,8 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
       languages <- sort(unique(unlist(lapply(input_list,
                                              function(x) names(x)))))
       for (i in seq_along(languages)) {
-        res_sec <- lapply(input_list, function(x) na_if_empty(unlist(x[languages[i]])))
+        res_sec <- lapply(input_list,
+                          function(x) na_if_empty(unlist(x[languages[i]])))
         res_sec <- unlist(res_sec)
         res <- ifelse(is.na(res), res_sec, res)
         no_list_ind <- unlist(lapply(input_list, is.character))
