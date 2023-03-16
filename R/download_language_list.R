@@ -28,10 +28,19 @@ download_language_list <- function(project = "core",
                       substr(project, 2, nchar(project)))
     lang_url <- paste0(base_url, "Language-", project, ".", language, ".json")
   } else {
-    lang_url <- paste0(base_url, "Core/Language.", language, ".json")
+    lang_url <- c(paste0(base_url, "Core/Language.", language, ".json"),
+                  paste0(base_url, "Library/Language.", language, ".json"))
   }
-  #TODO: would nee jsonlite as dependency
-  lang_list <- list(jsonlite::read_json(lang_url))
+  lang_list <- list()
+  for (i in seq_along(lang_url)) {
+    new <- jsonlite::read_json(lang_url[i])
+    lang_list <- append(lang_list, new)
+  }
+  other <- which(grepl("archaeoDox", names(lang_list)))
+  if (length(other) > 0) {
+    lang_list[other] <- NULL
+  }
+  lang_list <- list(lang_list)
   names(lang_list) <- language
 
   return(lang_list)
