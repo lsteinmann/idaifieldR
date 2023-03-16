@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Demo.html">How to use this package: Essential Workflow</a>
-    <a class="dropdown-item" href="../articles/about.html">About this package</a>
+    <a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a>
+    <a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -51,6 +51,20 @@
       <small>Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.3" id="idaifieldr-023-tba-wip">idaifieldR 0.2.3 <em>tba, wip</em>
+<a class="anchor" aria-label="anchor" href="#idaifieldr-023-tba-wip"></a></h2>
+<ul><li>add language management for multi-language input fields when project has more than one project language</li>
+<li>add language list lookup preparation (<code><a href="../reference/get_language_lookup.html">get_language_lookup()</a></code>) for custom config fields</li>
+<li>add <code><a href="../reference/download_language_list.html">download_language_list()</a></code> to get current translations from GitHub</li>
+<li>add ping-checks for all database-related functions to supply custom error messages</li>
+<li>
+<code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code> will now remove the Configuration as a doc and attach it as attribute to all custom classes, thus <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> will use the config-attribute directly and works without a connection.</li>
+<li>change <code><a href="../reference/idf_query.html">idf_query()</a></code> and <code><a href="../reference/idf_index_query.html">idf_index_query()</a></code> to return docs instead of simplified list to allow choice</li>
+<li>new demodata for future use (<code>data("idaifieldr_demodata")</code>)</li>
+<li>rewritten vignettes and generally updated documentation</li>
+<li>Notice: The changes may have created problems for iDAI.field 2, and I did not test using the package with iDAI.field 2, as I assume it is not used anymore. <code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code> should still work.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.2" id="idaifieldr-022-2023-02-18">idaifieldR 0.2.2 <em>2023-02-18</em>
 <a class="anchor" aria-label="anchor" href="#idaifieldr-022-2023-02-18"></a></h2>

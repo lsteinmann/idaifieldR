@@ -20,7 +20,7 @@ is irrelevant for any analysis of the database contents itself."><!-- mathjax --
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,8 +34,8 @@ is irrelevant for any analysis of the database contents itself."><!-- mathjax --
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Demo.html">How to use this package: Essential Workflow</a>
-    <a class="dropdown-item" href="../articles/about.html">About this package</a>
+    <a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a>
+    <a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a>
   </div>
 </li>
 <li class="nav-item">
@@ -79,14 +79,9 @@ is irrelevant for any analysis of the database contents itself.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>idaifield_docs</dt>
-<dd><p>A list as provided by `sofa::db_alldocs(...)` when
-importing from an iDAI.field 2 / Field Desktop-database
-using `get_idaifield_docs()`.
-`get_idaifield_docs()` employs this function already
-when setting `simplified = TRUE`, which is the default.
-Mostly there is no need to deal with `unnest_docs()`. If one chooses
-`get_idaifield_docs(..., simplified  = FALSE)`, it is possible to use
-`unnest_docs()` on the resulting list to simplify it.</p></dd>
+<dd><p>A list as provided by `get_idaifield_docs()`.
+`get_idaifield_docs()` employs this function already when
+setting `raw = FALSE`.</p></dd>
 
 </dl></div>
     <div class="section level2">

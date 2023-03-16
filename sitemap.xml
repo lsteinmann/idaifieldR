@@ -10,7 +10,7 @@
     <loc>https://lsteinmann.github.io/idaifieldR/articles/Demo.html</loc>
   </url>
   <url>
-    <loc>https://lsteinmann.github.io/idaifieldR/articles/about.html</loc>
+    <loc>https://lsteinmann.github.io/idaifieldR/articles/TLDR.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/articles/index.html</loc>
@@ -49,10 +49,19 @@
     <loc>https://lsteinmann.github.io/idaifieldR/reference/dot-onLoad.html</loc>
   </url>
   <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/download_language_list.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/extract_field_names.html</loc>
+  </url>
+  <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/find_layer.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/fix_relations.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/gather_languages.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/get_configuration.html</loc>
@@ -64,13 +73,22 @@
     <loc>https://lsteinmann.github.io/idaifieldR/reference/get_idaifield_docs.html</loc>
   </url>
   <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/get_language_lookup.html</loc>
+  </url>
+  <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/idaifield_as_matrix.html</loc>
   </url>
   <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/idaifieldr_demodata.html</loc>
+  </url>
+  <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_index_query.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_ping.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_query.html</loc>

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Demo.html">How to use this package: Essential Workflow</a>
-    <a class="dropdown-item" href="../articles/about.html">About this package</a>
+    <a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a>
+    <a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a>
   </div>
 </li>
 <li class="nav-item">
@@ -63,7 +63,8 @@
 <span>  replace_uids <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  uidlist <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  keep_geometry <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  fieldtypes <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  fieldtypes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  language <span class="op">=</span> <span class="st">"all"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -74,7 +75,7 @@
 
 
 <dt>replace_uids</dt>
-<dd><p>logical. Should UIDs be automatically replaced with the
+<dd><p>logical. Should UUIDs be automatically replaced with the
 corresponding identifiers? (Defaults to TRUE).</p></dd>
 
 
@@ -86,6 +87,11 @@ is set to FALSE, there is no need to supply it.</p></dd>
 <dt>keep_geometry</dt>
 <dd><p>logical. Should the geographical information be kept
 or removed? (Defaults to TRUE).</p></dd>
+
+
+<dt>language</dt>
+<dd><p>the short name (e.g. "en", "de", "fr") of the language that
+is preferred for the fields, defaults to english ("en")</p></dd>
 
 </dl></div>
     <div class="section level2">
