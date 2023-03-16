@@ -8,7 +8,8 @@ simplify_idaifield(
   idaifield_docs,
   keep_geometry = TRUE,
   replace_uids = TRUE,
-  uidlist = NULL
+  uidlist = NULL,
+  language = "all"
 )
 }
 \arguments{
@@ -18,19 +19,40 @@ returned by `get_idaifield_docs()`.}
 \item{keep_geometry}{logical. Should the geographical information be kept
 or removed? (Defaults to TRUE).}
 
-\item{replace_uids}{logical. Should UIDs be automatically replaced with the
+\item{replace_uids}{logical. Should UUIDs be automatically replaced with the
 corresponding identifiers? (Defaults to TRUE).}
 
 \item{uidlist}{If NULL (default) the list of UIDs and identifiers is
 automatically generated within this function. This only makes sense if
 the list handed to `simplify_idaifield()` had not been selected yet. If it
 has been, you should supply a data.frame as returned by `get_uid_list()`.}
+
+\item{language}{the short name (e.g. "en", "de", "fr") of the language that
+is preferred for the multi-language input fields, defaults to keeping all
+languages as sub-lists ("all").}
 }
 \value{
-a simplified "idaifield_resources"-list
+an "idaifield_simple" list
 }
 \description{
-Simplify a list imported from an iDAI.field-Database
+The function will take a list as returned by `get_idaifield_docs()` and
+process it to make the list more useable. It will unnest a view lists,
+including the dimension-lists and the period-list to provide single values
+for later processing with `idaifield_as_matrix()`. If a connection to the
+database can be established, the function will get the relevant project
+configuration and convert custom checkboxes-fields to multiple lists,
+each for every value from the respective valuelist, to make them more
+accessible during the conversion with `idaifield_as_matrix()`. It will also
+remove the custom configuration field names that are in use since
+iDAI.field 3 / Field Desktop and consist of "projectname:fieldName". Only
+the "projectname:"-part will be removed.
+}
+\details{
+Please note: The function will need an Index (i.e. uidlist as provided
+by `get_uid_list()`) of the complete project database to correctly replace
+the UUIDs with their corresponding identifiers! Especially if a selected
+list is passed to `simplify_idaifield()`, you need to supply the uidlist
+of the complete project database as well.
 }
 \examples{
 \dontrun{

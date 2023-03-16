@@ -22,3 +22,11 @@ test_that("does not change simplified list", {
 test_that("does not change resource list", {
   expect_identical(check_and_unnest(test_resources), test_resources)
 })
+
+test_that("keeps attributes", {
+  test <- check_and_unnest(test_docs)
+  expect_identical(attr(test_docs, "config"), attr(test, "config"))
+  expect_identical(attr(test_docs, "connection"), attr(test, "connection"))
+  expect_identical(attr(test_docs, "projectname"), attr(test, "projectname"))
+})
+

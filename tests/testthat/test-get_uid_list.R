@@ -7,13 +7,12 @@ test_that("project exists", {
   expect_true("project" %in% uidlist$UID)
 })
 
-test_that("config exists", {
-  expect_true("configuration" %in% uidlist$UID)
+test_that("config does not exist", {
+  expect_false("configuration" %in% uidlist$UID)
 })
 
 
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
-uidlist <- uidlist[-which(uidlist$UID == "configuration"), ]
 
 test_that("contains no special config names", {
   expect_false(any(grepl(":", unique(uidlist$type))))
@@ -73,4 +72,18 @@ test_that("gets uidlist from simplified list", {
   expect_true("Befund_6" %in% test$liesWithin)
 })
 
+data("idaifieldr_demodata")
+test_that("works with multilang demodata from default config", {
+  test <- get_uid_list(idaifieldr_demodata)
+  expect_true("LAYER_1" %in% test$liesWithin)
+})
 
+test_that("works with multilang demodata from default config when verbose", {
+  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE)
+  expect_true("Another Trench" %in% test$shortDescription)
+})
+
+test_that("works with multilang demodata from default config when verbose", {
+  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE, language = "de")
+  expect_true("Ein Erdbefund" %in% test$shortDescription)
+})

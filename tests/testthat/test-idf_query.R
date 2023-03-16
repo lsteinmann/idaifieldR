@@ -1,28 +1,21 @@
 skip_on_cran()
 
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R", pwd = "hallo")
-
-tryCatch({
-  sofa::ping(connection)
-},
-error = function(cond) {
-  skip("Test skipped, needs DB-connection")
-})
+connection <- skip_if_no_connection()
 
 uidlist <- get_uid_list(get_idaifield_docs(connection, projectname = "rtest"))
 
-test_that("returns list (simple)", {
+test_that("returns idaifield_docs", {
   res <- idf_query(connection, projectname = "rtest",
-                   field = "type", value = "Layer",
-                   uidlist = uidlist)
-  expect_equal(class(res), "idaifield_simple")
+                   field = "type", value = "Layer")
+  expect_equal(class(res), "idaifield_docs")
 })
+
 
 test_that("returns appropriate entries", {
   res <- idf_index_query(connection, projectname = "rtest",
                    field = "isRecordedIn", value = "Schnitt 1",
                    uidlist = uidlist)
+  test <- check_and_unnest(res)
   test <- lapply(res, function(x) x$relation.isRecordedIn)
   test <- unlist(test) == "Schnitt 1"
   expect_true(all(test))
@@ -35,3 +28,4 @@ test_that("returns appropriate number of entries", {
                          uidlist = uidlist)
   expect_equal(length(res), count)
 })
+

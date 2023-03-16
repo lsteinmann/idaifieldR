@@ -8,25 +8,25 @@
 #' the type of resource (Pottery, Brick, Layer)).
 #' @param value The value to be selected for in the specified field (i.e.
 #' "Brick" when looking for resourced of type "Brick").
-#' @param uidlist A data.frame as returned by `get_uid_list()`.
-#' @param keep_geometry logical. Should the geographical information be kept
-#' or removed? (Defaults to TRUE).
 #'
-#' @return A simplified list with all matching resources.
+#' @return An 'idaifield_docs' list
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' idf_query(connection, projectname = "rtest", field = "type", value = "Brick")
+#' conn <- connect_idaifield(pwd = "hallo")
+#' idf_query(conn, projectname = "rtest", field = "type", value = "Brick")
 #' }
-#'
 idf_query <- function(connection,
                       projectname = "NULL",
                       field = "type",
-                      value = "Brick",
-                      uidlist = NULL,
-                      keep_geometry = TRUE) {
+                      value = "Brick") {
+
+  fail <- idf_ping(connection)
+  if(is.character(fail)) {
+    stop(fail)
+  }
 
   query <- paste('{ "selector": { "resource.',
                  field, '": "', value, '"}}', sep = "")
@@ -38,23 +38,13 @@ idf_query <- function(connection,
 
   config <- get_configuration(connection, projectname)
 
-  result <- lapply(result[[1]],
-                   function(x) x$resource)
-  if (is.na(config[1])) {
-    fieldtypes <- NA
-  } else {
-    fieldtypes <- get_field_inputtypes(config, inputType = "all")
-  }
-  result <- lapply(result,
-                   function(x) simplify_single_resource(x,
-                                              uidlist = uidlist,
-                                              replace_uids = TRUE,
-                                              keep_geometry = keep_geometry,
-                                              fieldtypes = fieldtypes))
+  result <- lapply(result$docs,
+                   function(x) list("id" = x$resource$id, "doc" = x))
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
-  result <- structure(result, class = "idaifield_simple")
+  attr(result, "config") <- get_configuration(connection, projectname)
+  result <- structure(result, class = "idaifield_docs")
 
   return(result)
 }
@@ -70,26 +60,31 @@ idf_query <- function(connection,
 #' limited to the columns names of the uidlist).
 #' @param value The value to be selected for in the specified field.
 #' @param uidlist A data.frame as returned by `get_uid_list()`.
-#' @param keep_geometry logical. Should the geographical information be kept
-#' or removed? (Defaults to TRUE).
 #'
-#' @return A simplified list with all matching docs.
+#' @return An 'idaifield_docs' list
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' idf_index_query(connection,
-#' projectname = "milet",
+#' conn <- connect_idaifield(pwd = "hallo")
+#' uidlist <- get_uid_list(conn, projectname = "rtest")
+#' idf_index_query(conn,
+#' projectname = "rtest",
 #' field = "type",
-#' value = "Brick")
+#' value = "Brick",
+#' uidlist = uidlist)
 #' }
 #'
 idf_index_query <- function(connection, projectname = "NULL",
                       field = "type",
                       value = "Brick",
-                      keep_geometry = TRUE,
                       uidlist = NULL) {
+
+  fail <- idf_ping(connection)
+  if(is.character(fail)) {
+    stop(fail)
+  }
 
   if (!field %in% colnames(uidlist)) {
     stop("Supply a field that corresponds to the columns in the UID-List.")
@@ -106,26 +101,14 @@ idf_index_query <- function(connection, projectname = "NULL",
                            dbname = projectname,
                            query = query)
 
-  config <- get_configuration(connection, projectname)
-
-  result <- lapply(result[[1]],
-                   function(x) x$resource)
-
-  if (is.na(config[1])) {
-    fieldtypes <- NA
-  } else {
-    fieldtypes <- get_field_inputtypes(config, inputType = "all")
-  }
-  result <- lapply(result,
-                   function(x) simplify_single_resource(x,
-                                              uidlist = uidlist,
-                                              replace_uids = TRUE,
-                                              keep_geometry = keep_geometry,
-                                              fieldtypes = fieldtypes))
+  result <- lapply(result$docs,
+                   function(x) list("id" = x$resource$id, "doc" = x))
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
-  result <- structure(result, class = "idaifield_simple")
+  attr(result, "config") <- get_configuration(connection, projectname)
+
+  result <- structure(result, class = "idaifield_docs")
 
   return(result)
 }

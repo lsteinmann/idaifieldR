@@ -1,7 +1,7 @@
 Type: Package
 Package: idaifieldR
 Title: Importing Data from iDAI.field into R
-Version: 0.2.2
+Version: 0.2.3
 Authors@R: 
     person("Lisa", "Steinmann", , "lisa.steinmann@rub.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2215-1243"))
@@ -23,12 +23,12 @@ BugReports: https://github.com/lsteinmann/idaifieldR/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
-    sofa
+    sofa,
+    jsonlite
 Suggests: 
     covr,
     dplyr,
     ggplot2,
-    jsonlite,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)

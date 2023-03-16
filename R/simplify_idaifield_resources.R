@@ -3,12 +3,14 @@
 #' This function is a helper to `simplify_idaifield()`.
 #'
 #' @param resource One resource (element) from an idaifield_resources-list.
-#' @param replace_uids logical. Should UIDs be automatically replaced with the
+#' @param replace_uids logical. Should UUIDs be automatically replaced with the
 #' corresponding identifiers? (Defaults to TRUE).
 #' @param uidlist A data.frame as returned by `get_uid_list()`. If replace_uids
 #' is set to FALSE, there is no need to supply it.
 #' @param keep_geometry logical. Should the geographical information be kept
 #' or removed? (Defaults to TRUE).
+#' @param language the short name (e.g. "en", "de", "fr") of the language that
+#' is preferred for the fields, defaults to english ("en")
 #'
 #' @return A single resource (element) for an idaifield_resource-list.
 #'
@@ -25,7 +27,8 @@ simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
-                                     fieldtypes = NULL) {
+                                     fieldtypes = NULL,
+                                     language = "all") {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -131,6 +134,21 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, new_dims)
   }
 
+  if (language != "all") {
+    resource <- lapply(resource, function(x) {
+      pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
+      names <- names(x)
+      names <- grepl(paste0(pat, collapse = "|"), names)
+      if (all(names)) {
+        gather_languages(list(x), language = language, silent = TRUE)
+      } else {
+        x
+      }
+    })
+  }
+
+
+
   # Finally, the function checks if the fieldtypes argument is a matrix,
   # and if so, calls the convert_to_onehot() function on the resource with
   # fieldtypes as an additional argument. This converts the values in the
@@ -147,9 +165,27 @@ simplify_single_resource <- function(resource,
 
 #' Simplify a list imported from an iDAI.field-Database
 #'
+#' The function will take a list as returned by `get_idaifield_docs()` and
+#' process it to make the list more useable. It will unnest a view lists,
+#' including the dimension-lists and the period-list to provide single values
+#' for later processing with `idaifield_as_matrix()`. If a connection to the
+#' database can be established, the function will get the relevant project
+#' configuration and convert custom checkboxes-fields to multiple lists,
+#' each for every value from the respective valuelist, to make them more
+#' accessible during the conversion with `idaifield_as_matrix()`. It will also
+#' remove the custom configuration field names that are in use since
+#' iDAI.field 3 / Field Desktop and consist of "projectname:fieldName". Only
+#' the "projectname:"-part will be removed.
+#'
+#' Please note: The function will need an Index (i.e. uidlist as provided
+#' by `get_uid_list()`) of the complete project database to correctly replace
+#' the UUIDs with their corresponding identifiers! Especially if a selected
+#' list is passed to `simplify_idaifield()`, you need to supply the uidlist
+#' of the complete project database as well.
+#'
 #' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
 #' returned by `get_idaifield_docs()`.
-#' @param replace_uids logical. Should UIDs be automatically replaced with the
+#' @param replace_uids logical. Should UUIDs be automatically replaced with the
 #' corresponding identifiers? (Defaults to TRUE).
 #' @param uidlist If NULL (default) the list of UIDs and identifiers is
 #' automatically generated within this function. This only makes sense if
@@ -157,8 +193,11 @@ simplify_single_resource <- function(resource,
 #' has been, you should supply a data.frame as returned by `get_uid_list()`.
 #' @param keep_geometry logical. Should the geographical information be kept
 #' or removed? (Defaults to TRUE).
+#' @param language the short name (e.g. "en", "de", "fr") of the language that
+#' is preferred for the multi-language input fields, defaults to keeping all
+#' languages as sub-lists ("all").
 #'
-#' @return a simplified "idaifield_resources"-list
+#' @return an "idaifield_simple" list
 #' @export
 #'
 #' @examples
@@ -173,46 +212,63 @@ simplify_single_resource <- function(resource,
 simplify_idaifield <- function(idaifield_docs,
                                keep_geometry = TRUE,
                                replace_uids = TRUE,
-                               uidlist = NULL) {
+                               uidlist = NULL,
+                               language = "all") {
 
 
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_simple"] == TRUE) {
+    message("Already of class 'idaifield_simple', did nothing.")
     return(idaifield_docs)
   }
 
   if (is.null(uidlist)) {
+    message("No UID-List supplied, generating from this list.")
     uidlist <- get_uid_list(idaifield_docs)
   }
 
+  config <- attr(idaifield_docs, "config")
+  projectname <- attr(idaifield_docs, "projectname")
 
-  if (!is.null(attr(idaifield_docs, "connection"))) {
-    connection <- attr(idaifield_docs, "connection")
-    projectname <- attr(idaifield_docs, "projectname")
-    config <- get_configuration(connection = connection,
-                                projectname = projectname)
-  }
-
-  if (is.na(config[1])) {
+  if (inherits(config, "try-error")) {
     fieldtypes <- NA
   } else {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
+
+    ## Language handling
+    languages <- unlist(config$projectLanguages)
+    if (language != "all") {
+      if (language %in% languages) {
+        message(paste("Keeping input values of selected language (",
+                      language, ") where possible.",
+                      sep = ""))
+      } else {
+        message(paste("Selected language (",
+                      language, ") not available.",
+                      sep = ""))
+      }
+    } else {
+      message("Keeping all languages for input fields.")
+    }
   }
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
-  idaifield_docs <- lapply(idaifield_docs, function(x)
+  idaifield_simple <- lapply(idaifield_docs, function(x)
     simplify_single_resource(
       x,
       replace_uids = replace_uids,
       uidlist = uidlist,
       keep_geometry = keep_geometry,
-      fieldtypes = fieldtypes
+      fieldtypes = fieldtypes,
+      language = language
     )
   )
 
-  idaifield_docs <- structure(idaifield_docs, class = "idaifield_simple")
-  attr(idaifield_docs, "connection") <- connection
-  attr(idaifield_docs, "projectname") <- projectname
+  idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
+  attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
+  attr(idaifield_simple, "projectname") <- attr(idaifield_docs, "projectname")
+  attr(idaifield_simple, "config") <- config
+  attr(idaifield_simple, "language") <- language
 
-  return(idaifield_docs)
+  return(idaifield_simple)
 }

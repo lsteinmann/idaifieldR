@@ -9,13 +9,14 @@ simplify_single_resource(
   replace_uids = TRUE,
   uidlist = NULL,
   keep_geometry = TRUE,
-  fieldtypes = NULL
+  fieldtypes = NULL,
+  language = "all"
 )
 }
 \arguments{
 \item{resource}{One resource (element) from an idaifield_resources-list.}
 
-\item{replace_uids}{logical. Should UIDs be automatically replaced with the
+\item{replace_uids}{logical. Should UUIDs be automatically replaced with the
 corresponding identifiers? (Defaults to TRUE).}
 
 \item{uidlist}{A data.frame as returned by `get_uid_list()`. If replace_uids
@@ -23,6 +24,9 @@ is set to FALSE, there is no need to supply it.}
 
 \item{keep_geometry}{logical. Should the geographical information be kept
 or removed? (Defaults to TRUE).}
+
+\item{language}{the short name (e.g. "en", "de", "fr") of the language that
+is preferred for the fields, defaults to english ("en")}
 }
 \value{
 A single resource (element) for an idaifield_resource-list.

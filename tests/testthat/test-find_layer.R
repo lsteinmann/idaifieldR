@@ -3,7 +3,6 @@ source(file = "../load_testdata.R")
 uidlist <- get_uid_list(test_docs)
 
 proj_in <- which(uidlist$type == "Project")
-config_in <- which(uidlist$UID == "configuration")
 
 find_in <- which(uidlist$type %in% c("Find", "Pottery", "Terracotta", "Brick",
                                      "Bone", "Glass", "Metal", "Stone", "Wood",
@@ -12,11 +11,8 @@ find_in <- which(uidlist$type %in% c("Find", "Pottery", "Terracotta", "Brick",
 test_resources <- lapply(test_resources, function(x) fix_relations(x, replace_uids = TRUE,
                                                                    uidlist = uidlist))
 
-test_that("returns na for project/config", {
+test_that("returns na for project", {
   expect_identical(find_layer(resource = test_resources[[proj_in]],
-                              uidlist = uidlist),
-                   NA)
-  expect_identical(find_layer(resource = test_resources[[config_in]],
                               uidlist = uidlist),
                    NA)
 })

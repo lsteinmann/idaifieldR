@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_idaifield_docs.R
 \name{get_idaifield_docs}
 \alias{get_idaifield_docs}
-\title{get_idaifield_docs}
+\title{get_idaifield_docs: Import all docs from an iDAI.field / Field Desktop project}
 \usage{
 get_idaifield_docs(
   connection = connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo"),
@@ -26,30 +26,33 @@ that can freely be manipulated using e.g. the jsonlite package.
 (Might be more useful for some users.)}
 }
 \value{
-an object (list) of class "idaifield_docs" (if simplified = FALSE)
-or "idaifield_resources" (if simplified = TRUE) that contains the
-resources in the selected project. (If json is set to TRUE, returns a
-character string in json-format.)
+an object (list) of class "idaifield_docs" if raw = TRUE and
+"idaifield_resources" if raw = FALSE that contains all docs/resources
+in the selected project except for the Project Configuration.
+The connection, projectname and configuration are attached as
+attributes for later use.(If json is set to TRUE, returns a character
+string in json-format.)
 }
 \description{
-Imports all resources from an idaifield-database that is currently running
+Imports all docs from an idaifield-database that is currently running
 and synching into a list-object for further processing in R.
-This wraps **sofa**s functions and slightly processes the output.
+This wraps **sofa**s functions and very slightly processes the output.
 The function is only useful for the import from iDAI.field 2 or
 Field Desktop with the respective client running on the same computer as
 the R-script.
-raw = TRUE (the default) will allow you to get all the changes for each
-resource, i.e. which user changed something in the resource at what time,
-and who created it. Setting raw to FALSE will only return a list of the
-actual data.
+When using `raw = TRUE` (the default) this function will allow you to
+get the changelog for each resource, i.e. which user changed something
+in the resource at what time and who created it. Setting raw to FALSE
+will only return a list of the actual data. You can do this at a later time
+using `check_and_unnest()` from this package.
 }
 \details{
 NOTE: If you are planning on using the coordinates stored in the database,
 I strongly suggest you consider changing your R digits-setting to a higher
 value than the default. Depending on the projection used, coordinates may
 be represented by rather long numbers which R might automatically round on
-import. `options(digits = 20)` should do the trick. (That applies to
-other fields containing long numbers as well.)
+import. `options(digits = 20)` should more than do the trick. (That applies
+to other fields containing long numbers as well.)
 }
 \examples{
 \dontrun{

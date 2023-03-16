@@ -1,3 +1,14 @@
+# idaifieldR 0.2.3 _tba, wip_
+* add language management for multi-language input fields when project has more than one project language
+* add language list lookup preparation (`get_language_lookup()`) for custom config fields
+* add `download_language_list()` to get current translations from GitHub
+* add ping-checks for all database-related functions to supply custom error messages
+* `get_idaifield_docs()` will now remove the Configuration as a doc and attach it as attribute to all custom classes, thus `simplify_idaifield()` will use the config-attribute directly and works without a connection. 
+* change `idf_query()` and `idf_index_query()` to return docs instead of simplified list to allow choice
+* new demodata for future use (`data("idaifieldr_demodata")`)
+* rewritten vignettes and generally updated documentation
+* Notice: The changes may have created problems for iDAI.field 2, and I did not test using the package with iDAI.field 2, as I assume it is not used anymore. `get_idaifield_docs()` should still work.
+
 # idaifieldR 0.2.2 _2023-02-18_
 * config specific names now removed everywhere
 * fixed problem with if-condition when config exists

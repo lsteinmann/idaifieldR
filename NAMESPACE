@@ -2,10 +2,12 @@
 
 export(check_and_unnest)
 export(connect_idaifield)
+export(download_language_list)
 export(fix_relations)
 export(get_configuration)
 export(get_field_inputtypes)
 export(get_idaifield_docs)
+export(get_language_lookup)
 export(get_uid_list)
 export(idaifield_as_matrix)
 export(idf_index_query)

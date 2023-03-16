@@ -2,25 +2,28 @@
 % Please edit documentation in R/fix_relations.R
 \name{fix_relations}
 \alias{fix_relations}
-\title{Unnest the relations in a resource}
+\title{Unnest the relations in a resource and replace the UUIDs with identifiers}
 \usage{
 fix_relations(resource, replace_uids = TRUE, uidlist = NULL)
 }
 \arguments{
 \item{resource}{One item from a list of class idaifield_resources}
 
-\item{replace_uids}{logical. If TRUE, replaces the UIDs in each relation with
+\item{replace_uids}{logical. If TRUE, replaces the UUIDs in each relation with
 the corresponding identifiers. If FALSE, just unnests the list.}
 
 \item{uidlist}{Only needs to be provided if replace_uids = TRUE. A data.frame
 as returned by `get_uid_list()`}
 }
 \value{
-The resource with its relations unnested (and replaced with
+The same resource with its relations unnested (and replaced with
 identifiers if replace_uids is set to TRUE).
 }
 \description{
-Unnest the relations in a resource
+The function will flatten the relations list to more non-nested lists with
+with "relation."-prefix and replace the UUIDs in the lists values with
+the corresponding identifiers from the uidlist using `replace_uid()`
+to make the result more readable.
 }
 \examples{
 \dontrun{
@@ -29,4 +32,3 @@ replace_uids = FALSE,
 uidlist = NULL)
 }
 }
-\keyword{internal}

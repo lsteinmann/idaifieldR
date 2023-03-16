@@ -1,28 +1,6 @@
-skip_on_cran()
-
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R", pwd = "hallo")
-
-tryCatch({
-  sofa::ping(connection)
-},
-error = function(cond) {
-  skip("Test skipped, needs DB-connection")
-})
-
-test_that("returns NA for missing config", {
-  config <- get_configuration(connection, projectname = "test")
-  expect_equal(config, NA)
-})
-
-config <- get_configuration(connection, projectname = "milet")
 
 test_that("returns list", {
   expect_true(is.list(config))
-})
-
-test_that("returns a list that is actually the configuration", {
-  expect_true(config$identifier == "Configuration")
 })
 
 test_that("returns a matrix", {
@@ -51,21 +29,45 @@ test_that("returns all if not existing", {
 })
 
 empty_config <- readRDS(system.file("testdata", "empty_config.RDS",
-                                 package = "idaifieldR"))
+                                    package = "idaifieldR"))
 
 test_that("warning for empty config", {
   expect_warning(get_field_inputtypes(empty_config))
 })
 
+
 test_that("empty matrix for empty config", {
   expect_equal(nrow(suppressWarnings(get_field_inputtypes(empty_config))), 0)
 })
+
 test_docs_noconf <- attributes(test_docs)
 attributes(test_docs_noconf)$connection <- NULL
-test_that("message for missing config", {
-  expect_equal(get_configuration(attributes(test_docs_noconf)$connection,
-                                 projectname = "testproj"), NA)
-  expect_message(get_configuration(attributes(test_docs_noconf)$connection,
-                                   projectname = "testproj"),
-                 "No Configuration")
+
+test_that("error when supplying wrong object", {
+  expect_error(get_configuration(attributes(test_docs_noconf)$connection,
+                                 projectname = "testproj"), "Cushion")
+})
+
+
+skip_on_cran()
+
+connection <- skip_if_no_connection()
+
+test_that("returns NA for missing config", {
+  config <- get_configuration(connection, projectname = "test")
+  expect_equal(config, NA)
+})
+
+
+test_that("error for missing config not working", {
+  expect_equal(get_configuration(connection,
+                                 projectname = "test"), NA)
+  expect_message(get_configuration(connection,
+                                   projectname = "test"),
+                 "no configuration")
+})
+
+test_that("returns a list that is actually the configuration", {
+  config <- get_configuration(connection, projectname = "rtest")
+  expect_true(config$identifier == "Configuration")
 })

@@ -20,6 +20,11 @@
 #' projectname = "rtest")
 #' }
 get_configuration <- function(connection, projectname = "rtest") {
+  fail <- idf_ping(connection)
+  if(is.character(fail)) {
+    stop(fail)
+  }
+
   query <- '{ "selector": { "resource.identifier": "Configuration"}}'
   tryCatch({
     config <- sofa::db_query(cushion = connection,
@@ -28,7 +33,13 @@ get_configuration <- function(connection, projectname = "rtest") {
     return(config)
   },
   error = function(e) {
-    message("No Configuration found!")
+    if (any(grepl("db_query", e))) {
+      message("Error in get_configuration(), returning NA:
+              Project has no configuration!")
+    } else {
+      message(paste("Error in get_configuration(), returning NA:", e))
+    }
+    #
     return(NA)
   })
 }

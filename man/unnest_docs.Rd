@@ -7,14 +7,9 @@
 unnest_docs(idaifield_docs)
 }
 \arguments{
-\item{idaifield_docs}{A list as provided by `sofa::db_alldocs(...)` when
-importing from an iDAI.field 2 / Field Desktop-database
-using `get_idaifield_docs()`.
-`get_idaifield_docs()` employs this function already
-when setting `simplified = TRUE`, which is the default.
-Mostly there is no need to deal with `unnest_docs()`. If one chooses
-`get_idaifield_docs(..., simplified  = FALSE)`, it is possible to use
-`unnest_docs()` on the resulting list to simplify it.}
+\item{idaifield_docs}{A list as provided by `get_idaifield_docs()`.
+`get_idaifield_docs()` employs this function already when
+setting `raw = FALSE`.}
 }
 \value{
 a list of class idaifield_resources (same as idaifield_docs,
