@@ -1,8 +1,8 @@
 ---
-title: "How to use this package: Essential Workflow"
+title: "How to use this package: Detailed Workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{essentials}
+  %\VignetteIndexEntry{details}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,114 +10,226 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  fig.width = 7,
   comment = "#>"
 )
+
+library(dplyr)
 ```
 
-`idaifieldR` is able to import the database from an iDAI.field Client into R in a format that is easily usable with basic R functionality. 
+idaifieldR imports data from the [iDAI.field 2 / Field Desktop database](https://github.com/dainst/idai-field) into R. The core functions of this package use [sofa](https://github.com/ropensci/sofa) (available on CRAN) to connect to a running iDAI.field 2 or 3 (Field Desktop) client and store the whole database in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the Field client itself. 
 
-```{r setup}
+idaifieldR encompasses functionality to clean up and format the imported list objects for easier processing in R. Using `simplify_idaifield()`, the UUIDs can be replaced with the appropriate identifiers, the geometry can be reformatted to be usable with R-packages for spatial analysis such as [sp](https://cran.r-project.org/web/packages/sp/index.html), a preferred language for multi-language input fields can be selected, and more. Be aware that processing all resources from the database at once can be slow for larger databases and uses up a lot of memory. 
+
+## Installation
+
+Since idaifieldR is not available on CRAN (yet), we need to install it from GitHub. We can either download the current release from the [idaifieldR-GitHub page](https://github.com/lsteinmann/idaifieldR/releases) and [install from the file](https://riptutorial.com/r/example/5556/install-package-from-local-source), or more conveniently use the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) or [remotes](https://cran.r-project.org/web/packages/remotes/) package to install it from GitHub directly: 
+
+```{r install, eval = FALSE}
+require(remotes)
+remotes::install_github("lsteinmann/idaifieldR")
+
 library(idaifieldR)
 ```
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
+library(idaifieldR)
 idaifield_test_docs <- readRDS(system.file("testdata",
                                            "idaifield_test_docs.RDS",
                                            package = "idaifieldR"))
-# info for reference: The RDS is stored in its nested version, so:
-all_resources <- check_and_unnest(idaifield_test_docs)
+#packageVersion("idaifieldR")
 ```
 
-After loading the package, you first need to establish a connection to the database. This will only work if the Client is running. This is done with a connection object that is produced by `connect_idaifield()`: 
+## Loading the Database / Index
 
-```{r eval=FALSE}
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R",
-                                pwd = "hallo")
+Our first step will be to load the complete database and create an object that serves as the index for further processing. First, create a connection object that will contain all the information R needs to connect to the database server Field Desktop uses: 
+
+```{r connection, eval = FALSE}
+conn <- connect_idaifield(serverip = "127.0.0.1", 
+                          pwd = "hallo")
 ```
 
-If you wish to import the complete database into R, you can use `get_idaifield_docs()` with the default options. Be aware that this can take some time depending on the size of your database. Just to give you an impression: I regularly work with ca. 10000 resources, and the import takes roughly 5 seconds while the resulting `idaifield_resources`-object is around 40MB in size.
 
-```{r eval=FALSE}
-all_resources <- get_idaifield_docs(connection = connection, 
-                                    projectname = "rtest",
-                                    raw = FALSE)
+If you are using Field Desktop on the same computer, you should not need the `serverip`-argument, as it defaults to the common localhost address. Enter the password that is set in your Field Desktop-Client under Tools/Werkzeuge > Settings/Einstellungen: 'Your password'/'Eigenes Passwort' as `pwd`. See the documentation for more info and additional arguments:
+
+```{r documentation, eval = FALSE}
+?connect_idaifield()
 ```
 
-This will return a list that still resembles the original JSON-format of Fields database:
-```{r eval=TRUE}
-all_resources[[1]]
+If you want to follow along with this tutorial directly using the same data, load the backup file located at  ('[inst/testdata/rtest.jsonl](https://github.com/lsteinmann/idaifieldR/blob/main/inst/testdata/rtest.jsonl)') from the GitHub repository into a new project called 'rtest' in you Field Client. This demo dataset uses a very slightly customized project configuration to demonstrate relevant functions.
+
+You can get the complete rtest-dataset into R using the `get_idaifield_docs()`-function with the projects name (`projectname`) and the connection-object named `conn` that we created earlier (`connection`):
+
+```{r loaddb, eval = FALSE}
+idaifield_test_docs <- get_idaifield_docs(connection = conn, 
+                                          projectname = "rtest")
 ```
 
-Additionally, using the object that contains all resources, you can generate an index of the database which is handy for some other functions or to get a general impression of what is there:
-```{r eval=TRUE}
-uidlist <- get_uid_list(all_resources, verbose = TRUE, gather_trenches = TRUE)
-head(uidlist)
+If you are using RStudio, you can get a convenient look at the result using `View(idaifield_test_docs)` or by clicking on the list in the Environment-window. It is a nested list with the custom class `idaifield_docs` that contains one element for each resource in the database and reflects the original `json`-structure. The `doc$resource` sub-list contains the actual entry for each resource, while the other sub-lists contain information about the changes made to each resource along with its basic data such as the *UUID* that Field Desktop uses internally as the unique name of each resource. You can use this list to visualize changes made to database entries on a time axis sorted by users, etc., but we will continue to utilize `idaifieldR`s functions to work with the actual data.
+
+Though it is not necessary for further processing, you can use `idaifieldR`s `check_and_unnest()`-function (see `?check_and_unnest()`) to reduce the list to the resource level: 
+
+```{r check and unnest}
+idaifield_test_resources <- check_and_unnest(idaifield_test_docs)
 ```
 
-To make the list more usable and to fix the values of fields that may otherwise display UUIDs (as relations are stored this way in the database), you can use the function `simplify_idaifield()`. Depending on the size of you database it may take a while to process. You can decide whether you want to replace the UUIDs with their corresponding identifiers, and whether you want to use the geometry attached to each resource. Selecting a language will result in the function trying to retain the corresponding values in that language from multi-language text input fields.
+You will see that it is now an `idaifield_resources` object and is taking up less memory. When browsing the object with `View(idaifield_test_resources)` in RStudio, you can see that is contains only the information of each 'resource', i.e. the actual data you entered in Field Desktop. This step is automatically done by `idaifieldR`-functions internally. 
 
-```{r eval=TRUE}
-all_resources <- simplify_idaifield(all_resources, 
-                                    keep_geometry = FALSE, 
-                                    replace_uids = TRUE,
-                                    language = "de")
-all_resources[[1]]
+To get a very quick overview of our data, we generate an index of the database that contains only the most basic information about each object:
+
+```{r indexuidlistHead, eval = FALSE}
+index <- get_uid_list(idaifield_test_resources, 
+                      verbose = TRUE, 
+                      language = "en")
+head(index)
+```
+```{r indexuidlist, echo = FALSE}
+index <- get_uid_list(idaifield_test_resources, verbose = TRUE, language = "en")
+index %>%
+  head() %>%
+  knitr::kable()
 ```
 
-`idaifieldR` contains a custom function to convert the list returned by the import functions `simplify_idaifield()`, `idf_query()` and `idf_index_query()` into a matrix. For your convenience, you should probably convert this into a data.frame and try to assign the column type automatically: 
-```{r eval=TRUE}
-all_resources <- idaifield_as_matrix(all_resources)
-df <- as.data.frame(all_resources)
-df <- type.convert(df, as.is = TRUE)
-str(df[,1:10])
-```
+The `verbose = TRUE`-argument mainly includes the short description entered in the database, while `language = "en"` controls which language from the multi-language text input field is to be used. Switch it so `language = "de"` to see the difference with the demo data. We can produce our first plot from the index that will give us a very general idea about our data. I am using the pipe-operator from `dplyr` and `ggplot2` for this:
 
-# Queries 
-If the import of all resources takes too long, it is possible to query the database: 
-```{r eval=TRUE, echo=FALSE, message = FALSE, warning=FALSE}
-pottery <- select_by(idaifield_test_docs, by = "type", value = "Pottery")
-pottery <- simplify_idaifield(pottery, 
-                              keep_geometry = FALSE, 
-                              replace_uids = TRUE, 
-                              uidlist = uidlist)
-```
-
-```{r eval=FALSE}
-pottery <- idf_query(connection, projectname = "rtest", 
-                     field = "type", 
-                     value = "Pottery",
-                     uidlist = uidlist)
-```
-```{r eval=TRUE}
-pottery <- idaifield_as_matrix(pottery)
-pottery_df <- as.data.frame(pottery)
-pottery_df <- type.convert(pottery_df, as.is = TRUE)
-head(pottery_df[,1:10])
-```
-
-However, that functionality is currently very limited. If you need more sophisticated queries, you can take a look at the documentation of the `sofa` package, which allows complex queries. The results can again be transformed with some functions from `idaifieldR`.
-
-# Plotting
-
-Getting the data into R allows you to flexible create plots and analysis, that can be re-run when more data is available in the Field-Database or at another time. 
-
-Some very basic examples:
-
-```{r fig.width=7}
+```{r indexPlot}
+library(dplyr)
 library(ggplot2)
-pottery <- as.data.frame(pottery)
-ggplot(pottery, aes(x = relation.liesWithin)) +
+
+index %>%
+  ggplot(aes(y = liesWithin, fill = type)) + 
   geom_bar()
 ```
 
+As you can see, the demo data encompasses a variety of finds, that are recorded in different "Layers" and "Trenches". To get to the data and produce some more useful plots, we will now simplify our `idaifield_test_resources`-list. 
 
-```{r fig.width=7}
-ggplot(pottery, aes(x = specificType)) +
+## Simplify the List
+
+The function `simplify_idaifield()` takes several arguments that control the output. You can learn more about them in the documentation (`?simplify_idaifield()`). Mostly, it should suffice to use the defaults and only pass the imported `idaifield_docs` or `idaifield_resources` list. 
+
+```{r simplify}
+idaifield_test_simple <- simplify_idaifield(idaifield_test_resources, 
+                                            keep_geometry = FALSE,
+                                            replace_uids = TRUE, 
+                                            uidlist = index,
+                                            language = "en")
+```
+The function will also notify you that it tries to use the English values from multi-language input fields if possible. If the respective input field has no English value, `simplify_idaifield()` will use the next available language (in alphabetical order). If you wish to keep all languages from the multi-language input fields, you can use `language = "all"`. `keep_geometry = FALSE` removes all coordinate information from the resources.  `replace_uids` is set to `TRUE` by default and replaces UUIDs in the data with their corresponding identifiers to be more readable. If you process the complete database with this function, there is no need to supply the index as we did just now, because it will generate its own index. If, however, you choose to process only a subset of all data, you need to supply an index of the complete database.
+
+The list now has the `idaifield_simple` class. Browse the resulting list by clicking on it in your Environment-window in RStudio or use `View(idaifield_test_simple)`. All `idaifield_...`-objects carry the connection and name of the project as attributes with them for later use. You can view them with `attributes(idaifield_test_simple)`. 
+
+If you wish to get the most out of you data, I recommend you use this list and process it according to your own needs. However, `idaifieldR` comes with a function that will turn the list into a matrix. For this, it makes a lot of sense to select the data first and get only the Pottery-resources that we want to work with. The `select_by()`-function from `idaifieldR` can do this for us (see the documentation at `?select_by()`)
+
+```{r select_by}
+pottery <- select_by(idaifield_test_simple, by = "type", value = "Pottery")
+```
+
+## Queries 
+
+The same outcome can be achieved by querying the database directly. This may be useful when you frequently want to update your data, but have a large amount of resources in the database: 
+
+```{r query normal, eval = FALSE}
+pottery_docs <- idf_query(conn, 
+                          projectname = "rtest", 
+                          field = "type", 
+                          value = "Pottery")
+```
+
+The query-functions will return `idaifield_docs`-lists that (if you so wish) you still need to simplify. You need to supply the index as "uidlist", otherwise UUIDs of relations cannot be replaced:
+
+```{r querysimple1, eval = FALSE}
+pottery_simple <- simplify_idaifield(pottery_docs, uidlist = index)
+```
+## Transform the Lists to a Matrix / data.frame
+
+In both cases, you should now have an `idaifield_simple` object with 37 elements. This, we will turn into a matrix, or directly into a data.frame to make plots easier:
+
+```{r matrix}
+pottery <- idaifield_as_matrix(pottery) %>%
+  as.data.frame()
+```
+
+When viewing the resulting `Pottery`-data frame, you will notice that the campaign-field has been converted to multiple columns. If a custom configuration is present, this will happen to all custom checkbox-fields, as there is no other way to conveniently deal with such fields in a data frame. To make different or better you of it, try to format the original list itself according to your needs. 
+
+From the data frame, we can produce some basic plots and take a look at the distribution of periods across our layers: 
+
+```{r potteryplot}
+pottery %>%
+  ggplot(aes(x = relation.liesWithin, fill = period)) + 
   geom_bar()
 ```
-```{r fig.width=7}
-ggplot(pottery, aes(x = condition)) +
+
+And another example:
+
+```{r potteryplot2}
+pottery %>%
+  ggplot(aes(x = vesselForm, fill = specificType)) + 
   geom_bar()
 ```
-You can do this with basically anything that is in the database. Some variables may need reformatting and cleaning, depending on your configuration and the state of the data. 
+
+## Languages
+
+There are currently two functions that will make it easier to replace the internal names of variables with their translations in different languages:
+
+```{r download, eval = FALSE}
+core_lang_list <- download_language_list(project = "core", language = "en")
+milet_lang_list <- download_language_list(project = "Milet", language = "en")
+```
+
+Since these functions download the Language configuration from [github.com/dainst/idai-field](https://github.com/dainst/idai-field/tree/master/core/config), I would advise you to safe the result in a local RDS-file after you prepared everything. You can prepare a lookup-table like this: 
+
+```{r lookup, eval = FALSE}
+lookup <- get_language_lookup(core_lang_list, language = "en")
+lookup <- rbind(lookup, get_language_lookup(milet_lang_list, language = "en"))
+```
+
+To get the translations from the Project configuration, you can use the config-attribute from any `idaifield_...`-list. This will also give you an impression of how the lookup-table is setup: 
+
+```{r}
+config <- attr(idaifield_test_simple, "config")
+lookup_conf <- get_language_lookup(config$languages, language = "en")
+```
+```{r eval = FALSE}
+head(lookup_conf)
+```
+```{r echo = FALSE}
+head(lookup_conf) %>%
+  knitr::kable()
+```
+
+
+You can use this to manually replace values for plots. The translations from valuelists can currently not be imported, so this only applies to the names of fields. 
+
+# TLDR
+
+To make a long story short and sum it up, there are two ways that you can get all your Pottery-resources into R. The following few lines are always necessary: 
+
+```{r connectionex, eval = FALSE}
+conn <- connect_idaifield(pwd = "hallo")
+db <- get_idaifield_docs(connection = conn,
+                         projectname = "idaifieldr-demo")
+index <- get_uid_list(db)
+```
+
+Using the following few lines and all default arguments while selecting from the whole database: 
+
+```{r pipeex, eval = FALSE}
+pottery <- db %>%
+  select_by(by = "type", value = "Pottery") %>%
+  # Note: simplify_idaifield() needs the index of the complete project database 
+  # as a lookup-table to replace all UUIDs with their identifiers
+  simplify_idaifield(uidlist = index) %>%
+  idaifield_as_matrix() %>%
+  as.data.frame()
+```
+
+Or using the following few lines with direct queries to the database:
+
+```{r pipeexsec, eval = FALSE}
+pottery <- idf_query(connection = conn,
+                     project = "idaifieldr-demo", 
+                     field = "type", 
+                     value = "Pottery") %>%
+  idaifield_as_matrix() %>%
+  as.data.frame()
+```

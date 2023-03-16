@@ -1,0 +1,54 @@
+---
+title: "TLDR: Essential Workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{"essential"}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.width = 7,
+  comment = "#>"
+)
+```
+
+This vignette only highlights the most basic functions and shows a way to get to
+your data quickly. 
+
+## Connection: Example
+
+```{r eval = FALSE}
+conn <- connect_idaifield(pwd = "hallo")
+db <- get_idaifield_docs(connection = conn,
+                         projectname = "rtest")
+index <- get_uid_list(db)
+```
+
+Using the following few lines and all default arguments while selecting from the whole database: 
+
+```{r eval = FALSE}
+library(dplyr)
+pottery <- db %>%
+  select_by(by = "type", value = "Pottery") %>%
+  # Note: simplify_idaifield() needs the index of the complete project database 
+  # as a lookup-table to replace all UUIDs with their identifiers
+  simplify_idaifield(uidlist = index) %>%
+  idaifield_as_matrix() %>%
+  as.data.frame()
+```
+
+Or using the following few lines with direct queries to the database:
+
+```{r eval = FALSE}
+pottery <- idf_query(connection = conn,
+                     uidlist = index,
+                     project = "idaifieldr-demo", 
+                     field = "type", 
+                     value = "Pottery") %>%
+  simplify_idaifield(uidlist = index) %>%
+  idaifield_as_matrix() %>%
+  as.data.frame()
+```
