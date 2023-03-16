@@ -1,6 +1,9 @@
+test_that("raw has connection as attribute", {
+  conn <- suppressWarnings(connect_idaifield(pwd = "wrongpwd"))
+  expect_error(get_idaifield_docs(conn))
+})
+
 skip_on_cran()
-
-
 connection <- skip_if_no_connection()
 
 

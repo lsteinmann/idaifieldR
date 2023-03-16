@@ -232,4 +232,44 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
   return(res)
 }
 
+#' Ping the Field-Database
+#'
+#' Helper for all functions that access the database to display
+#' specific warning messages.
+#'
+#' @param idaifield_connection The connection as returned by `connect_idaifield()`
+#' @param fail Should the function stop execution?
+#'
+#' @return returns no value
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' idaifield_connection <- connect_idaifield()
+#' idf_ping(idaifield_connection)
+#' }
+#'
+idf_ping <- function(idaifield_connection) {
+  ping <- try(sofa::ping(idaifield_connection), silent = TRUE)
+  if(inherits(ping, "try-error")) {
+    if(grepl("Connection refused", ping[1])) {
+      message <- paste0(ping[1], ":
 
+      Is Field Desktop / iDAI.field running?")
+    } else if (grepl("password", ping[1])) {
+      message <- paste0(ping[1], ":
+
+      Check if the password matches your password
+      in the settings of your Field Desktop Client and try again!")
+    } else if (grepl("invalid char", ping[1])) {
+      message <- paste0(ping[1], ":
+
+      Are you sure you used the correct version number?")
+    } else {
+      message <- ping[1]
+    }
+    return(message)
+  } else {
+    return(TRUE)
+  }
+}

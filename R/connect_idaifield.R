@@ -58,21 +58,9 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
                                             user = user,
                                             pwd = pwd)
 
-  ping <- try(sofa::ping(idaifield_connection), silent = TRUE)
-  if(inherits(ping, "try-error")) {
-    if(grepl("Connection refused", ping[1])) {
-      warning(paste0(ping[1], ":
-            Is Field Desktop / iDAI.field running?"))
-    } else if (grepl("password", ping[1])) {
-      warning(paste0(ping[1], ":
-            Check if the password matches the one in the settings of your
-            Field Desktop Client and try again!"))
-    } else if (grepl("invalid char", ping[1])) {
-      warning(paste0(ping[1], ":
-            Are you sure you used the correct version number?"))
-    } else {
-      warning(ping[1])
-    }
+  fail <- idf_ping(idaifield_connection)
+  if(is.character(fail)) {
+    warning(fail)
   }
 
   return(idaifield_connection)

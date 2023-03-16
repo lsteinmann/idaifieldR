@@ -54,6 +54,11 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   raw = TRUE,
   json = FALSE) {
 
+  fail <- idf_ping(connection)
+  if(is.character(fail)) {
+    stop(fail)
+  }
+
   if (json) {
     output_format <- "json"
   } else {

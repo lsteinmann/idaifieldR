@@ -43,12 +43,9 @@ test_that("empty matrix for empty config", {
 test_docs_noconf <- attributes(test_docs)
 attributes(test_docs_noconf)$connection <- NULL
 
-test_that("error when not working", {
-  expect_equal(get_configuration(attributes(test_docs_noconf)$connection,
-                                 projectname = "testproj"), NA)
-  expect_message(get_configuration(attributes(test_docs_noconf)$connection,
-                                   projectname = "testproj"),
-                 "Error")
+test_that("error when supplying wrong object", {
+  expect_error(get_configuration(attributes(test_docs_noconf)$connection,
+                                 projectname = "testproj"), "Cushion")
 })
 
 

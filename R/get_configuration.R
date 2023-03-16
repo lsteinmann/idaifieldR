@@ -20,6 +20,11 @@
 #' projectname = "rtest")
 #' }
 get_configuration <- function(connection, projectname = "rtest") {
+  fail <- idf_ping(connection)
+  if(is.character(fail)) {
+    stop(fail)
+  }
+
   query <- '{ "selector": { "resource.identifier": "Configuration"}}'
   tryCatch({
     config <- sofa::db_query(cushion = connection,
