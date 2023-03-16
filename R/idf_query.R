@@ -8,7 +8,6 @@
 #' the type of resource (Pottery, Brick, Layer)).
 #' @param value The value to be selected for in the specified field (i.e.
 #' "Brick" when looking for resourced of type "Brick").
-#' @param uidlist A data.frame as returned by `get_uid_list()`.
 #'
 #' @return An 'idaifield_docs' list
 #'
@@ -19,12 +18,10 @@
 #' conn <- connect_idaifield(pwd = "hallo")
 #' idf_query(conn, projectname = "rtest", field = "type", value = "Brick")
 #' }
-#'
 idf_query <- function(connection,
                       projectname = "NULL",
                       field = "type",
-                      value = "Brick",
-                      uidlist = NULL) {
+                      value = "Brick") {
 
   fail <- idf_ping(connection)
   if(is.character(fail)) {
@@ -82,7 +79,6 @@ idf_query <- function(connection,
 idf_index_query <- function(connection, projectname = "NULL",
                       field = "type",
                       value = "Brick",
-                      keep_geometry = TRUE,
                       uidlist = NULL) {
 
   fail <- idf_ping(connection)

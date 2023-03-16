@@ -9,7 +9,6 @@ idf_index_query(
   projectname = "NULL",
   field = "type",
   value = "Brick",
-  keep_geometry = TRUE,
   uidlist = NULL
 )
 }
@@ -23,23 +22,23 @@ limited to the columns names of the uidlist).}
 
 \item{value}{The value to be selected for in the specified field.}
 
-\item{keep_geometry}{logical. Should the geographical information be kept
-or removed? (Defaults to TRUE).}
-
 \item{uidlist}{A data.frame as returned by `get_uid_list()`.}
 }
 \value{
-A simplified list with all matching docs.
+An 'idaifield_docs' list
 }
 \description{
 Queries resources from an iDAI.field database that is currently running
 }
 \examples{
 \dontrun{
-idf_index_query(connection,
-projectname = "milet",
+conn <- connect_idaifield(pwd = "hallo")
+uidlist <- get_uid_list(conn, projectname = "rtest")
+idf_index_query(conn,
+projectname = "rtest",
 field = "type",
-value = "Brick")
+value = "Brick",
+uidlist = uidlist)
 }
 
 }

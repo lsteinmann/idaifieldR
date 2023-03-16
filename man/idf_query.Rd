@@ -4,14 +4,7 @@
 \alias{idf_query}
 \title{idf_query}
 \usage{
-idf_query(
-  connection,
-  projectname = "NULL",
-  field = "type",
-  value = "Brick",
-  uidlist = NULL,
-  keep_geometry = TRUE
-)
+idf_query(connection, projectname = "NULL", field = "type", value = "Brick")
 }
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
@@ -23,21 +16,16 @@ the type of resource (Pottery, Brick, Layer)).}
 
 \item{value}{The value to be selected for in the specified field (i.e.
 "Brick" when looking for resourced of type "Brick").}
-
-\item{uidlist}{A data.frame as returned by `get_uid_list()`.}
-
-\item{keep_geometry}{logical. Should the geographical information be kept
-or removed? (Defaults to TRUE).}
 }
 \value{
-A simplified list with all matching resources.
+An 'idaifield_docs' list
 }
 \description{
 Queries resources from an iDAI.field database that is currently running
 }
 \examples{
 \dontrun{
-idf_query(connection, projectname = "rtest", field = "type", value = "Brick")
+conn <- connect_idaifield(pwd = "hallo")
+idf_query(conn, projectname = "rtest", field = "type", value = "Brick")
 }
-
 }
