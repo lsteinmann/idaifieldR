@@ -7,6 +7,7 @@
 * `get_idaifield_docs()` will now remove the Configuration as a doc and attach it as attribute to all custom classes, thus `simplify_idaifield()` will use the configuration-attribute directly and works without connection. 
 * #TODO? May have created problems for iDAI.field 2, but hopefully no one uses that?
 * add `download_language_list()` to get current translations from GitHub
+* change `idf_query()` and `idf_index_query()` to return docs instead of simplified list to allow choice
 * add ping-checks for all database-related functions to supply custom error messages
 
 # idaifieldR 0.2.2 _2023-02-18_
