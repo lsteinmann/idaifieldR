@@ -4,7 +4,7 @@
 \alias{unnest_docs}
 \title{Unnesting a idaifield_docs-List down to resource level}
 \usage{
-unnest_docs(idaifield_docs)
+unnest_docs(docs)
 }
 \arguments{
 \item{idaifield_docs}{A list as provided by `get_idaifield_docs()`.
@@ -29,7 +29,7 @@ is irrelevant for any analysis of the database contents itself.
 connection <- connect_idaifield(serverip = "127.0.0.1",
 user = "R", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = connection,
-projectname = "rtest", simplified = FALSE)
+projectname = "rtest")
 
 idaifield_resources <- unnest_docs(idaifield_docs)
 }

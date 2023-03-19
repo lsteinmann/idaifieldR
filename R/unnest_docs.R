@@ -11,7 +11,6 @@
 #' `get_idaifield_docs()` employs this function already when
 #' setting `raw = FALSE`.
 #'
-#' @export
 #' @keywords internal
 #'
 #'
@@ -24,32 +23,69 @@
 #' connection <- connect_idaifield(serverip = "127.0.0.1",
 #' user = "R", pwd = "hallo")
 #' idaifield_docs <- get_idaifield_docs(connection = connection,
-#' projectname = "rtest", simplified = FALSE)
+#' projectname = "rtest")
 #'
 #' idaifield_resources <- unnest_docs(idaifield_docs)
 #' }
-unnest_docs <- function(idaifield_docs) {
+unnest_docs <- function(docs) {
+  check <- names(unlist(docs, recursive = TRUE))
+  check <- any(grepl("resource", check))
 
-  check_result <- check_if_idaifield(idaifield_docs)
-
-  if (check_result["idaifield_docs"]) {
-    idaifield_resources <- lapply(idaifield_docs,
-                                  function(docs) docs$doc$resource)
-    idaifield_resources <- structure(idaifield_resources,
-                                     class = "idaifield_resources")
-    attr(idaifield_resources, "connection") <- attr(idaifield_docs,
-                                                    "connection")
-    attr(idaifield_resources, "projectname") <- attr(idaifield_docs,
-                                                     "projectname")
-    attr(idaifield_resources, "config") <- attr(idaifield_docs,
-                                                     "config")
-    return(idaifield_resources)
-  } else if (check_result["idaifield_resources"]) {
-    message("The list was already unnested to resource-level.")
-    return(idaifield_docs)
+  if (check) {
+    resources <- find_resource(docs)
+    resources <- structure(resources, class = "idaifield_resources")
+    attr(resources, "connection") <- attr(docs, "connection")
+    attr(resources, "projectname") <- attr(docs, "projectname")
+    attr(resources, "config") <- attr(docs, "config")
+    return(resources)
   } else {
-    stop("The object provided cannot be processed by this function.")
-    # could wrap everything in trycatch to allow people to use it without
-    # enforcing the class
+    stop("No resource-list present in the object.")
+  }
+}
+
+#' Finding the "resource"-list in a CouchDB-output
+#'
+#' @param list a list formatted from a CouchDB-JSON-output
+#'
+#' @return the list of resource-lists
+#' @keywords internal
+#'
+#' \dontrun{
+#' testlist <- list(docs = list(list(resource = list(test = "test",
+#'                                                   test2 = "test2")),
+#'                              list(resource = list(test = "test",
+#'                                                   test2 = "test2"))),
+#'                  warning = "warning")
+#' find_resource(testlist)
+#' }
+find_resource <- function(list) {
+  has_resource <- lapply(list, function(x) hasName(x, "resource"))
+  has_resource <- unlist(has_resource)
+  has_resource <- all(has_resource)
+  if (has_resource) {
+    resource_list <- lapply(list, function(x) x$resource)
+    return(resource_list)
+  } else {
+    has_docs <- hasName(list, "docs")
+    has_rows <- hasName(list, "rows")
+    if (has_docs) {
+      list <- list$docs
+      find_resource(list)
+    } else if (has_rows) {
+      list <- list$rows
+      find_resource(list)
+    } else {
+      has_doc <- lapply(list, function(x) hasName(x, "doc"))
+      has_doc <- unlist(has_doc)
+      has_doc <- all(has_doc)
+      if (has_doc) {
+        list <- lapply(list, function(x) x$doc)
+        find_resource(list)
+      } else {
+        # This is were the function should give up
+        warning("No resource-lists found.")
+        return(list)
+      }
+    }
   }
 }

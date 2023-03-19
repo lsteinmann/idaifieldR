@@ -14,7 +14,6 @@ test_that("unnests to resource level", {
 
 test_simple <- simplify_idaifield(test_resources)
 
-# this is stupid
 test_that("does not change simplified list", {
   expect_identical(check_and_unnest(test_simple), test_simple)
 })

@@ -4,11 +4,14 @@
 \alias{check_and_unnest}
 \title{Check and unnest a list}
 \usage{
-check_and_unnest(idaifield_docs)
+check_and_unnest(idaifield_docs, force = FALSE)
 }
 \arguments{
 \item{idaifield_docs}{An object to be used by one of the
 functions in this package}
+
+\item{force}{logical. Should the function attempt to process
+regardless of class?}
 }
 \value{
 if already unnested, the same object as handed to it. if not,
