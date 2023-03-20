@@ -16,7 +16,7 @@ jobs:
 
     services:
       couchdb:
-        image: couchdb: 'latest'
+        image: couch: 'latest'
         env:
           COUCHDB_USER: admin
           COUCHDB_PASSWORD: hallo
