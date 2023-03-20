@@ -40,9 +40,6 @@ test_that("port 3000 for version 2", {
   expect_true(grepl("3000", connection$settings$base_url))
 })
 
-test_that("error, no connection", {
-  expect_warning(connect_idaifield(pwd = "wrongpwd", ping = TRUE))
-})
 
 skip_on_cran()
 conn <- skip_if_no_connection()
@@ -52,6 +49,8 @@ test_that("error, project does not exist", {
                                  ping = TRUE), "project")
 })
 
-
+test_that("error, no connection", {
+  expect_warning(connect_idaifield(pwd = "wrongpwd", ping = TRUE))
+})
 
 

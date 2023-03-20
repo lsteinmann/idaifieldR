@@ -1,7 +1,7 @@
 
 
 test_that("raw has connection as attribute", {
-  conn <- suppressWarnings(connect_idaifield(pwd = "wrongpwd"))
+  conn <- suppressWarnings(connect_idaifield(pwd = "wrongpwd", ping = FALSE))
   expect_error(get_idaifield_docs(conn))
 })
 
