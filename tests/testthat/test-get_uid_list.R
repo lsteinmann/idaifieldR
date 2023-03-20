@@ -44,7 +44,6 @@ for (sample in samples) {
     expect_true(any(grepl("Place", colnames)))
   })
 
-
   test_that("uidlist has relation.liesWithin", {
     expect_false(all(is.na(uidlist$liesWithin)))
   })
@@ -79,7 +78,7 @@ test_that("works with multilang demodata from default config", {
 })
 
 test_that("works with multilang demodata from default config when verbose", {
-  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE)
+  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE, language = "en")
   expect_true("Another Trench" %in% test$shortDescription)
 })
 
