@@ -1,13 +1,13 @@
-#' idf_query
+#' Query resources from an iDAI.field database directly
 #'
-#' Queries resources from an iDAI.field database that is currently running
-#'
-#' @param connection A connection object as returned by `connect_idaifield()`
-#' @param projectname The name of the project to be queried.
-#' @param field The resource field that should be selected for (i.e. "type" for
-#' the type of resource (Pottery, Brick, Layer)).
-#' @param value The value to be selected for in the specified field (i.e.
-#' "Brick" when looking for resourced of type "Brick").
+#' @param connection A connection settings object as
+#' returned by `connect_idaifield()`
+#' @param projectname The name of the project to be queried (overrides
+#' the one listed in the connection-object).
+#' @param field character. The resource field that should be selected
+#' for (i.e. "type" for the type of resource (Pottery, Brick, Layer)).
+#' @param value character. The value to be selected for in the specified
+#' field (i.e. "Brick" when looking for resourced of type "Brick").
 #'
 #' @return An 'idaifield_docs' list
 #'
@@ -23,42 +23,45 @@ idf_query <- function(connection,
                       field = "type",
                       value = "Brick") {
 
-  fail <- idf_ping(connection)
-  if(is.character(fail)) {
-    stop(fail)
-  }
-
   query <- paste('{ "selector": { "resource.',
                  field, '": "', value, '"}}', sep = "")
 
-  result <- sofa::db_query(cushion = connection,
-                           dbname = projectname,
-                           query = query)
+  proj_client <- proj_idf_client(connection,
+                                 project = projectname,
+                                 include = "query")
+
+  response <- proj_client$post(body = query)
+  response <- response$parse("UTF-8")
+  response <- jsonlite::fromJSON(response, FALSE)
 
 
   config <- get_configuration(connection, projectname)
 
-  result <- lapply(result$docs,
+  result <- lapply(response$docs,
                    function(x) list("id" = x$resource$id, "doc" = x))
+
+  new_names <- lapply(result, function(x)
+    x$doc$resource$identifier)
+  new_names <- unlist(new_names)
+  names(result) <- new_names
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
-  attr(result, "config") <- get_configuration(connection, projectname)
+  attr(result, "config") <- suppressMessages(get_configuration(connection, projectname))
   result <- structure(result, class = "idaifield_docs")
 
   return(result)
 }
 
 
-#' idf_index_query
-#'
-#' Queries resources from an iDAI.field database that is currently running
+#' Query resources from an iDAI.field database based on the uidlist
 #'
 #' @param connection A connection object as returned by `connect_idaifield()`
-#' @param projectname The name of the project to be queried.
-#' @param field The resource field that should be selected for (options are
-#' limited to the columns names of the uidlist).
-#' @param value The value to be selected for in the specified field.
+#' @param projectname The name of the project to be queried (overrides
+#' the one listed in the connection-object).
+#' @param field character. The resource field that should be selected for
+#' (options are limited to the columns names of the uidlist).
+#' @param value character. The value to be selected for in the specified field.
 #' @param uidlist A data.frame as returned by `get_uid_list()`.
 #'
 #' @return An 'idaifield_docs' list
@@ -76,15 +79,12 @@ idf_query <- function(connection,
 #' uidlist = uidlist)
 #' }
 #'
-idf_index_query <- function(connection, projectname = "NULL",
-                      field = "type",
-                      value = "Brick",
-                      uidlist = NULL) {
+idf_index_query <- function(connection,
+                            projectname = "NULL",
+                            field = "type",
+                            value = "Brick",
+                            uidlist = NULL) {
 
-  fail <- idf_ping(connection)
-  if(is.character(fail)) {
-    stop(fail)
-  }
 
   if (!field %in% colnames(uidlist)) {
     stop("Supply a field that corresponds to the columns in the UID-List.")
@@ -97,12 +97,22 @@ idf_index_query <- function(connection, projectname = "NULL",
   query <- paste('{ "selector": { "_id": { "$in": [', doc_ids, '] } }}',
                  sep = "")
 
-  result <- sofa::db_query(cushion = connection,
-                           dbname = projectname,
-                           query = query)
+  proj_client <- proj_idf_client(connection,
+                                 project = projectname,
+                                 include = "query")
 
-  result <- lapply(result$docs,
+  response <- proj_client$post(body = query)
+  response <- response$parse("UTF-8")
+  response <- jsonlite::fromJSON(response, FALSE)
+
+  result <- lapply(response$docs,
                    function(x) list("id" = x$resource$id, "doc" = x))
+
+
+  new_names <- lapply(result, function(x)
+    x$doc$resource$identifier)
+  new_names <- unlist(new_names)
+  names(result) <- new_names
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname

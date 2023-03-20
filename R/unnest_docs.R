@@ -48,8 +48,10 @@ unnest_docs <- function(docs) {
 #' @param list a list formatted from a CouchDB-JSON-output
 #'
 #' @return the list of resource-lists
+#'
 #' @keywords internal
 #'
+#' @examples
 #' \dontrun{
 #' testlist <- list(docs = list(list(resource = list(test = "test",
 #'                                                   test2 = "test2")),
@@ -59,15 +61,15 @@ unnest_docs <- function(docs) {
 #' find_resource(testlist)
 #' }
 find_resource <- function(list) {
-  has_resource <- lapply(list, function(x) hasName(x, "resource"))
+  has_resource <- lapply(list, function(x) "resource" %in% names(x))
   has_resource <- unlist(has_resource)
   has_resource <- all(has_resource)
   if (has_resource) {
     resource_list <- lapply(list, function(x) x$resource)
     return(resource_list)
   } else {
-    has_docs <- hasName(list, "docs")
-    has_rows <- hasName(list, "rows")
+    has_docs <- "docs" %in% names(list)
+    has_rows <- "rows" %in% names(list)
     if (has_docs) {
       list <- list$docs
       find_resource(list)
@@ -75,7 +77,7 @@ find_resource <- function(list) {
       list <- list$rows
       find_resource(list)
     } else {
-      has_doc <- lapply(list, function(x) hasName(x, "doc"))
+      has_doc <- lapply(list, function(x) "doc" %in% names(x))
       has_doc <- unlist(has_doc)
       has_doc <- all(has_doc)
       if (has_doc) {

@@ -1,3 +1,5 @@
+
+
 test_that("raw has connection as attribute", {
   conn <- suppressWarnings(connect_idaifield(pwd = "wrongpwd"))
   expect_error(get_idaifield_docs(conn))
@@ -6,13 +8,22 @@ test_that("raw has connection as attribute", {
 source(file = "../load_testdata.R")
 
 test_that("items are named", {
-  rnr <- sample(1:length(test_docs), 1)
+  rnr <- sample(seq_along(test_docs), 1)
   expect_identical(names(test_docs)[rnr],
                    test_docs[[rnr]]$doc$resource$identifier)
 })
 
 
 
+test_that("raw has connection settings as attribute", {
+  test <- attr(test_docs, "connection")
+  expect_true("idf_connection_settings" %in% class(test))
+})
+
+test_that("resources has connection as attribute", {
+  test <- attr(test_resources, "connection")
+  expect_true("idf_connection_settings" %in% class(test))
+})
 
 
 skip_on_cran()
@@ -30,19 +41,10 @@ test_resources <- get_idaifield_docs(projectname = "rtest",
 test_simple <- simplify_idaifield(test_resources)
 
 
-test_that("raw has connection as attribute", {
-  test <- attr(test_docs_raw, "connection")
-  expect_true("Cushion" %in% class(test))
-})
-
-test_that("resources has connection as attribute", {
-  test <- attr(test_resources, "connection")
-  expect_true("Cushion" %in% class(test))
-})
 
 test_that("simple has connection as attribute", {
   test <- attr(test_simple, "connection")
-  expect_true("Cushion" %in% class(test))
+  expect_true("idf_connection_settings" %in% class(test))
 })
 
 
@@ -87,6 +89,6 @@ test_that("returns json", {
 
 test_that("attaches working connection as attribute", {
   test_conn <- attr(test_docs_raw, "connection")
-  pinglist <- sofa::ping(test_conn)
-  expect_true(is.list(pinglist))
+  test_conn <- idf_ping(test_conn)
+  expect_true(test_conn)
 })

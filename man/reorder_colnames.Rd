@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{reorder_colnames}
 \alias{reorder_colnames}
-\title{Reorders the column names for idaifield_as_matrix()}
+\title{Reorder the column names for `idaifield_as_matrix()`}
 \usage{
 reorder_colnames(colnames, order = "default")
 }
@@ -18,7 +18,7 @@ the first n columns of the matrix produced by idaifield_as_matrix()}
 a character vector
 }
 \description{
-Reorders the column names for idaifield_as_matrix()
+Reorder the column names for `idaifield_as_matrix()`
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/idf_query.R
 \name{idf_index_query}
 \alias{idf_index_query}
-\title{idf_index_query}
+\title{Query resources from an iDAI.field database based on the uidlist}
 \usage{
 idf_index_query(
   connection,
@@ -15,12 +15,13 @@ idf_index_query(
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
 
-\item{projectname}{The name of the project to be queried.}
+\item{projectname}{The name of the project to be queried (overrides
+the one listed in the connection-object).}
 
-\item{field}{The resource field that should be selected for (options are
-limited to the columns names of the uidlist).}
+\item{field}{character. The resource field that should be selected for
+(options are limited to the columns names of the uidlist).}
 
-\item{value}{The value to be selected for in the specified field.}
+\item{value}{character. The value to be selected for in the specified field.}
 
 \item{uidlist}{A data.frame as returned by `get_uid_list()`.}
 }
@@ -28,7 +29,7 @@ limited to the columns names of the uidlist).}
 An 'idaifield_docs' list
 }
 \description{
-Queries resources from an iDAI.field database that is currently running
+Query resources from an iDAI.field database based on the uidlist
 }
 \examples{
 \dontrun{

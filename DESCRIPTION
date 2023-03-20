@@ -23,7 +23,6 @@ BugReports: https://github.com/lsteinmann/idaifieldR/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
-    sofa,
     crul,
     jsonlite
 Suggests: 

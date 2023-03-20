@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{na_if_empty}
 \alias{na_if_empty}
-\title{na_if_empty: returns NA if an object handed to the function is empty}
+\title{Returns NA if an object handed to the function is empty}
 \usage{
 na_if_empty(item)
 }
@@ -13,7 +13,7 @@ na_if_empty(item)
 NA if empty, or the object that has been handed to it
 }
 \description{
-This is a helper function in defense against empty list items from
+This is a helper function in defence against empty list items from
 iDAI.field 2 / Field Desktop, which sometimes occur.
 It simply writes NA in the corresponding field if a list or any
 kind of object handed to it is of length 0. Otherwise,

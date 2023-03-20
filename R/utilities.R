@@ -1,6 +1,6 @@
-#' na_if_empty: returns NA if an object handed to the function is empty
+#' Returns NA if an object handed to the function is empty
 #'
-#' This is a helper function in defense against empty list items from
+#' This is a helper function in defence against empty list items from
 #' iDAI.field 2 / Field Desktop, which sometimes occur.
 #' It simply writes NA in the corresponding field if a list or any
 #' kind of object handed to it is of length 0. Otherwise,
@@ -27,7 +27,7 @@ na_if_empty <- function(item) {
   }
 }
 
-#' check_if_idaifield
+#' Check for `idaifield_...` classes
 #'
 #' For internal use... checks if an object can actually processed by
 #' the functions in this package which need the specific format that is
@@ -80,17 +80,9 @@ check_if_idaifield <- function(testobject) {
   }
 
   return(result)
-
-  # --------------
-  # I didnt actually really want to create a class, as that might be
-  # horribly impractical, but it seemed the quickest way to get a structure
-  # check done without relying on too much poking.
-  # However, I don't really like it and am thinking about changing it again.
 }
 
-#' check_for_sublist
-#'
-#' Checks if a list has sublists and returns TRUE if so
+#' Checks if a list has sub-lists and returns TRUE if so
 #'
 #' # TODO absolutely stupid
 #'
@@ -120,7 +112,7 @@ check_for_sublist <- function(single_resource_field) {
   return(has_sublist)
 }
 
-#' check_if_uid
+#' Check if the vector/object is a UUID
 #'
 #' @param string A character string or vector of character strings that should
 #' be checked for being a UID as used in iDAI.field 2 / Field Desktop
@@ -142,7 +134,7 @@ check_if_uid <- function(string) {
 
 
 
-#' Reorders the column names for idaifield_as_matrix()
+#' Reorder the column names for `idaifield_as_matrix()`
 #'
 #' @param colnames a character vector with colnames
 #' @param order either "default" for default order (first columns are
@@ -176,13 +168,13 @@ reorder_colnames <- function(colnames, order = "default") {
 
 
 
-#' Gather multilanguage fields
+#' Reduce multi-language fields to one value
 #'
 #' @param input_list a list with character values containing (or not)
 #' sublists for each language
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the fields, defaults to english ("en")
-#' @param silant TRUE/FALSE: Should gather_languages()
+#' @param silent TRUE/FALSE: Should gather_languages()
 #' issue messages and warnings?
 #'
 #' @return a vector containing the values
@@ -233,44 +225,4 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
   return(res)
 }
 
-#' Ping the Field-Database
-#'
-#' Helper for all functions that access the database to display
-#' specific warning messages.
-#'
-#' @param idaifield_connection The connection as returned by `connect_idaifield()`
-#' @param fail Should the function stop execution?
-#'
-#' @return returns no value
-#' @keywords internal
-#'
-#' @examples
-#' \dontrun{
-#' idaifield_connection <- connect_idaifield()
-#' idf_ping(idaifield_connection)
-#' }
-#'
-idf_ping <- function(idaifield_connection) {
-  ping <- try(sofa::ping(idaifield_connection), silent = TRUE)
-  if(inherits(ping, "try-error")) {
-    if(grepl("Connection refused", ping[1])) {
-      message <- paste0(ping[1], ":
 
-      Is Field Desktop / iDAI.field running?")
-    } else if (grepl("password", ping[1])) {
-      message <- paste0(ping[1], ":
-
-      Check if the password matches your password
-      in the settings of your Field Desktop Client and try again!")
-    } else if (grepl("invalid char", ping[1])) {
-      message <- paste0(ping[1], ":
-
-      Are you sure you used the correct version number?")
-    } else {
-      message <- ping[1]
-    }
-    return(message)
-  } else {
-    return(TRUE)
-  }
-}

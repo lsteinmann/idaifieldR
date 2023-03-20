@@ -16,7 +16,7 @@ it can be very large)
 }
 \description{
 Converts a list of class `idaifield_docs`, `idaifield_resource` or
-`idaifield_simple` into a matrix. Recomennded to use with
+`idaifield_simple` into a matrix. Recommended to use with
 `idaifield_simple`-lists as returned by `simplify_idaifield()`.
 If given a list of class `idaifield_docs` containing all meta-info,
 it will automatically unnest to resource level. It is recommended to

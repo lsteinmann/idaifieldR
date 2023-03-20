@@ -6,13 +6,13 @@
 [![Codecov test coverage](https://codecov.io/gh/lsteinmann/idaifieldR/branch/main/graph/badge.svg)](https://codecov.io/gh/lsteinmann/idaifieldR?branch=main)
 <!-- badges: end -->
 
-idaifieldR imports data from the [iDAI.field 2 / Field Desktop database](https://github.com/dainst/idai-field) into R. The core functions of this package use [sofa](https://github.com/ropensci/sofa) (available on CRAN) to connect to a running iDAI.field 2 or 3 (Field Desktop) client and store the whole database in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the Field client itself. 
+idaifieldR imports data from the [iDAI.field 2 / Field Desktop database](https://github.com/dainst/idai-field) into R. The core functions of this package use the [CouchDB-API](https://docs.couchdb.org/en/stable/api/database/index.html) to connect to a running iDAI.field 2 or 3 (Field Desktop) client and store the whole database or a subset in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the Field client itself. 
 
 The exports can be automatically formatted for easier processing in R (e.g. UIDs are replaced with the appropriate Identifiers, lists are somewhat unnested, and the geometry is reformatted to be usable with the [sp](https://cran.r-project.org/web/packages/sp/index.html)-package). See the Demo-Vignette for more info. However, processing all resources from the database is very slow for larger databases and uses up a lot of memory. 
 
 ## Dependencies
 
-idaifieldR depends on the R-package [sofa](https://github.com/ropensci/sofa) (available on CRAN) and needs a syncing [iDAI.field/Field Desktop-Client](https://github.com/dainst/idai-field) on the same computer or in the same network to work.
+idaifieldR needs a syncing [iDAI.field/Field Desktop-Client](https://github.com/dainst/idai-field) on the same computer or in the same network to work. Other than that, the package depends on [crul](https://cran.r-project.org/web/packages/crul/index.html) and [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html), both available on CRAN and automatically installed as dependencies. 
 
 ## Installation
 
@@ -21,8 +21,6 @@ You can install the current version of idaifieldR from github using `devtools` o
 ``` r
 devtools::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
 ```
-
-
 
 ## Example / Basic 
 

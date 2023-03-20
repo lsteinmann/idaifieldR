@@ -6,14 +6,21 @@
 \usage{
 connect_idaifield(
   serverip = "127.0.0.1",
+  project = NULL,
   user = "Anna Allgemeinperson",
   pwd = "password",
-  version = 3
+  version = 3,
+  ping = TRUE
 )
 }
 \arguments{
 \item{serverip}{The IP that the user can find in the Field Clients settings as
 'Your address'/'Eigene Adresse' without the port-specification (':3000')}
+
+\item{project}{character. The project you want to work with. Will be
+overwritten by the projectname specification in other functions. If not
+supplied to other function, they will use the project recorded in the
+connection object.}
 
 \item{user}{(optional) A user name. This should currently not be needed.}
 
@@ -22,14 +29,18 @@ as 'Your password'/'Eigenes Passwort'}
 
 \item{version}{2 if iDAI.field 2 is used, 3 if you are using
 Field Desktop (default 3, integer).}
+
+\item{ping}{logical. default TRUE; Should the connection be tested on
+creation? If TRUE, also checks if the project exists.}
 }
 \value{
-a `sofa`-connection object (`Cushion`)
+an `idaifieldR`-connection settings object (`idf_connection_settings`)
 }
 \description{
-The connection-object is used to establish a connection to the database of
-you iDAI.field / Field Desktop Client. It contains all the information needed
-to access the database using other functions such as `get_idaifield_docs()`.
+The connection-object is used to store the connection settings needed to
+connect to the database of your iDAI.field / Field Desktop Client.
+It contains all the information that other functions such
+as `get_idaifield_docs()` need access the database.
 }
 \details{
 If you are using Field Desktop on the same machine, you should not need
@@ -43,9 +54,14 @@ that is not running on the same machine as R, you can exchange it for the
 address listed above the password (without the port (':3000')).
 The `version`-argument does not need to be specified if you use the
 current version of Field Desktop (3), but will help you connect if you
-are using 'iDAI.field 2'.
+are using 'iDAI.field 2'. You can set the `project` that you want to work
+with in this function, but be aware that other functions will overwrite
+this setting if you supply a projectname there. `connect_idaifield()` will
+check if the project actually exists and throw an error if it does not.
 }
 \examples{
+\dontrun{
 conn <- connect_idaifield(serverip = "127.0.0.1",
 user = "R", pwd = "hallo")
+}
 }

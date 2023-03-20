@@ -15,20 +15,14 @@ the list of resource-lists
 \description{
 Finding the "resource"-list in a CouchDB-output
 }
-\keyword{"test",}
-\keyword{"test2"))),}
-\keyword{"test2")),}
-\keyword{"warning")}
-\keyword{<-}
-\keyword{=}
-\keyword{\dontrun{}
-\keyword{find_resource(testlist)}
+\examples{
+\dontrun{
+testlist <- list(docs = list(list(resource = list(test = "test",
+                                                  test2 = "test2")),
+                             list(resource = list(test = "test",
+                                                  test2 = "test2"))),
+                 warning = "warning")
+find_resource(testlist)
+}
+}
 \keyword{internal}
-\keyword{list(docs}
-\keyword{list(list(resource}
-\keyword{list(resource}
-\keyword{list(test}
-\keyword{test2}
-\keyword{testlist}
-\keyword{warning}
-\keyword{}}

@@ -25,8 +25,9 @@ get_language_lookup(): Prepare a Language List as a Lookup Table
 \examples{
 \dontrun{
 conn <- connect_idaifield(serverip = "127.0.0.1",
-                          user = "R", pwd = "hallo")
-config <- get_configuration(connection = conn, projectname = "rtest")
+                          project = "rtest",
+                          pwd = "hallo")
+config <- get_configuration(connection = conn)
 lookup <- get_language_lookup(config$languages, language = "en")
 }
 }

@@ -2,26 +2,28 @@
 % Please edit documentation in R/idf_query.R
 \name{idf_query}
 \alias{idf_query}
-\title{idf_query}
+\title{Query resources from an iDAI.field database directly}
 \usage{
 idf_query(connection, projectname = "NULL", field = "type", value = "Brick")
 }
 \arguments{
-\item{connection}{A connection object as returned by `connect_idaifield()`}
+\item{connection}{A connection settings object as
+returned by `connect_idaifield()`}
 
-\item{projectname}{The name of the project to be queried.}
+\item{projectname}{The name of the project to be queried (overrides
+the one listed in the connection-object).}
 
-\item{field}{The resource field that should be selected for (i.e. "type" for
-the type of resource (Pottery, Brick, Layer)).}
+\item{field}{character. The resource field that should be selected
+for (i.e. "type" for the type of resource (Pottery, Brick, Layer)).}
 
-\item{value}{The value to be selected for in the specified field (i.e.
-"Brick" when looking for resourced of type "Brick").}
+\item{value}{character. The value to be selected for in the specified
+field (i.e. "Brick" when looking for resourced of type "Brick").}
 }
 \value{
 An 'idaifield_docs' list
 }
 \description{
-Queries resources from an iDAI.field database that is currently running
+Query resources from an iDAI.field database directly
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{check_for_sublist}
 \alias{check_for_sublist}
-\title{check_for_sublist}
+\title{Checks if a list has sub-lists and returns TRUE if so}
 \usage{
 check_for_sublist(single_resource_field)
 }
@@ -13,9 +13,6 @@ check_for_sublist(single_resource_field)
 TRUE/FALSE
 }
 \description{
-Checks if a list has sublists and returns TRUE if so
-}
-\details{
 # TODO absolutely stupid
 }
 \examples{

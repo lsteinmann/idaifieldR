@@ -1,3 +1,8 @@
+# idaifieldR 0.3.0 _tba/wip_
+* remove sofa as dependency and add custom interface with reduced functionality
+* restructure unnesting (`unnest_docs()` & `find_resource()`)
+* 
+
 # idaifieldR 0.2.3 _2023-03-16_
 * add language management for multi-language input fields when project has more than one project language
 * add language list lookup preparation (`get_language_lookup()`) for custom config fields

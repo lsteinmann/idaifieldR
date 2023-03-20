@@ -3,16 +3,17 @@ test_docs <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
                                  package = "idaifieldR"))
 test_resources <- check_and_unnest(test_docs)
 
-config <- readRDS(system.file("testdata", "rtest_config.RDS",
-                                   package = "idaifieldR"))
+config <- attributes(test_docs)$config
 
 
 skip_if_no_connection <- function() {
-  connection <- suppressWarnings(connect_idaifield(serverip = "127.0.0.1",
-                                                   user = "R", pwd = "hallo"))
+  connection <- suppressMessages(
+    connect_idaifield(serverip = "127.0.0.1",
+                      pwd = "hallo")
+    )
 
   tryCatch({
-    sofa::ping(connection)
+    idf_ping(connection)
   },
   error = function(cond) {
     skip("Test skipped, needs DB-connection")
