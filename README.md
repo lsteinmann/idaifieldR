@@ -4,7 +4,12 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/lsteinmann/idaifieldR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lsteinmann/idaifieldR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/lsteinmann/idaifieldR/branch/main/graph/badge.svg)](https://codecov.io/gh/lsteinmann/idaifieldR?branch=main)
+[![Release](https://img.shields.io/github/v/release/lsteinmann/idaifieldR)](https://github.com/lsteinmann/idaifieldR/releases)
+[![Downloads](https://img.shields.io/github/downloads/lsteinmann/idaifieldR/total)](https://github.com/lsteinmann/idaifieldR/releases)
+[![Package documentation](https://img.shields.io/badge/Documentation-lsteinmann.github.io%2FidaifieldR-green)](https://lsteinmann.github.io/idaifieldR/)
 <!-- badges: end -->
+
+
 
 idaifieldR imports data from the [iDAI.field 2 / Field Desktop database](https://github.com/dainst/idai-field) into R. The core functions of this package use the [CouchDB-API](https://docs.couchdb.org/en/stable/api/database/index.html) to connect to a running iDAI.field 2 or 3 (Field Desktop) client and store the whole database or a subset in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the Field client itself. 
 
