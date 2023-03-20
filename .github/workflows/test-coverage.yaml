@@ -2,7 +2,7 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main]
+    branches: [main, api]
   pull_request:
     branches: [main]
 
@@ -13,6 +13,19 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    services:
+      couchdb:
+        image: couchdb: 'latest'
+        env:
+          COUCHDB_USER: admin
+          COUCHDB_PASSWORD: hallo
+        ports:
+          - 3001
+
+    env:
+      COUCHDB_TEST_USER: admin
+      COUCHDB_TEST_PWD: hallo
 
     steps:
       - uses: actions/checkout@v3
