@@ -14,19 +14,6 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
-    services:
-      couchdb:
-        image: couch: 'latest'
-        env:
-          COUCHDB_USER: admin
-          COUCHDB_PASSWORD: hallo
-        ports:
-          - 3001
-
-    env:
-      COUCHDB_TEST_USER: admin
-      COUCHDB_TEST_PWD: hallo
-
     steps:
       - uses: actions/checkout@v3
 
