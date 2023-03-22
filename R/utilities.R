@@ -106,7 +106,7 @@ check_for_sublist <- function(single_resource_field) {
                        FUN.VALUE = logical(1))
     has_sublist <- any(sublists)
   } else {
-    warning("Object is not a list.")
+    message("Object is not a list.")
     has_sublist <- FALSE
   }
   return(has_sublist)
@@ -190,7 +190,8 @@ reorder_colnames <- function(colnames, order = "default") {
 gather_languages <- function(input_list, language = "en", silent = FALSE) {
   # if this has a sublist / more than one entry, it means that there is
   # more than one language
-  if (check_for_sublist(input_list)) {
+  has_list <- suppressMessages(check_for_sublist(input_list))
+  if (has_list) {
     # try to get the selected language or english
     res <- lapply(input_list, function(x) na_if_empty(unlist(x[language])))
     res <- unlist(res)

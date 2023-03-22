@@ -50,13 +50,10 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   raw = TRUE,
   json = FALSE) {
 
-  if(!connection$status) {
-    stop("Nope")
-  } else {
-    client <- proj_idf_client(conn = connection,
-                               project = projectname,
-                               include = "all")
-  }
+
+  client <- proj_idf_client(conn = connection,
+                            project = projectname,
+                            include = "all")
 
   options(digits = 20)
 
