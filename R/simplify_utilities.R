@@ -295,7 +295,8 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
 #' and inputType ("bce", "ce", "bp")
 #'
 #' @return The year as a number, negative when BCE, positive when CE
-#' @export
+#'
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -334,7 +335,7 @@ bce_ce <- function(list) {
 #' @return a reformatted list, containing min and max dating and additional
 #' info as well as the original values in the "comment"-element
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{

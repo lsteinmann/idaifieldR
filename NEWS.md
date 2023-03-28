@@ -1,3 +1,6 @@
+# idaifieldR 0.2.4 _2023-03-28_
+* handle / reformat dating fields by getting min and max date
+
 # idaifieldR 0.2.3 _2023-03-16_
 * add language management for multi-language input fields when project has more than one project language
 * add language list lookup preparation (`get_language_lookup()`) for custom config fields

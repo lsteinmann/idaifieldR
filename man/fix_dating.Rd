@@ -26,3 +26,4 @@ dat_list <- list(type = "range",
 fix_dating(dat_list)
 }
 }
+\keyword{internal}
