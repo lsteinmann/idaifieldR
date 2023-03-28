@@ -168,10 +168,6 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
   dimno <- length(dimensionList)
   get_dim_value <- function(x) {
     if (is.null(x$value)) {
-      # There is a problem with old entries, as the system was changed at some
-      # point. Therefore we have to check if the there is an entry calles
-      # "inputValue" first, because it may not be a range though value had not
-      # been converted. If inputValue doesn't exist, it should be a range.
       if (!is.null(x$rangeMin)) {
         range <- c(x$rangeMin, x$rangeMax)
         value <- mean(range) / 10000
@@ -230,4 +226,169 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
 remove_config_names <- function(nameslist = c("identifier", "configname:test")) {
   nameslist <- gsub("^.*:", "", nameslist)
   return(nameslist)
+}
+
+#' Gather multilanguage fields
+#'
+#' @param input_list a list with character values containing (or not)
+#' sublists for each language
+#' @param language the short name (e.g. "en", "de", "fr") of the language that
+#' is preferred for the fields, defaults to english ("en")
+#' @param silant TRUE/FALSE: Should gather_languages()
+#' issue messages and warnings?
+#'
+#' @return a vector containing the values
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' input_list <- list(list("en" = "English text", "de" = "Deutscher Text"),
+#'                    list("en" = "Another english text", "de" = "Weiterer dt. Text"))
+#' gather_languages(input_list, language = "de")
+#' }
+gather_languages <- function(input_list, language = "en", silent = FALSE) {
+  # if this has a sublist / more than one entry, it means that there is
+  # more than one language
+  if (check_for_sublist(input_list)) {
+    # try to get the selected language or english
+    res <- lapply(input_list, function(x) na_if_empty(unlist(x[language])))
+    res <- unlist(res)
+    if (all(is.na(res))) {
+      if (!silent) {
+        # issue warning is this does not work
+        warning("No language selected or selected language not available, using first entry")
+      }
+      # instead get the first entry
+      res <- unlist(lapply(input_list, function(x) x[1]))
+    }
+    if (any(is.na(res))) {
+      # if there are still NA-values, assume that sometimes people only filled
+      # in one language and loop through all languages to fill the NA values
+      languages <- sort(unique(unlist(lapply(input_list,
+                                             function(x) names(x)))))
+      for (i in seq_along(languages)) {
+        res_sec <- lapply(input_list,
+                          function(x) na_if_empty(unlist(x[languages[i]])))
+        res_sec <- unlist(res_sec)
+        res <- ifelse(is.na(res), res_sec, res)
+        no_list_ind <- unlist(lapply(input_list, is.character))
+        no_list_ind <- which(no_list_ind)
+        res[no_list_ind] <- unlist(input_list)[no_list_ind]
+      }
+    }
+  } else {
+    res <- unlist(lapply(input_list, function(x) na_if_empty(x)))
+  }
+  # remove the names
+  res <- unname(res)
+  return(res)
+}
+
+#' Translate a list for one dating value from iDAI.field to a positive or negative number
+#'
+#' (Field does save numbers in this format, but apparently not all of them.
+#' This corrects for wrong numbers. Numbers bp/before present are subtracted
+#' from 1950 to get dates BCE.)
+#'
+#' @param list A named list containing (at least): inputYear (number),
+#' and inputType ("bce", "ce", "bp")
+#'
+#' @return The year as a number, negative when BCE, positive when CE
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' list <- list(inputYear = 100, inputType = "bce")
+#' bce_ce(list)
+#' }
+#'
+bce_ce <- function(list) {
+  if (is.list(list)) {
+    year <- abs(as.numeric(list$inputYear))
+    bce_ce <- list$inputType
+    if (bce_ce == "bce") {
+      year <- 0 - year
+    } else if (bce_ce == "ce") {
+      year <- year
+    } else if (bce_ce == "bp") {
+      year <- 1950 - year # 1950 is the zero point / origin of "before present"
+    } else {
+      stop("None of BCE/CE/BP given.")
+    }
+    return(year)
+  } else {
+    return(NA)
+  }
+}
+
+
+#' Reduce the Dating-list to min/max-values
+#'
+#' Note: This function will evaluate all begin and end values for the
+#' dating of the resource object and evaluate only their min and max values!
+#'
+#' @param dat_list The "dating"-list of any resource from
+#' an `idaifield_...`-list
+#'
+#' @return a reformatted list, containing min and max dating and additional
+#' info as well as the original values in the "comment"-element
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' dat_list <- list(type = "range",
+#'                  begin = list(inputYear = 2000, inputType = "bce"),
+#'                  end = list(inputYear = 2000, inputType = "ce"))
+#' fix_dating(dat_list)
+#' }
+fix_dating <- function(dat_list) {
+  dat_min <- lapply(dat_list, function(x) unlist(bce_ce(x$begin)))
+  dat_max <- lapply(dat_list, function(x) unlist(bce_ce(x$end)))
+
+  dat_type <- unlist(lapply(dat_list, function(x) x$type))
+  ex_date <- dat_type == "exact"
+  if (any(ex_date)) {
+    dat_max <- unlist(dat_max)[ex_date]
+    dat_min <- dat_max
+  } else {
+    dat_min <- suppressWarnings(min(unlist(dat_min), na.rm = TRUE))
+    dat_max <- suppressWarnings(max(unlist(dat_max), na.rm = TRUE))
+  }
+
+  dat_min <- ifelse(is.infinite(dat_min), NA, dat_min)
+  dat_max <- ifelse(is.infinite(dat_max), NA, dat_max)
+
+  # another option: note it in that field
+  # l <- length(dat_type)
+  # if (l > 1) {
+  #   dat_type <- c("multiple: ", dat_type)
+  #   dat_type[2:l] <- paste0(dat_type[2:l], ", ")
+  # }
+  # dat_type <- paste0(dat_type, collapse = "")
+  dat_type <- ifelse((length(dat_type) > 1), "multiple", dat_type)
+
+  dat_uncertain <- unlist(lapply(dat_list, function(x) x$isUncertain))
+  if (all(is.null(dat_uncertain))) {
+    dat_uncertain <- FALSE
+  } else {
+    dat_uncertain <- any(dat_uncertain)
+  }
+
+  dat_complete <- lapply(dat_list,
+                         function(x) paste(unlist(x, use.names = TRUE),
+                                           collapse = "; "))
+  dat_complete <- paste0("dating list ", seq(1:length(dat_complete)), ": ",
+                         dat_complete, collapse = "; ")
+
+  dat_source <- unlist(lapply(dat_list, function(x) x$source))
+
+  dat_list <- list(min = dat_min, max = dat_max,
+                   type = dat_type, uncertain = dat_uncertain,
+                   source = dat_source, complete = dat_complete)
+
+  names(dat_list) <- paste0("dating.", names(dat_list))
+  return(dat_list)
 }
