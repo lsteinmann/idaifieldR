@@ -43,3 +43,27 @@ for (item in items) {
                            by = "type"))
   })
 }
+
+
+test_that("attaches correct names", {
+  sel <- select_by(test_docs, by = "type",
+                   value = "Pottery")
+  expect_identical(names(sel),
+                   unlist(lapply(sel, function(x) x$identifier),
+                          use.names = FALSE))
+})
+
+
+test_that("attaches attributes", {
+  sel_att <- attributes(select_by(test_docs, by = "type",
+                       value = "Pottery"))
+  expect_true(all(c("connection", "projectname", "config") %in% names(sel_att)))
+})
+
+test_that("attaches correct attributes", {
+  sel_att <- attributes(select_by(test_docs, by = "type",
+                                  value = "Pottery"))
+  expect_identical(sel_att$projectname, attr(test_docs, "projectname"))
+})
+
+

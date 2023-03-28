@@ -81,6 +81,12 @@ get_idaifield_docs <- function(connection = connect_idaifield(
 
     idaifield_docs <- idaifield_docs$rows
     idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
+
+    new_names <- lapply(idaifield_docs, function(x)
+      x$doc$resource$identifier)
+    new_names <- unlist(new_names)
+    names(idaifield_docs) <- new_names
+
     if (!raw) {
       idaifield_docs <- check_and_unnest(idaifield_docs)
     }

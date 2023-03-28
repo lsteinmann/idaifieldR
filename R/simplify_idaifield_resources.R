@@ -3,14 +3,11 @@
 #' This function is a helper to `simplify_idaifield()`.
 #'
 #' @param resource One resource (element) from an idaifield_resources-list.
-#' @param replace_uids logical. Should UUIDs be automatically replaced with the
-#' corresponding identifiers? (Defaults to TRUE).
-#' @param uidlist A data.frame as returned by `get_uid_list()`. If replace_uids
-#' is set to FALSE, there is no need to supply it.
-#' @param keep_geometry logical. Should the geographical information be kept
-#' or removed? (Defaults to TRUE).
-#' @param language the short name (e.g. "en", "de", "fr") of the language that
-#' is preferred for the fields, defaults to english ("en")
+#' @param replace_uids see `?simplify_idaifield()`
+#' @param uidlist see `?simplify_idaifield()`
+#' @param keep_geometry see `?simplify_idaifield()`
+#' @param language see `?simplify_idaifield()`
+#' @param spread_fields see `?simplify_idaifield()`
 #'
 #' @return A single resource (element) for an idaifield_resource-list.
 #'
@@ -28,7 +25,8 @@ simplify_single_resource <- function(resource,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
                                      fieldtypes = NULL,
-                                     language = "all") {
+                                     language = "all",
+                                     spread_fields = TRUE) {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -47,7 +45,8 @@ simplify_single_resource <- function(resource,
     liesWithinLayer <- find_layer(resource = resource,
                                   uidlist = uidlist,
                                   liesWithin = NULL)
-    resource <- append(resource, list(relation.liesWithinLayer = liesWithinLayer))
+    resource <- append(resource,
+                       list(relation.liesWithinLayer = liesWithinLayer))
   }
 
   # checks the value of the keep_geometry argument, which determines whether
@@ -154,7 +153,7 @@ simplify_single_resource <- function(resource,
   # fieldtypes as an additional argument. This converts the values in the
   # fields of resource to one-hot encoded vectors based on the
   # specified fieldtypes.
-  if (is.matrix(fieldtypes)) {
+  if (spread_fields & is.matrix(fieldtypes)) {
     resource <- convert_to_onehot(resource = resource,
                                   fieldtypes = fieldtypes)
   }
@@ -191,11 +190,14 @@ simplify_single_resource <- function(resource,
 #' automatically generated within this function. This only makes sense if
 #' the list handed to `simplify_idaifield()` had not been selected yet. If it
 #' has been, you should supply a data.frame as returned by `get_uid_list()`.
-#' @param keep_geometry logical. Should the geographical information be kept
-#' or removed? (Defaults to TRUE).
+#' @param keep_geometry logical. (Defaults to TRUE) Should the geographical
+#' information be kept or removed?
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the multi-language input fields, defaults to keeping all
 #' languages as sub-lists ("all").
+#' @param spread_fields logical. (Defaults to TRUE) Should checkbox-fields be
+#' spread across multiple lists to facilitate boolean-columns for each value
+#' of a checkbox-field?
 #'
 #' @return an "idaifield_simple" list
 #' @export
@@ -213,8 +215,8 @@ simplify_idaifield <- function(idaifield_docs,
                                keep_geometry = TRUE,
                                replace_uids = TRUE,
                                uidlist = NULL,
-                               language = "all") {
-
+                               language = "all",
+                               spread_fields = TRUE) {
 
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_simple"] == TRUE) {
@@ -235,17 +237,20 @@ simplify_idaifield <- function(idaifield_docs,
   } else {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
 
-    ## Language handling
+    ## Language handling / messages
     languages <- unlist(config$projectLanguages)
     if (language != "all") {
       if (language %in% languages) {
-        message(paste("Keeping input values of selected language (",
-                      language, ") where possible.",
+        message(paste("Keeping input values of selected language ('",
+                      language, "') where possible.",
                       sep = ""))
       } else {
-        message(paste("Selected language (",
-                      language, ") not available.",
-                      sep = ""))
+        new_language <- sort(languages[grepl("^[a-z]{2}$", languages)])
+        new_language <- ifelse(is.null(new_language), "all", new_language[1])
+        message(paste("Selected language ('",
+                      language, "') not available. Trying '", new_language,
+                      "' instead.", sep = ""))
+        language <- new_language
       }
     } else {
       message("Keeping all languages for input fields.")
@@ -260,7 +265,8 @@ simplify_idaifield <- function(idaifield_docs,
       uidlist = uidlist,
       keep_geometry = keep_geometry,
       fieldtypes = fieldtypes,
-      language = language
+      language = language,
+      spread_fields = spread_fields
     )
   )
 

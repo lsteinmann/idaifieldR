@@ -9,15 +9,16 @@ simplify_idaifield(
   keep_geometry = TRUE,
   replace_uids = TRUE,
   uidlist = NULL,
-  language = "all"
+  language = "all",
+  spread_fields = TRUE
 )
 }
 \arguments{
 \item{idaifield_docs}{An "idaifield_docs" or "idaifield_resources"-list as
 returned by `get_idaifield_docs()`.}
 
-\item{keep_geometry}{logical. Should the geographical information be kept
-or removed? (Defaults to TRUE).}
+\item{keep_geometry}{logical. (Defaults to TRUE) Should the geographical
+information be kept or removed?}
 
 \item{replace_uids}{logical. Should UUIDs be automatically replaced with the
 corresponding identifiers? (Defaults to TRUE).}
@@ -30,6 +31,10 @@ has been, you should supply a data.frame as returned by `get_uid_list()`.}
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the multi-language input fields, defaults to keeping all
 languages as sub-lists ("all").}
+
+\item{spread_fields}{logical. (Defaults to TRUE) Should checkbox-fields be
+spread across multiple lists to facilitate boolean-columns for each value
+of a checkbox-field?}
 }
 \value{
 an "idaifield_simple" list

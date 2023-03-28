@@ -45,6 +45,13 @@ test_that("dimensions are spread", {
 })
 
 
+test_that("keeps names", {
+  expect_identical(names(test_resources),
+                   names(simplify_idaifield(test_resources,
+                                            replace_uids = TRUE)))
+})
+
+
 #mat <- idaifield_as_matrix(test_simple)
 #colnames(mat)
 
@@ -92,7 +99,7 @@ test_that("runs without uidlist", {
   expect_s3_class(simplify_idaifield(test_docs), "idaifield_simple")
 })
 
-simple <- simplify_idaifield(test_docs)
+suppressMessages(simple <- simplify_idaifield(test_docs))
 
 test_that("contains no special config names in columns", {
   expect_false(any(grepl(":", names(simple))))
@@ -163,13 +170,6 @@ test_that("return all languages", {
 })
 
 
-
-## with db connection
-
-skip_on_cran()
-
-connection <- skip_if_no_connection()
-
 test_that("colnames from checkboxes are spread", {
   test_simple <- simplify_idaifield(test_resources,
                                     keep_geometry = TRUE,
@@ -179,3 +179,13 @@ test_that("colnames from checkboxes are spread", {
   expect_gt(length(namesvec), 1)
 })
 
+
+test_that("colnames from checkboxes are NOT spread", {
+  test_simple <- simplify_idaifield(test_resources,
+                                    keep_geometry = TRUE,
+                                    replace_uids = TRUE,
+                                    spread_fields = FALSE)
+  namesvec <- unique(unlist(lapply(test_simple, names)))
+  namesvec <- namesvec[grepl("testAnkreuzfeld", namesvec)]
+  expect_equal(length(namesvec), 1)
+})

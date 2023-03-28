@@ -10,23 +10,22 @@ simplify_single_resource(
   uidlist = NULL,
   keep_geometry = TRUE,
   fieldtypes = NULL,
-  language = "all"
+  language = "all",
+  spread_fields = TRUE
 )
 }
 \arguments{
 \item{resource}{One resource (element) from an idaifield_resources-list.}
 
-\item{replace_uids}{logical. Should UUIDs be automatically replaced with the
-corresponding identifiers? (Defaults to TRUE).}
+\item{replace_uids}{see `?simplify_idaifield()`}
 
-\item{uidlist}{A data.frame as returned by `get_uid_list()`. If replace_uids
-is set to FALSE, there is no need to supply it.}
+\item{uidlist}{see `?simplify_idaifield()`}
 
-\item{keep_geometry}{logical. Should the geographical information be kept
-or removed? (Defaults to TRUE).}
+\item{keep_geometry}{see `?simplify_idaifield()`}
 
-\item{language}{the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the fields, defaults to english ("en")}
+\item{language}{see `?simplify_idaifield()`}
+
+\item{spread_fields}{see `?simplify_idaifield()`}
 }
 \value{
 A single resource (element) for an idaifield_resource-list.

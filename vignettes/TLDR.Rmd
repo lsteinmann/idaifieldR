@@ -2,7 +2,7 @@
 title: "TLDR: Essential Workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{"essential"}
+  %\VignetteIndexEntry{TLDR: Essential Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -27,6 +27,8 @@ db <- get_idaifield_docs(connection = conn,
 index <- get_uid_list(db)
 ```
 
+## Selection and Simplify: Example
+
 Using the following few lines and all default arguments while selecting from the whole database: 
 
 ```{r eval = FALSE}
@@ -39,12 +41,12 @@ pottery <- db %>%
   idaifield_as_matrix() %>%
   as.data.frame()
 ```
+## Query and Simplify: Example
 
 Or using the following few lines with direct queries to the database:
 
 ```{r eval = FALSE}
 pottery <- idf_query(connection = conn,
-                     uidlist = index,
                      project = "idaifieldr-demo", 
                      field = "type", 
                      value = "Pottery") %>%
@@ -52,3 +54,33 @@ pottery <- idf_query(connection = conn,
   idaifield_as_matrix() %>%
   as.data.frame()
 ```
+
+## Language Lookup: Example
+
+Downloading translations and converting them into a lookup table:
+
+```{r eval = FALSE}
+core_lang_list <- download_language_list(project = "core", language = "de")
+pergamon_lang_list <- download_language_list(project = "Pergamon", language = "de")
+config_lang_list <- attr(db, "config")
+config_lang_list <- config_lang_list$languages
+
+lookup <- get_language_lookup(core_lang_list, language = "de")
+lookup <- rbind(lookup, get_language_lookup(pergamon_lang_list, language = "de"))
+lookup <- rbind(lookup, get_language_lookup(config_lang_list, language = "de"))
+
+head(lookup)
+```
+
+
+```{r eval = FALSE}
+colnames(pottery)
+
+translated <- colnames(pottery)
+names(translated) <- lookup$label[match(translated, lookup$var)]
+
+translated
+```
+
+
+
