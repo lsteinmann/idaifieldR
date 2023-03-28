@@ -83,9 +83,19 @@ simplify_single_resource <- function(resource,
     } else if (length(period) == 2) {
       fixed_periods[1:2] <- unlist(period)
     } else {
-      message("I did not see that coming.")
+      # this actually never ever happens ;)
+      message(paste("Somehow, resource", id,
+                    "has more than two values for field 'period'.",
+                    "Using first two."))
+      fixed_periods[1:2] <- unlist(period)[1:2]
     }
     resource <- append(resource, fixed_periods)
+  }
+
+  if (!is.null(resource$dating)) {
+    dating <- fix_dating(resource$dating)
+    resource$dating <- NULL
+    resource <- append(resource, dating)
   }
 
   # The function then gets the names of all the fields in the resource,
@@ -181,6 +191,13 @@ simplify_single_resource <- function(resource,
 #' the UUIDs with their corresponding identifiers! Especially if a selected
 #' list is passed to `simplify_idaifield()`, you need to supply the uidlist
 #' of the complete project database as well.
+#'
+#' Formatting of various lists: Dimension measurements as well as dating are
+#' reformatted and might produce unexpected results.
+#' For the dating, all begin and end values are evaluated and for each resource,
+#' the minimum value from "begin" and maximum value from "end" is selected.
+#' For the dimension-fields, if a ranged measurement was selected, a mean
+#' will be returned.
 #'
 #' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
 #' returned by `get_idaifield_docs()`.
