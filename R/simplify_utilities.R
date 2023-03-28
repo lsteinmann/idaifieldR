@@ -345,6 +345,12 @@ bce_ce <- function(list) {
 #' fix_dating(dat_list)
 #' }
 fix_dating <- function(dat_list) {
+
+  if (!is.list(dat_list)) {
+    message("Not a list.")
+    return(NA)
+  }
+
   dat_min <- lapply(dat_list, function(x) unlist(bce_ce(x$begin)))
   dat_max <- lapply(dat_list, function(x) unlist(bce_ce(x$end)))
 

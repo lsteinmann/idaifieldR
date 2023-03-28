@@ -92,8 +92,9 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, fixed_periods)
   }
 
-  if (!is.null(resource$dating)) {
-    dating <- fix_dating(resource$dating)
+  dating <- resource[["dating", exact = TRUE]]
+  if (!is.null(dating)) {
+    dating <- fix_dating(dating)
     resource$dating <- NULL
     resource <- append(resource, dating)
   }
