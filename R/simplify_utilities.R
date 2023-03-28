@@ -168,10 +168,6 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
   dimno <- length(dimensionList)
   get_dim_value <- function(x) {
     if (is.null(x$value)) {
-      # There is a problem with old entries, as the system was changed at some
-      # point. Therefore we have to check if the there is an entry calles
-      # "inputValue" first, because it may not be a range though value had not
-      # been converted. If inputValue doesn't exist, it should be a range.
       if (!is.null(x$rangeMin)) {
         range <- c(x$rangeMin, x$rangeMax)
         value <- mean(range) / 10000
