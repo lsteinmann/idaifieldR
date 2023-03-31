@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{gather_languages}
 \alias{gather_languages}
-\title{Reduce multi-language fields to one value}
+\title{Gather multilanguage fields}
 \usage{
 gather_languages(input_list, language = "en", silent = FALSE)
 }
@@ -13,14 +13,14 @@ sublists for each language}
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the fields, defaults to english ("en")}
 
-\item{silent}{TRUE/FALSE: Should gather_languages()
+\item{silant}{TRUE/FALSE: Should gather_languages()
 issue messages and warnings?}
 }
 \value{
 a vector containing the values
 }
 \description{
-Reduce multi-language fields to one value
+Gather multilanguage fields
 }
 \examples{
 \dontrun{
