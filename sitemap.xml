@@ -25,6 +25,9 @@
     <loc>https://lsteinmann.github.io/idaifieldR/news/index.html</loc>
   </url>
   <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/bce_ce.html</loc>
+  </url>
+  <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/check_and_unnest.html</loc>
   </url>
   <url>
@@ -56,6 +59,9 @@
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/find_layer.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/fix_dating.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/fix_relations.html</loc>

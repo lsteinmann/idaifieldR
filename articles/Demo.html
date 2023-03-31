@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -178,13 +178,13 @@ object:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
+<col width="5%">
+<col width="27%">
+<col width="17%">
 <col width="9%">
-<col width="28%">
+<col width="14%">
 <col width="12%">
-<col width="9%">
-<col width="15%">
-<col width="12%">
-<col width="12%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">type</th>
@@ -202,7 +202,7 @@ object:</p>
 <td align="left">Befund_6</td>
 <td align="left">Schnitt 1</td>
 <td align="left">SE02</td>
-<td align="left">Context 6</td>
+<td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
@@ -220,7 +220,7 @@ object:</p>
 <td align="left">KNOCHEN_1</td>
 <td align="left">Schnitt 1</td>
 <td align="left">Grab_1</td>
-<td align="left">Bone 1</td>
+<td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
@@ -229,25 +229,25 @@ object:</p>
 <td align="left">Befund_6_KER_4</td>
 <td align="left">Schnitt 1</td>
 <td align="left">Befund_6</td>
-<td align="left">Befund 6 Pottery</td>
+<td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">RoomCeiling</td>
-<td align="left">077a9be0-4cf4-4c99-af30-cb221c26ee05</td>
-<td align="left">Decke</td>
-<td align="left">Building</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-</tr>
-<tr class="even">
 <td align="left">Pottery</td>
 <td align="left">0860b5a5-4602-9feb-fabb-85610298bd93</td>
 <td align="left">Befund_6_KER_18</td>
 <td align="left">Schnitt 1</td>
 <td align="left">Befund_6</td>
-<td align="left">Befund 6 Pottery</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Mollusk</td>
+<td align="left">0cc6771c-5532-467f-90af-eb3bbd326437</td>
+<td align="left">MOLLUSK_cm_meas_dimTest</td>
+<td align="left">Schnitt 1</td>
+<td align="left">Befund_5</td>
+<td align="left">DO NOT CHANGE</td>
 <td align="left">NA</td>
 </tr>
 </tbody>
@@ -289,7 +289,7 @@ list.</p>
 <span>                                            uidlist <span class="op">=</span> <span class="va">index</span>,</span>
 <span>                                            language <span class="op">=</span> <span class="st">"en"</span>,</span>
 <span>                                            spread_fields <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Keeping input values of selected language ('en') where possible.</span></span></code></pre></div>
+<span><span class="co">#&gt; Selected language ('en') not available. Trying 'all' instead.</span></span></code></pre></div>
 <p>The function will also notify you that it tries to use the English
 values from multi-language input fields if possible. If the respective
 input field has no English value, <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> will
@@ -398,26 +398,9 @@ also give you an impression of how the lookup-table is set up:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">var</th>
-<th align="left">label</th>
+<th align="right">label</th>
 </tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Testformular</td>
-<td align="left">Testform</td>
-</tr>
-<tr class="even">
-<td align="left">testCustomField</td>
-<td align="left">englisch testCustomField</td>
-</tr>
-<tr class="odd">
-<td align="left">testAnkreuzfeld</td>
-<td align="left">Test Checkboxes</td>
-</tr>
-<tr class="even">
-<td align="left">testBoolean</td>
-<td align="left">english testBoolean</td>
-</tr>
-</tbody>
+<tbody></tbody>
 </table>
 <p>You can use this to manually replace values for plots. The
 translations from valuelists can currently not be imported, so this only
