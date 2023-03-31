@@ -1,5 +1,8 @@
-# idaifieldR 0.2.4 _2023-03-28_
+# idaifieldR 0.2.4 _2023-03-31_
 * handle / reformat dating fields by getting min and max date
+
+fixes:
+* get type OR category for uidlist if type is empty
 
 # idaifieldR 0.2.3 _2023-03-16_
 * add language management for multi-language input fields when project has more than one project language

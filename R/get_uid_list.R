@@ -66,8 +66,13 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
   uidlist$UID <- unlist(lapply(idaifield_docs,
                                FUN = function(x) na_if_empty(x$id)))
 
-  uidlist$type <- unlist(lapply(idaifield_docs,
-                                FUN = function(x) na_if_empty(x$type)))
+  type <- unlist(lapply(idaifield_docs,
+                        FUN = function(x) na_if_empty(x$type)))
+  if (any(is.na(type))) {
+    category <- unlist(lapply(idaifield_docs,
+                              FUN = function(x) na_if_empty(x$category)))
+  }
+  uidlist$type <- ifelse(is.na(type), category, type)
 
   uidlist$type <- remove_config_names(uidlist$type)
 
