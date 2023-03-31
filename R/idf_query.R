@@ -24,14 +24,12 @@ idf_query <- function(connection,
                       value = "Pottery") {
 
   if (field == "type") {
-    field <- c("type", "category")
+    query <- paste0('{ "selector": { "$or": [  { "resource.type": "', value, '" },
+    { "resource.category": "', value, '" }]}}')
+  } else {
+    query <- paste0('{ "selector": { "resource.',
+                    field, '": "', value, '"}}')
   }
-
-  queries <- lapply(field, function(x) { 
-    query <- paste('{ "selector": { "resource.',
-                 field, '": "', value, '"}}', sep = "")
-    return(query)
-  })
 
   proj_client <- proj_idf_client(connection,
                                  project = projectname,
@@ -40,13 +38,6 @@ idf_query <- function(connection,
   response <- proj_client$post(body = query)
   response <- response$parse("UTF-8")
   response <- jsonlite::fromJSON(response, FALSE)
-
-  if (length(result) == 2) {
-    type <- result[[1]]$docs
-    cat <- result[[2]]$docs
-    new <- append(type, cat)
-    result <- list(docs = new)
-  }
 
   config <- get_configuration(connection, projectname)
 
