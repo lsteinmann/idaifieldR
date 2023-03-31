@@ -2,6 +2,21 @@ source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
 
+
+
+# FOR NOW - massive todo: rename type everywhere to category,
+# it makes much more sense and will be the case sooner or later.
+# cannot be bothered right now because too many scripts use "type",
+# currently
+test_that("renames category to type", {
+  resource <- test_resources[[5]]
+  resource$category <- "TEST"
+  resource$type <- NULL
+  test <- simplify_single_resource(resource = resource, replace_uids = FALSE)
+  expect_false(any(names(test) == "category"))
+  expect_identical(test$type, resource$category)
+})
+
 item <- which(uidlist$identifier == "Keramik mit Multipolygon")
 
 test_that("geometry is gone", {

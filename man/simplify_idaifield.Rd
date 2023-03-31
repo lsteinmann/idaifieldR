@@ -58,6 +58,17 @@ by `get_uid_list()`) of the complete project database to correctly replace
 the UUIDs with their corresponding identifiers! Especially if a selected
 list is passed to `simplify_idaifield()`, you need to supply the uidlist
 of the complete project database as well.
+
+Formatting of various lists: Dimension measurements as well as dating are
+reformatted and might produce unexpected results.
+For the dating, all begin and end values are evaluated and for each resource,
+the minimum value from "begin" and maximum value from "end" is selected.
+For the dimension-fields, if a ranged measurement was selected, a mean
+will be returned.
+
+#TODO: category is currently renamed to type. Please be aware:
+It will be changed at some point to reflect the actual database again.
+Scripts may not work anymore without intervention.
 }
 \examples{
 \dontrun{

@@ -4,7 +4,7 @@ test_docs <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
 test_resources <- check_and_unnest(test_docs)
 
 config <- readRDS(system.file("testdata", "rtest_config.RDS",
-                                   package = "idaifieldR"))
+                              package = "idaifieldR"))
 
 
 skip_if_no_connection <- function() {

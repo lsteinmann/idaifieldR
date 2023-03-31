@@ -4,7 +4,7 @@
 \alias{idf_query}
 \title{idf_query}
 \usage{
-idf_query(connection, projectname = "NULL", field = "type", value = "Brick")
+idf_query(connection, projectname = "NULL", field = "type", value = "Pottery")
 }
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
