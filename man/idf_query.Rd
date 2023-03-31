@@ -4,7 +4,7 @@
 \alias{idf_query}
 \title{Query resources from an iDAI.field database directly}
 \usage{
-idf_query(connection, projectname = "NULL", field = "type", value = "Brick")
+idf_query(connection, projectname = "NULL", field = "type", value = "Pottery")
 }
 \arguments{
 \item{connection}{A connection settings object as

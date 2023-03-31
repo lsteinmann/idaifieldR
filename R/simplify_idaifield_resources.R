@@ -32,6 +32,11 @@ simplify_single_resource <- function(resource,
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
   }
 
+  if (is.null(resource$type)) {
+    resource$type <- resource$category
+    resource$category <- NULL
+  }
+
   resource <- fix_relations(resource,
                             replace_uids = replace_uids,
                             uidlist = uidlist)
@@ -199,6 +204,10 @@ simplify_single_resource <- function(resource,
 #' the minimum value from "begin" and maximum value from "end" is selected.
 #' For the dimension-fields, if a ranged measurement was selected, a mean
 #' will be returned.
+#'
+#' #TODO: category is currently renamed to type. Please be aware:
+#' It will be changed at some point to reflect the actual database again.
+#' Scripts may not work anymore without intervention.
 #'
 #' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
 #' returned by `get_idaifield_docs()`.

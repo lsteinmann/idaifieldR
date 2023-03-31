@@ -108,3 +108,8 @@ test_that("uncertain = FALSE", {
   expect_false(test$dating.uncertain)
 })
 
+test_that("NA if no list", {
+  expect_message(fix_dating(37), "list")
+  expect_true(is.na(fix_dating(37)))
+})
+
