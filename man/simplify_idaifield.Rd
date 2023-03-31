@@ -65,6 +65,10 @@ For the dating, all begin and end values are evaluated and for each resource,
 the minimum value from "begin" and maximum value from "end" is selected.
 For the dimension-fields, if a ranged measurement was selected, a mean
 will be returned.
+
+#TODO: category is currently renamed to type. Please be aware:
+It will be changed at some point to reflect the actual database again.
+Scripts may not work anymore without intervention.
 }
 \examples{
 \dontrun{
