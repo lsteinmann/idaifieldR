@@ -126,3 +126,136 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
 
   return(uidlist)
 }
+
+
+
+#' get_index: Get the index of an idaifield_docs/resources object.
+#'
+#' All resources in the project databases in iDAI.field / Field Desktop are
+#' stored and referenced with their Universally Unique Identifier (UUID)
+#' in the relations fields. Therefore, for many purposes a lookup-table needs
+#' to be provided in order to get to the actual identifiers of the resources
+#' referenced. Single UUIDs or vectors of UUIDs can be replaced individually
+#' using `replace_uid()` from this package.
+#'
+#' This function is also good for a quick overview / a list of all the
+#' resources that exist along with their identifiers and short descriptions
+#' and can be used to select the resources along their respective
+#' Types/Categories (e.g. Pottery, Layer etc.). Please note that in any case
+#' the internal names of everything will be used. If you relabeled `Trench`
+#' to `Schnitt` in your language-configuration, the name will still be
+#' `Trench` here. None of these functions have any respect for language
+#' settings of a project configuration, i.e. the front end languages of
+#' valuelists and fields are not displayed, and instead their background
+#' names are used. You can see these in the project configuration settings.
+#'
+#' @param connection An object as returned by `connect_idaifield()`
+#' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
+#' including identifier and shortDescription which is more convenient to read,
+#' and FALSE returns only UUID, type (category) and basic relations,
+#' which is sufficient for internal use.
+#' @param gather_trenches defaults to FALSE. If TRUE, adds another column that
+#' records the Place each corresponding Trench and its sub-resources lie within.
+#' (Useful for grouping the finds of several trenches, but will only work if the
+#' project database is organized accordingly.)
+#' @param language the short name (e.g. "en", "de", "fr") of the language that
+#' is preferred for the multi-language input "shortDescription",
+#' defaults to english ("en") and will select other available languages in
+#' alphabetical order if the selected language is not available.
+#'
+#' @return a data.frame with identifiers and corresponding UUIDs along with
+#' the type (category), basic relations and depending on settings place and
+#' shortDescription of each element
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' connection <- connect_idaifield(serverip = "127.0.0.1",
+#'                                 user = "R", pwd = "hallo")
+#'
+#' index <- get_index(connection, verbose = TRUE)
+#' }
+get_index <- function(connection, verbose = FALSE,
+                      gather_trenches = FALSE,
+                      language = "en") {
+  fields <- c("identifier", "id",
+              "type", "category",
+              "relations.isRecordedIn",
+              "relations.liesWithin")
+  if (verbose) {
+    fields <- c(fields, "shortDescription")
+  }
+  q_fields <- paste0("resource.", fields)
+
+  query <- paste0(
+    '{ "selector": { "$not": { "resource.id": "" } },
+   "fields": [', paste0('"', q_fields, '"', collapse = ", "), ']
+ }')
+  if(!jsonlite::validate(query)) {
+    stop("Something went wrong. Could not validate query.")
+  }
+
+  proj_client <- proj_idf_client(connection,
+                                 include = "query")
+
+  response <- proj_client$post(body = query)
+  response <- response$parse("UTF-8")
+  response <- jsonlite::fromJSON(response, FALSE)
+  fields <- gsub("relations.", "", fields)
+  fields <- fields[!fields == "type"]
+
+  index <- lapply(response$docs, function(x) {
+    x <- x$resource
+    type_ind <- names(x) == "type"
+    if (any(type_ind)) {
+      names(x)[type_ind] <- "category"
+    }
+    rel <- unlist(x$relations)
+    x$relations <- NULL
+    x <- append(x, rel)
+    if (length(fields) != length(names(x))) {
+      to_add <- which(!fields %in% names(x))
+      x[fields[to_add]] <- NA
+    }
+    x <- x[fields]
+    x$shortDescription <- gather_languages(x$shortDescription,
+                                           language = language)
+    return(x)
+  })
+  index_df <- do.call(rbind.data.frame, index)
+
+  index_df$isRecordedIn <- replace_uid(index_df$isRecordedIn, index_df)
+  index_df$liesWithin <- replace_uid(index_df$liesWithin, index_df)
+
+  index <- lapply(index, function(x) {
+    x$isRecordedIn <- replace_uid(x$isRecordedIn, index_df)
+    x$liesWithin <- replace_uid(x$liesWithin, index_df)
+    x
+  })
+
+  if (verbose) {
+    index <- lapply(index, function(x) {
+      x$liesWithinLayer <- na_if_empty(find_layer(x, index_df))
+      return(x)
+    })
+    lwl <- lapply(index, function(x) x$liesWithinLayer)
+    lwl <- unlist(na_if_empty(lwl))
+    index_df$liesWithinLayer <- lwl
+  }
+
+  if (gather_trenches) {
+    gather_mat <- matrix(ncol = 3, nrow = nrow(index_df))
+    gather_mat[, 1] <- ifelse(is.na(index_df$isRecordedIn),
+                              index_df$liesWithin,
+                              index_df$isRecordedIn)
+    gather_mat[, 2] <- index_df$category[match(gather_mat[, 1],
+                                               index_df$identifier)]
+    gather_mat[, 3] <- index_df$liesWithin[match(gather_mat[, 1],
+                                                 index_df$identifier)]
+    index_df$Place <- ifelse(gather_mat[, 2] == "Trench",
+                             gather_mat[, 3],
+                             gather_mat[, 1])
+  }
+
+  return(index_df)
+}

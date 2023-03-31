@@ -27,19 +27,30 @@ find_layer <- function(resource = resource,
     return(NA)
   }
 
+  lw <- grep("liesWithin", names(resource))
+  if (length(lw) == 0) {
+    message("Resource contains no 'liesWithin'.")
+    return(NA)
+  }
+
+
+  opts <- c("type", "category")
+  ind <- opts %in% colnames(uidlist)
+  ind <- which(colnames(uidlist) == opts[ind])
+
   # get identifier, index and type of the parent resource
   # match should be fine here as identifiers are unique and liesWithin can only
   # have one value as well
-  liesWithin_index <- match(resource$relation.liesWithin, uidlist$identifier)
+  liesWithin_index <- match(resource[[lw]], uidlist$identifier)
   liesWithin_identifier <- uidlist$identifier[liesWithin_index]
-  liesWithin_type <- uidlist$type[liesWithin_index]
+  liesWithin_type <- uidlist[liesWithin_index, ind]
 
   # if there is no df names "liesWithin" yet (i.e. liesWithin = NULL), create
   # one with the data gathered above
   if (!is.data.frame(liesWithin)) {
-    liesWithin <- data.frame(liesWithin_index = liesWithin_index,
-                             liesWithin_identifier = liesWithin_identifier,
-                             liesWithin_type = liesWithin_type)
+    liesWithin <- data.frame("liesWithin_index" = liesWithin_index,
+                             "liesWithin_identifier" = liesWithin_identifier,
+                             "liesWithin_type" = liesWithin_type)
   }
 
   # Add section in demo, explain how to configure the type lists and
@@ -73,7 +84,7 @@ find_layer <- function(resource = resource,
       # get the index and type of the parent
       # match should be fine here as identifiers are unique
       next_liesWithin_index <- match(next_liesWithin_identifier, uidlist$identifier)
-      next_liesWithin_type <- uidlist$type[next_liesWithin_index]
+      next_liesWithin_type <- uidlist[next_liesWithin_index, ind]
       # add as a row to the data.frame
       liesWithin[nrow(liesWithin)+1,] <- c(next_liesWithin_index,
                                            next_liesWithin_identifier,

@@ -19,8 +19,12 @@
 #' replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
 #' }
 replace_uid <- function(uidvector, uidlist) {
+  opt <- c("UID", "UUID", "id")
+  which <- opt %in% colnames(uidlist)
+  sel <- opt[which]
+
   # Create a logical vector indicating which entries in uidvector are in uidlist
-  matches <- match(uidvector, uidlist$UID)
+  matches <- match(uidvector, uidlist[, sel])
 
   # Return the corresponding entries in uidlist,
   # or the original entries if no match is found
