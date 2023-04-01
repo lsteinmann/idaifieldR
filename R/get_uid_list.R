@@ -10,13 +10,14 @@
 #' This function is also good for a quick overview / a list of all the
 #' resources that exist along with their identifiers and short descriptions
 #' and can be used to select the resources along their respective
-#' Types/Categories (e.g. Pottery, Layer etc.). Please note that in any case
-#' the internal names of everything will be used. If you relabeled `Trench`
-#' to `Schnitt` in your language-configuration, the name will still be
-#' `Trench` here. None of these functions have any respect for language
-#' settings of a project configuration, i.e. the front end languages of
-#' valuelists and fields are not displayed, and instead their background
-#' names are used. You can see these in the project configuration settings.
+#' Categories (e.g. Pottery, Layer etc., formerly names "types").
+#' Please note that in any case the internal names of everything will be used.
+#' If you relabeled `Trench` to `Schnitt` in your language-configuration,
+#' the name will still be `Trench` here. None of these functions have any
+#' respect for language settings of a project configuration, i.e. the
+#' front end languages of valuelists and fields are not displayed, and
+#' instead their background names are used. You can see these in the project
+#' configuration settings.
 #'
 #' @param idaifield_docs An object as returned by `get_idaifield_docs()`
 #' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
@@ -153,18 +154,19 @@ get_uid_list <- function(idaifield_docs,
 #' This function is also good for a quick overview / a list of all the
 #' resources that exist along with their identifiers and short descriptions
 #' and can be used to select the resources along their respective
-#' Types/Categories (e.g. Pottery, Layer etc.). Please note that in any case
-#' the internal names of everything will be used. If you relabelled `Trench`
-#' to `Schnitt` in your language-configuration, the name will still be
-#' `Trench` here. None of these functions have any respect for language
-#' settings of a project configuration, i.e. the front end languages of
-#' valuelists and fields are not displayed, and instead their background
-#' names are used. You can see these in the project configuration settings.
+#' Categories (e.g. Pottery, Layer etc., formerly names "types").
+#' Please note that in any case the internal names of everything will be used.
+#' If you relabeled `Trench` to `Schnitt` in your language-configuration,
+#' the name will still be `Trench` here. None of these functions have any
+#' respect for language settings of a project configuration, i.e. the
+#' front end languages of valuelists and fields are not displayed, and
+#' instead their background names are used. You can see these in the project
+#' configuration settings.
 #'
 #' @param connection An object as returned by `connect_idaifield()`
 #' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 #' including identifier and shortDescription which is more convenient to read,
-#' and FALSE returns only UUID, type (category) and basic relations,
+#' and FALSE returns only UUID, category (former: type) and basic relations,
 #' which is sufficient for internal use.
 #' @param gather_trenches defaults to FALSE. If TRUE, adds another column that
 #' records the Place each corresponding Trench and its sub-resources lie within.
@@ -176,7 +178,7 @@ get_uid_list <- function(idaifield_docs,
 #' alphabetical order if the selected language is not available.
 #'
 #' @return a data.frame with identifiers and corresponding UUIDs along with
-#' the type (category), basic relations and depending on settings place and
+#' the category (former: type), basic relations and depending on settings place and
 #' shortDescription of each element
 #' @export
 #'

@@ -1,4 +1,4 @@
-#' show_type_list
+#' show_categories
 #'
 #' Returns a list of types present in the iDAI.field 2 / Field Desktop database.
 #'
@@ -17,14 +17,14 @@
 #' idaifield_docs <- get_idaifield_docs(connection = connection,
 #'                                      projectname = "rtest")
 #'
-#' show_type_list(idaifield_docs)
+#' show_categories(idaifield_docs)
 #' }
-show_type_list <- function(idaifield_docs) {
+show_categories <- function(idaifield_docs) {
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
   uid_type_list <- get_uid_list(idaifield_docs)
-  db_types <- unique(uid_type_list$type)
+  db_types <- unique(uid_type_list$category)
   return(db_types)
 }
 
@@ -52,7 +52,7 @@ show_type_list <- function(idaifield_docs) {
 #' projectname = "rtest")
 #'
 #' idaifield_layers <- select_by_type(idaifield_docs,
-#' by = "type",
+#' by = "category",
 #' value = "Layer")
 #' }
 select_by <- function(idaifield_docs,

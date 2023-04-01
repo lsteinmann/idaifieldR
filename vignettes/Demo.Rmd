@@ -123,7 +123,7 @@ The list now has the `idaifield_simple` class. Browse the resulting list by clic
 If you wish to get the most out of you data, I recommend you use this list and process it according to your own needs. However, `idaifieldR` comes with a function that will turn the list into a matrix. For this, it makes a lot of sense to select the data first and get only the Pottery-resources that we want to work with. The `select_by()`-function from `idaifieldR` can do this for us (see the documentation at `?select_by()`)
 
 ```{r select_by}
-pottery <- select_by(idaifield_test_simple, by = "type", value = "Pottery")
+pottery <- select_by(idaifield_test_simple, by = "category", value = "Pottery")
 ```
 
 ## Queries
@@ -219,7 +219,7 @@ Using the following few lines and all default arguments while selecting from the
 
 ```{r pipeex, eval = FALSE}
 pottery <- db %>%
-  select_by(by = "type", value = "Pottery") %>%
+  select_by(by = "category", value = "Pottery") %>%
   # Note: simplify_idaifield() needs the index of the complete project database 
   # as a lookup-table to replace all UUIDs with their identifiers
   simplify_idaifield(uidlist = index) %>%

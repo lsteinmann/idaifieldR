@@ -61,27 +61,27 @@ find_layer <- function(resource = resource,
     # have one value as well
     liesWithin_index <- match(resource[[lw_col]], uidlist$identifier)
     liesWithin_identifier <- uidlist$identifier[liesWithin_index]
-    liesWithin_type <- uidlist[liesWithin_index, category_col]
+    liesWithin_category <- uidlist[liesWithin_index, category_col]
 
     # if there is no df names "liesWithin" yet (i.e. liesWithin = NULL), create
     # one with the data gathered above
     if (is.null(liesWithin)) {
       liesWithin <- list(liesWithin_index = liesWithin_index,
                          liesWithin_identifier = liesWithin_identifier,
-                         liesWithin_type = liesWithin_type)
+                         liesWithin_category = liesWithin_category)
     }
 
     # Add section in demo, explain how to configure the type lists and
     # also set up how this is handed down here from main function.
     # This is a possible feature but currently only exists so my tests will
     # be easier.
-    layer_type_list <- getOption("idaifield_types")$layers
+    layer_categories_list <- getOption("idaifield_categories")$layers
     if (strict) {
-      layer_type_list <- getOption("idaifield_types")$layers_strict
+      layer_categories_list <- getOption("idaifield_categories")$layers_strict
     }
   } else if (is.list(opts)) {
     # assumes that the function has been called from itself
-    layer_type_list <- opts$layer_type_list
+    layer_categories_list <- opts$layer_categories_list
     category_col <- opts$category_col
   } else {
     stop("no")
@@ -89,7 +89,7 @@ find_layer <- function(resource = resource,
 
 
   # is any of the parent resources in the liesWithin-list a Layer?
-  is_context <- liesWithin$liesWithin_type %in% layer_type_list
+  is_context <- liesWithin$liesWithin_category %in% layer_categories_list
   if (any(is_context)) {
     # return the layer/context if there is one
     in_layer <- which(is_context)
@@ -111,20 +111,20 @@ find_layer <- function(resource = resource,
       # get the index and type of the parent
       # match should be fine here as identifiers are unique
       next_liesWithin_index <- match(next_liesWithin_identifier, uidlist$identifier)
-      next_liesWithin_type <- uidlist[next_liesWithin_index, category_col]
+      next_liesWithin_category <- uidlist[next_liesWithin_index, category_col]
       # add to the list
       liesWithin$liesWithin_index <- c(liesWithin$liesWithin_index,
                                        next_liesWithin_index)
       liesWithin$liesWithin_identifier <- c(liesWithin$liesWithin_identifier,
                                             next_liesWithin_identifier)
-      liesWithin$liesWithin_type <- c(liesWithin$liesWithin_type,
-                                      next_liesWithin_type)
+      liesWithin$liesWithin_category <- c(liesWithin$liesWithin_category,
+                                          next_liesWithin_category)
       # recursively call the function again to find the next parent, this
       # time with the data.frame already existing
       find_layer(resource = resource,
                  uidlist = uidlist,
                  liesWithin = liesWithin,
-                 opts = list(layer_type_list = layer_type_list,
+                 opts = list(layer_categories_list = layer_categories_list,
                              category_col = category_col))
     }
   }

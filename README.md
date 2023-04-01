@@ -40,7 +40,7 @@ idaifield_docs <- get_idaifield_docs(projectname = "rtest",
                                  user = "R", 
                                  pwd = "password"))
 uidlist <- get_uid_list(idaifield_docs)
-pottery <- select_by(idaifield_docs, by = "type", value = "Pottery")
+pottery <- select_by(idaifield_docs, by = "category", value = "Pottery")
 pottery <- simplify_idaifield(pottery, uidlist = uidlist)
 
 pottery_mat <- idaifield_as_matrix(pottery)

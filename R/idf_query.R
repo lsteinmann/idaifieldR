@@ -2,12 +2,12 @@
 #'
 #' @param connection A connection settings object as
 #' returned by `connect_idaifield()`
+#' @param field character. The resource field that should be selected
+#' for (i.e. "category" for the category of resource (Pottery, Brick, Layer)).
+#' @param value character. The value to be selected for in the specified
+#' field (i.e. "Brick" when looking for resources of category "Brick").
 #' @param projectname The name of the project to be queried (overrides
 #' the one listed in the connection-object).
-#' @param field character. The resource field that should be selected
-#' for (i.e. "type" for the type of resource (Pottery, Brick, Layer)).
-#' @param value character. The value to be selected for in the specified
-#' field (i.e. "Brick" when looking for resourced of type "Brick").
 #'
 #' @return An 'idaifield_docs' list
 #'
@@ -15,13 +15,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(pwd = "hallo")
-#' idf_query(conn, projectname = "rtest", field = "type", value = "Brick")
+#' conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+#' idf_query(conn, field = "category", value = "Brick")
 #' }
 idf_query <- function(connection,
-                      projectname = "NULL",
-                      field = "type",
-                      value = "Pottery") {
+                      field = "category",
+                      value = "Pottery",
+                      projectname = NULL) {
 
   if (field == "type") {
     query <- paste0('{ "selector": { "$or": [  { "resource.type": "', value, '" },
@@ -61,12 +61,13 @@ idf_query <- function(connection,
 #' Query resources from an iDAI.field database based on the uidlist
 #'
 #' @param connection A connection object as returned by `connect_idaifield()`
-#' @param projectname The name of the project to be queried (overrides
-#' the one listed in the connection-object).
 #' @param field character. The resource field that should be selected for
 #' (options are limited to the columns names of the uidlist).
 #' @param value character. The value to be selected for in the specified field.
-#' @param uidlist A data.frame as returned by `get_uid_list()`.
+#' @param uidlist A data.frame as returned by `get_field_index()`
+#' (or `get_uid_list()`)
+#' @param projectname The name of the project to be queried (overrides
+#' the one listed in the connection-object).
 #'
 #' @return An 'idaifield_docs' list
 #'
@@ -74,20 +75,19 @@ idf_query <- function(connection,
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(pwd = "hallo")
-#' uidlist <- get_uid_list(conn, projectname = "rtest")
+#' conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+#' uidlist <- get_field_index(conn)
 #' idf_index_query(conn,
-#' projectname = "rtest",
-#' field = "type",
-#' value = "Brick",
-#' uidlist = uidlist)
+#'                 field = "category",
+#'                 value = "Brick",
+#'                 uidlist = uidlist)
 #' }
 #'
 idf_index_query <- function(connection,
-                            projectname = "NULL",
-                            field = "type",
+                            field = "category",
                             value = "Brick",
-                            uidlist = NULL) {
+                            uidlist = NULL,
+                            projectname = NULL) {
 
 
   if (!field %in% colnames(uidlist)) {

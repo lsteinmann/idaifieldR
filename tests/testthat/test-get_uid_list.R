@@ -12,7 +12,7 @@ test_that("config does not exist", {
 })
 
 test_that("type is never empty", {
-  expect_false(any(is.na(uidlist$type)))
+  expect_false(any(is.na(uidlist$category)))
 })
 
 
@@ -22,7 +22,7 @@ test_that("type is never empty", {
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 
 test_that("contains no special config names", {
-  expect_false(any(grepl(":", unique(uidlist$type))))
+  expect_false(any(grepl(":", unique(uidlist$category))))
 })
 
 samples <- sample(seq_len(nrow(uidlist)), size = 5)

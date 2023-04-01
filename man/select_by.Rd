@@ -31,7 +31,7 @@ idaifield_docs <- get_idaifield_docs(connection = connection,
 projectname = "rtest")
 
 idaifield_layers <- select_by_type(idaifield_docs,
-by = "type",
+by = "category",
 value = "Layer")
 }
 }

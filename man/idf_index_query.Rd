@@ -6,24 +6,25 @@
 \usage{
 idf_index_query(
   connection,
-  projectname = "NULL",
-  field = "type",
+  field = "category",
   value = "Brick",
-  uidlist = NULL
+  uidlist = NULL,
+  projectname = NULL
 )
 }
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
-
-\item{projectname}{The name of the project to be queried (overrides
-the one listed in the connection-object).}
 
 \item{field}{character. The resource field that should be selected for
 (options are limited to the columns names of the uidlist).}
 
 \item{value}{character. The value to be selected for in the specified field.}
 
-\item{uidlist}{A data.frame as returned by `get_uid_list()`.}
+\item{uidlist}{A data.frame as returned by `get_field_index()`
+(or `get_uid_list()`)}
+
+\item{projectname}{The name of the project to be queried (overrides
+the one listed in the connection-object).}
 }
 \value{
 An 'idaifield_docs' list
@@ -33,13 +34,12 @@ Query resources from an iDAI.field database based on the uidlist
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(pwd = "hallo")
-uidlist <- get_uid_list(conn, projectname = "rtest")
+conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+uidlist <- get_field_index(conn)
 idf_index_query(conn,
-projectname = "rtest",
-field = "type",
-value = "Brick",
-uidlist = uidlist)
+                field = "category",
+                value = "Brick",
+                uidlist = uidlist)
 }
 
 }

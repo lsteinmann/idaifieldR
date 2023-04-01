@@ -15,7 +15,7 @@ simplify_idaifield(
 }
 \arguments{
 \item{idaifield_docs}{An "idaifield_docs" or "idaifield_resources"-list as
-returned by `get_idaifield_docs()`.}
+returned by `get_idaifield_docs()` or `idf_query()` and `idf_index_query()`.}
 
 \item{keep_geometry}{logical. (Defaults to TRUE) Should the geographical
 information be kept or removed?}
@@ -23,7 +23,7 @@ information be kept or removed?}
 \item{replace_uids}{logical. Should UUIDs be automatically replaced with the
 corresponding identifiers? (Defaults to TRUE).}
 
-\item{uidlist}{If NULL (default) the list of UIDs and identifiers is
+\item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
 automatically generated within this function. This only makes sense if
 the list handed to `simplify_idaifield()` had not been selected yet. If it
 has been, you should supply a data.frame as returned by `get_uid_list()`.}

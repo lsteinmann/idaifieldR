@@ -73,13 +73,21 @@ get_idaifield_docs <- function(connection = connect_idaifield(
       idaifield_docs[[conf_ind]] <- NULL
     }
 
-
-    idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
-
     new_names <- lapply(idaifield_docs, function(x)
       x$doc$resource$identifier)
     new_names <- unlist(new_names)
     names(idaifield_docs) <- new_names
+
+    idaifield_docs <- lapply(idaifield_docs, function(x) {
+      type_ind <- which(names(x$doc$resource) == "type")
+      if (length(type_ind) > 0) {
+        names(x$doc$resource)[type_ind] <- "category"
+      }
+      return(x)
+    })
+
+
+    idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
 
     if (!raw) {
       idaifield_docs <- check_and_unnest(idaifield_docs)

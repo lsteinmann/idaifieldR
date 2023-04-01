@@ -7,16 +7,13 @@
 get_idaifield_docs(
   connection = connect_idaifield(serverip = "127.0.0.1", project = "rtest", user = "R",
     pwd = "hallo"),
-  projectname = NULL,
   raw = TRUE,
-  json = FALSE
+  json = FALSE,
+  projectname = NULL
 )
 }
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
-
-\item{projectname}{The name of the project in the Field Client that one
-wishes to load. Will overwrite the project set in the connection-object.}
 
 \item{raw}{logical. default TRUE. If you wish to get an unnested version
 of only the resources, without the change log, set it to FALSE.}
@@ -24,6 +21,9 @@ of only the resources, without the change log, set it to FALSE.}
 \item{json}{logical. default FALSE; if TRUE output cannot be simplified with the
 functions from this package and is instead of a list returned in json format
 that can freely be manipulated using e.g. the jsonlite package.}
+
+\item{projectname}{The name of the project in the Field Client that one
+wishes to load. Will overwrite the project set in the connection-object.}
 }
 \value{
 an object (list) of class 'idaifield_docs' if `raw = TRUE` and

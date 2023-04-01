@@ -4,20 +4,25 @@
 \alias{idf_query}
 \title{Query resources from an iDAI.field database directly}
 \usage{
-idf_query(connection, projectname = "NULL", field = "type", value = "Pottery")
+idf_query(
+  connection,
+  field = "category",
+  value = "Pottery",
+  projectname = NULL
+)
 }
 \arguments{
 \item{connection}{A connection settings object as
 returned by `connect_idaifield()`}
 
-\item{projectname}{The name of the project to be queried (overrides
-the one listed in the connection-object).}
-
 \item{field}{character. The resource field that should be selected
-for (i.e. "type" for the type of resource (Pottery, Brick, Layer)).}
+for (i.e. "category" for the category of resource (Pottery, Brick, Layer)).}
 
 \item{value}{character. The value to be selected for in the specified
-field (i.e. "Brick" when looking for resourced of type "Brick").}
+field (i.e. "Brick" when looking for resources of category "Brick").}
+
+\item{projectname}{The name of the project to be queried (overrides
+the one listed in the connection-object).}
 }
 \value{
 An 'idaifield_docs' list
@@ -27,7 +32,7 @@ Query resources from an iDAI.field database directly
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(pwd = "hallo")
-idf_query(conn, projectname = "rtest", field = "type", value = "Brick")
+conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+idf_query(conn, field = "category", value = "Brick")
 }
 }

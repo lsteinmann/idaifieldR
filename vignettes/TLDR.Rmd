@@ -34,7 +34,7 @@ Using the following few lines and all default arguments while selecting from the
 ```{r eval = FALSE}
 library(dplyr)
 pottery <- db %>%
-  select_by(by = "type", value = "Pottery") %>%
+  select_by(by = "category", value = "Pottery") %>%
   # Note: simplify_idaifield() needs the index of the complete project database 
   # as a lookup-table to replace all UUIDs with their identifiers
   simplify_idaifield(uidlist = index) %>%
