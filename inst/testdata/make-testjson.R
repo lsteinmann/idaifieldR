@@ -11,8 +11,9 @@ import <- lapply(import, function(x) {
   x$doc$modified <- NULL
   x$doc$`_rev` <- NULL
   x$value <- NULL
+  x$doc$`_id` <- NULL
   return(x$doc)
 })
 import <- list(docs = import)
 
-jsonlite::write_json(import, path = "inst/testdata/import2.json")
+write(jsonlite::toJSON(import, simplifyVector = TRUE, pretty = TRUE), file = "inst/testdata/testtttt.json")

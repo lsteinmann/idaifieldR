@@ -46,7 +46,7 @@
 #' }
 connect_idaifield <- function(serverip    = "127.0.0.1",
                               project     = NULL,
-                              user        = "Anna Allgemeinperson",
+                              user        = "R",
                               pwd         = "password",
                               version     = 3,
                               ping        = TRUE) {
