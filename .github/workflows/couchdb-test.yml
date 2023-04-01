@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up CouchDB
+      - name: Set up CouchDB (testdata will be used from this repo)
         uses: "lsteinmann/couchdb-action@master"
 
       - name: See if CouchDB is running
