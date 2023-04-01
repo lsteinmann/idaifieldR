@@ -6,16 +6,48 @@ on:
 name: try to run couchdb
   
 jobs:
-  run-couchdb:
+  test-coverage-with-db:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Set up CouchDB
         uses: "lsteinmann/couchdb-action@master"
+
+      - name: See if CouchDB is running
+        run: curl -X GET http://127.0.0.1:3001/rtest/
+
+      - uses: r-lib/actions/setup-r@v2
         with:
-          couchdb version: '2.3.1'
-      - name: See if running
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::covr
+          needs: coverage
+
+      - name: Test coverage
         run: |
-          curl http://127.0.0.1:5984/
+          covr::codecov(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+          )
+        shell: Rscript {0}
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-test-failures
+          path: ${{ runner.temp }}/package
