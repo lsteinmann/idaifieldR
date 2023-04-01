@@ -8,30 +8,30 @@ get_uid_list(
   idaifield_docs,
   verbose = FALSE,
   gather_trenches = FALSE,
-  language = "all"
+  language = "en"
 )
 }
 \arguments{
 \item{idaifield_docs}{An object as returned by `get_idaifield_docs()`}
 
-\item{verbose}{logical. default FALSE. If FALSE returns only identifier,
-UUID, type and basic relations; if TRUE also includes shortDescription and
-liesWithinLayer, in which the Layer is recorded if the resource is a child
-of another Find or similar.}
+\item{verbose}{TRUE or FALSE. Defaults to FALSE. TRUE returns a list
+including identifier and shortDescription which is more convenient to read,
+and FALSE returns only UUID, type (category) and basic relations,
+which is sufficient for internal use.}
 
 \item{gather_trenches}{defaults to FALSE. If TRUE, adds another column that
 records the Place each corresponding Trench and its sub-resources lie within.
-(Useful for grouping the finds of several trenches, but will only work if
-the project database is organized accordingly.)}
+(Useful for grouping the finds of several trenches, but will only work if the
+project database is organized accordingly.)}
 
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the multi-language input "shortDescription",
-defaults to all (`language = "all"`). Will select other available languages
-in alphabetical order if the selected language is not available.}
+defaults to english ("en") and will select other available languages in
+alphabetical order if the selected language is not available.}
 }
 \value{
 a data.frame with identifiers and corresponding UUIDs along with
-the type, basic relations and depending on settings place and
+the type (category), basic relations and depending on settings place and
 shortDescription of each element
 }
 \description{
@@ -45,14 +45,14 @@ using `replace_uid()` from this package.
 \details{
 This function is also good for a quick overview / a list of all the
 resources that exist along with their identifiers and short descriptions
-and can be used to select the resources along their respective Types
-(e.g. Pottery, Layer etc.). Please note that in any case the internal
-names of everything will be used. If you relabelled `Trench` to `Schnitt` in
-your language-configuration, the name will still be `Trench` here.
-None of these functions have any respect for language settings of a
-project configuration, i.e. the front end languages of valuelists and fields
-are not displayed, and instead their background names are used. You can see
-these in the project configuration settings.
+and can be used to select the resources along their respective
+Types/Categories (e.g. Pottery, Layer etc.). Please note that in any case
+the internal names of everything will be used. If you relabeled `Trench`
+to `Schnitt` in your language-configuration, the name will still be
+`Trench` here. None of these functions have any respect for language
+settings of a project configuration, i.e. the front end languages of
+valuelists and fields are not displayed, and instead their background
+names are used. You can see these in the project configuration settings.
 }
 \examples{
 \dontrun{

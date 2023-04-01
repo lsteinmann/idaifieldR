@@ -21,20 +21,37 @@
 idf_query <- function(connection,
                       projectname = "NULL",
                       field = "type",
-                      value = "Brick") {
+                      value = "Pottery") {
 
   fail <- idf_ping(connection)
   if(is.character(fail)) {
     stop(fail)
   }
 
-  query <- paste('{ "selector": { "resource.',
-                 field, '": "', value, '"}}', sep = "")
+  if (field == "type") {
+    field <- c("type", "category")
+  }
 
-  result <- sofa::db_query(cushion = connection,
-                           dbname = projectname,
-                           query = query)
+  queries <- lapply(field, function(x) {
+    query <- paste('{ "selector": { "resource.',
+               as.character(x), '": "', value, '"}}',
+               sep = "")
+    return(query)
+  })
 
+  result <- lapply(queries, function(query) {
+    result <- sofa::db_query(cushion = connection,
+                   dbname = projectname,
+                   query = query)
+    return(result)
+  })
+
+  if (length(result) == 2) {
+    type <- result[[1]]$docs
+    cat <- result[[2]]$docs
+    new <- append(type, cat)
+    result <- list(docs = new)
+  }
 
   config <- get_configuration(connection, projectname)
 

@@ -11,6 +11,13 @@ test_that("config does not exist", {
   expect_false("configuration" %in% uidlist$UID)
 })
 
+test_that("type is never empty", {
+  expect_false(any(is.na(uidlist$type)))
+})
+
+
+
+
 
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 
@@ -86,3 +93,5 @@ test_that("works with multilang demodata from default config when verbose", {
   test <- get_uid_list(idaifieldr_demodata, verbose = TRUE, language = "de")
   expect_true("Ein Erdbefund" %in% test$shortDescription)
 })
+
+
