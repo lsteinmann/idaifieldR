@@ -12,11 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      steps:
       - name: Set up CouchDB
-        uses: "cobot/couchdb-action@master"
+        uses: "lsteinmann/couchdb-action@master"
         with:
           couchdb version: '2.3.1'
-      - name: Do something
+      - name: See if running
         run: |
-          curl http://127.0.0.1:3001/
+          curl http://127.0.0.1:5984/
