@@ -12,14 +12,12 @@ skip_if_no_connection <- function() {
                       pwd = "hallo", ping = FALSE)
     )
 
-  tryCatch({
-    idf_ping(connection)
-  },
-  error = function(cond) {
-    skip("Test skipped, needs DB-connection")
-  }, finally = {
-    connection$status <- idf_ping(connection)
-  })
+  ping <- try(idf_ping(connection))
 
-  return(connection)
+  if (!inherits(ping, "try-error")) {
+    connection$status <- idf_ping(connection)
+    return(connection)
+  }
+
+  skip("Test skipped, needs DB-connection")
 }
