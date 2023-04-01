@@ -163,3 +163,21 @@ reorder_colnames <- function(colnames, order = "default") {
   colnames <- c(new_order, not_ordered)
   return(colnames)
 }
+
+
+#' Format the response of a crul::HttpClient from json to list
+#'
+#' @param response "HttpResponse" as returned by client$get where
+#' client was produced by `proj_idf_client()`
+#'
+#' @return a list
+#' @keywords internal
+response_to_list <- function(response = NULL) {
+  if ("HttpResponse" %in% class(response)) {
+    response <- response$parse("UTF-8")
+    list <- jsonlite::fromJSON(response, FALSE)
+    return(list)
+  } else {
+    stop("Expecting an object of class 'HttpResponse'.")
+  }
+}

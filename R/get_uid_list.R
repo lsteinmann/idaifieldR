@@ -50,6 +50,12 @@ get_uid_list <- function(idaifield_docs,
                          verbose = FALSE,
                          gather_trenches = FALSE,
                          language = "all") {
+  #warning("The function `get_uid_list()` is deprecated and will be removed
+  #        in an upcoming version of idaifieldR. Please switch to
+  #        `get_field_index()`.")
+  .Deprecated("get_field_index()", package = "idaifieldR", #msg,
+              old = "get_uid_list()")
+
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
   ncol <- 5
@@ -59,7 +65,6 @@ get_uid_list <- function(idaifield_docs,
     ncol <- 7
     colnames <- c(colnames, "shortDescription", "liesWithinLayer")
   }
-
 
   uidlist <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
   colnames(uidlist) <- colnames
@@ -138,7 +143,7 @@ get_uid_list <- function(idaifield_docs,
 
 
 
-#' get_index: Get the index of an idaifield_docs/resources object.
+#' Get the index of an iDAI.field/Field Desktop database
 #'
 #' All resources in the project databases in iDAI.field / Field Desktop are
 #' stored and referenced with their Universally Unique Identifier (UUID)
@@ -151,7 +156,7 @@ get_uid_list <- function(idaifield_docs,
 #' resources that exist along with their identifiers and short descriptions
 #' and can be used to select the resources along their respective
 #' Types/Categories (e.g. Pottery, Layer etc.). Please note that in any case
-#' the internal names of everything will be used. If you relabeled `Trench`
+#' the internal names of everything will be used. If you relabelled `Trench`
 #' to `Schnitt` in your language-configuration, the name will still be
 #' `Trench` here. None of these functions have any respect for language
 #' settings of a project configuration, i.e. the front end languages of
@@ -184,9 +189,19 @@ get_uid_list <- function(idaifield_docs,
 #'
 #' index <- get_index(connection, verbose = TRUE)
 #' }
-get_index <- function(connection, verbose = FALSE,
+get_field_index <- function(connection, verbose = FALSE,
                       gather_trenches = FALSE,
                       language = "en") {
+
+  query <- paste0(
+    '{ "selector": { "$not": { "resource.id": "" } },
+   "fields": [ "resource.id", "resource.identifier" ]}')
+  client <- proj_idf_client(connection, include = "query")
+
+  response <- response_to_list(client$post(body = query))
+  uuids <- unnest_docs(response)
+  uuids <- do.call(rbind.data.frame, uuids)
+
   fields <- c("identifier", "id",
               "type", "category",
               "relations.isRecordedIn",
@@ -198,23 +213,18 @@ get_index <- function(connection, verbose = FALSE,
 
   query <- paste0(
     '{ "selector": { "$not": { "resource.id": "" } },
-   "fields": [', paste0('"', q_fields, '"', collapse = ", "), ']
- }')
+   "fields": [', paste0('"', q_fields, '"', collapse = ", "), '] }')
   if(!jsonlite::validate(query)) {
     stop("Something went wrong. Could not validate query.")
   }
 
-  proj_client <- proj_idf_client(connection,
-                                 include = "query")
+  response <- response_to_list(client$post(body = query))
+  response <- unnest_docs(response)
 
-  response <- proj_client$post(body = query)
-  response <- response$parse("UTF-8")
-  response <- jsonlite::fromJSON(response, FALSE)
   fields <- gsub("relations.", "", fields)
   fields <- fields[!fields == "type"]
 
-  index <- lapply(response$docs, function(x) {
-    x <- x$resource
+  index <- lapply(response, function(x) {
     type_ind <- names(x) == "type"
     if (any(type_ind)) {
       names(x)[type_ind] <- "category"
@@ -229,22 +239,20 @@ get_index <- function(connection, verbose = FALSE,
     x <- x[fields]
     x$shortDescription <- gather_languages(x$shortDescription,
                                            language = language)
+    if (check_if_uid(x$isRecordedIn)) {
+      x$isRecordedIn <- replace_uid(x$isRecordedIn, uuids)
+    }
+    if (check_if_uid(x$liesWithin)) {
+      x$liesWithin <- replace_uid(x$liesWithin, uuids)
+    }
+
     return(x)
   })
   index_df <- do.call(rbind.data.frame, index)
 
-  index_df$isRecordedIn <- replace_uid(index_df$isRecordedIn, index_df)
-  index_df$liesWithin <- replace_uid(index_df$liesWithin, index_df)
-
-  index <- lapply(index, function(x) {
-    x$isRecordedIn <- replace_uid(x$isRecordedIn, index_df)
-    x$liesWithin <- replace_uid(x$liesWithin, index_df)
-    x
-  })
-
   if (verbose) {
     index <- lapply(index, function(x) {
-      x$liesWithinLayer <- na_if_empty(find_layer(x, index_df))
+      x$liesWithinLayer <- find_layer(x, index_df)
       return(x)
     })
     lwl <- lapply(index, function(x) x$liesWithinLayer)
