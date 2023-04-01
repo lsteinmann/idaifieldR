@@ -261,7 +261,8 @@ remove_config_names <- function(nameslist = c("identifier", "configname:test")) 
 gather_languages <- function(input_list, language = "en", silent = FALSE) {
   # if this has a sublist / more than one entry, it means that there is
   # more than one language
-  if (check_for_sublist(input_list)) {
+  has_list <- suppressMessages(check_for_sublist(input_list))
+  if (has_list) {
     # try to get the selected language or english
     res <- lapply(input_list, function(x) na_if_empty(unlist(x[language])))
     res <- unlist(res)
