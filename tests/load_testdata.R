@@ -8,7 +8,7 @@ config <- attributes(test_docs)$config
 
 skip_if_no_connection <- function() {
   connection <- suppressMessages(
-    connect_idaifield(serverip = "127.0.0.1",
+    connect_idaifield(serverip = "127.0.0.1", project = "rtest",
                       pwd = "hallo", ping = FALSE)
     )
 

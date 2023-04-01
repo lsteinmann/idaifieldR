@@ -21,7 +21,7 @@
 #' @param idaifield_docs An object as returned by `get_idaifield_docs()`
 #' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 #' including identifier and shortDescription which is more convenient to read,
-#' and FALSE returns only UUID, type (category) and basic relations,
+#' and FALSE returns only UUID, category (former: type) and basic relations,
 #' which is sufficient for internal use.
 #' @param gather_trenches defaults to FALSE. If TRUE, adds another column that
 #' records the Place each corresponding Trench and its sub-resources lie within.
@@ -33,8 +33,9 @@
 #' in alphabetical order if the selected language is not available.
 #'
 #' @return a data.frame with identifiers and corresponding UUIDs along with
-#' the type (category), basic relations and depending on settings place and
-#' shortDescription of each element
+#' the category (former: type), basic relations and depending on settings
+#' place, shortDescription and "liesWithinLayer" of each element
+#'
 #' @export
 #'
 #' @examples
@@ -50,16 +51,13 @@ get_uid_list <- function(idaifield_docs,
                          verbose = FALSE,
                          gather_trenches = FALSE,
                          language = "all") {
-  #warning("The function `get_uid_list()` is deprecated and will be removed
-  #        in an upcoming version of idaifieldR. Please switch to
-  #        `get_field_index()`.")
-  .Deprecated("get_field_index()", package = "idaifieldR", #msg,
-              old = "get_uid_list()")
+  #.Deprecated("get_field_index()", package = "idaifieldR", #msg,
+  #            old = "get_uid_list()")
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
   ncol <- 5
-  colnames <- c("type", "UID", "identifier", "isRecordedIn", "liesWithin")
+  colnames <- c("category", "UID", "identifier", "isRecordedIn", "liesWithin")
 
   if (verbose) {
     ncol <- 7
@@ -72,17 +70,17 @@ get_uid_list <- function(idaifield_docs,
   uidlist$UID <- unlist(lapply(idaifield_docs,
                                FUN = function(x) na_if_empty(x$id)))
 
-  type <- unlist(lapply(idaifield_docs,
-                        FUN = function(x) na_if_empty(x$type)))
-  if (any(is.na(type))) {
-    category <- unlist(lapply(idaifield_docs,
-                              FUN = function(x) na_if_empty(x$category)))
-    uidlist$type <- ifelse(is.na(type), category, type)
+  category <- unlist(lapply(idaifield_docs,
+                            FUN = function(x) na_if_empty(x$category)))
+  if (any(is.na(category))) {
+    type <- unlist(lapply(idaifield_docs,
+                          FUN = function(x) na_if_empty(x$type)))
+    uidlist$category <- ifelse(is.na(category), type, category)
   } else {
-    uidlist$type <- type
+    uidlist$category <- category
   }
 
-  uidlist$type <- remove_config_names(uidlist$type)
+  uidlist$category <- remove_config_names(uidlist$category)
 
   uidlist$identifier <- unlist(lapply(idaifield_docs,
                                       FUN = function(x) na_if_empty(x$identifier)))
@@ -127,7 +125,7 @@ get_uid_list <- function(idaifield_docs,
     gather_mat[, 1] <- ifelse(is.na(uidlist$isRecordedIn),
                               uidlist$liesWithin,
                               uidlist$isRecordedIn)
-    gather_mat[, 2] <- uidlist$type[match(gather_mat[, 1],
+    gather_mat[, 2] <- uidlist$category[match(gather_mat[, 1],
                                           uidlist$identifier)]
     gather_mat[, 3] <- uidlist$liesWithin[match(gather_mat[, 1],
                                                 uidlist$identifier)]
@@ -201,9 +199,10 @@ get_field_index <- function(connection, verbose = FALSE,
   response <- response_to_list(client$post(body = query))
   uuids <- unnest_docs(response)
   uuids <- do.call(rbind.data.frame, uuids)
+  colnames(uuids) <- c("UID", "identifier")
 
-  fields <- c("identifier", "id",
-              "type", "category",
+  fields <- c("type", "category",
+              "id", "identifier",
               "relations.isRecordedIn",
               "relations.liesWithin")
   if (verbose) {
@@ -229,6 +228,7 @@ get_field_index <- function(connection, verbose = FALSE,
     if (any(type_ind)) {
       names(x)[type_ind] <- "category"
     }
+    x$category <- remove_config_names(x$category)
     rel <- unlist(x$relations)
     x$relations <- NULL
     x <- append(x, rel)
@@ -252,7 +252,8 @@ get_field_index <- function(connection, verbose = FALSE,
 
   if (verbose) {
     index <- lapply(index, function(x) {
-      x$liesWithinLayer <- find_layer(x, index_df)
+      lw <- list(liesWithin = x$liesWithin)
+      x$liesWithinLayer <- find_layer(lw, index_df)
       return(x)
     })
     lwl <- lapply(index, function(x) x$liesWithinLayer)
@@ -273,6 +274,12 @@ get_field_index <- function(connection, verbose = FALSE,
                              gather_mat[, 3],
                              gather_mat[, 1])
   }
+
+  uuidcol <- which(colnames(index_df) == "id")
+  colnames(index_df)[uuidcol] <- "UID"
+
+  config_ind <- which(index_df$identifier == "Configuration")
+  index_df <- index_df[-config_ind, ]
 
   return(index_df)
 }

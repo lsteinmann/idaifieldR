@@ -95,3 +95,16 @@ test_that("works with multilang demodata from default config when verbose", {
 })
 
 
+
+
+
+conn <- skip_if_no_connection()
+
+
+test_that("get_uid_list() and get_field_index() return the same thing", {
+  test_docs <- get_idaifield_docs(conn)
+  uidlist <- get_uid_list(test_docs)
+  field_index <- get_field_index(attributes(test_docs)$connection)
+  expect_identical(colnames(uidlist), colnames(field_index))
+  expect_identical(uidlist$identifier, field_index$identifier)
+})
