@@ -136,6 +136,13 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
   }
 
   if (conn$status) {
+    all_projects <- idf_projects(conn)
+    project_in_all_dbs <- project %in% idf_projects(conn)
+    if (!project_in_all_dbs) {
+      stop(paste("The requested project does not exist. Your projects: ",
+           paste(all_projects, collapse = ", ")))
+    }
+
     proj_conn <- crul::HttpClient$new(url = url,
                                       opts = conn$settings$auth,
                                       headers = conn$settings$headers)
