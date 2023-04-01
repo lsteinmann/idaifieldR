@@ -25,12 +25,12 @@
 #' which is sufficient for internal use.
 #' @param gather_trenches defaults to FALSE. If TRUE, adds another column that
 #' records the Place each corresponding Trench and its sub-resources lie within.
-#' (Useful for grouping the finds of several trenches, but will only work if the
-#' project database is organized accordingly.)
+#' (Useful for grouping the finds of several trenches, but will only work if
+#' the project database is organized accordingly.)
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the multi-language input "shortDescription",
-#' defaults to english ("en") and will select other available languages in
-#' alphabetical order if the selected language is not available.
+#' defaults to all (`language = "all"`). Will select other available languages
+#' in alphabetical order if the selected language is not available.
 #'
 #' @return a data.frame with identifiers and corresponding UUIDs along with
 #' the type (category), basic relations and depending on settings place and
@@ -46,9 +46,10 @@
 #'
 #' uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
 #' }
-get_uid_list <- function(idaifield_docs, verbose = FALSE,
+get_uid_list <- function(idaifield_docs,
+                         verbose = FALSE,
                          gather_trenches = FALSE,
-                         language = "en") {
+                         language = "all") {
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
   ncol <- 5
@@ -99,7 +100,15 @@ get_uid_list <- function(idaifield_docs, verbose = FALSE,
   if (verbose) {
     # get all entries for shortDescription
     desc <- lapply(idaifield_docs, function(x) na_if_empty(x$shortDescription))
-    uidlist$shortDescription <- gather_languages(desc, language = language)
+    if (language == "all") {
+      desc <- lapply(idaifield_docs,
+                     function(x) na_if_empty(x$shortDescription))
+      desc <- lapply(desc, function(x) paste0(names(x), ": ",
+                                              x, collapse = "; "))
+      uidlist$shortDescription <- gsub(": NA", NA, desc)
+    } else {
+      uidlist$shortDescription <- gather_languages(desc, language = language)
+    }
     uidlist$liesWithinLayer <- unlist(lapply(idaifield_docs,
                                              function(x) na_if_empty(x$relation.liesWithinLayer)))
   }
