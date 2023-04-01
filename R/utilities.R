@@ -132,9 +132,7 @@ check_if_uid <- function(string) {
   return(is_uid)
 }
 
-
-
-#' Reorder the column names for `idaifield_as_matrix()`
+#' Reorders the column names for idaifield_as_matrix()
 #'
 #' @param colnames a character vector with colnames
 #' @param order either "default" for default order (first columns are
@@ -165,65 +163,3 @@ reorder_colnames <- function(colnames, order = "default") {
   colnames <- c(new_order, not_ordered)
   return(colnames)
 }
-
-
-
-#' Reduce multi-language fields to one value
-#'
-#' @param input_list a list with character values containing (or not)
-#' sublists for each language
-#' @param language the short name (e.g. "en", "de", "fr") of the language that
-#' is preferred for the fields, defaults to english ("en")
-#' @param silent TRUE/FALSE: Should gather_languages()
-#' issue messages and warnings?
-#'
-#' @return a vector containing the values
-#'
-#' @keywords internal
-#'
-#' @examples
-#' \dontrun{
-#' input_list <- list(list("en" = "English text", "de" = "Deutscher Text"),
-#'                    list("en" = "Another english text", "de" = "Weiterer dt. Text"))
-#' gather_languages(input_list, language = "de")
-#' }
-gather_languages <- function(input_list, language = "en", silent = FALSE) {
-  # if this has a sublist / more than one entry, it means that there is
-  # more than one language
-  has_list <- suppressMessages(check_for_sublist(input_list))
-  if (has_list) {
-    # try to get the selected language or english
-    res <- lapply(input_list, function(x) na_if_empty(unlist(x[language])))
-    res <- unlist(res)
-    if (all(is.na(res))) {
-      if (!silent) {
-        # issue warning is this does not work
-        warning("No language selected or selected language not available, using first entry")
-      }
-      # instead get the first entry
-      res <- unlist(lapply(input_list, function(x) x[1]))
-    }
-    if (any(is.na(res))) {
-      # if there are still NA-values, assume that sometimes people only filled
-      # in one language and loop through all languages to fill the NA values
-      languages <- sort(unique(unlist(lapply(input_list,
-                                             function(x) names(x)))))
-      for (i in seq_along(languages)) {
-        res_sec <- lapply(input_list,
-                          function(x) na_if_empty(unlist(x[languages[i]])))
-        res_sec <- unlist(res_sec)
-        res <- ifelse(is.na(res), res_sec, res)
-        no_list_ind <- unlist(lapply(input_list, is.character))
-        no_list_ind <- which(no_list_ind)
-        res[no_list_ind] <- unlist(input_list)[no_list_ind]
-      }
-    }
-  } else {
-    res <- unlist(lapply(input_list, function(x) na_if_empty(x)))
-  }
-  # remove the names
-  res <- unname(res)
-  return(res)
-}
-
-

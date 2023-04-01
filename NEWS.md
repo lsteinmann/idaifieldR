@@ -1,7 +1,19 @@
 # idaifieldR 0.3.0 _tba/wip_
 * remove sofa as dependency and add custom interface with reduced functionality
 * restructure unnesting (`unnest_docs()` & `find_resource()`)
-* 
+
+# idaifieldR 0.2.4 _2023-03-31_
+## new:  
+
+* handle / reformat dating fields by getting min and max date
+
+## fixes:
+
+* get type OR *category* if *type* is empty in for `get_uid_list()`
+* multiple queries for `idf_query()` with *type* & *category*
+* in `simplify_idaifield()`, *category* is currently switched to *type*, 
+  but **this will be changed later** -> #TODO: rename type everywhere to
+  category to reflect actual db structure
 
 # idaifieldR 0.2.3 _2023-03-16_
 * add language management for multi-language input fields when project has more than one project language

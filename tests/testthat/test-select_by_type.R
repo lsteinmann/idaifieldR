@@ -13,6 +13,13 @@ test_that("returns less elements", {
             length(test_docs))
 })
 
+test_that("returns correct amount of elements", {
+  selection <- "Pottery"
+  expect_equal(length(select_by(test_docs, by = "type",
+                             value = selection)),
+               length(which(get_uid_list(test_docs)$type == selection)))
+})
+
 test_that("works with multiple values", {
   expect_lt(length(select_by(test_docs, by = "type",
                              value = c("Pottery", "Layer"))),

@@ -17,6 +17,8 @@ skip_if_no_connection <- function() {
   },
   error = function(cond) {
     skip("Test skipped, needs DB-connection")
+  }, finally = {
+    connection$status <- idf_ping(connection)
   })
 
   return(connection)
