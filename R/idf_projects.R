@@ -13,15 +13,14 @@
 #'  idf_project_list(connection)
 #' }
 idf_projects <- function(connection) {
-  connection$status <- idf_ping(connection)
   if (connection$status) {
     url <- paste0(connection$settings$base_url, "/_all_dbs")
     client <- crul::HttpClient$new(url = url,
                                    opts = connection$settings$auth,
                                    headers = connection$settings$headers)
 
-    response <- client$get()$parse("UTF-8")
-    result <- jsonlite::fromJSON(response)
+    result <- response_to_list(client$get())
+    result <- unlist(result)
 
     repl <- which(result == "_replicator")
     if (length(repl) != 0) {
