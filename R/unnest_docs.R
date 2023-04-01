@@ -63,9 +63,9 @@ unnest_docs <- function(docs) {
 find_resource <- function(list) {
   has_resource <- lapply(list, function(x) "resource" %in% names(x))
   has_resource <- unlist(has_resource)
-  has_resource <- all(has_resource)
+  has_resource <- any(has_resource)
   if (has_resource) {
-    resource_list <- lapply(list, function(x) x$resource)
+    resource_list <- lapply(list, function(x) na_if_empty(x$resource))
     return(resource_list)
   } else {
     has_docs <- "docs" %in% names(list)

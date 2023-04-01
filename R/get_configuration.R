@@ -26,28 +26,23 @@ get_configuration <- function(connection, projectname = NULL) {
 
   query <- '{ "selector": { "resource.identifier": "Configuration"}}'
 
-  tryCatch({
-    proj_client <- proj_idf_client(connection,
-                                   project = projectname,
-                                   include = "query")
+  proj_client <- proj_idf_client(connection,
+                                 project = projectname,
+                                 include = "query")
 
-    response <- proj_client$post(body = query)
-    response <- response$parse("UTF-8")
-    response <- jsonlite::fromJSON(response, FALSE)
+  response <- proj_client$post(body = query)
+  response <- response$parse("UTF-8")
+  response <- jsonlite::fromJSON(response, FALSE)
 
+  if (length(response$docs) == 0) {
+    warning("Error in get_configuration(), returning NA: Project has no configuration!")
+    return(NA)
+  } else {
     config <- find_resource(response)
     config <- try(config[[1]], silent = TRUE)
-    if (inherits(config, "try-error")) {
-      warning("Error in get_configuration(), returning NA: Project has no configuration!")
-      return(NA)
-    } else {
-      return(config)
-    }
-  },
-  error = function(e) {
-    warning(paste("Error in get_configuration(), returning NA:", e))
-    return(NA)
-  })
+    return(config)
+  }
+
 }
 
 

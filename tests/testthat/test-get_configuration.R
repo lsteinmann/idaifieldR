@@ -42,9 +42,8 @@ test_that("empty matrix for empty config", {
 })
 
 
-test_that("warning when supplying wrong object", {
-  expect_warning(test <- get_configuration(NA, projectname = "testproj"))
-  expect_identical(test, NA)
+test_that("error when supplying wrong object", {
+  expect_error(test <- get_configuration(NA, projectname = "testproj"))
 })
 
 
