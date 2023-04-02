@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,9 +87,8 @@ way to get to your data quickly.</p>
 <h2 id="connection-example">Connection: Example<a class="anchor" aria-label="anchor" href="#connection-example"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>pwd <span class="op">=</span> <span class="st">"hallo"</span><span class="op">)</span></span>
-<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span>,</span>
-<span>                         projectname <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>pwd <span class="op">=</span> <span class="st">"hallo"</span>, project <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span>
+<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span><span class="op">)</span></span>
 <span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_uid_list.html">get_uid_list</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -100,7 +99,7 @@ selecting from the whole database:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="va">db</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"type"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co"># Note: simplify_idaifield() needs the index of the complete project database </span></span>
 <span>  <span class="co"># as a lookup-table to replace all UUIDs with their identifiers</span></span>
 <span>  <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span>uidlist <span class="op">=</span> <span class="va">index</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -114,7 +113,6 @@ selecting from the whole database:</p>
 database:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idf_query.html">idf_query</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span>,</span>
-<span>                     project <span class="op">=</span> <span class="st">"idaifieldr-demo"</span>, </span>
 <span>                     field <span class="op">=</span> <span class="st">"type"</span>, </span>
 <span>                     value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span>uidlist <span class="op">=</span> <span class="va">index</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

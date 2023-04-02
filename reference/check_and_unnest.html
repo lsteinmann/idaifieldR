@@ -16,7 +16,7 @@ idaifield_resources object, issues a warning and returns the same object.'><!-- 
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@ idaifield_resources object, issues a warning and returns the same object.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_and_unnest</span><span class="op">(</span><span class="va">idaifield_docs</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_and_unnest</span><span class="op">(</span><span class="va">idaifield_docs</span>, force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,6 +75,11 @@ idaifield_resources object, issues a warning and returns the same object.</p>
     <dl><dt>idaifield_docs</dt>
 <dd><p>An object to be used by one of the
 functions in this package</p></dd>
+
+
+<dt>force</dt>
+<dd><p>logical. Should the function attempt to process
+regardless of class?</p></dd>
 
 </dl></div>
     <div class="section level2">

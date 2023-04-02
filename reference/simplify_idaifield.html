@@ -30,7 +30,7 @@ the "projectname:"-part will be removed.'><!-- mathjax --><script src="https://c
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@ the "projectname:"-part will be removed.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>idaifield_docs</dt>
 <dd><p>An "idaifield_docs" or "idaifield_resources"-list as
-returned by `get_idaifield_docs()`.</p></dd>
+returned by `get_idaifield_docs()` or `idf_query()` and `idf_index_query()`.</p></dd>
 
 
 <dt>keep_geometry</dt>
@@ -116,7 +116,7 @@ corresponding identifiers? (Defaults to TRUE).</p></dd>
 
 
 <dt>uidlist</dt>
-<dd><p>If NULL (default) the list of UIDs and identifiers is
+<dd><p>If NULL (default) the list of UUIDs and identifiers is
 automatically generated within this function. This only makes sense if
 the list handed to `simplify_idaifield()` had not been selected yet. If it
 has been, you should supply a data.frame as returned by `get_uid_list()`.</p></dd>

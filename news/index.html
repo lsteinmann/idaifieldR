@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,20 @@
       <small>Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="idaifieldr-030-2023-04-02">idaifieldR 0.3.0 <em>2023-04-02</em>
+<a class="anchor" aria-label="anchor" href="#idaifieldr-030-2023-04-02"></a></h2>
+<ul><li>remove sofa as dependency and add custom interface with reduced functionality</li>
+<li>restructure unnesting (<code><a href="../reference/unnest_docs.html">unnest_docs()</a></code> &amp; <code><a href="../reference/find_resource.html">find_resource()</a></code>)</li>
+<li>add <code><a href="../reference/get_field_index.html">get_field_index()</a></code> - getting the uidlist/index directly from the database</li>
+<li>exchange type with category everywhere (<strong>Attention</strong>: This may very well break previous scripts)</li>
+<li>speed up <code><a href="../reference/find_layer.html">find_layer()</a></code> significantly</li>
+<li>check if project exists before attempting to query the database</li>
+</ul><div class="section level3">
+<h3 id="breaking-changes-0-3-0">Breaking changes:<a class="anchor" aria-label="anchor" href="#breaking-changes-0-3-0"></a></h3>
+<ul><li>“type” does not refer to the type of resource (Find, Layer, Place etc.) any more and is renamed to category, as this is the current structure of the database. The uidlist-column “type” is renamed to “category” along with any reference to this information anywhere else (I hope ;) ).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.4" id="idaifieldr-024-2023-03-31">idaifieldR 0.2.4 <em>2023-03-31</em>
 <a class="anchor" aria-label="anchor" href="#idaifieldr-024-2023-03-31"></a></h2>

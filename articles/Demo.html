@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,13 +82,14 @@
     
     
 <p>idaifieldR imports data from the <a href="https://github.com/dainst/idai-field" class="external-link">iDAI.field 2 / Field Desktop
-database</a> into R. The core functions of this package use <a href="https://github.com/ropensci/sofa" class="external-link">sofa</a> (available on CRAN) to
-connect to a running iDAI.field 2 or 3 (Field Desktop) client and store
-the whole database in a list in R (in memory), avoiding the csv-export
-that would otherwise be needed and gathering all documents at once,
-which is not possible with said csv-export. Any R-Script using
-idaifieldR to import the database can be re-run and updated with new
-data flexibly without exporting from the Field client itself.</p>
+database</a> into R. The core functions of this package connect to a
+running iDAI.field 2 or 3 (Field Desktop) client via its API and store
+the whole project database or a subset in a list in R (in memory),
+avoiding the csv-export that would otherwise be needed and gathering all
+documents at once, which is not possible with said csv-export. Any
+R-Script using idaifieldR to import the database can be re-run and
+updated with new data flexibly without exporting from the Field client
+itself.</p>
 <p>idaifieldR encompasses functionality to clean up and format the
 imported list objects for easier processing in R. Using
 <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code>, the UUIDs can be replaced with the
@@ -115,33 +116,35 @@ package to install it from GitHub directly:</p>
 <div class="section level3">
 <h3 id="loading-the-database-index">Loading the Database / Index<a class="anchor" aria-label="anchor" href="#loading-the-database-index"></a>
 </h3>
+<p>If you want to follow along with this tutorial directly using the
+same data, load the backup file located at (‘<a href="https://github.com/lsteinmann/idaifieldR/blob/main/inst/testdata/rtest.jsonl" class="external-link">inst/testdata/rtest.jsonl</a>’)
+from the GitHub repository into a new project called ‘rtest’ in you
+Field Client. This demo dataset uses a very slightly customized project
+configuration to demonstrate relevant functions.</p>
 <p>Our first step will be to load the complete database and create an
 object that serves as the index for further processing. First, create a
 connection object that will contain all the information R needs to
 connect to the database server Field Desktop uses:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>serverip <span class="op">=</span> <span class="st">"127.0.0.1"</span>, </span>
-<span>                          pwd <span class="op">=</span> <span class="st">"hallo"</span><span class="op">)</span></span></code></pre></div>
-<p>If you are using Field Desktop on the same computer, you should not
-need the <code>serverip</code>-argument, as it defaults to the common
-localhost address. Enter the password that is set in your Field
+<span>                          pwd <span class="op">=</span> <span class="st">"hallo"</span>,</span>
+<span>                          project <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span></code></pre></div>
+<p>This already pings the database and lets us know if the connection is
+working. If you are using Field Desktop on the same computer, you should
+not need the <code>serverip</code>-argument, as it defaults to the
+common localhost address. Enter the password that is set in your Field
 Desktop-Client under Tools/Werkzeuge &gt; Settings/Einstellungen: ‘Your
-password’/‘Eigenes Passwort’ as <code>pwd</code>. See the documentation
-for more info and additional arguments:</p>
+password’/‘Eigenes Passwort’ as <code>pwd</code>. <code>project</code>
+corresponds to the name of the project you want to work with. See the
+documentation for more info and additional arguments:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="fu"><a href="../reference/connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>If you want to follow along with this tutorial directly using the
-same data, load the backup file located at (‘<a href="https://github.com/lsteinmann/idaifieldR/blob/main/inst/testdata/rtest.jsonl" class="external-link">inst/testdata/rtest.jsonl</a>’)
-from the GitHub repository into a new project called ‘rtest’ in you
-Field Client. This demo dataset uses a very slightly customized project
-configuration to demonstrate relevant functions.</p>
 <p>You can get the complete rtest-dataset into R using the
-<code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code>-function with the projects name
-(<code>projectname</code>) and the connection-object named
-<code>conn</code> that we created earlier (<code>connection</code>):</p>
+<code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code>-function with the connection-object
+named <code>conn</code> that we created earlier
+(<code>connection</code>):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">idaifield_test_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span>, </span>
-<span>                                          projectname <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">idaifield_test_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span><span class="op">)</span></span></code></pre></div>
 <p>If you are using RStudio, you can get a convenient look at the result
 using <code>View(idaifield_test_docs)</code> or by clicking on the list
 in the Environment-window. It is a named nested list with the custom
@@ -168,17 +171,18 @@ object and is taking up less memory. When browsing the object with
 is contains only the information of each ‘resource’, i.e. the actual
 data you entered in Field Desktop. This step is automatically done by
 <code>idaifieldR</code>-functions internally.</p>
-<p>To get a very quick overview of our data, we generate an index of the
-database that contains only the most basic information about each
-object:</p>
+<p>To get a very quick overview of our data, we can generate an index of
+the database by querying it. The index contains only the most basic
+information about each object:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_uid_list.html">get_uid_list</a></span><span class="op">(</span><span class="va">idaifield_test_resources</span>, </span>
-<span>                      verbose <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                      language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_field_index.html">get_field_index</a></span><span class="op">(</span><span class="va">conn</span>,</span>
+<span>                         verbose <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                         language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; The list was already unnested to resource-level.</span></span></code></pre>
 <table class="table">
 <colgroup>
-<col width="5%">
+<col width="6%">
 <col width="27%">
 <col width="17%">
 <col width="9%">
@@ -187,7 +191,7 @@ object:</p>
 <col width="11%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">type</th>
+<th align="left">category</th>
 <th align="left">UID</th>
 <th align="left">identifier</th>
 <th align="left">isRecordedIn</th>
@@ -260,12 +264,12 @@ with the demo data. We can produce our first plot from the index that
 will give us a very general idea about our data. I am using the
 pipe-operator from <code>dplyr</code> and <code>ggplot2</code> for
 this:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">index</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">liesWithin</span>, fill <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">liesWithin</span>, fill <span class="op">=</span> <span class="va">category</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Demo_files/figure-html/indexPlot-1.png" width="672"></p>
 <p>As you can see, the demo data encompasses a variety of finds, that
@@ -282,14 +286,15 @@ documentation (<code>?simplify_idaifield()</code>). Mostly, it should
 suffice to use the defaults and only pass the imported
 <code>idaifield_docs</code> or <code>idaifield_resources</code>
 list.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">idaifield_test_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span><span class="va">idaifield_test_resources</span>, </span>
 <span>                                            keep_geometry <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                            replace_uids <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                                            uidlist <span class="op">=</span> <span class="va">index</span>,</span>
 <span>                                            language <span class="op">=</span> <span class="st">"en"</span>,</span>
 <span>                                            spread_fields <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Selected language ('en') not available. Trying 'all' instead.</span></span></code></pre></div>
+<span><span class="co">#&gt; Selected language ('en') not available. Trying 'all' instead.</span></span>
+<span><span class="co">#&gt; The list was already unnested to resource-level.</span></span></code></pre></div>
 <p>The function will also notify you that it tries to use the English
 values from multi-language input fields if possible. If the respective
 input field has no English value, <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> will
@@ -320,8 +325,8 @@ into a matrix. For this, it makes a lot of sense to select the data
 first and get only the Pottery-resources that we want to work with. The
 <code><a href="../reference/select_by.html">select_by()</a></code>-function from <code>idaifieldR</code> can do
 this for us (see the documentation at <code>?select_by()</code>)</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span><span class="va">idaifield_test_simple</span>, by <span class="op">=</span> <span class="st">"type"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span><span class="va">idaifield_test_simple</span>, by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="queries">Queries<a class="anchor" aria-label="anchor" href="#queries"></a>
@@ -331,16 +336,15 @@ See the documentation of <code>?idf_index_query()</code> and
 <code>?idf_query()</code>. This may be useful when you frequently want
 to update your data, but have a large amount of resources in the
 database of which you only need a small subset:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idf_query.html">idf_query</a></span><span class="op">(</span><span class="va">conn</span>, </span>
-<span>                          projectname <span class="op">=</span> <span class="st">"rtest"</span>, </span>
-<span>                          field <span class="op">=</span> <span class="st">"type"</span>, </span>
+<span>                          field <span class="op">=</span> <span class="st">"category"</span>, </span>
 <span>                          value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span></span></code></pre></div>
 <p>The query-functions will return <code>idaifield_docs</code>-lists
 that (if you so wish) you still need to simplify. <strong>You need to
 supply the index to the <code>uidlist</code>-argument, otherwise UUIDs
 of relations cannot be replaced</strong>:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span><span class="va">pottery_docs</span>, uidlist <span class="op">=</span> <span class="va">index</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -349,7 +353,7 @@ of relations cannot be replaced</strong>:</p>
 <p>In both cases, you should now have an <code>idaifield_simple</code>
 object with 37 elements. This, we will turn into a matrix, or directly
 into a data.frame to make plots easier:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idaifield_as_matrix.html">idaifield_as_matrix</a></span><span class="op">(</span><span class="va">pottery</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>When viewing the resulting <code>Pottery</code>-data frame, you will
@@ -360,13 +364,13 @@ fields in a data frame. To make different or better use of it, try to
 format the original list itself according to your needs.</p>
 <p>From the data frame, we can produce some basic plots and take a look
 at the distribution of periods across our layers:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">relation.liesWithin</span>, fill <span class="op">=</span> <span class="va">period</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Demo_files/figure-html/potteryplot-1.png" width="672"></p>
 <p>And another example:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">vesselForm</span>, fill <span class="op">=</span> <span class="va">specificType</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -378,29 +382,38 @@ at the distribution of periods across our layers:</p>
 <p>There are currently two functions that will make it easier to replace
 the internal names of variables with their translations in different
 languages:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">core_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_language_list.html">download_language_list</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"core"</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span>
 <span><span class="va">milet_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_language_list.html">download_language_list</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"Milet"</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span></code></pre></div>
 <p>Since these functions download the Language configuration from <a href="https://github.com/dainst/idai-field/tree/master/core/config" class="external-link">github.com/dainst/idai-field</a>,
 I would advise you to safe the result in a local RDS-file after you
 prepared everything. You can prepare a lookup-table like this:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">core_lang_list</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span>
 <span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">lookup</span>, <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">milet_lang_list</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>To get the translations from the Project configuration, you can use
 the config-attribute from any <code>idaifield_...</code>-list. This will
 also give you an impression of how the lookup-table is set up:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">idaifield_test_simple</span>, <span class="st">"config"</span><span class="op">)</span></span>
-<span><span class="va">lookup_conf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">languages</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">idaifield_test_simple</span><span class="op">)</span><span class="op">$</span><span class="va">config</span></span>
+<span><span class="va">lookup_conf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">languages</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lookup_conf</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">var</th>
-<th align="right">label</th>
+<th align="left">label</th>
 </tr></thead>
-<tbody></tbody>
+<tbody>
+<tr class="odd">
+<td align="left">Testformular</td>
+<td align="left">Test Form</td>
+</tr>
+<tr class="even">
+<td align="left">testCustomField</td>
+<td align="left">englisch testCustomField</td>
+</tr>
+</tbody>
 </table>
 <p>You can use this to manually replace values for plots. The
 translations from valuelists can currently not be imported, so this only
@@ -412,16 +425,15 @@ applies to the names of fields.</p>
 <p>To make a long story short and sum it up, there are two ways that you
 can get all your Pottery-resources into R. The following few lines are
 always necessary:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>pwd <span class="op">=</span> <span class="st">"hallo"</span><span class="op">)</span></span>
-<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span>,</span>
-<span>                         projectname <span class="op">=</span> <span class="st">"idaifieldr-demo"</span><span class="op">)</span></span>
-<span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_uid_list.html">get_uid_list</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>pwd <span class="op">=</span> <span class="st">"hallo"</span>, project <span class="op">=</span> <span class="st">"idaifieldr-demo"</span><span class="op">)</span></span>
+<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span><span class="op">)</span></span>
+<span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_field_index.html">get_field_index</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre></div>
 <p>Using the following few lines and all default arguments while
 selecting from the whole database:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="va">db</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"type"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co"># Note: simplify_idaifield() needs the index of the complete project database </span></span>
 <span>  <span class="co"># as a lookup-table to replace all UUIDs with their identifiers</span></span>
 <span>  <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span>uidlist <span class="op">=</span> <span class="va">index</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -429,10 +441,10 @@ selecting from the whole database:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Or using the following few lines with direct queries to the
 database:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idf_query.html">idf_query</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span>,</span>
 <span>                     project <span class="op">=</span> <span class="st">"idaifieldr-demo"</span>, </span>
-<span>                     field <span class="op">=</span> <span class="st">"type"</span>, </span>
+<span>                     field <span class="op">=</span> <span class="st">"category"</span>, </span>
 <span>                     value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/idaifield_as_matrix.html">idaifield_as_matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>

@@ -12,7 +12,7 @@ specific warning messages."><!-- mathjax --><script src="https://cdnjs.cloudflar
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@ specific warning messages."><!-- mathjax --><script src="https://cdnjs.cloudflar
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Ping the Field-Database</h1>
-      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/HEAD/R/utilities.R" class="external-link"><code>R/utilities.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/HEAD/R/connect_idaifield.R" class="external-link"><code>R/connect_idaifield.R</code></a></small>
       <div class="d-none name"><code>idf_ping.Rd</code></div>
     </div>
 
@@ -61,30 +61,27 @@ specific warning messages.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">idf_ping</span><span class="op">(</span><span class="va">idaifield_connection</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">idf_ping</span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>idaifield_connection</dt>
-<dd><p>The connection as returned by `connect_idaifield()`</p></dd>
-
-
-<dt>fail</dt>
-<dd><p>Should the function stop execution?</p></dd>
+    <dl><dt>conn</dt>
+<dd><p>The connection settings as returned by `connect_idaifield()` or
+a direct Client as returned by `proj_idf_client()` for internal functions</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>returns no value</p>
+<p>returns TRUE if connection works, FALSE if failed to connect</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">idaifield_connection</span> <span class="op">&lt;-</span> <span class="fu"><a href="connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">idaifield_connection</span> <span class="op">&lt;-</span> <span class="fu"><a href="connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>ping <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">idf_ping</span><span class="op">(</span><span class="va">idaifield_connection</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>

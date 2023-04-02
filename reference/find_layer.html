@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Find the Layer a resource is contained in</h1>
-      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/HEAD/R/simplify_utilities.R" class="external-link"><code>R/simplify_utilities.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/HEAD/R/find_layer.R" class="external-link"><code>R/find_layer.R</code></a></small>
       <div class="d-none name"><code>find_layer.Rd</code></div>
     </div>
 
@@ -62,7 +62,8 @@
 <span>  resource <span class="op">=</span> <span class="va">resource</span>,</span>
 <span>  uidlist <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  liesWithin <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  strict <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  strict <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  opts <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -73,7 +74,7 @@
 
 
 <dt>uidlist</dt>
-<dd><p>A data.frame as returned by `get_uid_list()`.</p></dd>
+<dd><p>A data.frame as returned by `get_field_index()`.</p></dd>
 
 
 <dt>liesWithin</dt>
