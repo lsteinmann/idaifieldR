@@ -31,8 +31,7 @@ get_configuration <- function(connection, projectname = NULL) {
                                  include = "query")
 
   response <- proj_client$post(body = query)
-  response <- response$parse("UTF-8")
-  response <- jsonlite::fromJSON(response, FALSE)
+  response <- response_to_list(response)
 
   if (length(response$docs) == 0) {
     warning("Error in get_configuration(), returning NA: Project has no configuration!")
