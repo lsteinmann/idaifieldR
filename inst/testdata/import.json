@@ -19,7 +19,8 @@
         ],
         "id": "02932bc4-22ce-3080-a205-e050b489c0c2",
         "type": "Layer"
-      }
+      },
+      "_id": "02932bc4-22ce-3080-a205-e050b489c0c2"
     },
     {
       "resource": {
@@ -56,7 +57,8 @@
         ],
         "id": "031179fb-ac01-6b29-b6fc-b1b486d9bff8",
         "type": "Survey"
-      }
+      },
+      "_id": "031179fb-ac01-6b29-b6fc-b1b486d9bff8"
     },
     {
       "resource": {
@@ -99,7 +101,8 @@
         "biologicalAge": "Adult (18/20-40)",
         "sex": "Männlich",
         "type": "Bone"
-      }
+      },
+      "_id": "0324141a-8201-c5dc-631b-4dded4552ac4"
     },
     {
       "resource": {
@@ -153,7 +156,8 @@
         },
         "id": "0860b5a5-4602-9feb-fabb-85610298bd93",
         "type": "Pottery"
-      }
+      },
+      "_id": "0860b5a5-4602-9feb-fabb-85610298bd93"
     },
     {
       "resource": {
@@ -190,7 +194,8 @@
         "id": "0cc6771c-5532-467f-90af-eb3bbd326437",
         "shortDescription": "DO NOT CHANGE",
         "type": "Mollusk"
-      }
+      },
+      "_id": "0cc6771c-5532-467f-90af-eb3bbd326437"
     },
     {
       "resource": {
@@ -211,7 +216,8 @@
         ],
         "id": "0ea7c837-7c35-b53a-cd03-bbfaca247b08",
         "type": "Layer"
-      }
+      },
+      "_id": "0ea7c837-7c35-b53a-cd03-bbfaca247b08"
     },
     {
       "resource": {
@@ -313,7 +319,8 @@
         "id": "10a8e1ae-bf1d-5324-5b98-f25a65b94229",
         "date": "27.05.2022",
         "type": "Pottery"
-      }
+      },
+      "_id": "10a8e1ae-bf1d-5324-5b98-f25a65b94229"
     },
     {
       "resource": {
@@ -336,7 +343,8 @@
         "id": "128e8340-f736-1f52-09d6-5e19f396fd5d",
         "classification": "Coxa",
         "type": "Mollusk"
-      }
+      },
+      "_id": "128e8340-f736-1f52-09d6-5e19f396fd5d"
     },
     {
       "resource": {
@@ -384,7 +392,8 @@
         "endDate": "31.03.2021",
         "id": "15754929-dd98-acfa-bfc2-016b4d5582fe",
         "type": "Trench"
-      }
+      },
+      "_id": "15754929-dd98-acfa-bfc2-016b4d5582fe"
     },
     {
       "resource": {
@@ -403,7 +412,8 @@
         ],
         "id": "185d08b6-b9a5-7464-9e44-ecf2fe29bc36",
         "type": "PlasterFragment"
-      }
+      },
+      "_id": "185d08b6-b9a5-7464-9e44-ecf2fe29bc36"
     },
     {
       "resource": {
@@ -454,7 +464,8 @@
         },
         "id": "1b7f0b99-2645-25c2-f8e4-8903e9e37d45",
         "type": "Layer"
-      }
+      },
+      "_id": "1b7f0b99-2645-25c2-f8e4-8903e9e37d45"
     },
     {
       "resource": {
@@ -503,7 +514,8 @@
         "endDate": "17.03.2021",
         "id": "1f6ca6f4-80af-ade4-4514-6c78d2766f4d",
         "type": "Trench"
-      }
+      },
+      "_id": "1f6ca6f4-80af-ade4-4514-6c78d2766f4d"
     },
     {
       "resource": {
@@ -548,7 +560,8 @@
         "id": "2707e826-555c-40ff-b288-4de97e0799e9",
         "shortDescription": "DO NOT CHANGE GEOMETRY OR NAME",
         "type": "Terracotta"
-      }
+      },
+      "_id": "2707e826-555c-40ff-b288-4de97e0799e9"
     },
     {
       "resource": {
@@ -601,7 +614,8 @@
         },
         "id": "28c258ed-5ae6-d59e-eb18-b6a564d6efb4",
         "type": "Layer"
-      }
+      },
+      "_id": "28c258ed-5ae6-d59e-eb18-b6a564d6efb4"
     },
     {
       "resource": {
@@ -635,7 +649,8 @@
         },
         "date": "18.05.2022",
         "type": "Coin"
-      }
+      },
+      "_id": "2ab1de16-eddb-0737-79ea-299b0c3a0d06"
     },
     {
       "resource": {
@@ -689,7 +704,8 @@
         },
         "id": "33cc01d5-5f3a-8062-25eb-cb4637e22fe3",
         "type": "Pottery"
-      }
+      },
+      "_id": "33cc01d5-5f3a-8062-25eb-cb4637e22fe3"
     },
     {
       "resource": {
@@ -719,7 +735,8 @@
         },
         "shortDescription": "DO NOT CHANGE GEOMETRY OR NAME",
         "type": "Bone"
-      }
+      },
+      "_id": "3bf9c925-68b1-4b4c-a2bb-bdd34051a82d"
     },
     {
       "resource": {
@@ -773,7 +790,8 @@
         },
         "id": "3f8cda56-5c9b-375b-fc58-cfc02378bd83",
         "type": "Pottery"
-      }
+      },
+      "_id": "3f8cda56-5c9b-375b-fc58-cfc02378bd83"
     },
     {
       "resource": {
@@ -794,7 +812,8 @@
         "identifier": "STEIN_1",
         "id": "46ea0cac-0f58-6d29-f912-e73ef7110f56",
         "type": "Stone"
-      }
+      },
+      "_id": "46ea0cac-0f58-6d29-f912-e73ef7110f56"
     },
     {
       "resource": {
@@ -848,7 +867,8 @@
         },
         "id": "489eceda-5660-cc94-ce1a-32bd952e1ac8",
         "type": "Pottery"
-      }
+      },
+      "_id": "489eceda-5660-cc94-ce1a-32bd952e1ac8"
     },
     {
       "resource": {
@@ -892,7 +912,8 @@
         "endDate": "25.03.2021",
         "id": "4ec99aa9-c413-f4d7-bae2-c30719f00218",
         "type": "Feature"
-      }
+      },
+      "_id": "4ec99aa9-c413-f4d7-bae2-c30719f00218"
     },
     {
       "resource": {
@@ -929,7 +950,8 @@
         "id": "53797bd4-40bc-4add-82a7-b100a3c6bc8e",
         "shortDescription": "DO NOT CHANGE",
         "type": "Mollusk"
-      }
+      },
+      "_id": "53797bd4-40bc-4add-82a7-b100a3c6bc8e"
     },
     {
       "resource": {
@@ -957,7 +979,8 @@
         ],
         "id": "5c32bf18-b805-4120-b2bc-ab78f57481c1",
         "type": "Terracotta"
-      }
+      },
+      "_id": "5c32bf18-b805-4120-b2bc-ab78f57481c1"
     },
     {
       "resource": {
@@ -1011,7 +1034,8 @@
         },
         "id": "6493b26d-992f-0966-3442-d90535c04ee7",
         "type": "Pottery"
-      }
+      },
+      "_id": "6493b26d-992f-0966-3442-d90535c04ee7"
     },
     {
       "resource": {
@@ -1057,7 +1081,8 @@
           "value": "Klassisch"
         },
         "type": "Metal"
-      }
+      },
+      "_id": "68363718-fcc7-7556-18cb-c11d278dfb65"
     },
     {
       "resource": {
@@ -1116,7 +1141,8 @@
         ],
         "rtest:testBoolean": true,
         "type": "Rtest:Testformular"
-      }
+      },
+      "_id": "6d46cfa3-ea68-4e2c-9c47-e2c92a9fc07c"
     },
     {
       "resource": {
@@ -1153,7 +1179,8 @@
           "value": "Klassisch"
         },
         "type": "Wood"
-      }
+      },
+      "_id": "724c4291-bf27-b454-23c5-a440d59b89c2"
     },
     {
       "resource": {
@@ -1207,7 +1234,8 @@
         },
         "id": "72753a9a-c08b-b381-0710-de8b849048c4",
         "type": "Pottery"
-      }
+      },
+      "_id": "72753a9a-c08b-b381-0710-de8b849048c4"
     },
     {
       "resource": {
@@ -1261,7 +1289,8 @@
         },
         "id": "78204184-4d0c-9add-1130-17ec0a355c84",
         "type": "Pottery"
-      }
+      },
+      "_id": "78204184-4d0c-9add-1130-17ec0a355c84"
     },
     {
       "resource": {
@@ -1315,7 +1344,8 @@
         },
         "id": "7db4e4ae-2165-d81b-2247-7ad0c1fde2ca",
         "type": "Pottery"
-      }
+      },
+      "_id": "7db4e4ae-2165-d81b-2247-7ad0c1fde2ca"
     },
     {
       "resource": {
@@ -1336,7 +1366,8 @@
         ],
         "id": "8034a0fb-2539-4059-3b8e-6960ffbe452e",
         "type": "Brick"
-      }
+      },
+      "_id": "8034a0fb-2539-4059-3b8e-6960ffbe452e"
     },
     {
       "resource": {
@@ -1362,7 +1393,8 @@
           ]
         },
         "type": "Pottery"
-      }
+      },
+      "_id": "817b8d05-4844-4102-88ad-04c50855d576"
     },
     {
       "resource": {
@@ -1416,7 +1448,8 @@
         },
         "id": "86097cb2-6474-cb36-50ac-8d1244a021d6",
         "type": "Pottery"
-      }
+      },
+      "_id": "86097cb2-6474-cb36-50ac-8d1244a021d6"
     },
     {
       "resource": {
@@ -1470,7 +1503,8 @@
         },
         "id": "8ec54e5c-60aa-fb7b-565d-f09f71758978",
         "type": "Pottery"
-      }
+      },
+      "_id": "8ec54e5c-60aa-fb7b-565d-f09f71758978"
     },
     {
       "resource": {
@@ -1507,7 +1541,8 @@
         "id": "905fb7ef-8491-47d5-85a7-37534d9a9a14",
         "shortDescription": "DO NOT CHANGE",
         "type": "Mollusk"
-      }
+      },
+      "_id": "905fb7ef-8491-47d5-85a7-37534d9a9a14"
     },
     {
       "resource": {
@@ -1545,7 +1580,8 @@
         "id": "93143914-7336-6ffa-e302-7e1e475cbd33",
         "shortDescription": "DO NOT CHANGE GEOMETRY OR NAME",
         "type": "Bone"
-      }
+      },
+      "_id": "93143914-7336-6ffa-e302-7e1e475cbd33"
     },
     {
       "resource": {
@@ -1599,7 +1635,8 @@
         },
         "id": "94670da2-5cfc-5ec8-c84f-e54fc2afd688",
         "type": "Pottery"
-      }
+      },
+      "_id": "94670da2-5cfc-5ec8-c84f-e54fc2afd688"
     },
     {
       "resource": {
@@ -1649,7 +1686,8 @@
         "id": "a1aa379f-7b90-843c-02b9-eae059b50107",
         "shortDescription": "DO NOT CHANGE GEOMETRY OR NAME",
         "type": "Pottery"
-      }
+      },
+      "_id": "a1aa379f-7b90-843c-02b9-eae059b50107"
     },
     {
       "resource": {
@@ -1703,7 +1741,8 @@
         },
         "id": "a26baf51-05e5-04da-00b2-c7fee4695f25",
         "type": "Pottery"
-      }
+      },
+      "_id": "a26baf51-05e5-04da-00b2-c7fee4695f25"
     },
     {
       "resource": {
@@ -1750,7 +1789,8 @@
           }
         ],
         "type": "Mollusk"
-      }
+      },
+      "_id": "a7b41326-b754-4944-afc6-545e3c877e77"
     },
     {
       "resource": {
@@ -1794,7 +1834,8 @@
           ]
         },
         "type": "Brick"
-      }
+      },
+      "_id": "a90f5578-f078-464c-ba89-6e47bf873660"
     },
     {
       "resource": {
@@ -1847,7 +1888,8 @@
           "value": "Frühkaiserzeitlich"
         },
         "type": "Layer"
-      }
+      },
+      "_id": "b6014881-d8b7-2bb6-b5df-73245374e791"
     },
     {
       "resource": {
@@ -1903,7 +1945,8 @@
         "endDate": "18.03.2021",
         "id": "bf06c7b0-dba0-dcfa-6d8e-3b3509fee5b6",
         "type": "Feature"
-      }
+      },
+      "_id": "bf06c7b0-dba0-dcfa-6d8e-3b3509fee5b6"
     },
     {
       "resource": {
@@ -1957,7 +2000,8 @@
         },
         "id": "c0c09493-de97-fbb1-110d-4121315a8ec8",
         "type": "Pottery"
-      }
+      },
+      "_id": "c0c09493-de97-fbb1-110d-4121315a8ec8"
     },
     {
       "resource": {
@@ -2010,7 +2054,8 @@
           }
         ],
         "type": "Place"
-      }
+      },
+      "_id": "c248074e-c756-5056-1513-3ec90110923a"
     },
     {
       "resource": {
@@ -2073,7 +2118,8 @@
         ],
         "id": "d95e59f3-1440-46fd-9e71-5835b2b888d0",
         "type": "Inscription"
-      }
+      },
+      "_id": "d95e59f3-1440-46fd-9e71-5835b2b888d0"
     },
     {
       "resource": {
@@ -2129,7 +2175,8 @@
           }
         ],
         "type": "Place"
-      }
+      },
+      "_id": "db7d1f5e-5f51-fae3-512a-ddd14d2aaa87"
     },
     {
       "resource": {
@@ -2183,7 +2230,8 @@
         },
         "id": "dc132987-6c4d-9362-b27a-f189c06f5c33",
         "type": "Pottery"
-      }
+      },
+      "_id": "dc132987-6c4d-9362-b27a-f189c06f5c33"
     },
     {
       "resource": {
@@ -2248,7 +2296,8 @@
         },
         "id": "dd94c1de-858a-41f9-efc8-2c4e0442a8b7",
         "type": "Layer"
-      }
+      },
+      "_id": "dd94c1de-858a-41f9-efc8-2c4e0442a8b7"
     },
     {
       "resource": {
@@ -2297,7 +2346,8 @@
         "endDate": "11.04.2021",
         "id": "e0f03beb-b0c1-4158-c530-bbae9405d7a2",
         "type": "Trench"
-      }
+      },
+      "_id": "e0f03beb-b0c1-4158-c530-bbae9405d7a2"
     },
     {
       "resource": {
@@ -2367,7 +2417,8 @@
             "margin": 50
           }
         ]
-      }
+      },
+      "_id": "0569d787-aa67-e105-3a27-cba29012e78e"
     },
     {
       "resource": {
@@ -2406,7 +2457,8 @@
             }
           }
         ]
-      }
+      },
+      "_id": "1fe8a278-45db-bdf1-0d91-16e7c805401b"
     },
     {
       "resource": {
@@ -2477,7 +2529,8 @@
             "source": "Grundlage"
           }
         ]
-      }
+      },
+      "_id": "3097f135-4f6b-10db-b8c5-e14e69d75127"
     },
     {
       "resource": {
@@ -2549,7 +2602,8 @@
             "source": "Grundlage"
           }
         ]
-      }
+      },
+      "_id": "32144146-fcf5-d2a7-2011-faf1008dc991"
     },
     {
       "resource": {
@@ -2620,7 +2674,8 @@
             "source": "10 BP"
           }
         ]
-      }
+      },
+      "_id": "41b2f2cf-3bbc-ec19-7cc8-2882b604632e"
     },
     {
       "resource": {
@@ -2687,7 +2742,8 @@
             "source": "Grundlage"
           }
         ]
-      }
+      },
+      "_id": "483d3076-7207-da89-497c-2a7693a47dad"
     },
     {
       "resource": {
@@ -2759,7 +2815,8 @@
             }
           }
         ]
-      }
+      },
+      "_id": "5ab31446-5f70-26e5-c92a-7d5a5965bf2c"
     },
     {
       "resource": {
@@ -2839,7 +2896,8 @@
             "isImprecise": true
           }
         ]
-      }
+      },
+      "_id": "69efbb9d-5168-8019-5225-5575bd8b2cab"
     },
     {
       "resource": {
@@ -2933,7 +2991,8 @@
             }
           }
         ]
-      }
+      },
+      "_id": "743c7cac-7d48-68c8-a514-f4da2b4b3b57"
     },
     {
       "resource": {
@@ -3004,7 +3063,8 @@
             "source": "101950 BP"
           }
         ]
-      }
+      },
+      "_id": "8c088322-076d-de1e-c514-0446d76de28c"
     },
     {
       "resource": {
@@ -3074,7 +3134,8 @@
             "source": "range, eingaben: begin = 10000 bp, end = 1000 bp"
           }
         ]
-      }
+      },
+      "_id": "b0e99cc0-1823-8fb9-4767-d1d2cb029ff2"
     },
     {
       "resource": {
@@ -3138,7 +3199,8 @@
             }
           }
         ]
-      }
+      },
+      "_id": "c92424a0-5a31-50c4-894f-6ccca36d8f80"
     },
     {
       "resource": {
@@ -3484,7 +3546,8 @@
         },
         "valuelists": {},
         "category": "Configuration"
-      }
+      },
+      "_id": "configuration"
     },
     {
       "resource": {
@@ -3555,7 +3618,8 @@
             "source": "500 CE"
           }
         ]
-      }
+      },
+      "_id": "d4da4177-3cb7-641a-f925-29ef7fab9c97"
     },
     {
       "resource": {
@@ -3619,7 +3683,8 @@
             }
           }
         ]
-      }
+      },
+      "_id": "d669434b-c9d8-5ec4-a6bd-3548608e4d8b"
     },
     {
       "resource": {
@@ -3673,7 +3738,8 @@
         },
         "id": "e3b7d0fb-3ac6-d292-03db-b5eaf0723350",
         "type": "Pottery"
-      }
+      },
+      "_id": "e3b7d0fb-3ac6-d292-03db-b5eaf0723350"
     },
     {
       "resource": {
@@ -3711,7 +3777,8 @@
         "id": "e481b10b-2bd3-47f9-b353-e862bf47c92b",
         "shortDescription": "DO NOT CHANGE GEOMETRY OR NAME",
         "type": "Bone"
-      }
+      },
+      "_id": "e481b10b-2bd3-47f9-b353-e862bf47c92b"
     },
     {
       "resource": {
@@ -3731,7 +3798,8 @@
         "id": "e95a4254-117a-4e89-9a0a-c1a05c7f9619",
         "shortDescription": "DO NOT CHANGE GEOMETRY OR NAME",
         "type": "Pottery"
-      }
+      },
+      "_id": "e95a4254-117a-4e89-9a0a-c1a05c7f9619"
     },
     {
       "resource": {
@@ -3793,7 +3861,8 @@
         "conditionAmount": "Vollständig",
         "graveType": "Gefäßbestattung",
         "type": "Grave"
-      }
+      },
+      "_id": "ee5ceade-2595-de2e-bf83-a7b25d6c47a6"
     },
     {
       "resource": {
@@ -3845,7 +3914,8 @@
           "value": "Klassisch"
         },
         "type": "Glass"
-      }
+      },
+      "_id": "ef856413-2252-fdf1-c283-4d7e83ff4f04"
     },
     {
       "resource": {
@@ -3899,7 +3969,8 @@
         },
         "id": "f1404236-6132-01c0-ec4e-50470bbed7e5",
         "type": "Pottery"
-      }
+      },
+      "_id": "f1404236-6132-01c0-ec4e-50470bbed7e5"
     },
     {
       "resource": {
@@ -3953,7 +4024,8 @@
         },
         "id": "f2762c59-2a28-378b-9807-8ae943ae7908",
         "type": "Pottery"
-      }
+      },
+      "_id": "f2762c59-2a28-378b-9807-8ae943ae7908"
     },
     {
       "resource": {
@@ -4007,7 +4079,8 @@
         },
         "id": "f73c0fd9-f014-cb5f-9a25-9b7b65c9e527",
         "type": "Pottery"
-      }
+      },
+      "_id": "f73c0fd9-f014-cb5f-9a25-9b7b65c9e527"
     },
     {
       "resource": {
@@ -4037,7 +4110,8 @@
         "id": "ff478d7e-ab22-fa62-4b2e-9601e458b5d1",
         "shortDescription": "DO NOT CHANGE GEOMETRY OR NAME",
         "type": "Pottery"
-      }
+      },
+      "_id": "ff478d7e-ab22-fa62-4b2e-9601e458b5d1"
     },
     {
       "resource": {
@@ -4065,7 +4139,8 @@
         "externalReference": "https://github.com/lsteinmann/idaifieldR",
         "epsgId": 32635,
         "type": "Project"
-      }
+      },
+      "_id": "project"
     }
   ]
 }
