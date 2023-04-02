@@ -109,6 +109,7 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
 #'   client <- proj_idf_client(conn = connection)
 #' }
 proj_idf_client <- function(conn, project = NULL, include = "all") {
+proj_idf_client <- function(conn, project = NULL) {
   if (!inherits(conn, "idf_connection_settings")) {
     stop("Need an 'idf_connection_settings'-object as returned by `connect_idaifield()`.")
   }
@@ -196,10 +197,10 @@ idf_ping <- function(conn) {
     if(inherits(ping, "try-error")) {
       # throw error when curl "Could not resolve host"
       stop(paste0(ping[1], "\nCheck the connection settings from 'connect_idaifield()' and try again."))
-    } else if (grepl("Welcome!", ping)) {
+    } else if (grepl("Welcome", ping)) {
       # return true if connection works
       ping <- jsonlite::fromJSON(ping)
-      message(ping[[1]])
+      message(paste(ping[[1]], "- Connection to Field Database can be established."))
       return(TRUE)
     } else {
       # return FALSE if connection does not work for expected reasons
