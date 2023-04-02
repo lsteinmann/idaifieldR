@@ -121,20 +121,7 @@ get_uid_list <- function(idaifield_docs,
   uidlist$liesWithin <- replace_uid(uidlist$liesWithin, uidlist)
 
   if (gather_trenches) {
-
-    gather_mat <- matrix(ncol = 3, nrow = nrow(uidlist))
-    gather_mat[, 1] <- ifelse(is.na(uidlist$isRecordedIn),
-                              uidlist$liesWithin,
-                              uidlist$isRecordedIn)
-    gather_mat[, 2] <- uidlist$category[match(gather_mat[, 1],
-                                          uidlist$identifier)]
-    gather_mat[, 3] <- uidlist$liesWithin[match(gather_mat[, 1],
-                                                uidlist$identifier)]
-
-    uidlist$Place <- ifelse(gather_mat[, 2] == "Trench",
-                            gather_mat[, 3],
-                            gather_mat[, 1])
-
+    uidlist$Place <- gather_trenches(uidlist)
   }
 
   return(uidlist)
@@ -264,17 +251,7 @@ get_field_index <- function(connection, verbose = FALSE,
   }
 
   if (gather_trenches) {
-    gather_mat <- matrix(ncol = 3, nrow = nrow(index_df))
-    gather_mat[, 1] <- ifelse(is.na(index_df$isRecordedIn),
-                              index_df$liesWithin,
-                              index_df$isRecordedIn)
-    gather_mat[, 2] <- index_df$category[match(gather_mat[, 1],
-                                               index_df$identifier)]
-    gather_mat[, 3] <- index_df$liesWithin[match(gather_mat[, 1],
-                                                 index_df$identifier)]
-    index_df$Place <- ifelse(gather_mat[, 2] == "Trench",
-                             gather_mat[, 3],
-                             gather_mat[, 1])
+    index_df$Place <- gather_trenches(index_df)
   }
 
   uuidcol <- which(colnames(index_df) == "id")
@@ -284,4 +261,31 @@ get_field_index <- function(connection, verbose = FALSE,
   index_df <- index_df[-config_ind, ]
 
   return(index_df)
+}
+
+#' Get a vector of places each element from the uidlist is located in
+#'
+#' @param uidlist as returned by `get_uid_list()` and `get_field_index()`
+#'
+#' @return a vector of Place-resources
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' uidlist$Place <- gather_trenches(uidlist)
+#' }
+gather_trenches <- function(uidlist) {
+  gather_mat <- matrix(ncol = 3, nrow = nrow(uidlist))
+  gather_mat[, 1] <- ifelse(is.na(uidlist$isRecordedIn),
+                            uidlist$liesWithin,
+                            uidlist$isRecordedIn)
+  gather_mat[, 2] <- uidlist$category[match(gather_mat[, 1],
+                                            uidlist$identifier)]
+  gather_mat[, 3] <- uidlist$liesWithin[match(gather_mat[, 1],
+                                              uidlist$identifier)]
+  places <- ifelse(gather_mat[, 2] == "Trench",
+                   gather_mat[, 3],
+                   gather_mat[, 1])
+  return(places)
 }
