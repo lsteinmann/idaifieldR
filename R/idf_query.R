@@ -23,7 +23,7 @@ idf_query <- function(connection,
                       value = "Pottery",
                       projectname = NULL) {
 
-  if (field == "type") {
+  if (field == "type" | field == "category") {
     query <- paste0('{ "selector": { "$or": [  { "resource.type": "', value, '" },
     { "resource.category": "', value, '" }]}}')
   } else {
@@ -47,6 +47,10 @@ idf_query <- function(connection,
     x$doc$resource$identifier)
   new_names <- unlist(new_names)
   names(result) <- new_names
+
+  projectname <- ifelse(is.null(projectname),
+                        connection$project,
+                        projectname)
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
@@ -115,6 +119,10 @@ idf_index_query <- function(connection,
     x$doc$resource$identifier)
   new_names <- unlist(new_names)
   names(result) <- new_names
+
+  projectname <- ifelse(is.null(projectname),
+                        connection$project,
+                        projectname)
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
