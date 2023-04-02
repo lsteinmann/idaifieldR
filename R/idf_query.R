@@ -36,8 +36,7 @@ idf_query <- function(connection,
                                  include = "query")
 
   response <- proj_client$post(body = query)
-  response <- response$parse("UTF-8")
-  response <- jsonlite::fromJSON(response, FALSE)
+  response <- response_to_list(response)
 
   config <- get_configuration(connection, projectname)
 
@@ -106,8 +105,7 @@ idf_index_query <- function(connection,
                                  include = "query")
 
   response <- proj_client$post(body = query)
-  response <- response$parse("UTF-8")
-  response <- jsonlite::fromJSON(response, FALSE)
+  response <- response_to_list(response)
 
   result <- lapply(response$docs,
                    function(x) list("id" = x$resource$id, "doc" = x))

@@ -147,7 +147,7 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
                                       opts = conn$settings$auth,
                                       headers = conn$settings$headers)
 
-    message <- jsonlite::fromJSON(proj_conn$get()$parse("UTF-8"), FALSE)
+    message <- response_to_list(proj_conn$get())
     message <- paste0("Connected to project '", message$db_name,
                       "' containing ", message$doc_count, " docs.")
 
