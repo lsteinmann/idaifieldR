@@ -1,10 +1,13 @@
-# idaifieldR 0.3.0 _tba/wip_
+# idaifieldR 0.3.0 _2023-04-02_
 * remove sofa as dependency and add custom interface with reduced functionality
 * restructure unnesting (`unnest_docs()` & `find_resource()`)
 * add `get_field_index()` - getting the uidlist/index directly from the database
 * exchange type with category everywhere (**Attention**: This may very well break previous scripts)
 * speed up `find_layer()` significantly
-* check if project exists before attemting to query the database
+* check if project exists before attempting to query the database
+
+## Breaking changes:
+* "type" does not refer to the type of resource (Find, Layer, Place etc.) any more and is renamed to category, as this is the current structure of the database. The uidlist-column "type" is renamed to "category" along with any reference to this information anywhere else (I hope ;) ). 
 
 # idaifieldR 0.2.4 _2023-03-31_
 ## new:  
