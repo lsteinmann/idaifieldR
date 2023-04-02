@@ -2,28 +2,31 @@
 % Please edit documentation in R/get_configuration.R
 \name{get_configuration}
 \alias{get_configuration}
-\title{get_configuration: returns configuration list}
+\title{Get the custom project configuration as stored in the project database}
 \usage{
-get_configuration(connection, projectname = "rtest")
+get_configuration(connection, projectname = NULL)
 }
 \arguments{
 \item{connection}{A connection object as returned by `connect_idaifield()`}
 
 \item{projectname}{The name of the project in the Field Client that one
-wishes to load.}
+wishes to load. Will overwrite the project argument that was set
+in `connect_idaifield()`.}
 }
 \value{
 a list containing the project configuration; NA if the configuration
-could not be found
+could not be found or the connection failed.
 }
 \description{
 This function retrieves the project configuration (if existent) from an
-iDAI.field project.
+iDAI.field project. The list will only contain fields and valuelists
+that have been edited in the project configuration editor in iDAI.field 3
+(Field Desktop) and does not encompass fields, valuelists and translation
+added before the update to iDAI.field 3.
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo")
+conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
 config <- get_configuration(connection = conn,
 projectname = "rtest")
 }

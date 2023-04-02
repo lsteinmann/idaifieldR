@@ -16,8 +16,8 @@
 #' @examples
 #' \dontrun{
 #' fields_list <- list("category" = list("label" = "Category"),
-#' "identifier" = list("label" = "Name / ID (unique)",
-#' "description" = "Description of the field"))
+#'                     "identifier" = list("label" = "Name / ID (unique)",
+#'                     "description" = "Description of the field"))
 #' df <- extract_field_names(fields_list)
 #' }
 extract_field_names <- function(fields_list) {
@@ -55,8 +55,9 @@ extract_field_names <- function(fields_list) {
 #' @examples
 #' \dontrun{
 #' conn <- connect_idaifield(serverip = "127.0.0.1",
-#'                           user = "R", pwd = "hallo")
-#' config <- get_configuration(connection = conn, projectname = "rtest")
+#'                           project = "rtest",
+#'                           pwd = "hallo")
+#' config <- get_configuration(connection = conn)
 #' lookup <- get_language_lookup(config$languages, language = "en")
 #' }
 get_language_lookup <- function(lang_list, language = "en") {

@@ -1,14 +1,13 @@
 #' get_idaifield_docs: Import all docs from an iDAI.field / Field Desktop project
 #'
 #' Imports all docs from an idaifield-database that is currently running
-#' and synching into a list-object for further processing in R.
-#' This wraps **sofa**s functions and very slightly processes the output.
+#' and syncing into a list-object for further processing in R.
 #' The function is only useful for the import from iDAI.field 2 or
 #' Field Desktop with the respective client running on the same computer as
 #' the R-script.
 #' When using `raw = TRUE` (the default) this function will allow you to
-#' get the changelog for each resource, i.e. which user changed something
-#' in the resource at what time and who created it. Setting raw to FALSE
+#' get the change log for each resource, i.e. which user changed something
+#' in the resource at what time and who created it. Setting `raw = FALSE`
 #' will only return a list of the actual data. You can do this at a later time
 #' using `check_and_unnest()` from this package.
 #'
@@ -21,18 +20,17 @@
 #'
 #'
 #' @param connection A connection object as returned by `connect_idaifield()`
-#' @param projectname The name of the project in the Field Client that one
-#' wishes to load.
-#' @param raw default FALSE. If you wish to get an unnested version of only
-#' the resources, without the metadata (i.e. changes by user), set it to TRUE
-#' @param json default FALSE; if TRUE output cannot be simplified with the
+#' @param raw logical. default TRUE. If you wish to get an unnested version
+#' of only the resources, without the change log, set it to FALSE.
+#' @param json logical. default FALSE; if TRUE output cannot be simplified with the
 #' functions from this package and is instead of a list returned in json format
 #' that can freely be manipulated using e.g. the jsonlite package.
-#' (Might be more useful for some users.)
+#' @param projectname The name of the project in the Field Client that one
+#' wishes to load. Will overwrite the project set in the connection-object.
 #'
-#' @return an object (list) of class "idaifield_docs" if raw = TRUE and
-#' "idaifield_resources" if raw = FALSE that contains all docs/resources
-#' in the selected project except for the Project Configuration.
+#' @return an object (list) of class 'idaifield_docs' if `raw = TRUE` and
+#' 'idaifield_resources' if `raw = FALSE` that contains all docs/resources
+#' in the selected project except for the project configuration.
 #' The connection, projectname and configuration are attached as
 #' attributes for later use.(If json is set to TRUE, returns a character
 #' string in json-format.)
@@ -41,51 +39,55 @@
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = conn,
-#' projectname = "rtest")
+#' conn <- connect_idaifield(project = "rtest", pwd = "hallo")
+#' idaifield_docs <- get_idaifield_docs(connection = conn)
 #' }
 #'
 get_idaifield_docs <- function(connection = connect_idaifield(
-  serverip = "127.0.0.1",
+  serverip = "127.0.0.1", project = "rtest",
   user = "R", pwd = "hallo"),
-  projectname = "projectname",
   raw = TRUE,
-  json = FALSE) {
+  json = FALSE,
+  projectname = NULL) {
 
-  fail <- idf_ping(connection)
-  if(is.character(fail)) {
-    stop(fail)
-  }
+  client <- proj_idf_client(conn = connection,
+                            project = projectname,
+                            include = "all")
 
-  if (json) {
-    output_format <- "json"
-  } else {
-    output_format <- "list"
-  }
   options(digits = 20)
-  idaifield_docs <- sofa::db_alldocs(connection, projectname,
-                                     include_docs = TRUE,
-                                     as = output_format)
+
+  idaifield_docs <- client$get(query = list(include_docs = "true"))
+  idaifield_docs <- idaifield_docs$parse("UTF-8")
 
   if (!json) {
-    # remove the Configuration list from the resources
-    conf_ind <- which(lapply(idaifield_docs$rows,
-                             function(x)
-                               x$doc$resource$identifier)
-                      == "Configuration")
-    if (!is.na(conf_ind)) {
-      idaifield_docs$rows[[conf_ind]] <- NULL
-    }
+    idaifield_docs <- jsonlite::fromJSON(idaifield_docs, FALSE)
 
     idaifield_docs <- idaifield_docs$rows
-    idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
+
+    # remove the Configuration list from the resources
+    conf_ind <- which(lapply(idaifield_docs,
+                             function(x)
+                               x$doc$resource$id)
+                      == "configuration")
+    if (!is.na(conf_ind)) {
+      idaifield_docs[[conf_ind]] <- NULL
+    }
 
     new_names <- lapply(idaifield_docs, function(x)
       x$doc$resource$identifier)
     new_names <- unlist(new_names)
     names(idaifield_docs) <- new_names
+
+    idaifield_docs <- lapply(idaifield_docs, function(x) {
+      type_ind <- which(names(x$doc$resource) == "type")
+      if (length(type_ind) > 0) {
+        names(x$doc$resource)[type_ind] <- "category"
+      }
+      return(x)
+    })
+
+
+    idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
 
     if (!raw) {
       idaifield_docs <- check_and_unnest(idaifield_docs)
@@ -94,7 +96,11 @@ get_idaifield_docs <- function(connection = connect_idaifield(
 
   # get it again to add as attribute as it makes more sense to store
   # metadata there
-  config <- try(get_configuration(connection, projectname))
+  config <- try(suppressMessages(get_configuration(connection, projectname)))
+
+  projectname <- ifelse(is.null(projectname),
+                        connection$project,
+                        projectname)
 
   attr(idaifield_docs, "connection") <- connection
   attr(idaifield_docs, "projectname") <- projectname

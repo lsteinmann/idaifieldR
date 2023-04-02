@@ -2,9 +2,9 @@ source(file = "../load_testdata.R")
 
 uidlist <- get_uid_list(test_docs)
 
-proj_in <- which(uidlist$type == "Project")
+proj_in <- which(uidlist$category == "Project")
 
-find_in <- which(uidlist$type %in% c("Find", "Pottery", "Terracotta", "Brick",
+find_in <- which(uidlist$category %in% c("Find", "Pottery", "Terracotta", "Brick",
                                      "Bone", "Glass", "Metal", "Stone", "Wood",
                                      "Coin", "PlasterFragment", "Mollusk"))
 
@@ -66,9 +66,9 @@ test_that("returns layer(!) when strict", {
   layer <- find_layer(resource = resource,
                       uidlist = uidlist,
                       strict = TRUE)
-  strict_layers <- getOption("idaifield_types")$layers_strict
+  strict_layers <- getOption("idaifield_categories")$layers_strict
 
-  expect_true(uidlist$type[which(uidlist$identifier == layer)] %in% strict_layers)
+  expect_true(uidlist$category[which(uidlist$identifier == layer)] %in% strict_layers)
 })
 
 

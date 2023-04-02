@@ -7,6 +7,8 @@
 #'
 #' @param idaifield_docs An object to be used by one of the
 #' functions in this package
+#' @param force logical. Should the function attempt to process
+#' regardless of class?
 #'
 #' @return if already unnested, the same object as handed to it. if not,
 #' the same list with the toplevel removed.
@@ -22,12 +24,13 @@
 #'
 #' check_and_unnest(idaifield_docs)
 #' }
-check_and_unnest <- function(idaifield_docs) {
+check_and_unnest <- function(idaifield_docs, force = FALSE) {
   check <- check_if_idaifield(idaifield_docs)
-  if (check["idaifield_docs"]) {
-    idaifield_docs <- unnest_docs(idaifield_docs)
-    return(idaifield_docs)
+  if (check["idaifield_docs"] || force) {
+    resources <- unnest_docs(idaifield_docs)
+    return(resources)
   } else if (check["idaifield_resources"]) {
+    message("The list was already unnested to resource-level.")
     return(idaifield_docs)
   } else if (check["idaifield_simple"]) {
     return(idaifield_docs)

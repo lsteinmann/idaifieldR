@@ -5,7 +5,7 @@
 #'
 .onLoad <- function(libname, pkgname) {
   options(
-    list(idaifield_types = list(
+    list(idaifield_categories = list(
       layers = c("Layer", "Grave", "Burial", "Architecture", "Floor"),
       layers_strict = c("Layer"),
       relations = c("isDepictedIn", "isRecordedIn", "liesWithin",

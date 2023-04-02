@@ -1,21 +1,21 @@
 Type: Package
 Package: idaifieldR
 Title: Importing Data from iDAI.field into R
-Version: 0.2.4
+Version: 0.3.0
 Authors@R: 
     person("Lisa", "Steinmann", , "lisa.steinmann@rub.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2215-1243"))
 Author: Lisa Steinmann
 Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
 Description: idaifieldR imports data from the iDAI.field 2 / Field Desktop
-    database into R. The core functions of this package use sofa
-    (available on CRAN) to connect to a syncing iDAI.field 2 or Field
-    Desktop client and store the whole database in a list in R (in
-    memory), avoiding the csv-export that would otherwise be needed and
+    database into R. The core functions of this package use the API of 
+    CouchDB to query a syncing iDAI.field 2 or Field Desktop client and 
+    store the whole database or a subset in a list in R (in memory), 
+    avoiding the csv-export that would otherwise be needed and
     gathering all documents at once, which is not possible with said
     csv-export. Any R-Script using idaifieldR to import the database can
     be re-run and updated with new data flexibly without exporting from
-    the iDAI.field 2 or Field Desktop Client itself.
+    the iDAI.field itself.
 License: GPL (>= 3)
 URL: https://github.com/lsteinmann/idaifieldR,
     https://lsteinmann.github.io/idaifieldR/
@@ -23,7 +23,7 @@ BugReports: https://github.com/lsteinmann/idaifieldR/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
-    sofa,
+    crul,
     jsonlite
 Suggests: 
     covr,

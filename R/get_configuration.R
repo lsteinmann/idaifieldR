@@ -1,56 +1,55 @@
-#' get_configuration: returns configuration list
+#' Get the custom project configuration as stored in the project database
 #'
 #' This function retrieves the project configuration (if existent) from an
-#' iDAI.field project.
+#' iDAI.field project. The list will only contain fields and valuelists
+#' that have been edited in the project configuration editor in iDAI.field 3
+#' (Field Desktop) and does not encompass fields, valuelists and translation
+#' added before the update to iDAI.field 3.
 #'
 #' @param connection A connection object as returned by `connect_idaifield()`
 #' @param projectname The name of the project in the Field Client that one
-#' wishes to load.
+#' wishes to load. Will overwrite the project argument that was set
+#' in `connect_idaifield()`.
 #'
 #' @return a list containing the project configuration; NA if the configuration
-#' could not be found
+#' could not be found or the connection failed.
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
+#' conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
 #' config <- get_configuration(connection = conn,
 #' projectname = "rtest")
 #' }
-get_configuration <- function(connection, projectname = "rtest") {
-  fail <- idf_ping(connection)
-  if(is.character(fail)) {
-    stop(fail)
-  }
+get_configuration <- function(connection, projectname = NULL) {
 
   query <- '{ "selector": { "resource.identifier": "Configuration"}}'
-  tryCatch({
-    config <- sofa::db_query(cushion = connection,
-                             dbname = projectname,
-                             query = query)$docs[[1]]$resource
-    return(config)
-  },
-  error = function(e) {
-    if (any(grepl("db_query", e))) {
-      message("Error in get_configuration(), returning NA:
-              Project has no configuration!")
-    } else {
-      message(paste("Error in get_configuration(), returning NA:", e))
-    }
-    #
+
+  proj_client <- proj_idf_client(connection,
+                                 project = projectname,
+                                 include = "query")
+
+  response <- proj_client$post(body = query)
+  response <- response_to_list(response)
+
+  if (length(response$docs) == 0) {
+    warning("Error in get_configuration(), returning NA: Project has no configuration!")
     return(NA)
-  })
+  } else {
+    config <- find_resource(response)
+    config <- try(config[[1]], silent = TRUE)
+    return(config)
+  }
+
 }
 
 
-#' get_field_inputtypes: returns a matrix of inputTypes
+#' Produce a matrix of field inputTypes from the custom project configuration
 #'
 #' This function retrieves a matrix containing the inputTypes of all
-#' fields and their corresponding inputTypes
-#' from a project configuration (if existent) of an
-#' iDAI.field project.
+#' custom fields and their corresponding inputTypes from a project
+#' configuration (if existent) of an iDAI.field project.
 #'
 #'
 #' @param config A configuration list as returned by `get_configuration()`
@@ -64,9 +63,9 @@ get_configuration <- function(connection, projectname = "rtest") {
 #' @examples
 #' \dontrun{
 #' conn <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
-#' config <- get_configuration(connection = conn,
-#' projectname = "rtest")
+#'                           pwd = "hallo",
+#'                           project = "rtest")
+#' config <- get_configuration(connection = conn)
 #' checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
 #' }
 get_field_inputtypes <- function(config, inputType = "all") {

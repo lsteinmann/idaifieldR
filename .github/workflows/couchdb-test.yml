@@ -1,0 +1,25 @@
+on:
+    push:
+      branches: 
+        couchdb-test
+  
+name: try to run couchdb
+  
+jobs:
+  test-coverage-with-db:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up CouchDB (testdata will be used from this repo)
+        uses: "lsteinmann/couchdb-action@master"
+
+      - name: See if CouchDB is running
+        run: curl -X GET http://127.0.0.1:3001
+      
+      - name: See if expected entries are there
+        run: | 
+          curl --user R:hallo -X POST -H 'Content-Type: application/json' -d '{ "selector": { "$not": { "resource.id": "" } }, "fields": [ "resource.id", "resource.identifier" ]}' http://127.0.0.1:3001/rtest/_find

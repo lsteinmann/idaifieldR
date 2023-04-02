@@ -29,3 +29,21 @@ test_that("returns appropriate number of entries", {
   expect_equal(length(res), count)
 })
 
+test_that("error when field not in uidlist", {
+  expect_error(idf_index_query(connection, projectname = "rtest",
+                         field = "storagePlace", value = "Museum",
+                         uidlist = uidlist))
+})
+
+test_that("returns appropriate number of entries", {
+  count <- unlist(lapply(test_resources, function(x) x$storagePlace))
+  count <- sum(count == "Museum")
+  res <- idf_query(connection, field = "storagePlace", value = "Museum")
+  expect_equal(length(res), count)
+})
+
+
+
+
+
+

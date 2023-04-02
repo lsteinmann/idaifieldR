@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 library(dplyr)
 ```
 
-idaifieldR imports data from the [iDAI.field 2 / Field Desktop database](https://github.com/dainst/idai-field) into R. The core functions of this package use [sofa](https://github.com/ropensci/sofa) (available on CRAN) to connect to a running iDAI.field 2 or 3 (Field Desktop) client and store the whole database in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the Field client itself.
+idaifieldR imports data from the [iDAI.field 2 / Field Desktop database](https://github.com/dainst/idai-field) into R. The core functions of this package connect to a running iDAI.field 2 or 3 (Field Desktop) client via its API and store the whole project database or a subset in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the Field client itself.
 
 idaifieldR encompasses functionality to clean up and format the imported list objects for easier processing in R. Using `simplify_idaifield()`, the UUIDs can be replaced with the appropriate identifiers, the geometry can be reformatted to be usable with R-packages for spatial analysis such as [sp](https://cran.r-project.org/web/packages/sp/index.html), a preferred language for multi-language input fields can be selected, and more. Be aware that processing all resources from the database at once can be slow for larger databases and uses up a lot of memory.
 
@@ -42,26 +42,25 @@ idaifield_test_docs <- readRDS(system.file("testdata",
 
 ## Loading the Database / Index
 
+If you want to follow along with this tutorial directly using the same data, load the backup file located at ('[inst/testdata/rtest.jsonl](https://github.com/lsteinmann/idaifieldR/blob/main/inst/testdata/rtest.jsonl)') from the GitHub repository into a new project called 'rtest' in you Field Client. This demo dataset uses a very slightly customized project configuration to demonstrate relevant functions.
+
 Our first step will be to load the complete database and create an object that serves as the index for further processing. First, create a connection object that will contain all the information R needs to connect to the database server Field Desktop uses:
 
 ```{r connection, eval = FALSE}
 conn <- connect_idaifield(serverip = "127.0.0.1", 
-                          pwd = "hallo")
+                          pwd = "hallo",
+                          project = "rtest")
 ```
-
-If you are using Field Desktop on the same computer, you should not need the `serverip`-argument, as it defaults to the common localhost address. Enter the password that is set in your Field Desktop-Client under Tools/Werkzeuge \> Settings/Einstellungen: 'Your password'/'Eigenes Passwort' as `pwd`. See the documentation for more info and additional arguments:
+This already pings the database and lets us know if the connection is working. If you are using Field Desktop on the same computer, you should not need the `serverip`-argument, as it defaults to the common localhost address. Enter the password that is set in your Field Desktop-Client under Tools/Werkzeuge \> Settings/Einstellungen: 'Your password'/'Eigenes Passwort' as `pwd`. `project` corresponds to the name of the project you want to work with. See the documentation for more info and additional arguments:
 
 ```{r documentation, eval = FALSE}
 ?connect_idaifield()
 ```
 
-If you want to follow along with this tutorial directly using the same data, load the backup file located at ('[inst/testdata/rtest.jsonl](https://github.com/lsteinmann/idaifieldR/blob/main/inst/testdata/rtest.jsonl)') from the GitHub repository into a new project called 'rtest' in you Field Client. This demo dataset uses a very slightly customized project configuration to demonstrate relevant functions.
-
-You can get the complete rtest-dataset into R using the `get_idaifield_docs()`-function with the projects name (`projectname`) and the connection-object named `conn` that we created earlier (`connection`):
+You can get the complete rtest-dataset into R using the `get_idaifield_docs()`-function with the connection-object named `conn` that we created earlier (`connection`):
 
 ```{r loaddb, eval = FALSE}
-idaifield_test_docs <- get_idaifield_docs(connection = conn, 
-                                          projectname = "rtest")
+idaifield_test_docs <- get_idaifield_docs(connection = conn)
 ```
 
 If you are using RStudio, you can get a convenient look at the result using `View(idaifield_test_docs)` or by clicking on the list in the Environment-window. It is a named nested list with the custom class `idaifield_docs` that contains one element for each resource in the database and reflects the original `json`-structure. The name of each list is the identifier of the associated resource. The `doc$resource` sub-list contains the actual entry for each resource, while the other sub-lists contain information about the changes made to each resource along with its basic data such as the *UUID* that Field Desktop uses internally as the unique name of each resource. You can use this list to visualize changes made to database entries on a time axis sorted by users, etc., but we will continue to utilize `idaifieldR`s functions to work with the actual data.
@@ -74,12 +73,12 @@ idaifield_test_resources <- check_and_unnest(idaifield_test_docs)
 
 You will see that it is now an `idaifield_resources` object and is taking up less memory. When browsing the object with `View(idaifield_test_resources)` in RStudio, you can see that is contains only the information of each 'resource', i.e. the actual data you entered in Field Desktop. This step is automatically done by `idaifieldR`-functions internally.
 
-To get a very quick overview of our data, we generate an index of the database that contains only the most basic information about each object:
+To get a very quick overview of our data, we can generate an index of the database by querying it. The index contains only the most basic information about each object:
 
 ```{r indexuidlistHead, eval = FALSE}
-index <- get_uid_list(idaifield_test_resources, 
-                      verbose = TRUE, 
-                      language = "en")
+index <- get_field_index(conn,
+                         verbose = TRUE, 
+                         language = "en")
 head(index)
 ```
 
@@ -97,7 +96,7 @@ library(dplyr)
 library(ggplot2)
 
 index %>%
-  ggplot(aes(y = liesWithin, fill = type)) + 
+  ggplot(aes(y = liesWithin, fill = category)) + 
   geom_bar()
 ```
 
@@ -123,7 +122,7 @@ The list now has the `idaifield_simple` class. Browse the resulting list by clic
 If you wish to get the most out of you data, I recommend you use this list and process it according to your own needs. However, `idaifieldR` comes with a function that will turn the list into a matrix. For this, it makes a lot of sense to select the data first and get only the Pottery-resources that we want to work with. The `select_by()`-function from `idaifieldR` can do this for us (see the documentation at `?select_by()`)
 
 ```{r select_by}
-pottery <- select_by(idaifield_test_simple, by = "type", value = "Pottery")
+pottery <- select_by(idaifield_test_simple, by = "category", value = "Pottery")
 ```
 
 ## Queries
@@ -132,8 +131,7 @@ The same outcome can be achieved by querying the database directly. See the docu
 
 ```{r query normal, eval = FALSE}
 pottery_docs <- idf_query(conn, 
-                          projectname = "rtest", 
-                          field = "type", 
+                          field = "category", 
                           value = "Pottery")
 ```
 
@@ -189,7 +187,7 @@ lookup <- rbind(lookup, get_language_lookup(milet_lang_list, language = "en"))
 To get the translations from the Project configuration, you can use the config-attribute from any `idaifield_...`-list. This will also give you an impression of how the lookup-table is set up:
 
 ```{r}
-config <- attr(idaifield_test_simple, "config")
+config <- attributes(idaifield_test_simple)$config
 lookup_conf <- get_language_lookup(config$languages, language = "en")
 ```
 
@@ -209,17 +207,16 @@ You can use this to manually replace values for plots. The translations from val
 To make a long story short and sum it up, there are two ways that you can get all your Pottery-resources into R. The following few lines are always necessary:
 
 ```{r connectionex, eval = FALSE}
-conn <- connect_idaifield(pwd = "hallo")
-db <- get_idaifield_docs(connection = conn,
-                         projectname = "idaifieldr-demo")
-index <- get_uid_list(db)
+conn <- connect_idaifield(pwd = "hallo", project = "idaifieldr-demo")
+db <- get_idaifield_docs(connection = conn)
+index <- get_field_index(conn)
 ```
 
 Using the following few lines and all default arguments while selecting from the whole database:
 
 ```{r pipeex, eval = FALSE}
 pottery <- db %>%
-  select_by(by = "type", value = "Pottery") %>%
+  select_by(by = "category", value = "Pottery") %>%
   # Note: simplify_idaifield() needs the index of the complete project database 
   # as a lookup-table to replace all UUIDs with their identifiers
   simplify_idaifield(uidlist = index) %>%
@@ -232,7 +229,7 @@ Or using the following few lines with direct queries to the database:
 ```{r pipeexsec, eval = FALSE}
 pottery <- idf_query(connection = conn,
                      project = "idaifieldr-demo", 
-                     field = "type", 
+                     field = "category", 
                      value = "Pottery") %>%
   idaifield_as_matrix() %>%
   as.data.frame()

@@ -1,92 +1,3 @@
-#' Find the Layer a resource is contained in
-#'
-#' Warning: recursive and currently no error handling
-#'
-#' Helper to simplify_single_resource(). Traces the liesWithin fields to
-#' find the one that is a Layer and returns the corresponding identifier.
-#'
-#' #TODO: Somehow this is super convoluted.
-#'
-#'
-#' @param resource One resource (element) from an idaifield_resources-list.
-#' @param uidlist A data.frame as returned by `get_uid_list()`.
-#' @param liesWithin Only for recursion: a dataframe this function hands
-#' to itself, otherwith usually NULL
-#' @param strict TRUE/FALSE (currently only for testing)
-#'
-#' @return chr
-#' @keywords internal
-find_layer <- function(resource = resource,
-                       uidlist = NULL,
-                       liesWithin = NULL,
-                       strict = FALSE) {
-  # The function first checks if a uidlist has been supplied,
-  # and if not it outputs a warning message and returns NA.
-  if (is.null(uidlist)) {
-    warning("find_layer() called but no uidlist supplied")
-    return(NA)
-  }
-
-  # get identifier, index and type of the parent resource
-  # match should be fine here as identifiers are unique and liesWithin can only
-  # have one value as well
-  liesWithin_index <- match(resource$relation.liesWithin, uidlist$identifier)
-  liesWithin_identifier <- uidlist$identifier[liesWithin_index]
-  liesWithin_type <- uidlist$type[liesWithin_index]
-
-  # if there is no df names "liesWithin" yet (i.e. liesWithin = NULL), create
-  # one with the data gathered above
-  if (!is.data.frame(liesWithin)) {
-    liesWithin <- data.frame(liesWithin_index = liesWithin_index,
-                             liesWithin_identifier = liesWithin_identifier,
-                             liesWithin_type = liesWithin_type)
-  }
-
-  # Add section in demo, explain how to configure the type lists and
-  # also set up how this is handed down here from main function.
-  # This is a possible feature but currently only exists so my tests will
-  # be easier.
-  layer_type_list <- getOption("idaifield_types")$layers
-  if (strict) {
-    layer_type_list <- getOption("idaifield_types")$layers_strict
-  }
-
-  # is any of the parent resources in the liesWithin-df a Layer?
-  is_context <- liesWithin$liesWithin_type %in% layer_type_list
-  if (any(is_context)) {
-    # return the layer/context if there is one
-    in_layer <- which(is_context)
-    in_layer <- liesWithin$liesWithin_identifier[in_layer]
-    return(in_layer)
-  } else {
-    # get the next row of the df to find its parent resources
-    current <- nrow(liesWithin)
-    # will not work with chr value as it has to be the index
-    current <- as.numeric(liesWithin$liesWithin_index[current])
-    # get the identifier of the next parent resource
-    next_liesWithin_identifier <- uidlist$liesWithin[current]
-
-    if (is.na(next_liesWithin_identifier) || length(current) == 0) {
-      # this happens if there is no parent resource or no df
-      return(NA)
-    } else {
-      # get the index and type of the parent
-      # match should be fine here as identifiers are unique
-      next_liesWithin_index <- match(next_liesWithin_identifier, uidlist$identifier)
-      next_liesWithin_type <- uidlist$type[next_liesWithin_index]
-      # add as a row to the data.frame
-      liesWithin[nrow(liesWithin)+1,] <- c(next_liesWithin_index,
-                                           next_liesWithin_identifier,
-                                           next_liesWithin_type)
-      # recursively call the function again to find the next parent, this
-      # time with the data.frame already existing
-      find_layer(resource = resource,
-                 uidlist = uidlist,
-                 liesWithin = liesWithin)
-    }
-  }
-}
-
 #' Break down a list from a checkbox field to onehot-coded values
 #'
 #' This function is a helper to `simplify_single_resource()`.
@@ -234,7 +145,7 @@ remove_config_names <- function(nameslist = c("identifier", "configname:test")) 
 #' sublists for each language
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the fields, defaults to english ("en")
-#' @param silant TRUE/FALSE: Should gather_languages()
+#' @param silent TRUE/FALSE: Should gather_languages()
 #' issue messages and warnings?
 #'
 #' @return a vector containing the values
@@ -250,8 +161,18 @@ remove_config_names <- function(nameslist = c("identifier", "configname:test")) 
 gather_languages <- function(input_list, language = "en", silent = FALSE) {
   # if this has a sublist / more than one entry, it means that there is
   # more than one language
-  if (check_for_sublist(input_list)) {
-    # try to get the selected language or english
+  has_list <- suppressMessages(check_for_sublist(input_list))
+  if (has_list) {
+    if (language == "all") {
+      res <- lapply(input_list, function(x) {
+        new <- na_if_empty(unlist(x, use.names = TRUE))
+        new <- paste(paste0(names(new), ": ", new), collapse = "; ")
+        return(new)
+        })
+      res <- unlist(res)
+      return(res)
+    }
+    # try to get the selected language
     res <- lapply(input_list, function(x) na_if_empty(unlist(x[language])))
     res <- unlist(res)
     if (all(is.na(res))) {

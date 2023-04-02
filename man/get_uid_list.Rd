@@ -8,7 +8,7 @@ get_uid_list(
   idaifield_docs,
   verbose = FALSE,
   gather_trenches = FALSE,
-  language = "en"
+  language = "all"
 )
 }
 \arguments{
@@ -16,23 +16,23 @@ get_uid_list(
 
 \item{verbose}{TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 including identifier and shortDescription which is more convenient to read,
-and FALSE returns only UUID, type (category) and basic relations,
+and FALSE returns only UUID, category (former: type) and basic relations,
 which is sufficient for internal use.}
 
 \item{gather_trenches}{defaults to FALSE. If TRUE, adds another column that
 records the Place each corresponding Trench and its sub-resources lie within.
-(Useful for grouping the finds of several trenches, but will only work if the
-project database is organized accordingly.)}
+(Useful for grouping the finds of several trenches, but will only work if
+the project database is organized accordingly.)}
 
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the multi-language input "shortDescription",
-defaults to english ("en") and will select other available languages in
-alphabetical order if the selected language is not available.}
+defaults to all (`language = "all"`). Will select other available languages
+in alphabetical order if the selected language is not available.}
 }
 \value{
 a data.frame with identifiers and corresponding UUIDs along with
-the type (category), basic relations and depending on settings place and
-shortDescription of each element
+the category (former: type), basic relations and depending on settings
+place, shortDescription and "liesWithinLayer" of each element
 }
 \description{
 All resources in the project databases in iDAI.field / Field Desktop are
@@ -46,13 +46,14 @@ using `replace_uid()` from this package.
 This function is also good for a quick overview / a list of all the
 resources that exist along with their identifiers and short descriptions
 and can be used to select the resources along their respective
-Types/Categories (e.g. Pottery, Layer etc.). Please note that in any case
-the internal names of everything will be used. If you relabeled `Trench`
-to `Schnitt` in your language-configuration, the name will still be
-`Trench` here. None of these functions have any respect for language
-settings of a project configuration, i.e. the front end languages of
-valuelists and fields are not displayed, and instead their background
-names are used. You can see these in the project configuration settings.
+Categories (e.g. Pottery, Layer etc., formerly names "types").
+Please note that in any case the internal names of everything will be used.
+If you relabeled `Trench` to `Schnitt` in your language-configuration,
+the name will still be `Trench` here. None of these functions have any
+respect for language settings of a project configuration, i.e. the
+front end languages of valuelists and fields are not displayed, and
+instead their background names are used. You can see these in the project
+configuration settings.
 }
 \examples{
 \dontrun{

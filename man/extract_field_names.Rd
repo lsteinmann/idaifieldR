@@ -23,8 +23,8 @@ Helper to get_language_lookup()
 \examples{
 \dontrun{
 fields_list <- list("category" = list("label" = "Category"),
-"identifier" = list("label" = "Name / ID (unique)",
-"description" = "Description of the field"))
+                    "identifier" = list("label" = "Name / ID (unique)",
+                    "description" = "Description of the field"))
 df <- extract_field_names(fields_list)
 }
 }

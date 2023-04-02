@@ -52,3 +52,8 @@ test_that("also warning if language not available", {
   expect_warning(gather_languages(input_list, language = "tr"),
                  "No language")
 })
+
+test_that("pastes languages when language = 'all'", {
+  expect_match(gather_languages(input_list, language = "all"), ":")
+})
+

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_configuration.R
 \name{get_field_inputtypes}
 \alias{get_field_inputtypes}
-\title{get_field_inputtypes: returns a matrix of inputTypes}
+\title{Produce a matrix of field inputTypes from the custom project configuration}
 \usage{
 get_field_inputtypes(config, inputType = "all")
 }
@@ -17,16 +17,15 @@ a matrix of fields with the given inputType
 }
 \description{
 This function retrieves a matrix containing the inputTypes of all
-fields and their corresponding inputTypes
-from a project configuration (if existent) of an
-iDAI.field project.
+custom fields and their corresponding inputTypes from a project
+configuration (if existent) of an iDAI.field project.
 }
 \examples{
 \dontrun{
 conn <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo")
-config <- get_configuration(connection = conn,
-projectname = "rtest")
+                          pwd = "hallo",
+                          project = "rtest")
+config <- get_configuration(connection = conn)
 checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
 }
 }

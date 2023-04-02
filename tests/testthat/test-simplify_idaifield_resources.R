@@ -34,7 +34,7 @@ test_that("geometry is matrix", {
   expect_true("matrix" %in% class(test$coordinates[[1]]))
 })
 
-item <- match("Testformular", uidlist$type)
+item <- match("Testformular", uidlist$category)
 
 test_that("removes configname from type", {
   test <- simplify_single_resource(test_resources[[item]],

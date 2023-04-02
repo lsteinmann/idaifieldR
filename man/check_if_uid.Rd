@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{check_if_uid}
 \alias{check_if_uid}
-\title{check_if_uid}
+\title{Check if the vector/object is a UUID}
 \usage{
 check_if_uid(string)
 }
@@ -15,7 +15,7 @@ a vector of the same length as string containing TRUE if
 the corresponding item in string is a UID, FALSE if not
 }
 \description{
-check_if_uid
+Check if the vector/object is a UUID
 }
 \examples{
 \dontrun{

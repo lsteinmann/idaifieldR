@@ -16,7 +16,7 @@ it can be very large)
 }
 \description{
 Converts a list of class `idaifield_docs`, `idaifield_resource` or
-`idaifield_simple` into a matrix. Recomennded to use with
+`idaifield_simple` into a matrix. Recommended to use with
 `idaifield_simple`-lists as returned by `simplify_idaifield()`.
 If given a list of class `idaifield_docs` containing all meta-info,
 it will automatically unnest to resource level. It is recommended to
@@ -30,7 +30,7 @@ connection <- connect_idaifield(serverip = "127.0.0.1",
                                 pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = connection,
                                      projectname = "rtest")
-pottery <- select_by(idaifield_docs, by = "type", value = "Pottery")
+pottery <- select_by(idaifield_docs, by = "category", value = "Pottery")
 pottery <- simplify_idaifield(pottery,
                               uidlist = get_uid_list(idaifield_docs))
 pottery <- idaifield_as_matrix(pottery)

@@ -12,7 +12,7 @@ test_that("config does not exist", {
 })
 
 test_that("type is never empty", {
-  expect_false(any(is.na(uidlist$type)))
+  expect_false(any(is.na(uidlist$category)))
 })
 
 
@@ -22,7 +22,7 @@ test_that("type is never empty", {
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 
 test_that("contains no special config names", {
-  expect_false(any(grepl(":", unique(uidlist$type))))
+  expect_false(any(grepl(":", unique(uidlist$category))))
 })
 
 samples <- sample(seq_len(nrow(uidlist)), size = 5)
@@ -50,7 +50,6 @@ for (sample in samples) {
   test_that("uidlist is able to group trenches by place", {
     expect_true(any(grepl("Place", colnames)))
   })
-
 
   test_that("uidlist has relation.liesWithin", {
     expect_false(all(is.na(uidlist$liesWithin)))
@@ -86,7 +85,7 @@ test_that("works with multilang demodata from default config", {
 })
 
 test_that("works with multilang demodata from default config when verbose", {
-  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE)
+  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE, language = "en")
   expect_true("Another Trench" %in% test$shortDescription)
 })
 
@@ -96,3 +95,16 @@ test_that("works with multilang demodata from default config when verbose", {
 })
 
 
+
+
+
+conn <- skip_if_no_connection()
+
+
+test_that("get_uid_list() and get_field_index() return the same thing", {
+  test_docs <- get_idaifield_docs(conn)
+  uidlist <- get_uid_list(test_docs)
+  field_index <- get_field_index(attributes(test_docs)$connection)
+  expect_identical(colnames(uidlist), colnames(field_index))
+  expect_identical(uidlist$identifier, field_index$identifier)
+})

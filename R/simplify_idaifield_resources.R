@@ -47,7 +47,8 @@ simplify_single_resource <- function(resource,
   # liesWithinLayer variable and appended to the resource as a new field
   # called relation.liesWithinLayer.
   if (replace_uids) {
-    liesWithinLayer <- find_layer(resource = resource,
+    lw <- list(liesWithin = resource$relation.liesWithin)
+    liesWithinLayer <- find_layer(resource = lw,
                                   uidlist = uidlist,
                                   liesWithin = NULL)
     resource <- append(resource,
@@ -151,6 +152,8 @@ simplify_single_resource <- function(resource,
 
   if (language != "all") {
     resource <- lapply(resource, function(x) {
+      # if there actually are different languages in the resource,
+      # try to process them
       pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
       names <- names(x)
       names <- grepl(paste0(pat, collapse = "|"), names)
@@ -210,10 +213,10 @@ simplify_single_resource <- function(resource,
 #' Scripts may not work anymore without intervention.
 #'
 #' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
-#' returned by `get_idaifield_docs()`.
+#' returned by `get_idaifield_docs()` or `idf_query()` and `idf_index_query()`.
 #' @param replace_uids logical. Should UUIDs be automatically replaced with the
 #' corresponding identifiers? (Defaults to TRUE).
-#' @param uidlist If NULL (default) the list of UIDs and identifiers is
+#' @param uidlist If NULL (default) the list of UUIDs and identifiers is
 #' automatically generated within this function. This only makes sense if
 #' the list handed to `simplify_idaifield()` had not been selected yet. If it
 #' has been, you should supply a data.frame as returned by `get_uid_list()`.
