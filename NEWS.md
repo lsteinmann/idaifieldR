@@ -1,3 +1,12 @@
+# idaifieldR 0.3.1 _2023-04-02_
+* of course, I missed half of it.
+* fix `idf_query()`/`idf_index_query()`: rename "type" to "category" in resource lists
+* type column in `idaifield_as_matrix()`
+* fix renaming of type/category in `simplify_idaifield()`
+* fix missed type/category issue `convert_to_onehot()`
+* "solve" minor problem with spreading checkbox fields (#TODO)
+
+
 # idaifieldR 0.3.0 _2023-04-02_
 * remove sofa as dependency and add custom interface with reduced functionality
 * restructure unnesting (`unnest_docs()` & `find_resource()`)

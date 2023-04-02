@@ -81,7 +81,7 @@ get_field_inputtypes <- function(config, inputType = "all") {
     }
   }
   fields_mat <- matrix(nrow = length(fields), ncol = 3)
-  colnames(fields_mat) <- c("type", "field", "inputType")
+  colnames(fields_mat) <- c("category", "field", "inputType")
   fields_mat[, 1] <- gsub("\\..*", "", names(fields))
   fields_mat[, 2] <- gsub(".*\\.", "", names(fields))
   fields_mat[, 1] <- remove_config_names(fields_mat[, 1])

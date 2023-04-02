@@ -9,7 +9,7 @@ select_by(idaifield_docs, by = c("category", "isRecordedIn"), value = NULL)
 \arguments{
 \item{idaifield_docs}{An object as returned by get_idaifield_docs(...)}
 
-\item{by}{must be either type (to select by resource category) or
+\item{by}{must be either category (to select by resource category) or
 isRecordedIn (to select by container-resource (Survey-Area, Trench))}
 
 \item{value}{Character expected, should be the internal Name of the

@@ -12,12 +12,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
-#' config <- get_configuration(connection = conn,
-#' projectname = "rtest")
-#' idaifield_resources[[1]] <- convert_to_onehot(config,
-#' idaifield_resources[[1]])
+#' ...
 #' }
 convert_to_onehot <- function(resource, fieldtypes) {
   # get the inputType list
@@ -31,13 +26,15 @@ convert_to_onehot <- function(resource, fieldtypes) {
   }
 
   # find which fields actually belong to the resource type
-  correct_type <- which(checkboxes[, "type"] == resource$type)
+  # correct_cat <- which(checkboxes[, "category"] == resource$category)
   # manually add Feature and Find type because of problems
   # wtf does that even mean
-  correct_type <- c(correct_type,
-                    which(checkboxes[, "type"] %in% c("Feature", "Find")))
+  # correct_cat <- c(correct_cat,
+  #                  which(checkboxes[, "category"] %in% c("Feature", "Find")))
   # get the index of the resource that should be converted
-  index_to_convert <- which(names(resource) %in% checkboxes[correct_type, "field"])
+  # i actually give up. for now.
+  index_to_convert <- which(names(resource) %in% checkboxes[, "field"])
+
   # add campaign field manually
   index_to_convert <- c(index_to_convert, which(names(resource) == "campaign"))
 

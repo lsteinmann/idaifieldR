@@ -56,7 +56,7 @@ find_layer <- function(resource = resource,
     category_names <- c("type", "category")
     category_col <- which(colnames(uidlist) %in% category_names)
 
-    # get identifier, uidlist and type of the parent resource
+    # get identifier, uidlist and category of the parent resource
     # match should be fine here as identifiers are unique and liesWithin can only
     # have one value as well
     liesWithin_index <- match(resource[[lw_col]], uidlist$identifier)
@@ -71,7 +71,7 @@ find_layer <- function(resource = resource,
                          liesWithin_category = liesWithin_category)
     }
 
-    # Add section in demo, explain how to configure the type lists and
+    # Add section in demo, explain how to configure the category lists and
     # also set up how this is handed down here from main function.
     # This is a possible feature but currently only exists so my tests will
     # be easier.
@@ -108,7 +108,7 @@ find_layer <- function(resource = resource,
       # this happens if there is no parent resource or no df
       return(NA)
     } else {
-      # get the index and type of the parent
+      # get the index and categor of the parent
       # match should be fine here as identifiers are unique
       next_liesWithin_index <- match(next_liesWithin_identifier, uidlist$identifier)
       next_liesWithin_category <- uidlist[next_liesWithin_index, category_col]

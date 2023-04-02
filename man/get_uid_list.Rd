@@ -46,7 +46,7 @@ using `replace_uid()` from this package.
 This function is also good for a quick overview / a list of all the
 resources that exist along with their identifiers and short descriptions
 and can be used to select the resources along their respective
-Categories (e.g. Pottery, Layer etc., formerly names "types").
+Categories (e.g. Pottery, Layer etc., formerly named "type").
 Please note that in any case the internal names of everything will be used.
 If you relabeled `Trench` to `Schnitt` in your language-configuration,
 the name will still be `Trench` here. None of these functions have any

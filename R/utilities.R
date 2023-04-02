@@ -136,7 +136,7 @@ check_if_uid <- function(string) {
 #'
 #' @param colnames a character vector with colnames
 #' @param order either "default" for default order (first columns are
-#' "identifier", "type", "shortDescription" and the rest is as assembled) or
+#' "identifier", "category", "shortDescription" and the rest is as assembled) or
 #' a character vector with exact column names that will then place these as
 #' the first n columns of the matrix produced by idaifield_as_matrix()
 #'
@@ -146,13 +146,13 @@ check_if_uid <- function(string) {
 #'
 #' @examples
 #' \dontrun{
-#' colnames <- c("materialType", "identifier", "shortDescription", "type")
+#' colnames <- c("materialType", "identifier", "shortDescription", "category")
 #'
 #' reorder_colnames(colnames, order = "default")
 #' }
 reorder_colnames <- function(colnames, order = "default") {
   if (order == "default") {
-    order <- c("identifier", "type", "shortDescription",
+    order <- c("identifier", "category", "shortDescription",
                "processor", "campaign", "relation.isRecordedIn")
   }
   new_order <- match(order, colnames)
@@ -180,4 +180,37 @@ response_to_list <- function(response = NULL) {
   } else {
     stop("Expecting an object of class 'HttpResponse'.")
   }
+}
+
+#' Replace type with category in resource list names
+#'
+#' @param idaifield_docs
+#'
+#' @return the docs with "type" renamed to "category"
+#'
+#' @keywords internal
+type_to_category <- function(docs) {
+  docs <- lapply(docs, function(x) {
+    type_ind <- which(names(x$doc$resource) == "type")
+    if (length(type_ind) > 0) {
+      names(x$doc$resource)[type_ind] <- "category"
+    }
+    return(x)
+  })
+  return(docs)
+}
+
+
+#' Name the list of idaifield_docs by identifier
+#'
+#' @param docs idaifield_docs
+#'
+#' @return same, but named
+#' @keywords internal
+name_docs_list <- function(docs) {
+  new_names <- lapply(docs, function(x)
+    x$doc$resource$identifier)
+  new_names <- unlist(new_names)
+  names(docs) <- new_names
+  return(docs)
 }
