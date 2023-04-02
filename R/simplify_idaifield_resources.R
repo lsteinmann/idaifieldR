@@ -32,9 +32,9 @@ simplify_single_resource <- function(resource,
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
   }
 
-  if (is.null(resource$type)) {
-    resource$type <- resource$category
-    resource$category <- NULL
+  if (is.null(resource$category)) {
+    resource$category <- resource$type
+    resource$type <- NULL
   }
 
   resource <- fix_relations(resource,
@@ -109,7 +109,7 @@ simplify_single_resource <- function(resource,
   # and checks if any of them contain a colon (:). If so, the
   # remove_config_names() function is applied to the list of field names
   # to remove the portion after the colon. The resulting list of field names
-  # is then assigned back to the resource. If the type field of the resource
+  # is then assigned back to the resource. If the category field of the resource
   # contains a colon, the remove_config_names() function is also applied to
   # this field to remove the portion after the colon
   list_names <- names(resource)
@@ -119,8 +119,8 @@ simplify_single_resource <- function(resource,
     names(resource) <- list_names
   }
 
-  if (any(grepl(":", resource$type))) {
-    resource$type <- remove_config_names(resource$type)
+  if (any(grepl(":", resource$category))) {
+    resource$category <- remove_config_names(resource$category)
   }
 
 
@@ -208,10 +208,6 @@ simplify_single_resource <- function(resource,
 #' For the dimension-fields, if a ranged measurement was selected, a mean
 #' will be returned.
 #'
-#' #TODO: category is currently renamed to type. Please be aware:
-#' It will be changed at some point to reflect the actual database again.
-#' Scripts may not work anymore without intervention.
-#'
 #' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
 #' returned by `get_idaifield_docs()` or `idf_query()` and `idf_index_query()`.
 #' @param replace_uids logical. Should UUIDs be automatically replaced with the
@@ -220,7 +216,7 @@ simplify_single_resource <- function(resource,
 #' automatically generated within this function. This only makes sense if
 #' the list handed to `simplify_idaifield()` had not been selected yet. If it
 #' has been, you should supply a data.frame as returned by `get_uid_list()`.
-#' @param keep_geometry logical. (Defaults to TRUE) Should the geographical
+#' @param keep_geometry logical. (Defaults to FALSE) Should the geographical
 #' information be kept or removed?
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the multi-language input fields, defaults to keeping all
@@ -242,7 +238,7 @@ simplify_single_resource <- function(resource,
 #' simpler_idaifield <- simplify_idaifield(idaifield_docs)
 #' }
 simplify_idaifield <- function(idaifield_docs,
-                               keep_geometry = TRUE,
+                               keep_geometry = FALSE,
                                replace_uids = TRUE,
                                uidlist = NULL,
                                language = "all",
@@ -253,6 +249,7 @@ simplify_idaifield <- function(idaifield_docs,
     message("Already of class 'idaifield_simple', did nothing.")
     return(idaifield_docs)
   }
+  idaifield_docs <- check_and_unnest(idaifield_docs)
 
   if (is.null(uidlist)) {
     message("No UID-List supplied, generating from this list.")
@@ -286,7 +283,6 @@ simplify_idaifield <- function(idaifield_docs,
       message("Keeping all languages for input fields.")
     }
   }
-  idaifield_docs <- check_and_unnest(idaifield_docs)
 
   idaifield_simple <- lapply(idaifield_docs, function(x)
     simplify_single_resource(

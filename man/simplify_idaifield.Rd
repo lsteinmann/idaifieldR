@@ -6,7 +6,7 @@
 \usage{
 simplify_idaifield(
   idaifield_docs,
-  keep_geometry = TRUE,
+  keep_geometry = FALSE,
   replace_uids = TRUE,
   uidlist = NULL,
   language = "all",
@@ -17,7 +17,7 @@ simplify_idaifield(
 \item{idaifield_docs}{An "idaifield_docs" or "idaifield_resources"-list as
 returned by `get_idaifield_docs()` or `idf_query()` and `idf_index_query()`.}
 
-\item{keep_geometry}{logical. (Defaults to TRUE) Should the geographical
+\item{keep_geometry}{logical. (Defaults to FALSE) Should the geographical
 information be kept or removed?}
 
 \item{replace_uids}{logical. Should UUIDs be automatically replaced with the
@@ -65,10 +65,6 @@ For the dating, all begin and end values are evaluated and for each resource,
 the minimum value from "begin" and maximum value from "end" is selected.
 For the dimension-fields, if a ranged measurement was selected, a mean
 will be returned.
-
-#TODO: category is currently renamed to type. Please be aware:
-It will be changed at some point to reflect the actual database again.
-Scripts may not work anymore without intervention.
 }
 \examples{
 \dontrun{

@@ -20,12 +20,7 @@ This function is a helper to `simplify_single_resource()`.
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo")
-config <- get_configuration(connection = conn,
-projectname = "rtest")
-idaifield_resources[[1]] <- convert_to_onehot(config,
-idaifield_resources[[1]])
+...
 }
 }
 \keyword{internal}

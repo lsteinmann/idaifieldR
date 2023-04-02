@@ -6,7 +6,7 @@ uidlist <- get_uid_list(get_idaifield_docs(connection, projectname = "rtest"))
 
 test_that("returns idaifield_docs", {
   res <- idf_query(connection, projectname = "rtest",
-                   field = "type", value = "Layer")
+                   field = "category", value = "Layer")
   expect_equal(class(res), "idaifield_docs")
 })
 

@@ -10,3 +10,13 @@ test_that("length matches", {
   expect_identical(nrow(test_matrix),
                    length(test_docs))
 })
+
+test_that("has category column", {
+  expect_identical(length(test_docs),
+                   length(test_matrix[,"category"]))
+})
+
+test_that("has no type column", {
+  cols <- colnames(test_matrix)
+  expect_false("type" %in% cols)
+})

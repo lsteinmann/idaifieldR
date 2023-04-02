@@ -10,7 +10,7 @@ reorder_colnames(colnames, order = "default")
 \item{colnames}{a character vector with colnames}
 
 \item{order}{either "default" for default order (first columns are
-"identifier", "type", "shortDescription" and the rest is as assembled) or
+"identifier", "category", "shortDescription" and the rest is as assembled) or
 a character vector with exact column names that will then place these as
 the first n columns of the matrix produced by idaifield_as_matrix()}
 }
@@ -22,7 +22,7 @@ Reorders the column names for idaifield_as_matrix()
 }
 \examples{
 \dontrun{
-colnames <- c("materialType", "identifier", "shortDescription", "type")
+colnames <- c("materialType", "identifier", "shortDescription", "category")
 
 reorder_colnames(colnames, order = "default")
 }

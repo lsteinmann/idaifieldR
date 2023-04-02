@@ -8,13 +8,13 @@ uidlist <- get_uid_list(test_docs)
 # it makes much more sense and will be the case sooner or later.
 # cannot be bothered right now because too many scripts use "type",
 # currently
-test_that("renames category to type", {
+test_that("renames type to category", {
   resource <- test_resources[[5]]
   resource$category <- "TEST"
-  resource$type <- NULL
+  resource$category <- NULL
   test <- simplify_single_resource(resource = resource, replace_uids = FALSE)
-  expect_false(any(names(test) == "category"))
-  expect_identical(test$type, resource$category)
+  expect_false(any(names(test) == "type"))
+  expect_identical(test$category, resource$type)
 })
 
 item <- which(uidlist$identifier == "Keramik mit Multipolygon")
@@ -36,11 +36,11 @@ test_that("geometry is matrix", {
 
 item <- match("Testformular", uidlist$category)
 
-test_that("removes configname from type", {
+test_that("removes configname from category", {
   test <- simplify_single_resource(test_resources[[item]],
                                    uidlist = uidlist,
                                    keep_geometry = TRUE)
-  expect_false(grepl(":", test$type))
+  expect_false(grepl(":", test$category))
 })
 
 test_that("removes configname from field", {

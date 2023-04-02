@@ -1,6 +1,6 @@
 #' show_categories
 #'
-#' Returns a list of types present in the iDAI.field 2 / Field Desktop database.
+#' Returns a list of categories present in the iDAI.field 2 / Field Desktop database.
 #'
 #' @param idaifield_docs An object as returned by `get_idaifield_docs(...)`;
 #' unnests to resource level if it didn't already happen.
@@ -23,9 +23,9 @@ show_categories <- function(idaifield_docs) {
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
-  uid_type_list <- get_uid_list(idaifield_docs)
-  db_types <- unique(uid_type_list$category)
-  return(db_types)
+  uid_category_list <- get_uid_list(idaifield_docs)
+  db_categories <- unique(uid_category_list$category)
+  return(db_categories)
 }
 
 
@@ -34,7 +34,7 @@ show_categories <- function(idaifield_docs) {
 #' returns a subset of the docs list selected by category or isRecordedIn
 #'
 #' @param idaifield_docs An object as returned by get_idaifield_docs(...)
-#' @param by must be either type (to select by resource category) or
+#' @param by must be either category (to select by resource category) or
 #' isRecordedIn (to select by container-resource (Survey-Area, Trench))
 #' @param value Character expected, should be the internal Name of the
 #' that will be selected for (e.g. "Layer", "Pottery"), can be vector of
@@ -59,7 +59,7 @@ select_by <- function(idaifield_docs,
                       value = NULL) {
 
   if (length(by) > 1) {
-    message("Please select only one of 'type' or 'isRecordedIn' (using first)")
+    message("Please select only one of 'category' or 'isRecordedIn' (using first)")
     by <- by[1]
   }
   if (is.null(value)) {
@@ -67,19 +67,19 @@ select_by <- function(idaifield_docs,
   }
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
-  uid_type_list <- get_uid_list(idaifield_docs)
+  uidlist <- get_uid_list(idaifield_docs)
 
-  col <- colnames(uid_type_list) == by
+  col <- colnames(uidlist) == by
 
-  typeindex <- which(uid_type_list[, col] %in% value)
+  ind <- which(uidlist[, col] %in% value)
 
-  selected_docs <- idaifield_docs[typeindex]
+  selected_docs <- idaifield_docs[ind]
   selected_docs <- structure(selected_docs, class = "idaifield_resources")
 
 
   attributes <- attributes(idaifield_docs)
   attributes(selected_docs) <- attributes[-which(names(attributes) == "names")]
-  names(selected_docs) <- names(idaifield_docs[typeindex])
+  names(selected_docs) <- names(idaifield_docs[ind])
 
   return(selected_docs)
 }

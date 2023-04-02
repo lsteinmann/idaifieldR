@@ -15,7 +15,7 @@ a character vector with the types represented in
 the idaifield_docs/resource
 }
 \description{
-Returns a list of types present in the iDAI.field 2 / Field Desktop database.
+Returns a list of categories present in the iDAI.field 2 / Field Desktop database.
 }
 \examples{
 \dontrun{

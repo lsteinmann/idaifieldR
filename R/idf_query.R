@@ -43,10 +43,9 @@ idf_query <- function(connection,
   result <- lapply(response$docs,
                    function(x) list("id" = x$resource$id, "doc" = x))
 
-  new_names <- lapply(result, function(x)
-    x$doc$resource$identifier)
-  new_names <- unlist(new_names)
-  names(result) <- new_names
+
+  result <- name_docs_list(result)
+  result <- type_to_category(result)
 
   projectname <- ifelse(is.null(projectname),
                         connection$project,
@@ -115,10 +114,8 @@ idf_index_query <- function(connection,
                    function(x) list("id" = x$resource$id, "doc" = x))
 
 
-  new_names <- lapply(result, function(x)
-    x$doc$resource$identifier)
-  new_names <- unlist(new_names)
-  names(result) <- new_names
+  result <- name_docs_list(result)
+  result <- type_to_category(result)
 
   projectname <- ifelse(is.null(projectname),
                         connection$project,
