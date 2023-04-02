@@ -152,6 +152,8 @@ simplify_single_resource <- function(resource,
 
   if (language != "all") {
     resource <- lapply(resource, function(x) {
+      # if there actually are different languages in the resource,
+      # try to process them
       pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
       names <- names(x)
       names <- grepl(paste0(pat, collapse = "|"), names)

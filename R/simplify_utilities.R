@@ -145,7 +145,7 @@ remove_config_names <- function(nameslist = c("identifier", "configname:test")) 
 #' sublists for each language
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the fields, defaults to english ("en")
-#' @param silant TRUE/FALSE: Should gather_languages()
+#' @param silent TRUE/FALSE: Should gather_languages()
 #' issue messages and warnings?
 #'
 #' @return a vector containing the values
@@ -163,7 +163,16 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
   # more than one language
   has_list <- suppressMessages(check_for_sublist(input_list))
   if (has_list) {
-    # try to get the selected language or english
+    if (language == "all") {
+      res <- lapply(input_list, function(x) {
+        new <- na_if_empty(unlist(x, use.names = TRUE))
+        new <- paste(paste0(names(new), ": ", new), collapse = "; ")
+        return(new)
+        })
+      res <- unlist(res)
+      return(res)
+    }
+    # try to get the selected language
     res <- lapply(input_list, function(x) na_if_empty(unlist(x[language])))
     res <- unlist(res)
     if (all(is.na(res))) {

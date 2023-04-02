@@ -13,7 +13,7 @@ sublists for each language}
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the fields, defaults to english ("en")}
 
-\item{silant}{TRUE/FALSE: Should gather_languages()
+\item{silent}{TRUE/FALSE: Should gather_languages()
 issue messages and warnings?}
 }
 \value{
