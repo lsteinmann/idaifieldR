@@ -13,9 +13,9 @@
 #' \dontrun{
 #' connection <- connect_idaifield(serverip = "127.0.0.1",
 #'                                 user = "R",
-#'                                 pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = connection,
-#'                                      projectname = "rtest")
+#'                                 pwd = "hallo",
+#'                                 project = "rtest")
+#' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
 #' show_categories(idaifield_docs)
 #' }
@@ -31,32 +31,31 @@ show_categories <- function(idaifield_docs) {
 
 #' select_by
 #'
-#' returns a subset of the docs list selected by type or isRecordedIn
+#' returns a subset of the docs list selected by category or isRecordedIn
 #'
 #' @param idaifield_docs An object as returned by get_idaifield_docs(...)
-#' @param by must be either type (to select by resource type) or isRecordedIn
-#' (to select by container-resource (Survey-Area, Trench))
-#' @param value Character expected, should be the internal Name of the Type
+#' @param by must be either type (to select by resource category) or
+#' isRecordedIn (to select by container-resource (Survey-Area, Trench))
+#' @param value Character expected, should be the internal Name of the
 #' that will be selected for (e.g. "Layer", "Pottery"), can be vector of
-#' multiple Types / Operations
+#' multiple Categories / Operations
 #'
 #' @return a list of class idaifield_resources containing the resources
-#' which are of the selected type
+#' which are of the selected category
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' connection <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = connection,
-#' projectname = "rtest")
+#' user = "R", pwd = "hallo", project = "rtest")
+#' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
-#' idaifield_layers <- select_by_type(idaifield_docs,
+#' idaifield_layers <- select_by(idaifield_docs,
 #' by = "category",
 #' value = "Layer")
 #' }
 select_by <- function(idaifield_docs,
-                      by = c("type", "isRecordedIn"),
+                      by = c("category", "isRecordedIn"),
                       value = NULL) {
 
   if (length(by) > 1) {
