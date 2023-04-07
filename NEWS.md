@@ -1,3 +1,6 @@
+# idaifieldR 0.3.1 _tba_
+
+
 # idaifieldR 0.3.1 _2023-04-02_
 * of course, I missed half of it.
 * fix `idf_query()`/`idf_index_query()`: rename "type" to "category" in resource lists
