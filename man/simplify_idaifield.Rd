@@ -10,7 +10,8 @@ simplify_idaifield(
   replace_uids = TRUE,
   uidlist = NULL,
   language = "all",
-  spread_fields = TRUE
+  spread_fields = TRUE,
+  use_exact_dates = FALSE
 )
 }
 \arguments{
@@ -35,6 +36,9 @@ languages as sub-lists ("all").}
 \item{spread_fields}{logical. (Defaults to TRUE) Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value
 of a checkbox-field?}
+
+\item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
+dates be used in case there are any? Default is FALSE.}
 }
 \value{
 an "idaifield_simple" list

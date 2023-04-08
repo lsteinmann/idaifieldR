@@ -1,28 +1,40 @@
-#' Check and unnest a list
+#' Check and unnest an idaifield_docs object
 #'
-#' Checks for list of class "idaifield_docs" and if the object is already
-#' unnested (i.e. of class "idaifield_resources"); if it is not, does so.
-#' If it cannot be processed, because it is not an idaifield_docs or
-#' idaifield_resources object, issues a warning and returns the same object.
+#' Checks if the input object is an idaifield_docs object, and if it is
+#' already unnested (i.e., of class "idaifield_resources" or
+#' "idaifield_simple"). If the object is not unnested, the function unnests
+#' it by stripping all top-level lists and returning only the list
+#' called "resource" within the db docs. If the input
+#' object cannot be processed because it is not an idaifield_docs or an
+#' unnested idaifield_resources or idaifield_simple object,
+#' the function issues a warning and returns the same object. You may force
+#' the function to process it anyway using "force = TRUE", but the outcome
+#' is uncertain.
 #'
-#' @param idaifield_docs An object to be used by one of the
-#' functions in this package
-#' @param force logical. Should the function attempt to process
-#' regardless of class?
+#' @param idaifield_docs An object of class "idaifield_docs".
+#' Typically, this is a list obtained from a CouchDB export that has been
+#' converted to a list from JSON by the function `get_idaifield_docs()` or
+#' the query functions of this package. If the object is of class
+#' "idaifield_docs", the function removes the top level lists, which
+#' contain information such as revisions and creation dates, and
+#' returns a new object of class "idaifield_resources".
 #'
-#' @return if already unnested, the same object as handed to it. if not,
-#' the same list with the toplevel removed.
+#' @param idaifield_docs An object of class "idaifield_docs" to be processed.
+#' @param force Logical. Should the function attempt to unnest the input object
+#' regardless of type or class? Default is FALSE.
+#'
+#' @return If already unnested, the same object as handed to it. If not, the same list
+#' with the top-level lists removed down to the "resource"-level.
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(projectname = "rtest",
-#' connection = connect_idaifield(serverip = "127.0.0.1",
-#' user = "R",
-#' pwd = "password"))
+#' conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+#' idaifield_docs <- get_idaifield_docs(conn, raw = TRUE)
 #'
-#' check_and_unnest(idaifield_docs)
+#' # Check if idaifield_docs is already unnested, and if not, do so:
+#' idaifield_docs <- check_and_unnest(idaifield_docs)
 #' }
 check_and_unnest <- function(idaifield_docs, force = FALSE) {
   check <- check_if_idaifield(idaifield_docs)

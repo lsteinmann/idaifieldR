@@ -11,7 +11,8 @@ simplify_single_resource(
   keep_geometry = TRUE,
   fieldtypes = NULL,
   language = "all",
-  spread_fields = TRUE
+  spread_fields = TRUE,
+  use_exact_dates = FALSE
 )
 }
 \arguments{

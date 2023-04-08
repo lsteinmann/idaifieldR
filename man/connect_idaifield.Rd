@@ -2,7 +2,7 @@
 % Please edit documentation in R/connect_idaifield.R
 \name{connect_idaifield}
 \alias{connect_idaifield}
-\title{Establish a connection to the iDAI.field / Field Desktop Client}
+\title{Connect to iDAI.field / Field Desktop Client}
 \usage{
 connect_idaifield(
   serverip = "127.0.0.1",
@@ -14,54 +14,67 @@ connect_idaifield(
 )
 }
 \arguments{
-\item{serverip}{The IP that the user can find in the Field Clients settings as
-'Your address'/'Eigene Adresse' without the port-specification (':3000')}
+\item{serverip}{The IP address of the Field Client. If you are using
+Field Desktop on the same machine, the default value is "127.0.0.1".}
 
-\item{project}{character. The project you want to work with. Will be
-overwritten by the projectname specification in other functions. If not
-supplied to other function, they will use the project recorded in the
-connection object.}
+\item{project}{The name of the project you want to work with.
+If you do not supply this parameter, other functions will use the
+project recorded in the connection object.}
 
-\item{user}{(optional) A user name. This should currently not be needed.}
+\item{user}{(optional) The username for the connection.
+This parameter is not currently needed.}
 
-\item{pwd}{The Password as it is displayed in the Field Clients settings
-as 'Your password'/'Eigenes Passwort'}
+\item{pwd}{The password used to authenticate with the Field
+Client (default is "password").}
 
-\item{version}{2 if iDAI.field 2 is used, 3 if you are using
-Field Desktop (default 3, integer).}
+\item{version}{The version number of the Field Client. By default,
+the value is set to 3.}
 
-\item{ping}{logical. default TRUE; Should the connection be tested on
-creation? If TRUE, also checks if the project exists.}
+\item{ping}{logical. Whether to test the connection on creation
+(default is TRUE). If TRUE, connect_idaifield() also checks if the
+project exists.}
 }
 \value{
-an `idaifieldR`-connection settings object (`idf_connection_settings`)
+`connect_idaifield()` returns an `idf_connection_settings`
+object that contains the connection settings needed to connect to the
+database of your iDAI.field / Field Desktop Client.
 }
 \description{
-The connection-object is used to store the connection settings needed to
-connect to the database of your iDAI.field / Field Desktop Client.
-It contains all the information that other functions such
-as `get_idaifield_docs()` need access the database.
+This function establishes a connection to the database of your
+iDAI.field / Field Desktop Client, and returns a connection object
+containing the necessary information for other functions to access
+the database, such as `get_idaifield_docs()`.
 }
 \details{
-If you are using Field Desktop on the same machine, you should not need
-the `serverip`-argument, as it defaults to the common localhost address.
-Likewise, the `user`-argument is currently not needed for access.
-`pwd` needs to be the password that is set in your Field Desktop-Client
-under Tools/Werkzeuge > Settings/Einstellungen:
-'Your password'/'Eigenes Passwort'. If the default `serverip`-argument
-does not work for you, or you want to access a Client on the same network
-that is not running on the same machine as R, you can exchange it for the
-address listed above the password (without the port (':3000')).
-The `version`-argument does not need to be specified if you use the
-current version of Field Desktop (3), but will help you connect if you
-are using 'iDAI.field 2'. You can set the `project` that you want to work
-with in this function, but be aware that other functions will overwrite
-this setting if you supply a projectname there. `connect_idaifield()` will
-check if the project actually exists and throw an error if it does not.
+By default, if you are using Field Desktop on the same machine,
+you should not need to specify the `serverip` argument, as it defaults to
+the common localhost address. Similarly, the `user` argument
+is currently not needed for access. The `pwd` argument needs to be
+set to the password that is set in your Field Desktop Client under
+Tools/Werkzeuge > Settings/Einstellungen: 'Your password'/'Eigenes Passwort'.
+If the default `serverip` argument does not work for you,
+or you want to access a client on the same network that is not running
+on the same machine as R, you can exchange it for the address listed above
+the password (without the port (':3000')). The `version` argument does
+not need to be specified if you are using the current version of
+Field Desktop (3), but will help you connect if you are using 'iDAI.field 2'.
+You can set the `project` that you want to work with in this function,
+but be aware that other functions will overwrite this setting if
+you supply a project name there. `connect_idaifield()` will check if
+the project actually exists and throw an error if it does not.
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo")
+conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
+
+conn$status
+
+idf_ping(conn)
 }
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
+}
+\seealso{
+\code{\link{idf_ping}}, \code{\link{idf_projects}}
 }

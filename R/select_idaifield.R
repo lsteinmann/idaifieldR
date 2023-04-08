@@ -35,24 +35,23 @@ idf_show_categories <- function(idaifield_docs) {
 #' @title Deprecated function: Select/filter an `idaifield_resources`- or
 #' `idaifield_docs`-list
 #'
-#' @description This function has been deprecated in favor
-#' of \code{\link{idf_select_by}}. It returns a subset of the docs list
-#' selected by category or isRecordedIn
+#' @description This function has been deprecated in favour
+#' of \code{\link{idf_select_by}}.
 #'
-#' @details Subset or filter the list of the docs or resources by
-#' category or isRecordedIn. You may want to consider querying the database
+#' @details Subset or filter the list of the docs or resources by the
+#' given parameters. You may want to consider querying the database
 #' directly using \code{\link{idf_query}} or \code{\link{idf_index_query}}.
 #'
 #' @param idaifield_docs An `idaifield_resources`- or `idaifield_docs`-list
 #' as returned by `get_idaifield_docs()` etc.
-#' @param by must be either category (to select by resource category) or
-#' isRecordedIn (to select by container-resource (Survey-Area, Trench))
-#' @param value character. Should be the internal name of the field
+#' @param by Any name of a field that might by present in the resource lists,
+#' e.g. category, identifier, processor etc.
+#' @param value character. Should be the internal name of the value
 #' that will be selected for (e.g. "Layer", "Pottery"), can also be vector of
-#' multiple Categories or Operations
+#' multiple values.
 #'
 #' @return A list of class `idaifield_resources` containing the resources
-#' which are of the selected category or in the selected operation.
+#' which contain the specified values.
 #'
 #' @export
 #'
@@ -66,9 +65,13 @@ idf_show_categories <- function(idaifield_docs) {
 #' user = "R", pwd = "hallo", project = "rtest")
 #' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
-#' idaifield_layers <- select_by(idaifield_docs,
+#' idaifield_layers <- idf_select_by(idaifield_docs,
 #' by = "category",
 #' value = "Layer")
+#'
+#' idaifield_anna <- idf_select_by(idaifield_docs,
+#' by = "processor",
+#' value = "Anna Allgemeinperson")
 #' }
 select_by <- function(idaifield_docs,
                       by = c("category", "isRecordedIn"),
@@ -83,24 +86,24 @@ select_by <- function(idaifield_docs,
 
 #' @title Select/filter an `idaifield_resources`- or `idaifield_docs`-list
 #'
-#' @description Subset or filter the list of the docs or resources by
-#' category or isRecordedIn. You may want to consider querying the database
+#' @description Subset or filter the list of the docs or resources by the
+#' given parameters. You may want to consider querying the database
 #' directly using \code{\link{idf_query}} or \code{\link{idf_index_query}}.
 #'
 #' @param idaifield_docs An `idaifield_resources`- or `idaifield_docs`-list
 #' as returned by `get_idaifield_docs()` etc.
 #' @param by Any name of a field that might by present in the resource lists,
-#' e.g. category, identifier,
+#' e.g. category, identifier, processor etc.
 #' @param value character. Should be the internal name of the value
 #' that will be selected for (e.g. "Layer", "Pottery"), can also be vector of
-#' multiple Categories or Operations
+#' multiple values.
 #'
 #' @return A list of class `idaifield_resources` containing the resources
-#' which are of the selected category or in the selected operation.
+#' which contain the specified values.
 #'
 #' @export
 #'
-#' @seealso \code{\link{get_idaifield_docs}},
+#' @seealso \code{\link{get_idaifield_docs}}, \code{\link{idf_show_categories}}
 #' \code{\link{idf_query}}, \code{\link{idf_index_query}}
 #'
 #' @examples
@@ -109,9 +112,13 @@ select_by <- function(idaifield_docs,
 #' user = "R", pwd = "hallo", project = "rtest")
 #' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
-#' idaifield_layers <- select_by(idaifield_docs,
+#' idaifield_layers <- idf_select_by(idaifield_docs,
 #' by = "category",
 #' value = "Layer")
+#'
+#' idaifield_anna <- idf_select_by(idaifield_docs,
+#' by = "processor",
+#' value = "Anna Allgemeinperson")
 #' }
 idf_select_by <- function(idaifield_docs,
                           by = NULL,

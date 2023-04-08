@@ -3,11 +3,47 @@ connection <- suppressMessages(connect_idaifield(serverip = "127.0.0.1",
                                                  ping = FALSE))
 ping <- try(idf_ping(connection))
 
-if (inherits(ping, "try-error")) {
-  ping <- FALSE
-} else {
-  ping <- TRUE
-}
+# Test that version is coerced to numeric
+test_that("version is coerced to numeric", {
+  connection <- suppressMessages(connect_idaifield(version = "3",
+                                                   pwd = "hallo",
+                                                   ping = FALSE))
+  expect_true(grepl("3001", connection$settings$base_url))
+  expect_is(connection$settings$base_url, "character")
+  expect_is(connection$status, "logical")
+  expect_is(connection$project, "NULL")
+})
+
+# Test that version less than 3 is set to 2
+test_that("version less than 3 is set to 2", {
+  connection <- suppressMessages(connect_idaifield(version = 1,
+                                                   pwd = "hallo",
+                                                   ping = FALSE))
+  expect_true(grepl("3000", connection$settings$base_url))
+})
+
+# Test that project argument is correctly assigned
+test_that("project argument is correctly assigned", {
+  connection <- suppressMessages(connect_idaifield(version = 3,
+                                                   project = "test",
+                                                   pwd = "hallo",
+                                                   ping = FALSE))
+  expect_equal(connection$project, "test")
+})
+
+# Test that ping argument is correctly assigned
+test_that("ping argument is correctly assigned", {
+  connection1 <- suppressMessages(connect_idaifield(version = 3,
+                                                    pwd = "hallo",
+                                                    ping = TRUE))
+  connection2 <- suppressMessages(connect_idaifield(version = 3,
+                                                    pwd = "hallo",
+                                                    ping = FALSE))
+
+  expect_is(connection1$status, "logical")
+  expect_true(is.na(connection2$status))
+})
+
 
 
 test_that("creates class 'idf_connection_settings'", {
@@ -32,6 +68,12 @@ test_that("port 3001 for version 3, works with '3'", {
                                                    ping = ping))
   expect_true(grepl("3001", connection$settings$base_url))
 })
+test_that("port 3001 for version 4", {
+  connection <- suppressMessages(connect_idaifield(version = 4,
+                                                   pwd = "hallo",
+                                                   ping = ping))
+  expect_true(grepl("3001", connection$settings$base_url))
+})
 
 test_that("port 3000 for version 2", {
   connection <- suppressMessages(connect_idaifield(version = "2",
@@ -40,6 +82,20 @@ test_that("port 3000 for version 2", {
   expect_true(grepl("3000", connection$settings$base_url))
 })
 
+test_that("error, no valid ip", {
+  expect_error(connect_idaifield(serverip = NULL, ping = TRUE))
+  expect_error(connect_idaifield(serverip = "klotz", ping = TRUE))
+  expect_error(connect_idaifield(serverip = 123, ping = TRUE))
+})
+
+test_that("auth object attached", {
+  expect_is(connect_idaifield(ping = FALSE)$settings$auth, "auth")
+})
+
+test_that("application/json in header", {
+  headers <- connect_idaifield(ping = FALSE)$settings$headers
+  expect_true("application/json" %in% headers)
+})
 
 skip_on_cran()
 conn <- skip_if_no_connection()

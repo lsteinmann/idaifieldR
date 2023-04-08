@@ -7,20 +7,27 @@
 convert_to_onehot(resource, fieldtypes)
 }
 \arguments{
-\item{resource}{A list from one of the measurement fields
-(dimensionLength, dimensionWidth, etc.) from a single resource (element).}
+\item{resource}{A list from one of the fields that can have multiple values
+from a single resource (element).}
 
 \item{config}{A configuration list as returned by `get_configuration()`}
 }
 \value{
-The resource object with the checkboxes seperated
+The resource object with the values of checkboxes
+separated into one-hot-coded versions.
 }
 \description{
-This function is a helper to `simplify_single_resource()`.
+This function is a helper function to
+`simplify_idaifield()` that takes a list from one of the
+fields marked in the config as containing checkboxes and converts
+the list to onehot-coded values.
 }
 \examples{
 \dontrun{
 ...
 }
+}
+\seealso{
+\code{\link{simplify_idaifield()}}
 }
 \keyword{internal}

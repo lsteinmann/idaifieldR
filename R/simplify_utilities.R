@@ -1,12 +1,18 @@
 #' Break down a list from a checkbox field to onehot-coded values
 #'
-#' This function is a helper to `simplify_single_resource()`.
+#' @description This function is a helper function to
+#' `simplify_idaifield()` that takes a list from one of the
+#' fields marked in the config as containing checkboxes and converts
+#' the list to onehot-coded values.
 #'
-#' @param resource A list from one of the measurement fields
-#' (dimensionLength, dimensionWidth, etc.) from a single resource (element).
+#' @param resource A list from one of the fields that can have multiple values
+#' from a single resource (element).
 #' @param config A configuration list as returned by `get_configuration()`
 #'
-#' @return The resource object with the checkboxes seperated
+#' @return The resource object with the values of checkboxes
+#' separated into one-hot-coded versions.
+#'
+#' @seealso \code{\link{simplify_idaifield()}}
 #'
 #' @keywords internal
 #'
@@ -53,37 +59,55 @@ convert_to_onehot <- function(resource, fieldtypes) {
 }
 
 
-#' Break down a list from a dimension field to a single value
+#' Convert a list of dimensions to simple values
 #'
-#' This function is a helper to `simplify_single_resource()`.
+#' @description This function breaks down a list of dimensions
+#' (e.g. `dimensionLength`, `dimensionWidth`, etc.) from a single
+#' resource (element) of an `idaifield_docs` or `idaifield_resources` object
+#' and converts them to simple values.It is used as a helper function
+#' for `simplify_idaifield()`.
 #'
-#' @param dimensionList A list from one of the measurement fields
-#' (dimensionLength, dimensionWidth, etc.) from a single resource (element).
-#' @param name The name of the corresponding dimension List.
+#' @param dimensionList A list of dimensions (e.g. `dimensionLength`,
+#' `dimensionWidth`, etc.) from a single resource (element) of an
+#' `idaifield_docs` or `idaifield_resources` object.
+#' @param name character. The name of the corresponding dimension list.
+#' Defaults to "dimension".
 #'
-#' @return A list containing simple values for each measured dimension from
-#' the list; note: if a range was entered, it returns the mean without further
-#' comment.
+#' @return A list containing simple values for each measured dimension
+#' from the list. If a range was entered, the function returns the mean
+#' without further comment.
 #'
-#' @keywords internal
+#' @seealso \code{\link{simplify_idaifield()}}
+#'
+#'
+#' @export
 #'
 #' @examples
 #' \dontrun{
-#' dimensionLength_new <- idf_sepdim(idaifield_resources[[1]]$dimensionLength,
-#' "dimensionLength")
+#' dimensionLength_new <- idf_sepdim(idaifield_resources[[1]]$dimensionLength, "dimensionLength")
 #' }
-idf_sepdim <- function(dimensionList, name = "dimensionLength") {
+idf_sepdim <- function(dimensionList, name = NULL) {
+  if (is.null(name)) {
+    stop("'idf_sepdim()' needs a name-argument.")
+  }
+  if (!is.list(dimensionList)) {
+    stop("'idf_sepdim()' needs a dimensionList as used by Field Desktop resources as the first argument.")
+  }
   dimno <- length(dimensionList)
+
+  #' Converts a single dimension to a simple value
+  #'
+  #' @param x A single dimension from the dimension list.
+  #'
+  #' @return A simple value for the dimension.
   get_dim_value <- function(x) {
     if (is.null(x$value)) {
       if (!is.null(x$rangeMin)) {
         range <- c(x$rangeMin, x$rangeMax)
         value <- mean(range) / 10000
-        # set name here for later add underscore for later naming
         names(value) <- "mean_"
         return(value)
       } else {
-        # And then we need to do unit conversion...
         unit <- x$inputUnit
         value <- x$inputValue
         if (unit == "m") {
@@ -102,52 +126,63 @@ idf_sepdim <- function(dimensionList, name = "dimensionLength") {
     }
   }
 
-  # get named vector with all values, avoid name when normal measurement
   dims <- unlist(lapply(dimensionList, FUN = get_dim_value))
-  names <- rep(name, length(dims))
-  names <- paste(names, "_cm_", names(dims),
+  dim_names <- rep(name, length(dims))
+  dim_names <- paste(dim_names, "_cm_", names(dims),
                  seq(from = 1, to = dimno, by = 1),
                  sep = "")
-  names(dims) <- names
+  names(dims) <- dim_names
   dims <- as.list(dims)
+
   return(dims)
 }
 
-#' Remove everything before the : in a character vector
+
+#' Remove everything before the colon in a character vector
 #'
-#' This function is a helper to `simplify_single_resource()`.
+#' @description This function removes everything before the first
+#' colon (including the colon) in a character vector.
+#' It is used as a helper function for `simplify_idaifield()`.
 #'
-#' @param nameslist a character vector
+#' @param names A character vector.
 #'
-#' @return same character vector without everything before
-#' the ":" including the ":"
+#' @return The same character vector with everything before
+#' the first colon (including the colon) removed.
 #'
-#' @keywords internal
+#' @seealso \code{\link{simplify_idaifield()}}
+#'
+#' @export
 #'
 #' @examples
 #' \dontrun{
-#' nameslist <- c("relation.liesWithin","relation.liesWithinLayer",
-#' "campaign.2022","milet:test")
-#' nameslist <- remove_config_names(nameslist)
-#' nameslist
+#' nameslist <- c("relation.liesWithin", "relation.liesWithinLayer",
+#' "campaign.2022", "rtest:test", "pergamon:neuesFeld")
+#' remove_config_names(nameslist)
 #' }
-remove_config_names <- function(nameslist = c("identifier", "configname:test")) {
-  nameslist <- gsub("^.*:", "", nameslist)
-  return(nameslist)
+remove_config_names <- function(conf_names = c("identifier", "configname:test")) {
+  new_names <- gsub("^.*:", "", conf_names)
+  return(new_names)
 }
 
-#' Gather multilanguage fields
+#' Gather fields with multiple language values
 #'
-#' @param input_list a list with character values containing (or not)
-#' sublists for each language
-#' @param language the short name (e.g. "en", "de", "fr") of the language that
-#' is preferred for the fields, defaults to english ("en")
-#' @param silent TRUE/FALSE: Should gather_languages()
-#' issue messages and warnings?
+#' @description This function extracts the values for a preferred language
+#' from a list containing values in multiple languages.
 #'
-#' @return a vector containing the values
+#' @param input_list A list with character values containing (or not)
+#' sublists for each language.
+#' @param language The short name (e.g. "en", "de", "fr") of the language
+#' that is preferred for the fields, defaults to English ("en"). Special
+#' value "all" can be used to return a concatenated string of all
+#' available languages.
+#' @param silent TRUE/FALSE: Should gather_languages() issue messages
+#' and warnings?
 #'
-#' @keywords internal
+#' @return A character vector containing the values in the preferred language.
+#'
+#' @export
+#'
+#' @seealso \code{\link{simplify_idaifield}}
 #'
 #' @examples
 #' \dontrun{
@@ -203,18 +238,29 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
   return(res)
 }
 
-#' Translate a list for one dating value from iDAI.field to a positive or negative number
+
+
+#' Translate a dating value from iDAI.field to a positive or negative number
 #'
-#' (Field does save numbers in this format, but apparently not all of them.
-#' This corrects for wrong numbers. Numbers bp/before present are subtracted
-#' from 1950 to get dates BCE.)
+#' @description This function takes a list containing a numerical year and a type of dating
+#' (either "bce", "ce", or "bp") and returns the year as a number with a
+#' positive or negative sign indicating whether the year is BCE or CE.
+#' If the dating type is "bp", the year is subtracted from 1950
+#' to get a BCE year.
 #'
-#' @param list A named list containing (at least): inputYear (number),
-#' and inputType ("bce", "ce", "bp")
+#' @param list A named list containing at least the following elements:
+#' \describe{
+#' \item{inputYear}{A numerical value representing a year.}
+#' \item{inputType}{A character string indicating the type of dating
+#' for the inputYear value. Must be one of "bce", "ce", or "bp".}
+#' }
 #'
-#' @return The year as a number, negative when BCE, positive when CE
+#' @return A numerical value representing the year, with a negative
+#' sign indicating BCE and a positive sign indicating CE.
 #'
 #' @keywords internal
+#'
+#' @seealso \code{\link{simplify_idaifield()}}
 #'
 #' @examples
 #' \dontrun{
@@ -241,28 +287,38 @@ bce_ce <- function(list) {
   }
 }
 
-
 #' Reduce the Dating-list to min/max-values
 #'
-#' Note: This function will evaluate all begin and end values for the
-#' dating of the resource object and evaluate only their min and max values!
+#' @description Reformats the "dating"-list of any resource from an `idaifield_docs`-
+#' or `idaifield_resources`-list to contain min and max dating and
+#' additional info as well as the original values in the "comment"-element.
 #'
-#' @param dat_list The "dating"-list of any resource from
-#' an `idaifield_...`-list
+#' @param dat_list A "dating"-list of any resource from an `idaifield_docs`-
+#' or `idaifield_resources`-list.
+#' @param use_exact_dates TRUE/FALSE: If TRUE and "exact" dating type is
+#' present, sets the min and max dating to the value of the exact dating.
+#' Default is FALSE.
 #'
-#' @return a reformatted list, containing min and max dating and additional
-#' info as well as the original values in the "comment"-element
+#' @return A reformatted list containing min and max dating and additional
+#' information as well as all original values in the "comment"-element.
 #'
-#' @keywords internal
+#' @seealso \code{\link{simplify_idaifield}}
 #'
-#' @examples
+#'
 #' \dontrun{
-#' dat_list <- list(type = "range",
-#'                  begin = list(inputYear = 2000, inputType = "bce"),
-#'                  end = list(inputYear = 2000, inputType = "ce"))
+#' dat_list <- list(list(type = "range",
+#'                      begin = list(inputYear = 2000, inputType = "bce"),
+#'                      end = list(inputYear = 2000, inputType = "ce")),
+#'                 list(type = "exact",
+#'                      begin = list(inputYear = 130, inputType = "bce"),
+#'                      end = list(inputYear = 130, inputType = "bce")))
+#' # Use the true min/max dating:
 #' fix_dating(dat_list)
-#' }
-fix_dating <- function(dat_list) {
+#' # use the available exact dating:
+#' fix_dating(dat_list, use_exact_dates = TRUE)
+#'}
+#'
+#' @export
 fix_dating <- function(dat_list, use_exact_dates = FALSE) {
 
   if (!is.list(dat_list)) {

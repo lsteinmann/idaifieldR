@@ -1,14 +1,16 @@
 no_conn <- connect_idaifield(serverip = "123.456.789.999",
                              pwd = "hallo", ping = FALSE)
 
-test_that("throws error", {
-  expect_error(idf_ping(no_conn))
+test_that("gives warning for invalid connection object", {
+  expect_warning(test <- idf_ping(NA), "Did nothing")
+  expect_false(test)
 })
 
-test_that("warning for wrong object", {
-  expect_warning(idf_ping(NA))
-  expect_false(suppressWarnings(idf_ping(NA)))
+test_that("gives warning for invalid connection credentials", {
+  expect_warning(test <- idf_ping(no_conn), "host")
+  expect_false(test)
 })
+
 
 
 
@@ -23,8 +25,8 @@ test_that("warning for connection error", {
   expect_false(suppressWarnings(idf_ping(no_conn)))
 })
 
-test_that("returns TRUE for working connection", {
+
+test_that("returns TRUE for valid connection", {
   expect_true(idf_ping(connection))
 })
-
 

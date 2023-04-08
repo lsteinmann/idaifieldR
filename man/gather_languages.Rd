@@ -2,25 +2,28 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{gather_languages}
 \alias{gather_languages}
-\title{Gather multilanguage fields}
+\title{Gather fields with multiple language values}
 \usage{
 gather_languages(input_list, language = "en", silent = FALSE)
 }
 \arguments{
-\item{input_list}{a list with character values containing (or not)
-sublists for each language}
+\item{input_list}{A list with character values containing (or not)
+sublists for each language.}
 
-\item{language}{the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the fields, defaults to english ("en")}
+\item{language}{The short name (e.g. "en", "de", "fr") of the language
+that is preferred for the fields, defaults to English ("en"). Special
+value "all" can be used to return a concatenated string of all
+available languages.}
 
-\item{silent}{TRUE/FALSE: Should gather_languages()
-issue messages and warnings?}
+\item{silent}{TRUE/FALSE: Should gather_languages() issue messages
+and warnings?}
 }
 \value{
-a vector containing the values
+A character vector containing the values in the preferred language.
 }
 \description{
-Gather multilanguage fields
+This function extracts the values for a preferred language
+from a list containing values in multiple languages.
 }
 \examples{
 \dontrun{
@@ -29,4 +32,6 @@ input_list <- list(list("en" = "English text", "de" = "Deutscher Text"),
 gather_languages(input_list, language = "de")
 }
 }
-\keyword{internal}
+\seealso{
+\code{\link{simplify_idaifield}}
+}
