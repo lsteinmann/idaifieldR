@@ -26,16 +26,23 @@
 #' }
 check_and_unnest <- function(idaifield_docs, force = FALSE) {
   check <- check_if_idaifield(idaifield_docs)
-  if (check["idaifield_docs"] || force) {
-    resources <- unnest_docs(idaifield_docs)
-    return(resources)
+  processed <- FALSE
+  if (check["idaifield_docs"]) {
+    result <- unnest_docs(idaifield_docs)
+    processed <- TRUE
   } else if (check["idaifield_resources"]) {
     message("The list was already unnested to resource-level.")
-    return(idaifield_docs)
+    result <- idaifield_docs
   } else if (check["idaifield_simple"]) {
-    return(idaifield_docs)
+    message("The list was already unnested to resource-level and simplified.")
+    result <- idaifield_docs
   } else {
-    warning("Not processed, did nothing.")
-    return(idaifield_docs)
+    result <- idaifield_docs
+    warning("Input object is not an idaifield_docs or an unnested idaifield_resources or idaifield_simple object.")
   }
+  if (force & !processed) {
+    warning("Attempting to unnest anyway.")
+    result <- unnest_docs(result)
+  }
+  return(result)
 }
