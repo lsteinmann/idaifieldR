@@ -95,14 +95,6 @@ test_that("attaches correct names", {
                           use.names = FALSE))
 })
 
-
-test_that("attaches attributes", {
-  sel_att <- attributes(idf_select_by(test_docs, by = "category",
-                       value = "Pottery"))
-
-  expect_true(all(c("connection", "projectname", "config") %in% names(sel_att)))
-})
-
 test_that("attaches correct attributes", {
   sel_att <- attributes(idf_select_by(test_docs, by = "category",
                                   value = "Pottery"))

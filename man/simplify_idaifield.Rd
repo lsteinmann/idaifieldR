@@ -80,3 +80,8 @@ projectname = "rtest")
 simpler_idaifield <- simplify_idaifield(idaifield_docs)
 }
 }
+\seealso{
+\code{\link{idf_sepdim}}, \code{\link{remove_config_names}},
+\code{\link{gather_languages}}, \code{\link{fix_dating}},
+\code{\link{convert_to_onehot}}
+}

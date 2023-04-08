@@ -230,6 +230,10 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
 #' @return A boolean value indicating if the connection
 #' was successful (TRUE) or not (FALSE).
 #'
+#' @export
+#'
+#'
+#' @examples
 #' \dontrun{
 #' # Establish a connection to the Field Database
 #' conn <- connect_idaifield(ping = FALSE)
@@ -237,8 +241,6 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
 #' # Ping the Field Database
 #' idf_ping(conn)
 #' }
-#'
-#' @export
 idf_ping <- function(conn) {
   if (inherits(conn, "idf_connection_settings")) {
     conn <- crul::HttpClient$new(url = conn$settings$base_url,

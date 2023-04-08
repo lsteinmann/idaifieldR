@@ -1,4 +1,4 @@
-#' Break down a list from a checkbox field to onehot-coded values
+#' @title Break down a list from a checkbox field to onehot-coded values
 #'
 #' @description This function is a helper function to
 #' `simplify_idaifield()` that takes a list from one of the
@@ -7,14 +7,15 @@
 #'
 #' @param resource A list from one of the fields that can have multiple values
 #' from a single resource (element).
-#' @param config A configuration list as returned by `get_configuration()`
+#' @param fieldtypes a matrix of fields with the given inputType as
+#' returned by `get_field_inputtypes()`
 #'
 #' @return The resource object with the values of checkboxes
 #' separated into one-hot-coded versions.
 #'
-#' @seealso \code{\link{simplify_idaifield()}}
+#' @seealso \code{\link{simplify_idaifield}}, \code{\link{get_field_inputtypes}}
 #'
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -59,7 +60,7 @@ convert_to_onehot <- function(resource, fieldtypes) {
 }
 
 
-#' Convert a list of dimensions to simple values
+#' @title Convert a list of dimensions to simple values
 #'
 #' @description This function breaks down a list of dimensions
 #' (e.g. `dimensionLength`, `dimensionWidth`, etc.) from a single
@@ -77,7 +78,7 @@ convert_to_onehot <- function(resource, fieldtypes) {
 #' from the list. If a range was entered, the function returns the mean
 #' without further comment.
 #'
-#' @seealso \code{\link{simplify_idaifield()}}
+#' @seealso \code{\link{simplify_idaifield}}
 #'
 #'
 #' @export
@@ -95,11 +96,6 @@ idf_sepdim <- function(dimensionList, name = NULL) {
   }
   dimno <- length(dimensionList)
 
-  #' Converts a single dimension to a simple value
-  #'
-  #' @param x A single dimension from the dimension list.
-  #'
-  #' @return A simple value for the dimension.
   get_dim_value <- function(x) {
     if (is.null(x$value)) {
       if (!is.null(x$rangeMin)) {
@@ -138,18 +134,18 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 }
 
 
-#' Remove everything before the colon in a character vector
+#' @title Remove everything before the colon in a character vector
 #'
 #' @description This function removes everything before the first
 #' colon (including the colon) in a character vector.
 #' It is used as a helper function for `simplify_idaifield()`.
 #'
-#' @param names A character vector.
+#' @param conf_names A character vector.
 #'
 #' @return The same character vector with everything before
 #' the first colon (including the colon) removed.
 #'
-#' @seealso \code{\link{simplify_idaifield()}}
+#' @seealso \code{\link{simplify_idaifield}}
 #'
 #' @export
 #'
@@ -164,7 +160,7 @@ remove_config_names <- function(conf_names = c("identifier", "configname:test"))
   return(new_names)
 }
 
-#' Gather fields with multiple language values
+#' @title Gather fields with multiple language values
 #'
 #' @description This function extracts the values for a preferred language
 #' from a list containing values in multiple languages.
@@ -240,7 +236,7 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
 
 
 
-#' Translate a dating value from iDAI.field to a positive or negative number
+#' @title Translate a dating value from iDAI.field to a positive or negative number
 #'
 #' @description This function takes a list containing a numerical year and a type of dating
 #' (either "bce", "ce", or "bp") and returns the year as a number with a
@@ -260,14 +256,13 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
 #'
 #' @keywords internal
 #'
-#' @seealso \code{\link{simplify_idaifield()}}
+#' @seealso \code{\link{simplify_idaifield}}
 #'
 #' @examples
 #' \dontrun{
 #' list <- list(inputYear = 100, inputType = "bce")
 #' bce_ce(list)
 #' }
-#'
 bce_ce <- function(list) {
   if (is.list(list)) {
     year <- abs(as.numeric(list$inputYear))
@@ -287,7 +282,7 @@ bce_ce <- function(list) {
   }
 }
 
-#' Reduce the Dating-list to min/max-values
+#' @title Reduce the Dating-list to min/max-values
 #'
 #' @description Reformats the "dating"-list of any resource from an `idaifield_docs`-
 #' or `idaifield_resources`-list to contain min and max dating and
@@ -304,7 +299,9 @@ bce_ce <- function(list) {
 #'
 #' @seealso \code{\link{simplify_idaifield}}
 #'
+#' @export
 #'
+#' @examples
 #' \dontrun{
 #' dat_list <- list(list(type = "range",
 #'                      begin = list(inputYear = 2000, inputType = "bce"),
@@ -317,8 +314,6 @@ bce_ce <- function(list) {
 #' # use the available exact dating:
 #' fix_dating(dat_list, use_exact_dates = TRUE)
 #'}
-#'
-#' @export
 fix_dating <- function(dat_list, use_exact_dates = FALSE) {
 
   if (!is.list(dat_list)) {

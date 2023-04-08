@@ -39,18 +39,35 @@ extract_field_names <- function(fields_list) {
   return(fields_df)
 }
 
-#' get_language_lookup(): Prepare a Language List as a Lookup Table
+#' Prepare a Language List as a Lookup Table
+#'
+#' The function compiles a table of background values and their translations
+#' in the language selected from the configuration supplied to it. Current
+#' Configuration resources from the database obtained by `get_configuration()`
+#' only contain canges made after the addition of the project configuration
+#' editor in iDAI.field 3. You can obtain older language configurations with
+#' `download_language_list()` from the iDAI.field GitHub repository.
+#'
+#'
+#' @details Be aware: if two things have the same name
+#' in the background of the database / project configuration but you use
+#' different translations this will result in only one of the
+#' translations being used.
 #'
 #' @param lang_list A list in the format used by iDAI.fields configuration,
 #' containing a separate list for each language with its short
 #' name (e.g. "en", "de") in which the "commons", "categories" etc. lists
-#' are contained.
+#' are contained. Can be obtained with `get_configuration()`.
 #' @param language Language short name that is to be extracted, e.g. "en",
 #' defaults to "en"
 #'
 #' @return A data.frame that can serve as a lookup table, with the background
 #' name in the "var" column, and the selected language in the "label" column.
+#'
 #' @export
+#'
+#' @seealso \code{\link{get_configuration}},
+#' \code{\link{download_language_list}}
 #'
 #' @examples
 #' \dontrun{

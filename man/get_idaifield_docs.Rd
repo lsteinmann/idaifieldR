@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_idaifield_docs.R
 \name{get_idaifield_docs}
 \alias{get_idaifield_docs}
-\title{get_idaifield_docs: Import all docs from an iDAI.field / Field Desktop project}
+\title{Import all docs from an iDAI.field / Field Desktop project}
 \usage{
 get_idaifield_docs(
   connection = connect_idaifield(serverip = "127.0.0.1", project = "rtest", user = "R",
@@ -34,18 +34,19 @@ attributes for later use.(If json is set to TRUE, returns a character
 string in json-format.)
 }
 \description{
-Imports all docs from an idaifield-database that is currently running
-and syncing into a list-object for further processing in R.
-The function is only useful for the import from iDAI.field 2 or
+Imports all docs from an idaifield-database that is
+currently running and syncing into a list-object for further processing
+in R. The function is only useful for the import from iDAI.field 2 or
 Field Desktop with the respective client running on the same computer as
 the R-script.
-When using `raw = TRUE` (the default) this function will allow you to
-get the change log for each resource, i.e. which user changed something
-in the resource at what time and who created it. Setting `raw = FALSE`
-will only return a list of the actual data. You can do this at a later time
-using `check_and_unnest()` from this package.
 }
 \details{
+When using `raw = TRUE` (the default) this function will allow
+you to get the change log for each resource, i.e. which user changed
+something in the resource at what time and who created it.
+Setting `raw = FALSE` will only return a list of the actual data.
+You can do this at a later time using `check_and_unnest()` from this
+package.
 NOTE: If you are planning on using the coordinates stored in the database,
 I strongly suggest you consider changing your R digits-setting to a higher
 value than the default. Depending on the projection used, coordinates may
@@ -59,4 +60,9 @@ conn <- connect_idaifield(project = "rtest", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = conn)
 }
 
+}
+\seealso{
+\code{\link{idf_query}},\code{\link{idf_index_query}},
+\code{\link{idf_select_by}}, \code{\link{simplify_idaifield}},
+\code{\link{check_and_unnest}}
 }

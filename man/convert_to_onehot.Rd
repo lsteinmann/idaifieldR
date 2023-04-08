@@ -10,7 +10,8 @@ convert_to_onehot(resource, fieldtypes)
 \item{resource}{A list from one of the fields that can have multiple values
 from a single resource (element).}
 
-\item{config}{A configuration list as returned by `get_configuration()`}
+\item{fieldtypes}{a matrix of fields with the given inputType as
+returned by `get_field_inputtypes()`}
 }
 \value{
 The resource object with the values of checkboxes
@@ -28,6 +29,5 @@ the list to onehot-coded values.
 }
 }
 \seealso{
-\code{\link{simplify_idaifield()}}
+\code{\link{simplify_idaifield}}, \code{\link{get_field_inputtypes}}
 }
-\keyword{internal}

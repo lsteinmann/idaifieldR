@@ -23,10 +23,7 @@ Reformats the "dating"-list of any resource from an `idaifield_docs`-
 or `idaifield_resources`-list to contain min and max dating and
 additional info as well as the original values in the "comment"-element.
 }
-\seealso{
-\code{\link{simplify_idaifield}}
-
-
+\examples{
 \dontrun{
 dat_list <- list(list(type = "range",
                      begin = list(inputYear = 2000, inputType = "bce"),
@@ -39,4 +36,7 @@ fix_dating(dat_list)
 # use the available exact dating:
 fix_dating(dat_list, use_exact_dates = TRUE)
 }
+}
+\seealso{
+\code{\link{simplify_idaifield}}
 }

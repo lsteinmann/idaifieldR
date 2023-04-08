@@ -14,7 +14,13 @@ as returned by `proj_idf_client()` (internal).}
 \value{
 A boolean value indicating if the connection
 was successful (TRUE) or not (FALSE).
-
+}
+\description{
+This function checks if a connection to the Field Database
+can be established. It returns a boolean value indicating if the
+connection was successful or not.
+}
+\examples{
 \dontrun{
 # Establish a connection to the Field Database
 conn <- connect_idaifield(ping = FALSE)
@@ -22,9 +28,4 @@ conn <- connect_idaifield(ping = FALSE)
 # Ping the Field Database
 idf_ping(conn)
 }
-}
-\description{
-This function checks if a connection to the Field Database
-can be established. It returns a boolean value indicating if the
-connection was successful or not.
 }

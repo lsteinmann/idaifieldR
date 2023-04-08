@@ -30,9 +30,8 @@ to get a BCE year.
 list <- list(inputYear = 100, inputType = "bce")
 bce_ce(list)
 }
-
 }
 \seealso{
-\code{\link{simplify_idaifield()}}
+\code{\link{simplify_idaifield}}
 }
 \keyword{internal}

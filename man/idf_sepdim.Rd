@@ -13,15 +13,11 @@ idf_sepdim(dimensionList, name = NULL)
 
 \item{name}{character. The name of the corresponding dimension list.
 Defaults to "dimension".}
-
-\item{x}{A single dimension from the dimension list.}
 }
 \value{
 A list containing simple values for each measured dimension
 from the list. If a range was entered, the function returns the mean
 without further comment.
-
-A simple value for the dimension.
 }
 \description{
 This function breaks down a list of dimensions
@@ -34,9 +30,7 @@ for `simplify_idaifield()`.
 \dontrun{
 dimensionLength_new <- idf_sepdim(idaifield_resources[[1]]$dimensionLength, "dimensionLength")
 }
-Converts a single dimension to a simple value
-
 }
 \seealso{
-\code{\link{simplify_idaifield()}}
+\code{\link{simplify_idaifield}}
 }

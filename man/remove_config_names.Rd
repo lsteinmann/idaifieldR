@@ -7,7 +7,7 @@
 remove_config_names(conf_names = c("identifier", "configname:test"))
 }
 \arguments{
-\item{names}{A character vector.}
+\item{conf_names}{A character vector.}
 }
 \value{
 The same character vector with everything before
@@ -26,5 +26,5 @@ remove_config_names(nameslist)
 }
 }
 \seealso{
-\code{\link{simplify_idaifield()}}
+\code{\link{simplify_idaifield}}
 }

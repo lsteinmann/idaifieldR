@@ -231,6 +231,12 @@ simplify_single_resource <- function(resource,
 #' @return an "idaifield_simple" list
 #' @export
 #'
+#'
+#' @seealso \code{\link{idf_sepdim}}, \code{\link{remove_config_names}},
+#' \code{\link{gather_languages}}, \code{\link{fix_dating}},
+#' \code{\link{convert_to_onehot}}
+#'
+#'
 #' @examples
 #' \dontrun{
 #' connection <- connect_idaifield(serverip = "127.0.0.1",

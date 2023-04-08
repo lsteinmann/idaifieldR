@@ -13,7 +13,7 @@ get_field_inputtypes(config, inputType = "all")
 specified type}
 }
 \value{
-a matrix of fields with the given inputType
+A matrix of fields with the given inputType
 }
 \description{
 This function retrieves a matrix containing the inputTypes of all
@@ -28,4 +28,7 @@ conn <- connect_idaifield(serverip = "127.0.0.1",
 config <- get_configuration(connection = conn)
 checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
 }
+}
+\seealso{
+\code{\link{get_configuration}}, \code{\link{convert_to_onehot}}
 }

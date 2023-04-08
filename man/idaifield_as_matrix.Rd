@@ -7,20 +7,20 @@
 idaifield_as_matrix(idaifield)
 }
 \arguments{
-\item{idaifield}{An object as returned by `get_idaifield_docs(...)`,
-`check_and_unnest(...)` or `simplify_idaifield(...)`}
+\item{idaifield}{An object as returned by `get_idaifield_docs()`,
+`check_and_unnest()` or `simplify_idaifield()`}
 }
 \value{
 a matrix (depending on selection and project database
 it can be very large)
 }
 \description{
-Converts a list of class `idaifield_docs`, `idaifield_resource` or
-`idaifield_simple` into a matrix. Recommended to use with
+Converts a list of class `idaifield_docs`, `idaifield_resource`
+or `idaifield_simple` into a matrix. Recommended to use with
 `idaifield_simple`-lists as returned by `simplify_idaifield()`.
 If given a list of class `idaifield_docs` containing all meta-info,
 it will automatically unnest to resource level. It is recommended to
-select the list first using `select_by()` from this package to reduce
+select the list first using `idf_select_by()` from this package to reduce
 the amount of columns returned. See example.
 }
 \examples{
@@ -35,4 +35,7 @@ pottery <- simplify_idaifield(pottery,
                               uidlist = get_uid_list(idaifield_docs))
 pottery <- idaifield_as_matrix(pottery)
 }
+}
+\seealso{
+\code{\link{simplify_idaifield}}
 }

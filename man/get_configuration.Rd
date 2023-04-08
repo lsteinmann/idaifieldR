@@ -26,8 +26,13 @@ added before the update to iDAI.field 3.
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
+conn <- connect_idaifield(serverip = "127.0.0.1",
+user = "R", pwd = "hallo", project = "rtest")
 config <- get_configuration(connection = conn,
 projectname = "rtest")
 }
+}
+\seealso{
+\code{\link{get_field_inputtypes}},
+\code{\link{get_language_lookup}}, \code{\link{download_language_list}}
 }

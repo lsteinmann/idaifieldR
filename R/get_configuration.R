@@ -14,11 +14,15 @@
 #' @return a list containing the project configuration; NA if the configuration
 #' could not be found or the connection failed.
 #'
+#' @seealso \code{\link{get_field_inputtypes}},
+#' \code{\link{get_language_lookup}}, \code{\link{download_language_list}}
+#'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
+#' conn <- connect_idaifield(serverip = "127.0.0.1",
+#' user = "R", pwd = "hallo", project = "rtest")
 #' config <- get_configuration(connection = conn,
 #' projectname = "rtest")
 #' }
@@ -56,7 +60,9 @@ get_configuration <- function(connection, projectname = NULL) {
 #' @param inputType if specified, matrix is filtered to return only the
 #' specified type
 #'
-#' @return a matrix of fields with the given inputType
+#' @return A matrix of fields with the given inputType
+#'
+#' @seealso \code{\link{get_configuration}}, \code{\link{convert_to_onehot}}
 #'
 #' @export
 #'

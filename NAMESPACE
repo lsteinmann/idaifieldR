@@ -2,6 +2,7 @@
 
 export(check_and_unnest)
 export(connect_idaifield)
+export(convert_to_onehot)
 export(download_language_list)
 export(fix_dating)
 export(fix_relations)
