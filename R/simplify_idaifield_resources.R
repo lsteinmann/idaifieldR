@@ -256,8 +256,9 @@ simplify_idaifield <- function(idaifield_docs,
     uidlist <- get_uid_list(idaifield_docs)
   }
 
-  config <- attr(idaifield_docs, "config")
   projectname <- attr(idaifield_docs, "projectname")
+  conn <- attr(idaifield_docs, "connection")
+  config <- try(get_configuration(conn, projectname = projectname))
 
   if (inherits(config, "try-error")) {
     fieldtypes <- NA
@@ -299,7 +300,6 @@ simplify_idaifield <- function(idaifield_docs,
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
   attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
   attr(idaifield_simple, "projectname") <- attr(idaifield_docs, "projectname")
-  attr(idaifield_simple, "config") <- config
   attr(idaifield_simple, "language") <- language
 
   return(idaifield_simple)

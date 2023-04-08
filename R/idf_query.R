@@ -53,7 +53,6 @@ idf_query <- function(connection,
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
-  attr(result, "config") <- suppressMessages(get_configuration(connection, projectname))
   result <- structure(result, class = "idaifield_docs")
 
   return(result)
@@ -123,7 +122,6 @@ idf_index_query <- function(connection,
 
   attr(result, "connection") <- connection
   attr(result, "projectname") <- projectname
-  attr(result, "config") <- get_configuration(connection, projectname)
 
   result <- structure(result, class = "idaifield_docs")
 

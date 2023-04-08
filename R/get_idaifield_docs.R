@@ -84,17 +84,12 @@ get_idaifield_docs <- function(connection = connect_idaifield(
     }
   }
 
-  # get it again to add as attribute as it makes more sense to store
-  # metadata there
-  config <- try(suppressMessages(get_configuration(connection, projectname)))
-
   projectname <- ifelse(is.null(projectname),
                         connection$project,
                         projectname)
 
   attr(idaifield_docs, "connection") <- connection
   attr(idaifield_docs, "projectname") <- projectname
-  attr(idaifield_docs, "config") <- config
 
   return(idaifield_docs)
 }
