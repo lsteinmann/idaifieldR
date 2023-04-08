@@ -1,48 +1,61 @@
-#' Establish a connection to the iDAI.field / Field Desktop Client
+#' Connect to iDAI.field / Field Desktop Client
 #'
-#' The connection-object is used to store the connection settings needed to
-#' connect to the database of your iDAI.field / Field Desktop Client.
-#' It contains all the information that other functions such
-#' as `get_idaifield_docs()` need access the database.
+#' @description This function establishes a connection to the database of your
+#' iDAI.field / Field Desktop Client, and returns a connection object
+#' containing the necessary information for other functions to access
+#' the database, such as `get_idaifield_docs()`.
 #'
-#' If you are using Field Desktop on the same machine, you should not need
-#' the `serverip`-argument, as it defaults to the common localhost address.
-#' Likewise, the `user`-argument is currently not needed for access.
-#' `pwd` needs to be the password that is set in your Field Desktop-Client
-#' under Tools/Werkzeuge > Settings/Einstellungen:
-#' 'Your password'/'Eigenes Passwort'. If the default `serverip`-argument
-#' does not work for you, or you want to access a Client on the same network
-#' that is not running on the same machine as R, you can exchange it for the
-#' address listed above the password (without the port (':3000')).
-#' The `version`-argument does not need to be specified if you use the
-#' current version of Field Desktop (3), but will help you connect if you
-#' are using 'iDAI.field 2'. You can set the `project` that you want to work
-#' with in this function, but be aware that other functions will overwrite
-#' this setting if you supply a projectname there. `connect_idaifield()` will
-#' check if the project actually exists and throw an error if it does not.
+#' @details By default, if you are using Field Desktop on the same machine,
+#' you should not need to specify the `serverip` argument, as it defaults to
+#' the common localhost address. Similarly, the `user` argument
+#' is currently not needed for access. The `pwd` argument needs to be
+#' set to the password that is set in your Field Desktop Client under
+#' Tools/Werkzeuge > Settings/Einstellungen: 'Your password'/'Eigenes Passwort'.
+#' If the default `serverip` argument does not work for you,
+#' or you want to access a client on the same network that is not running
+#' on the same machine as R, you can exchange it for the address listed above
+#' the password (without the port (':3000')). The `version` argument does
+#' not need to be specified if you are using the current version of
+#' Field Desktop (3), but will help you connect if you are using 'iDAI.field 2'.
+#' You can set the `project` that you want to work with in this function,
+#' but be aware that other functions will overwrite this setting if
+#' you supply a project name there. `connect_idaifield()` will check if
+#' the project actually exists and throw an error if it does not.
 #'
+#' @param serverip The IP address of the Field Client. If you are using
+#' Field Desktop on the same machine, the default value is "127.0.0.1".
+#' @param project The name of the project you want to work with.
+#' If you do not supply this parameter, other functions will use the
+#' project recorded in the connection object.
+#' @param user (optional) The username for the connection.
+#' This parameter is not currently needed.
+#' @param pwd The password used to authenticate with the Field
+#' Client (default is "password").
+#' @param version The version number of the Field Client. By default,
+#' the value is set to 3.
+#' @param ping logical. Whether to test the connection on creation
+#' (default is TRUE). If TRUE, connect_idaifield() also checks if the
+#' project exists.
 #'
-#' @param serverip The IP that the user can find in the Field Clients settings as
-#' 'Your address'/'Eigene Adresse' without the port-specification (':3000')
-#' @param project character. The project you want to work with. Will be
-#' overwritten by the projectname specification in other functions. If not
-#' supplied to other function, they will use the project recorded in the
-#' connection object.
-#' @param user (optional) A user name. This should currently not be needed.
-#' @param pwd The Password as it is displayed in the Field Clients settings
-#' as 'Your password'/'Eigenes Passwort'
-#' @param version 2 if iDAI.field 2 is used, 3 if you are using
-#' Field Desktop (default 3, integer).
-#' @param ping logical. default TRUE; Should the connection be tested on
-#' creation? If TRUE, also checks if the project exists.
-#'
-#' @return an `idaifieldR`-connection settings object (`idf_connection_settings`)
+#' @return `connect_idaifield()` returns an `idf_connection_settings`
+#' object that contains the connection settings needed to connect to the
+#' database of your iDAI.field / Field Desktop Client.
 #' @export
+#'
+#' @seealso
+#' \code{\link{idf_ping}}, \code{\link{idf_projects}}
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#'
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
+#' conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
+#'
+#' conn$status
+#'
+#' idf_ping(conn)
 #' }
 connect_idaifield <- function(serverip    = "127.0.0.1",
                               project     = NULL,
@@ -51,6 +64,11 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
                               version     = 3,
                               ping        = TRUE) {
 
+  serverip <- as.character(serverip)
+  validip <- grepl("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", serverip)
+  if (!validip || length(serverip) == 0) {
+    stop("Please supply a valid IP-Adress, e.g. '127.0.0.1' if Field Desktop is running on the same machine as R.")
+  }
 
   # set version to numeric if possible
   if (!is.numeric(version)) {
@@ -84,23 +102,63 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
   if (ping) {
     conn$status <- idf_ping(conn)
     if (conn$status && !is.null(project)) {
-      choices <- suppressMessages(idf_projects(conn))
-      project_present <- project %in% choices
-      if (!project_present) {
-        stop(paste0("Invalid project: '", project, "'. Choose one of: ", paste(choices, collapse = ", ")))
-      }
+      idf_check_for_project(conn)
     }
   }
 
   return(conn)
 }
 
-#' Connection-Client to a Field Database to get all docs (internal)
+#' Check for the existence of a project in a Field Database (internal)
 #'
-#' @param conn The connection settings as returned by `connect_idaifield()`
+#' This function checks if a given project exists in the Field Database.
+#' If the project does not exist, it throws an error.
+#'
+#' @param conn The connection settings as returned by connect_idaifield()
+#' @param project (optional) character. Name of the project-database to
+#' check for. If not supplied, the function will use the project specified
+#' in the connection settings.
+#'
+#' @keywords internal
+#' @return NULL
+#'
+#' @examples
+#' \dontrun{
+#' conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+#' check_for_project(conn) # Will not return anything
+#' }
+idf_check_for_project <- function(conn, project = NULL) {
+  if (is.null(project) && is.null(conn$project)) {
+    stop("No project supplied to `check_for_project()`")
+  } else {
+    project <- ifelse(is.null(project), conn$project, project)
+  }
+  choices <- suppressMessages(idf_projects(conn))
+  project_present <- project %in% choices
+  if (!project_present) {
+    stop(paste0("The requested project '", project, "' does not exist.\n",
+                "Choose one of: ", paste(choices, collapse = ", ")))
+  }
+}
+
+
+
+#' Create a client connection to a Field database (internal)
+#'
+#' This function creates a `crul::HttpClient` object for use in retrieving
+#' all documents from or querying a Field database associated with a
+#' specific project. This function is intended for internal use only.
+#'
+#' @param conn A connection object returned by connect_idaifield().
 #' @param project character. Name of the project-database that should be loaded.
 #'
-#' @return a crul::HttpClient
+#' @references
+#' For more information about the crul package, see: https://cran.r-project.org/package=crul
+#'
+#' @seealso
+#' \code{\link{connect_idaifield}} for information about connecting to Field.
+#'
+#' @return A `crul::HttpClient` object.
 #' @keywords internal
 #'
 #' @examples
@@ -112,19 +170,6 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
   if (!inherits(conn, "idf_connection_settings")) {
     stop("Need an 'idf_connection_settings'-object as returned by `connect_idaifield()`.")
   }
-
-  include <- match.arg(include, c("all", "query"), several.ok = FALSE)
-
-  if (is.na(conn$status)) {
-    message("Status not set. Attempting to reach database...")
-    conn$status <- idf_ping(conn)
-  }
-  if (!conn$status) {
-    message("Status set to FALSE. Attempting to reach database...")
-    conn$status <- try(idf_ping(conn), silent = TRUE)
-    conn$status <- ifelse(inherits(conn$status, "try-error"), FALSE, conn$status)
-  }
-
   if (is.null(project) & !is.null(conn$project)) {
     project <- conn$project
   }
@@ -135,13 +180,18 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
     url <- paste0(conn$settings$base_url, "/", project)
   }
 
-  if (conn$status) {
-    all_projects <- idf_projects(conn)
-    project_in_all_dbs <- project %in% idf_projects(conn)
-    if (!project_in_all_dbs) {
-      stop(paste("The requested project does not exist. Your projects: ",
-           paste(all_projects, collapse = ", ")))
-    }
+  include <- match.arg(include, c("all", "query"), several.ok = FALSE)
+
+  if (is.na(conn$status) || !conn$status) {
+    message(paste0("Status set to '", conn$status,
+                   "'. Attempting to reach database..."))
+    conn$status <- idf_ping(conn)
+  }
+
+  if (!conn$status) {
+    stop("Could not reach database - check the connection settings.")
+  } else {
+    idf_check_for_project(conn, project)
 
     proj_conn <- crul::HttpClient$new(url = url,
                                       opts = conn$settings$auth,
@@ -152,9 +202,8 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
                       "' containing ", message$doc_count, " docs.")
 
     message(message)
-  } else {
-    stop("Could not reach database - check the connection settings.")
   }
+
   if (include == "all") {
     url <- paste0(url, "/_all_docs")
   } else if (include == "query") {
@@ -170,21 +219,26 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
 
 #' Ping the Field-Database
 #'
-#' Helper for all functions that access the database to display
-#' specific warning messages.
+#' This function checks if a connection to the Field Database
+#' can be established. It returns a boolean value indicating if the
+#' connection was successful or not.
 #'
-#' @param conn The connection settings as returned by `connect_idaifield()` or
-#' a direct Client as returned by `proj_idf_client()` for internal functions
+#' @param conn An object that contains the connection settings, as
+#' returned by `connect_idaifield()` or a `crul::HttpClient` object
+#' as returned by `proj_idf_client()` (internal).
 #'
-#' @return returns TRUE if connection works, FALSE if failed to connect
-#' @export
+#' @return A boolean value indicating if the connection
+#' was successful (TRUE) or not (FALSE).
 #'
-#' @examples
 #' \dontrun{
-#' idaifield_connection <- connect_idaifield(ping = FALSE)
-#' idf_ping(idaifield_connection)
+#' # Establish a connection to the Field Database
+#' conn <- connect_idaifield(ping = FALSE)
+#'
+#' # Ping the Field Database
+#' idf_ping(conn)
 #' }
 #'
+#' @export
 idf_ping <- function(conn) {
   if (inherits(conn, "idf_connection_settings")) {
     conn <- crul::HttpClient$new(url = conn$settings$base_url,
@@ -195,7 +249,12 @@ idf_ping <- function(conn) {
     ping <- try(conn$get()$parse("UTF-8"), silent = TRUE)
     if(inherits(ping, "try-error")) {
       # throw error when curl "Could not resolve host"
-      stop(paste0(ping[1], "\nCheck the connection settings from 'connect_idaifield()' and try again."))
+      if (grepl("refused", ping[1])) {
+        warning("Either Field Desktop is not running, or the serverip in `connect_idaifield()` is incorrect.")
+      } else {
+        warning(paste0("Unexpected Error in `idf_ping()`:\n", ping[1]))
+      }
+      return(FALSE)
     } else if (grepl("Welcome", ping)) {
       # return true if connection works
       ping <- jsonlite::fromJSON(ping)
