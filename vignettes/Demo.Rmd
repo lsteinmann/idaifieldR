@@ -119,10 +119,10 @@ The function will also notify you that it tries to use the English values from m
 
 The list now has the `idaifield_simple` class. Browse the resulting list by clicking on it in your Environment-window in RStudio or use `View(idaifield_test_simple)`. All `idaifield_...`-objects carry the connection and name of the project as attributes with them for later use. You can view them with `attributes(idaifield_test_simple)`.
 
-If you wish to get the most out of you data, I recommend you use this list and process it according to your own needs. However, `idaifieldR` comes with a function that will turn the list into a matrix. For this, it makes a lot of sense to select the data first and get only the Pottery-resources that we want to work with. The `select_by()`-function from `idaifieldR` can do this for us (see the documentation at `?select_by()`)
+If you wish to get the most out of you data, I recommend you use this list and process it according to your own needs. However, `idaifieldR` comes with a function that will turn the list into a matrix. For this, it makes a lot of sense to select the data first and get only the Pottery-resources that we want to work with. The `idf_select_by()`-function from `idaifieldR` can do this for us (see the documentation at `?idf_select_by()`)
 
 ```{r select_by}
-pottery <- select_by(idaifield_test_simple, by = "category", value = "Pottery")
+pottery <- idf_select_by(idaifield_test_simple, by = "category", value = "Pottery")
 ```
 
 ## Queries
@@ -150,7 +150,7 @@ pottery <- idaifield_as_matrix(pottery) %>%
   as.data.frame()
 ```
 
-When viewing the resulting `Pottery`-data frame, you will notice that the campaign-field has been converted to multiple columns. If a custom configuration is present, this will happen to all custom checkbox-fields, as there is no other way to conveniently deal with such fields in a data frame. To make different or better use of it, try to format the original list itself according to your needs.
+When viewing the resulting `Pottery`-data frame, you will notice that the campaign-field has been converted to multiple columns. If a custom configuration is present and can be accessed by `get_configuration()`, this will happen to all custom checkbox-fields, as there is no other way to conveniently deal with such fields in a data frame. To make different or better use of it, try to format the original list itself according to your needs.
 
 From the data frame, we can produce some basic plots and take a look at the distribution of periods across our layers:
 
@@ -184,10 +184,14 @@ lookup <- get_language_lookup(core_lang_list, language = "en")
 lookup <- rbind(lookup, get_language_lookup(milet_lang_list, language = "en"))
 ```
 
-To get the translations from the Project configuration, you can use the config-attribute from any `idaifield_...`-list. This will also give you an impression of how the lookup-table is set up:
-
-```{r}
-config <- attributes(idaifield_test_simple)$config
+To get the translations from the Project configuration, you can get it using `get_configuration()`. Please note that you need to be able to connect to the database in order to do that. This will also give you an impression of how the lookup-table is set up:
+```{r echo = FALSE, message=FALSE,warning=FALSE}
+config <- readRDS(system.file("testdata", "idaifield_test_config.RDS",
+                              package = "idaifieldR"))
+lookup_conf <- get_language_lookup(config$languages, language = "en")
+```
+```{r eval = FALSE}
+config <- get_configuration(conn)
 lookup_conf <- get_language_lookup(config$languages, language = "en")
 ```
 

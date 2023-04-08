@@ -1,9 +1,10 @@
 # idaifieldR 0.3.2 _tba_
 * add option to use or not use exact dates as min/max values for dating if present
-* remove config as attribute, that was a bad idea
+* remove config as attribute to save space
 * rename `select_by()` to `idf_select_by()`
 * rename `show_categories()` to `idf_show_categories()`
 * update `idf_select_by()` and `idf_show_categories()`
+* update vignettes
 
 
 # idaifieldR 0.3.1 _2023-04-02_
