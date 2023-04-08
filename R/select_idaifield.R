@@ -89,9 +89,9 @@ select_by <- function(idaifield_docs,
 #'
 #' @param idaifield_docs An `idaifield_resources`- or `idaifield_docs`-list
 #' as returned by `get_idaifield_docs()` etc.
-#' @param by must be either category (to select by resource category) or
-#' isRecordedIn (to select by container-resource (Survey-Area, Trench))
-#' @param value character. Should be the internal name of the field
+#' @param by Any name of a field that might by present in the resource lists,
+#' e.g. category, identifier,
+#' @param value character. Should be the internal name of the value
 #' that will be selected for (e.g. "Layer", "Pottery"), can also be vector of
 #' multiple Categories or Operations
 #'
@@ -114,19 +114,23 @@ select_by <- function(idaifield_docs,
 #' value = "Layer")
 #' }
 idf_select_by <- function(idaifield_docs,
-                          by = c("category", "isRecordedIn"),
+                          by = NULL,
                           value = NULL) {
-
-  if (length(by) > 1) {
-    message("Please select only one of 'category' or 'isRecordedIn' (using first)")
+  if (is.null(by)) {
+    stop("Argument `by` cannot be empty.")
+  } else if (length(by) > 1) {
+    warning("Please supply only one character string to `by` (using first).")
     by <- by[1]
   }
   if (is.null(value)) {
-    stop("No value given for selection.")
+    stop("Argument `value` cannot be empty.")
   }
 
   resources <- check_and_unnest(idaifield_docs)
-  result <- Filter(function(x) x[[by]] == value, resources)
+
+  result <- Filter(function(x) {
+    unlist(x[[by]]) %in% value
+    }, resources)
 
   attributes <- attributes(idaifield_docs)
   attributes <- attributes[-which(names(attributes) == "names")]
