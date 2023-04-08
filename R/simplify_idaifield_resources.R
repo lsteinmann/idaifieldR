@@ -26,7 +26,8 @@ simplify_single_resource <- function(resource,
                                      keep_geometry = TRUE,
                                      fieldtypes = NULL,
                                      language = "all",
-                                     spread_fields = TRUE) {
+                                     spread_fields = TRUE,
+                                     use_exact_dates = FALSE) {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -100,7 +101,7 @@ simplify_single_resource <- function(resource,
 
   dating <- resource[["dating", exact = TRUE]]
   if (!is.null(dating)) {
-    dating <- fix_dating(dating)
+    dating <- fix_dating(dating, use_exact_dates = use_exact_dates)
     resource$dating <- NULL
     resource <- append(resource, dating)
   }
@@ -224,6 +225,8 @@ simplify_single_resource <- function(resource,
 #' @param spread_fields logical. (Defaults to TRUE) Should checkbox-fields be
 #' spread across multiple lists to facilitate boolean-columns for each value
 #' of a checkbox-field?
+#' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
+#' dates be used in case there are any? Default is FALSE.
 #'
 #' @return an "idaifield_simple" list
 #' @export
@@ -242,7 +245,8 @@ simplify_idaifield <- function(idaifield_docs,
                                replace_uids = TRUE,
                                uidlist = NULL,
                                language = "all",
-                               spread_fields = TRUE) {
+                               spread_fields = TRUE,
+                               use_exact_dates = FALSE) {
 
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_simple"] == TRUE) {
@@ -293,7 +297,8 @@ simplify_idaifield <- function(idaifield_docs,
       keep_geometry = keep_geometry,
       fieldtypes = fieldtypes,
       language = language,
-      spread_fields = spread_fields
+      spread_fields = spread_fields,
+      use_exact_dates = use_exact_dates
     )
   )
 

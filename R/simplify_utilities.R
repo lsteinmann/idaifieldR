@@ -263,6 +263,7 @@ bce_ce <- function(list) {
 #' fix_dating(dat_list)
 #' }
 fix_dating <- function(dat_list) {
+fix_dating <- function(dat_list, use_exact_dates = FALSE) {
 
   if (!is.list(dat_list)) {
     message("Not a list.")
@@ -272,27 +273,25 @@ fix_dating <- function(dat_list) {
   dat_min <- lapply(dat_list, function(x) unlist(bce_ce(x$begin)))
   dat_max <- lapply(dat_list, function(x) unlist(bce_ce(x$end)))
 
+
+
+  new_dat_min <- suppressWarnings(min(unlist(dat_min), na.rm = TRUE))
+  new_dat_max <- suppressWarnings(max(unlist(dat_max), na.rm = TRUE))
+
   dat_type <- unlist(lapply(dat_list, function(x) x$type))
-  ex_date <- dat_type == "exact"
-  if (any(ex_date)) {
-    dat_max <- unlist(dat_max)[ex_date]
-    dat_min <- dat_max
-  } else {
-    dat_min <- suppressWarnings(min(unlist(dat_min), na.rm = TRUE))
-    dat_max <- suppressWarnings(max(unlist(dat_max), na.rm = TRUE))
+
+  if (use_exact_dates) {
+    ex_date <- dat_type == "exact"
+    if (any(ex_date)) {
+      new_dat_max <- unlist(dat_max)[ex_date]
+      new_dat_min <- new_dat_max
+      dat_type <- "exact"
+    }
   }
 
-  dat_min <- ifelse(is.infinite(dat_min), NA, dat_min)
-  dat_max <- ifelse(is.infinite(dat_max), NA, dat_max)
-
-  # another option: note it in that field
-  # l <- length(dat_type)
-  # if (l > 1) {
-  #   dat_type <- c("multiple: ", dat_type)
-  #   dat_type[2:l] <- paste0(dat_type[2:l], ", ")
-  # }
-  # dat_type <- paste0(dat_type, collapse = "")
-  dat_type <- ifelse((length(dat_type) > 1), "multiple", dat_type)
+  new_dat_type <- ifelse((length(dat_type) > 1), "multiple", dat_type)
+  new_dat_min <- ifelse(is.infinite(new_dat_min), NA, new_dat_min)
+  new_dat_max <- ifelse(is.infinite(new_dat_max), NA, new_dat_max)
 
   dat_uncertain <- unlist(lapply(dat_list, function(x) x$isUncertain))
   if (all(is.null(dat_uncertain))) {
@@ -309,8 +308,8 @@ fix_dating <- function(dat_list) {
 
   dat_source <- unlist(lapply(dat_list, function(x) x$source))
 
-  dat_list <- list(min = dat_min, max = dat_max,
-                   type = dat_type, uncertain = dat_uncertain,
+  dat_list <- list(min = new_dat_min, max = new_dat_max,
+                   type = new_dat_type, uncertain = dat_uncertain,
                    source = dat_source, complete = dat_complete)
 
   names(dat_list) <- paste0("dating.", names(dat_list))
