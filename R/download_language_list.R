@@ -1,7 +1,8 @@
 #' Download a Language-List from GitHub
 #'
-#' This function downloads language lists from the idai-field GitHub-repository
-#' and can be used to supply additional lists to `get_language_lookup()`.
+#' This function downloads language lists from the
+#' iDAI.field-GitHub-repository and can be used to supply
+#' additional lists to \code{\link{get_language_lookup}}.
 #'
 #'
 #' @param project name of the project for which the language files should be
@@ -11,7 +12,12 @@
 #' @param language Language short name that is to be extracted, e.g. "en",
 #' defaults to "en"
 #'
-#' @return a list that can be processed with `get_language_lookup()`
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#'
+#'
+#' @return a list that can be processed with \code{\link{get_language_lookup}}.
 #' @export
 #'
 #' @examples

@@ -3,11 +3,7 @@
 #' This function is a helper to `simplify_idaifield()`.
 #'
 #' @param resource One resource (element) from an idaifield_resources-list.
-#' @param replace_uids see `?simplify_idaifield()`
-#' @param uidlist see `?simplify_idaifield()`
-#' @param keep_geometry see `?simplify_idaifield()`
-#' @param language see `?simplify_idaifield()`
-#' @param spread_fields see `?simplify_idaifield()`
+#' @inheritParams simplify_idaifield
 #'
 #' @return A single resource (element) for an idaifield_resource-list.
 #'
@@ -184,17 +180,20 @@ simplify_single_resource <- function(resource,
 
 #' Simplify a list imported from an iDAI.field-Database
 #'
-#' The function will take a list as returned by `get_idaifield_docs()` and
-#' process it to make the list more useable. It will unnest a view lists,
-#' including the dimension-lists and the period-list to provide single values
-#' for later processing with `idaifield_as_matrix()`. If a connection to the
-#' database can be established, the function will get the relevant project
-#' configuration and convert custom checkboxes-fields to multiple lists,
-#' each for every value from the respective valuelist, to make them more
-#' accessible during the conversion with `idaifield_as_matrix()`. It will also
-#' remove the custom configuration field names that are in use since
-#' iDAI.field 3 / Field Desktop and consist of "projectname:fieldName". Only
-#' the "projectname:"-part will be removed.
+#' The function will take a list as returned by
+#' \code{\link{get_idaifield_docs}}, \code{\link{idf_query}} or
+#' \code{\link{idf_index_query}} and process it to make the list more useable.
+#' It will unnest a view lists, including the dimension-lists and the
+#' period-list to provide single values for later processing with
+#' \code{\link{idaifield_as_matrix}}.
+#' If a connection to the database can be established, the function will
+#' get the relevant project configuration and convert custom checkboxes-fields
+#' to multiple lists, each for every value from the respective valuelist,
+#' to make them more accessible during the conversion with
+#' \code{\link{idaifield_as_matrix}}.
+#' It will also remove the custom configuration field names that are in use
+#' since iDAI.field 3 / Field Desktop and consist of "projectname:fieldName".
+#' Only the "projectname:"-part will be removed.
 #'
 #' Please note: The function will need an Index (i.e. uidlist as provided
 #' by `get_uid_list()`) of the complete project database to correctly replace
@@ -210,21 +209,23 @@ simplify_single_resource <- function(resource,
 #' will be returned.
 #'
 #' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
-#' returned by `get_idaifield_docs()` or `idf_query()` and `idf_index_query()`.
-#' @param replace_uids logical. Should UUIDs be automatically replaced with the
-#' corresponding identifiers? (Defaults to TRUE).
+#' returned by \code{\link{get_idaifield_docs}} or \code{\link{idf_query}}
+#' and \code{\link{idf_index_query}}.
+#' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
+#' corresponding identifiers? Defaults is TRUE.
 #' @param uidlist If NULL (default) the list of UUIDs and identifiers is
 #' automatically generated within this function. This only makes sense if
 #' the list handed to `simplify_idaifield()` had not been selected yet. If it
-#' has been, you should supply a data.frame as returned by `get_uid_list()`.
-#' @param keep_geometry logical. (Defaults to FALSE) Should the geographical
-#' information be kept or removed?
+#' has been, you should supply a data.frame as returned
+#' by \code{\link{get_field_index}}.
+#' @param keep_geometry TRUE/FALSE: Should the geographical
+#' information be kept or removed? Defaults is FALSE.
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the multi-language input fields, defaults to keeping all
 #' languages as sub-lists ("all").
-#' @param spread_fields logical. (Defaults to TRUE) Should checkbox-fields be
+#' @param spread_fields TRUE/FALSE: Should checkbox-fields be
 #' spread across multiple lists to facilitate boolean-columns for each value
-#' of a checkbox-field?
+#' of a checkbox-field? Default is TRUE.
 #' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
 #' dates be used in case there are any? Default is FALSE.
 #'
@@ -232,9 +233,13 @@ simplify_single_resource <- function(resource,
 #' @export
 #'
 #'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#'
+#'
 #' @seealso \code{\link{idf_sepdim}}, \code{\link{remove_config_names}},
 #' \code{\link{gather_languages}}, \code{\link{fix_dating}},
-#' \code{\link{convert_to_onehot}}
+#' \code{\link{convert_to_onehot}}, \code{\link{reformat_geometry}}
 #'
 #'
 #' @examples

@@ -12,7 +12,7 @@ get_field_index(
 )
 }
 \arguments{
-\item{connection}{An object as returned by `connect_idaifield()`}
+\item{connection}{An object as returned by \code{\link{connect_idaifield}}}
 
 \item{verbose}{TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 including identifier and shortDescription which is more convenient to read,
@@ -31,18 +31,17 @@ alphabetical order if the selected language is not available.}
 }
 \value{
 a data.frame with identifiers and corresponding UUIDs along with
-the category (former: type), basic relations and depending on settings place and
-shortDescription of each element
+the category (former: type), basic relations and depending on settings place
+and shortDescription of each element
 }
 \description{
-All resources in the project databases in iDAI.field / Field Desktop are
-stored and referenced with their Universally Unique Identifier (UUID)
-in the relations fields. Therefore, for many purposes a lookup-table needs
-to be provided in order to get to the actual identifiers of the resources
-referenced. Single UUIDs or vectors of UUIDs can be replaced individually
-using `replace_uid()` from this package.
-}
-\details{
+All resources in the project databases in iDAI.field /
+Field Desktop are stored and referenced with their Universally Unique
+Identifier (UUID) in the relations fields. Therefore, for many purposes a
+lookup-table needs to be provided in order to get to the actual identifiers
+of the resources referenced. Single UUIDs or vectors of UUIDs can be
+replaced individually using \code{\link{replace_uid}} from this package.
+
 This function is also good for a quick overview / a list of all the
 resources that exist along with their identifiers and short descriptions
 and can be used to select the resources along their respective
@@ -62,4 +61,10 @@ connection <- connect_idaifield(serverip = "127.0.0.1",
 
 index <- get_index(connection, verbose = TRUE)
 }
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
+}
+\seealso{
+\code{\link{get_uid_list}}
 }

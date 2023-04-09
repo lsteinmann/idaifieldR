@@ -1,21 +1,25 @@
-#' @title idaifield_as_matrix
+#' @title Convert a list of class `idaifield_simple` to a matrix
 #'
 #' @description Converts a list of class `idaifield_docs`, `idaifield_resource`
 #' or `idaifield_simple` into a matrix. Recommended to use with
-#' `idaifield_simple`-lists as returned by `simplify_idaifield()`.
+#' `idaifield_simple`-lists as returned by \code{\link{simplify_idaifield}}.
 #' If given a list of class `idaifield_docs` containing all meta-info,
 #' it will automatically unnest to resource level. It is recommended to
-#' select the list first using `idf_select_by()` from this package to reduce
-#' the amount of columns returned. See example.
+#' select the list first using \code{\link{idf_select_by}} from this
+#' package to reduce the amount of columns returned. See example.
 #'
-#' @param idaifield An object as returned by `get_idaifield_docs()`,
-#' `check_and_unnest()` or `simplify_idaifield()`
+#' @param idaifield An object as returned by \code{\link{get_idaifield_docs}},
+#' \code{\link{check_and_unnest}} or \code{\link{simplify_idaifield}}
 #'
 #' @return a matrix (depending on selection and project database
 #' it can be very large)
 #' @export
 #'
 #' @seealso \code{\link{simplify_idaifield}}
+#'
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
 #'
 #' @examples
 #' \dontrun{

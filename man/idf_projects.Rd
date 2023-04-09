@@ -8,7 +8,7 @@ idf_projects(connection)
 }
 \arguments{
 \item{connection}{The connection settings as
-returned by `connect_idaifield()`}
+returned by \code{\link{connect_idaifield}}}
 }
 \value{
 A character vector containing the projects present in the database,
@@ -22,4 +22,7 @@ Get a vector of project names present in the database
  connection <- connect_idaifield(pwd = "hallo")
  idf_project_list(connection)
 }
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }

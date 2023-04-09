@@ -43,7 +43,8 @@ database of your iDAI.field / Field Desktop Client.
 This function establishes a connection to the database of your
 iDAI.field / Field Desktop Client, and returns a connection object
 containing the necessary information for other functions to access
-the database, such as `get_idaifield_docs()`.
+the database, such as \code{\link{get_idaifield_docs}},
+\code{\link{idf_query}} or  \code{\link{idf_index_query}}.
 }
 \details{
 By default, if you are using Field Desktop on the same machine,

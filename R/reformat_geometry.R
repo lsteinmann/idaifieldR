@@ -36,13 +36,18 @@ convert_to_coordmat <- function(coordinates) {
 
 #' reformat the geometry of an iDAI.field resource
 #'
-#' @param geometry the list in docs$resource$geometry
+#' @param geometry the list in `docs$resource$geometry` of `idaifield_...`-list
 #'
 #' @return the same data in a more handy format that can be processed with
 #' tools like the sp-package to produce polygons etc.
 #'
+#' @seealso \code{\link{simplify_idaifield}}
+#'
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#'
 #' @export
-#' @keywords internal
 #'
 #' @examples
 #' test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),

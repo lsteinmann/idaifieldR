@@ -5,6 +5,7 @@
 * rename `show_categories()` to `idf_show_categories()`
 * update `idf_select_by()` and `idf_show_categories()`
 * update vignettes
+* update/enhanced documentation 
 
 
 # idaifieldR 0.3.1 _2023-04-02_

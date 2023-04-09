@@ -8,7 +8,8 @@ idf_select_by(idaifield_docs, by = NULL, value = NULL)
 }
 \arguments{
 \item{idaifield_docs}{An `idaifield_resources`- or `idaifield_docs`-list
-as returned by `get_idaifield_docs()` etc.}
+as returned by \code{\link{get_idaifield_docs}}  or \code{\link{idf_query}}
+and \code{\link{idf_index_query}}.}
 
 \item{by}{Any name of a field that might by present in the resource lists,
 e.g. category, identifier, processor etc.}
@@ -40,6 +41,9 @@ idaifield_anna <- idf_select_by(idaifield_docs,
 by = "processor",
 value = "Anna Allgemeinperson")
 }
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }
 \seealso{
 \code{\link{get_idaifield_docs}}, \code{\link{idf_show_categories}}

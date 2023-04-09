@@ -7,19 +7,19 @@
 check_and_unnest(idaifield_docs, force = FALSE)
 }
 \arguments{
-\item{idaifield_docs}{An object of class "idaifield_docs" to be processed.}
+\item{idaifield_docs}{An object of class `idaifield_docs` to be processed.}
 
-\item{force}{Logical. Should the function attempt to unnest the input object
-regardless of type or class? Default is FALSE.}
+\item{force}{TRUE/FALSE. Should the function attempt to unnest the input
+object regardless of type or class? Default is FALSE.}
 }
 \value{
-If already unnested, the same object as handed to it. If not, the same list
-with the top-level lists removed down to the "resource"-level.
+If already unnested, the same object as handed to it. If not,
+the same list with the top-level lists removed down to the "resource"-level.
 }
 \description{
-Checks if the input object is an idaifield_docs object, and if it is
-already unnested (i.e., of class "idaifield_resources" or
-"idaifield_simple"). If the object is not unnested, the function unnests
+Checks if the input object is an idaifield_docs object,
+and if it is already unnested (i.e., of class `idaifield_resources` or
+`idaifield_simple`). If the object is not unnested, the function unnests
 it by stripping all top-level lists and returning only the list
 called "resource" within the db docs. If the input
 object cannot be processed because it is not an idaifield_docs or an

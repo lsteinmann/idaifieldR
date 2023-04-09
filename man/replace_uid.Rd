@@ -2,14 +2,15 @@
 % Please edit documentation in R/replace_uid.R
 \name{replace_uid}
 \alias{replace_uid}
-\title{replace_uid}
+\title{Replace a vector of UUIDs with their identifiers}
 \usage{
 replace_uid(uidvector, uidlist)
 }
 \arguments{
 \item{uidvector}{a vector of UUIDs to be replaced with their identifiers}
 
-\item{uidlist}{a uidlist resp. index of as returned by get_uid_list()}
+\item{uidlist}{a uidlist resp. index of as returned by
+\code{\link{get_uid_list}} and \code{\link{get_field_index}}}
 }
 \value{
 The corresponding identifier(s) (a character string/vector)
@@ -25,4 +26,7 @@ uidlist <- get_uid_list(idaifield_docs)
 
 replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
 }
+}
+\seealso{
+\code{\link{simplify_idaifield}}, \code{\link{fix_relations}}
 }

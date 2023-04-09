@@ -9,7 +9,8 @@ idf_show_categories(idaifield_docs)
 }
 \arguments{
 \item{idaifield_docs}{An an `idaifield_docs`- or `idaifield_resources`-list
-as returned by `get_idaifield_docs(...)`.}
+as returned by \code{\link{get_idaifield_docs}} or \code{\link{idf_query}}
+and \code{\link{idf_index_query}}.}
 }
 \value{
 A character vector with the unique categories present in
@@ -31,4 +32,7 @@ idaifield_docs <- get_idaifield_docs(connection = connection)
 idf_show_categories(idaifield_docs)
 }
 
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }

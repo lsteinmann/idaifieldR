@@ -1,11 +1,15 @@
 #' Get a vector of project names present in the database
 #'
 #' @param connection The connection settings as
-#' returned by `connect_idaifield()`
+#' returned by \code{\link{connect_idaifield}}
 #'
 #' @return A character vector containing the projects present in the database,
 #' NA if connection was refused.
 #' @export
+#'
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
 #'
 #' @examples
 #' \dontrun{

@@ -7,8 +7,8 @@
 #' about who created and modified the resource at what time and
 #' is irrelevant for any analysis of the database contents itself.
 #'
-#' @param idaifield_docs A list as provided by `get_idaifield_docs()`.
-#' `get_idaifield_docs()` employs this function already when
+#' @param idaifield_docs A list as provided by \code{\link{get_idaifield_docs}}.
+#' \code{\link{get_idaifield_docs}} employs this function already when
 #' setting `raw = FALSE`.
 #'
 #' @keywords internal

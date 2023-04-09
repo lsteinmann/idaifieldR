@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_uid_list.R
 \name{get_uid_list}
 \alias{get_uid_list}
-\title{get_uid_list: Get the index of an idaifield_docs/resources object.}
+\title{Get the index of an idaifield_docs/resources object.}
 \usage{
 get_uid_list(
   idaifield_docs,
@@ -12,7 +12,7 @@ get_uid_list(
 )
 }
 \arguments{
-\item{idaifield_docs}{An object as returned by `get_idaifield_docs()`}
+\item{idaifield_docs}{An object as returned by \code{\link{get_idaifield_docs}}}
 
 \item{verbose}{TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 including identifier and shortDescription which is more convenient to read,
@@ -40,9 +40,8 @@ stored and referenced with their Universally Unique Identifier (UUID)
 in the relations fields. Therefore, for many purposes a lookup-table needs
 to be provided in order to get to the actual identifiers of the resources
 referenced. Single UUIDs or vectors of UUIDs can be replaced individually
-using `replace_uid()` from this package.
-}
-\details{
+using \code{\link{replace_uid}} from this package.
+
 This function is also good for a quick overview / a list of all the
 resources that exist along with their identifiers and short descriptions
 and can be used to select the resources along their respective
@@ -64,4 +63,7 @@ idaifield_docs <- get_idaifield_docs(connection = connection,
 
 uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
 }
+}
+\seealso{
+\code{\link{get_field_index}}
 }

@@ -1,7 +1,7 @@
 #' Query resources from an iDAI.field database directly
 #'
 #' @param connection A connection settings object as
-#' returned by `connect_idaifield()`
+#' returned by \code{\link{connect_idaifield}}
 #' @param field character. The resource field that should be selected
 #' for (i.e. "category" for the category of resource (Pottery, Brick, Layer)).
 #' @param value character. The value to be selected for in the specified
@@ -9,7 +9,11 @@
 #' @param projectname The name of the project to be queried (overrides
 #' the one listed in the connection-object).
 #'
-#' @return An 'idaifield_docs' list
+#' @return An `idaifield_docs` list
+#'
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
 #'
 #' @export
 #'
@@ -61,16 +65,21 @@ idf_query <- function(connection,
 
 #' Query resources from an iDAI.field database based on the uidlist
 #'
-#' @param connection A connection object as returned by `connect_idaifield()`
+#' @param connection A connection object as returned
+#' by \code{\link{connect_idaifield}}
 #' @param field character. The resource field that should be selected for
 #' (options are limited to the columns names of the uidlist).
 #' @param value character. The value to be selected for in the specified field.
-#' @param uidlist A data.frame as returned by `get_field_index()`
-#' (or `get_uid_list()`)
+#' @param uidlist A data.frame as returned by \code{\link{get_field_index}}
+#' (or \code{\link{get_uid_list}}).
 #' @param projectname The name of the project to be queried (overrides
 #' the one listed in the connection-object).
 #'
 #' @return An 'idaifield_docs' list
+#'
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
 #'
 #' @export
 #'
@@ -90,6 +99,9 @@ idf_index_query <- function(connection,
                             uidlist = NULL,
                             projectname = NULL) {
 
+  if (is.null(uidlist)) {
+    stop("idf_index_query() needs an index of the database supplied to 'uidlist'. See `get_field_index()`")
+  }
 
   if (!field %in% colnames(uidlist)) {
     stop("Supply a field that corresponds to the columns in the UID-List.")

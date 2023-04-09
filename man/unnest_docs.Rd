@@ -7,8 +7,8 @@
 unnest_docs(docs)
 }
 \arguments{
-\item{idaifield_docs}{A list as provided by `get_idaifield_docs()`.
-`get_idaifield_docs()` employs this function already when
+\item{idaifield_docs}{A list as provided by \code{\link{get_idaifield_docs}}.
+\code{\link{get_idaifield_docs}} employs this function already when
 setting `raw = FALSE`.}
 }
 \value{

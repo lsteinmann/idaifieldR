@@ -7,7 +7,7 @@
 proj_idf_client(conn, project = NULL, include = "all")
 }
 \arguments{
-\item{conn}{A connection object returned by connect_idaifield().}
+\item{conn}{A connection object returned by \code{\link{connect_idaifield}}.}
 
 \item{project}{character. Name of the project-database that should be loaded.}
 }
@@ -26,9 +26,11 @@ specific project. This function is intended for internal use only.
 }
 }
 \references{
-For more information about the crul package, see: https://cran.r-project.org/package=crul
+For more information about the crul package, see: \url{https://cran.r-project.org/package=crul}
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }
 \seealso{
-\code{\link{connect_idaifield}} for information about connecting to Field.
+\code{\link{connect_idaifield}} for information about connecting to Field
+and `?crul::HttpClient` which this function uses.
 }
 \keyword{internal}

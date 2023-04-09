@@ -7,7 +7,7 @@
 reformat_geometry(geometry)
 }
 \arguments{
-\item{geometry}{the list in docs$resource$geometry}
+\item{geometry}{the list in `docs$resource$geometry` of `idaifield_...`-list}
 }
 \value{
 the same data in a more handy format that can be processed with
@@ -24,4 +24,9 @@ list(list(1), list(1))))
 
 reformat_geometry(test_2)
 }
-\keyword{internal}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
+}
+\seealso{
+\code{\link{simplify_idaifield}}
+}

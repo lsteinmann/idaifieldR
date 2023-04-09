@@ -13,14 +13,15 @@ get_idaifield_docs(
 )
 }
 \arguments{
-\item{connection}{A connection object as returned by `connect_idaifield()`}
+\item{connection}{A connection object as returned
+by \code{\link{connect_idaifield}}}
 
 \item{raw}{logical. default TRUE. If you wish to get an unnested version
 of only the resources, without the change log, set it to FALSE.}
 
-\item{json}{logical. default FALSE; if TRUE output cannot be simplified with the
-functions from this package and is instead of a list returned in json format
-that can freely be manipulated using e.g. the jsonlite package.}
+\item{json}{logical. default FALSE; if TRUE output cannot be simplified
+with the functions from this package and is instead of a list returned in
+JSON-format that can freely be manipulated using e.g. the jsonlite package.}
 
 \item{projectname}{The name of the project in the Field Client that one
 wishes to load. Will overwrite the project set in the connection-object.}
@@ -45,8 +46,8 @@ When using `raw = TRUE` (the default) this function will allow
 you to get the change log for each resource, i.e. which user changed
 something in the resource at what time and who created it.
 Setting `raw = FALSE` will only return a list of the actual data.
-You can do this at a later time using `check_and_unnest()` from this
-package.
+You can do this at a later time using \code{\link{check_and_unnest}}
+from this package.
 NOTE: If you are planning on using the coordinates stored in the database,
 I strongly suggest you consider changing your R digits-setting to a higher
 value than the default. Depending on the projection used, coordinates may
@@ -60,6 +61,9 @@ conn <- connect_idaifield(project = "rtest", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = conn)
 }
 
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }
 \seealso{
 \code{\link{idf_query}},\code{\link{idf_index_query}},

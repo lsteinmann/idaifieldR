@@ -7,7 +7,8 @@
 idf_check_for_project(conn, project = NULL)
 }
 \arguments{
-\item{conn}{The connection settings as returned by connect_idaifield()}
+\item{conn}{The connection settings as returned
+by \code{\link{connect_idaifield}}}
 
 \item{project}{(optional) character. Name of the project-database to
 check for. If not supplied, the function will use the project specified
@@ -22,5 +23,8 @@ If the project does not exist, it throws an error.
 conn <- connect_idaifield(pwd = "hallo", project = "rtest")
 check_for_project(conn) # Will not return anything
 }
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }
 \keyword{internal}

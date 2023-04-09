@@ -6,10 +6,11 @@
 #' (Field Desktop) and does not encompass fields, valuelists and translation
 #' added before the update to iDAI.field 3.
 #'
-#' @param connection A connection object as returned by `connect_idaifield()`
+#' @param connection A connection object as returned
+#' by \code{\link{connect_idaifield}}
 #' @param projectname The name of the project in the Field Client that one
 #' wishes to load. Will overwrite the project argument that was set
-#' in `connect_idaifield()`.
+#' in \code{\link{connect_idaifield}}.
 #'
 #' @return a list containing the project configuration; NA if the configuration
 #' could not be found or the connection failed.
@@ -56,13 +57,18 @@ get_configuration <- function(connection, projectname = NULL) {
 #' configuration (if existent) of an iDAI.field project.
 #'
 #'
-#' @param config A configuration list as returned by `get_configuration()`
+#' @param config A configuration list as returned
+#' by \code{\link{get_configuration}}
 #' @param inputType if specified, matrix is filtered to return only the
 #' specified type
 #'
 #' @return A matrix of fields with the given inputType
 #'
 #' @seealso \code{\link{get_configuration}}, \code{\link{convert_to_onehot}}
+#'
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
 #'
 #' @export
 #'

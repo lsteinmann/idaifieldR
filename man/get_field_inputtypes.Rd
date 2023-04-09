@@ -7,7 +7,8 @@
 get_field_inputtypes(config, inputType = "all")
 }
 \arguments{
-\item{config}{A configuration list as returned by `get_configuration()`}
+\item{config}{A configuration list as returned
+by \code{\link{get_configuration}}}
 
 \item{inputType}{if specified, matrix is filtered to return only the
 specified type}
@@ -28,6 +29,9 @@ conn <- connect_idaifield(serverip = "127.0.0.1",
 config <- get_configuration(connection = conn)
 checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
 }
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }
 \seealso{
 \code{\link{get_configuration}}, \code{\link{convert_to_onehot}}

@@ -8,8 +8,7 @@ idf_ping(conn)
 }
 \arguments{
 \item{conn}{An object that contains the connection settings, as
-returned by `connect_idaifield()` or a `crul::HttpClient` object
-as returned by `proj_idf_client()` (internal).}
+returned by \code{\link{connect_idaifield}} or a `crul::HttpClient`.}
 }
 \value{
 A boolean value indicating if the connection
@@ -28,4 +27,10 @@ conn <- connect_idaifield(ping = FALSE)
 # Ping the Field Database
 idf_ping(conn)
 }
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
+}
+\seealso{
+\code{\link{connect_idaifield}}, \code{\link{idf_projects}}
 }

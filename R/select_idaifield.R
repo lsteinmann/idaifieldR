@@ -5,7 +5,12 @@
 #' iDAI.field 2 / Field Desktop database the list was imported from.
 #'
 #' @param idaifield_docs An an `idaifield_docs`- or `idaifield_resources`-list
-#' as returned by `get_idaifield_docs(...)`.
+#' as returned by \code{\link{get_idaifield_docs}} or \code{\link{idf_query}}
+#' and \code{\link{idf_index_query}}.
+#'
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
 #'
 #' @return A character vector with the unique categories present in
 #' the iDAI.field 2 / Field Desktop database the list was imported from.
@@ -91,7 +96,8 @@ select_by <- function(idaifield_docs,
 #' directly using \code{\link{idf_query}} or \code{\link{idf_index_query}}.
 #'
 #' @param idaifield_docs An `idaifield_resources`- or `idaifield_docs`-list
-#' as returned by `get_idaifield_docs()` etc.
+#' as returned by \code{\link{get_idaifield_docs}}  or \code{\link{idf_query}}
+#' and \code{\link{idf_index_query}}.
 #' @param by Any name of a field that might by present in the resource lists,
 #' e.g. category, identifier, processor etc.
 #' @param value character. Should be the internal name of the value
@@ -100,6 +106,10 @@ select_by <- function(idaifield_docs,
 #'
 #' @return A list of class `idaifield_resources` containing the resources
 #' which contain the specified values.
+#'
+#'
+#' @references
+#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
 #'
 #' @export
 #'

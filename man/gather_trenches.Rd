@@ -7,7 +7,8 @@
 gather_trenches(uidlist)
 }
 \arguments{
-\item{uidlist}{as returned by `get_uid_list()` and `get_field_index()`}
+\item{uidlist}{as returned by \code{\link{get_uid_list}}
+and \code{\link{get_field_index}}}
 }
 \value{
 a vector of Place-resources
@@ -19,5 +20,8 @@ Get a vector of places each element from the uidlist is located in
 \dontrun{
 uidlist$Place <- gather_trenches(uidlist)
 }
+}
+\references{
+Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }
 \keyword{internal}

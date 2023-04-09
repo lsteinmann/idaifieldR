@@ -18,15 +18,28 @@ simplify_single_resource(
 \arguments{
 \item{resource}{One resource (element) from an idaifield_resources-list.}
 
-\item{replace_uids}{see `?simplify_idaifield()`}
+\item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
+corresponding identifiers? Defaults is TRUE.}
 
-\item{uidlist}{see `?simplify_idaifield()`}
+\item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
+automatically generated within this function. This only makes sense if
+the list handed to `simplify_idaifield()` had not been selected yet. If it
+has been, you should supply a data.frame as returned
+by \code{\link{get_field_index}}.}
 
-\item{keep_geometry}{see `?simplify_idaifield()`}
+\item{keep_geometry}{TRUE/FALSE: Should the geographical
+information be kept or removed? Defaults is FALSE.}
 
-\item{language}{see `?simplify_idaifield()`}
+\item{language}{the short name (e.g. "en", "de", "fr") of the language that
+is preferred for the multi-language input fields, defaults to keeping all
+languages as sub-lists ("all").}
 
-\item{spread_fields}{see `?simplify_idaifield()`}
+\item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
+spread across multiple lists to facilitate boolean-columns for each value
+of a checkbox-field? Default is TRUE.}
+
+\item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
+dates be used in case there are any? Default is FALSE.}
 }
 \value{
 A single resource (element) for an idaifield_resource-list.

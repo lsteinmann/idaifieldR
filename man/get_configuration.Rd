@@ -7,11 +7,12 @@
 get_configuration(connection, projectname = NULL)
 }
 \arguments{
-\item{connection}{A connection object as returned by `connect_idaifield()`}
+\item{connection}{A connection object as returned
+by \code{\link{connect_idaifield}}}
 
 \item{projectname}{The name of the project in the Field Client that one
 wishes to load. Will overwrite the project argument that was set
-in `connect_idaifield()`.}
+in \code{\link{connect_idaifield}}.}
 }
 \value{
 a list containing the project configuration; NA if the configuration
