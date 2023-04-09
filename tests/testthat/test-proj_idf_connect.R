@@ -1,7 +1,7 @@
-connection <- suppressMessages(connect_idaifield(serverip = "127.0.0.1",
+connection <- suppressWarnings(connect_idaifield(serverip = "127.0.0.1",
                                                  pwd = "hallo",
                                                  ping = FALSE))
-ping <- try(idf_ping(connection))
+ping <- suppressWarnings(idf_ping(connection))
 
 
 connection$status <- FALSE
@@ -38,7 +38,7 @@ skip_on_cran()
 if(!ping) { skip("Tests skipped, no DB-connection") }
 
 
-conn <- suppressMessages(connect_idaifield(serverip = "127.0.0.1",
+conn <- suppressWarnings(connect_idaifield(serverip = "127.0.0.1",
                                            pwd = "hallo",
                                            ping = ping))
 

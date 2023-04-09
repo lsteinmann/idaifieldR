@@ -1,11 +1,11 @@
 connection <- suppressMessages(connect_idaifield(serverip = "127.0.0.1",
                                                  pwd = "hallo",
                                                  ping = FALSE))
-ping <- try(idf_ping(connection))
+ping <- suppressWarnings(idf_ping(connection))
 
 # Test that version is coerced to numeric
 test_that("version is coerced to numeric", {
-  connection <- suppressMessages(connect_idaifield(version = "3",
+  connection <- suppressWarnings(connect_idaifield(version = "3",
                                                    pwd = "hallo",
                                                    ping = FALSE))
   expect_true(grepl("3001", connection$settings$base_url))
@@ -16,7 +16,7 @@ test_that("version is coerced to numeric", {
 
 # Test that version less than 3 is set to 2
 test_that("version less than 3 is set to 2", {
-  connection <- suppressMessages(connect_idaifield(version = 1,
+  connection <- suppressWarnings(connect_idaifield(version = 1,
                                                    pwd = "hallo",
                                                    ping = FALSE))
   expect_true(grepl("3000", connection$settings$base_url))
@@ -24,7 +24,7 @@ test_that("version less than 3 is set to 2", {
 
 # Test that project argument is correctly assigned
 test_that("project argument is correctly assigned", {
-  connection <- suppressMessages(connect_idaifield(version = 3,
+  connection <- suppressWarnings(connect_idaifield(version = 3,
                                                    project = "test",
                                                    pwd = "hallo",
                                                    ping = FALSE))
@@ -33,10 +33,10 @@ test_that("project argument is correctly assigned", {
 
 # Test that ping argument is correctly assigned
 test_that("ping argument is correctly assigned", {
-  connection1 <- suppressMessages(connect_idaifield(version = 3,
+  connection1 <- suppressWarnings(connect_idaifield(version = 3,
                                                     pwd = "hallo",
                                                     ping = TRUE))
-  connection2 <- suppressMessages(connect_idaifield(version = 3,
+  connection2 <- suppressWarnings(connect_idaifield(version = 3,
                                                     pwd = "hallo",
                                                     ping = FALSE))
 
