@@ -273,13 +273,11 @@ simplify_idaifield <- function(idaifield_docs,
 
   projectname <- attr(idaifield_docs, "projectname")
   conn <- attr(idaifield_docs, "connection")
-  config <- try(get_configuration(conn, projectname = projectname))
 
-  if (inherits(config, "try-error")) {
-    fieldtypes <- NA
-  } else {
+  ping <- suppressWarnings(idf_ping(conn))
+  if (ping) {
+    config <- get_configuration(conn, projectname = projectname)
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
-
     ## Language handling / messages
     languages <- unlist(config$projectLanguages)
     if (language != "all") {
@@ -298,6 +296,8 @@ simplify_idaifield <- function(idaifield_docs,
     } else {
       message("Keeping all languages for input fields.")
     }
+  } else {
+    fieldtypes <- NA
   }
 
   idaifield_simple <- lapply(idaifield_docs, function(x)
