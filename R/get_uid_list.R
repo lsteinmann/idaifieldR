@@ -1,11 +1,12 @@
-#' @title Get the index of an idaifield_docs/resources object.
+#' @title Get the Index of an `idaifield_docs`/`idaifield_resources`-list
 #'
-#' @description All resources in the project databases in iDAI.field / Field Desktop are
+#' @description All resources in the project databases in
+#' [iDAI.field / Field Desktop](https://github.com/dainst/idai-field) are
 #' stored and referenced with their Universally Unique Identifier (UUID)
 #' in the relations fields. Therefore, for many purposes a lookup-table needs
 #' to be provided in order to get to the actual identifiers of the resources
 #' referenced. Single UUIDs or vectors of UUIDs can be replaced individually
-#' using \code{\link{replace_uid}} from this package.
+#' using [replace_uid()] from this package.
 #'
 #' This function is also good for a quick overview / a list of all the
 #' resources that exist along with their identifiers and short descriptions
@@ -19,7 +20,7 @@
 #' instead their background names are used. You can see these in the project
 #' configuration settings.
 #'
-#' @param idaifield_docs An object as returned by \code{\link{get_idaifield_docs}}
+#' @param idaifield_docs An object as returned by [get_idaifield_docs()]
 #' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 #' including identifier and shortDescription which is more convenient to read,
 #' and FALSE returns only UUID, category (former: type) and basic relations,
@@ -33,11 +34,12 @@
 #' defaults to all (`language = "all"`). Will select other available languages
 #' in alphabetical order if the selected language is not available.
 #'
-#' @return a data.frame with identifiers and corresponding UUIDs along with
+#' @returns a data.frame with identifiers and corresponding UUIDs along with
 #' the category (former: type), basic relations and depending on settings
 #' place, shortDescription and "liesWithinLayer" of each element
 #'
-#' @seealso \code{\link{get_field_index}}
+#' @seealso
+#' * Superseded by [get_field_index()], which queries the database directly.
 #'
 #' @export
 #'
@@ -131,14 +133,14 @@ get_uid_list <- function(idaifield_docs,
 
 
 
-#' @title Get the index of an iDAI.field/Field Desktop database
+#' @title Get the Index of an iDAI.field / Field Desktop Database
 #'
 #' @description All resources in the project databases in iDAI.field /
 #' Field Desktop are stored and referenced with their Universally Unique
 #' Identifier (UUID) in the relations fields. Therefore, for many purposes a
 #' lookup-table needs to be provided in order to get to the actual identifiers
 #' of the resources referenced. Single UUIDs or vectors of UUIDs can be
-#' replaced individually using \code{\link{replace_uid}} from this package.
+#' replaced individually using [replace_uid()] from this package.
 #'
 #' This function is also good for a quick overview / a list of all the
 #' resources that exist along with their identifiers and short descriptions
@@ -152,7 +154,7 @@ get_uid_list <- function(idaifield_docs,
 #' instead their background names are used. You can see these in the project
 #' configuration settings.
 #'
-#' @param connection An object as returned by \code{\link{connect_idaifield}}
+#' @param connection An object as returned by [connect_idaifield()]
 #' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 #' including identifier and shortDescription which is more convenient to read,
 #' and FALSE returns only UUID, category (former: type) and basic relations,
@@ -166,16 +168,18 @@ get_uid_list <- function(idaifield_docs,
 #' defaults to english ("en") and will select other available languages in
 #' alphabetical order if the selected language is not available.
 #'
-#' @return a data.frame with identifiers and corresponding UUIDs along with
+#' @returns a data.frame with identifiers and corresponding UUIDs along with
 #' the category (former: type), basic relations and depending on settings place
 #' and shortDescription of each element
 #' @export
 #'
-#' @seealso \code{\link{get_uid_list}}
+#' @seealso
+#' * [get_uid_list()] returns the same data.frame from an `idaifield_docs` or
+#' `idaifield_resources`-list without querying the database.
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #' @examples
 #' \dontrun{
@@ -273,14 +277,14 @@ get_field_index <- function(connection, verbose = FALSE,
 
 #' Get a vector of places each element from the uidlist is located in
 #'
-#' @param uidlist as returned by \code{\link{get_uid_list}}
-#' and \code{\link{get_field_index}}
+#' @param uidlist as returned by [get_uid_list()]
+#' and [get_field_index()]
 #'
-#' @return a vector of Place-resources
+#' @returns a vector of Place-resources
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #' @keywords internal
 #'

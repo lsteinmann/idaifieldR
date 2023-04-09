@@ -2,17 +2,17 @@
 % Please edit documentation in R/unnest_docs.R
 \name{unnest_docs}
 \alias{unnest_docs}
-\title{Unnesting a idaifield_docs-List down to resource level}
+\title{Unnesting a \code{idaifield_docs}-List down to resource level}
 \usage{
 unnest_docs(docs)
 }
 \arguments{
-\item{idaifield_docs}{A list as provided by \code{\link{get_idaifield_docs}}.
-\code{\link{get_idaifield_docs}} employs this function already when
-setting `raw = FALSE`.}
+\item{idaifield_docs}{A list as provided by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}.
+\code{\link[=get_idaifield_docs]{get_idaifield_docs()}} employs this function already when
+setting \code{raw = FALSE}.}
 }
 \value{
-a list of class idaifield_resources (same as idaifield_docs,
+a list of class \code{idaifield_resources} (same as \code{idaifield_docs},
 but the top-level with meta-information has been removed to make the actual
 resource data more accessible)
 }

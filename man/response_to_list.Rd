@@ -8,7 +8,7 @@ response_to_list(response = NULL)
 }
 \arguments{
 \item{response}{"HttpResponse" as returned by client$get where
-client was produced by `proj_idf_client()`}
+client was produced by \code{proj_idf_client()}}
 }
 \value{
 a list

@@ -1,19 +1,23 @@
-#' Query resources from an iDAI.field database directly
+#' @title Query *docs* from an iDAI.field Database Directly
+#'
+#' @description
+#' This function can be used to gather *docs* from an iDAI.field / Field
+#' Desktop Database according to the values of specific fields.
 #'
 #' @param connection A connection settings object as
-#' returned by \code{\link{connect_idaifield}}
-#' @param field character. The resource field that should be selected
-#' for (i.e. "category" for the category of resource (Pottery, Brick, Layer)).
+#' returned by [connect_idaifield()]
+#' @param field character. The resource field that should be selected for
+#' (i.e. "category" for the category of resource (*Pottery*, *Brick*, *Layer*)).
 #' @param value character. The value to be selected for in the specified
-#' field (i.e. "Brick" when looking for resources of category "Brick").
+#' field (i.e. "*Brick*" when looking for resources of category *Brick*).
 #' @param projectname The name of the project to be queried (overrides
 #' the one listed in the connection-object).
 #'
-#' @return An `idaifield_docs` list
+#' @returns An `idaifield_docs` list containing all *docs* that fit the query parameters.
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #' @export
 #'
@@ -63,23 +67,29 @@ idf_query <- function(connection,
 }
 
 
-#' Query resources from an iDAI.field database based on the uidlist
+#' @title Query *docs* from an iDAI.field Database Based on an Index (uidlist)
+#'
+#' @description
+#' This function can be used to gather *docs* from an iDAI.field / Field
+#' Desktop Database according to the values of listed in an index as returned
+#' by [get_field_index()] or [get_uid_list()].
+#'
 #'
 #' @param connection A connection object as returned
-#' by \code{\link{connect_idaifield}}
+#' by [connect_idaifield()]
 #' @param field character. The resource field that should be selected for
-#' (options are limited to the columns names of the uidlist).
+#' (options are limited to the column names of the uidlist).
 #' @param value character. The value to be selected for in the specified field.
-#' @param uidlist A data.frame as returned by \code{\link{get_field_index}}
-#' (or \code{\link{get_uid_list}}).
+#' @param uidlist A data.frame as returned by [get_field_index()]
+#' (or [get_uid_list()]).
 #' @param projectname The name of the project to be queried (overrides
 #' the one listed in the connection-object).
 #'
-#' @return An 'idaifield_docs' list
+#' @returns An `idaifield_docs` list
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #' @export
 #'

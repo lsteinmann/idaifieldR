@@ -2,13 +2,13 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{fix_dating}
 \alias{fix_dating}
-\title{Reduce the Dating-list to min/max-values}
+\title{Reduce the Dating-list to \emph{min}/\emph{max}-Values}
 \usage{
 fix_dating(dat_list, use_exact_dates = FALSE)
 }
 \arguments{
-\item{dat_list}{A "dating"-list of any resource from an `idaifield_docs`-
-or `idaifield_resources`-list.}
+\item{dat_list}{A "dating"-list of any resource from an \code{idaifield_docs}-
+or \code{idaifield_resources}-list.}
 
 \item{use_exact_dates}{TRUE/FALSE: If TRUE and "exact" dating type is
 present, sets the min and max dating to the value of the exact dating.
@@ -16,11 +16,13 @@ Default is FALSE.}
 }
 \value{
 A reformatted list containing min and max dating and additional
-information as well as all original values in the "comment"-element.
+information as well as all original values in the "comment"-element. If
+\code{use_exact_dates = TRUE} contains the value of the exact dating in both
+\emph{dating.min} and \emph{dating.max}.
 }
 \description{
-Reformats the "dating"-list of any resource from an `idaifield_docs`-
-or `idaifield_resources`-list to contain min and max dating and
+Reformats the "dating"-list of any resource from an \code{idaifield_docs}-
+or \code{idaifield_resources}-list to contain min and max dating and
 additional info as well as the original values in the "comment"-element.
 }
 \examples{
@@ -38,5 +40,7 @@ fix_dating(dat_list, use_exact_dates = TRUE)
 }
 }
 \seealso{
-\code{\link{simplify_idaifield}}
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}
+}
 }

@@ -2,14 +2,14 @@
 % Please edit documentation in R/select_idaifield.R
 \name{select_by}
 \alias{select_by}
-\title{Deprecated function: Select/filter an `idaifield_resources`- or
-`idaifield_docs`-list}
+\title{Deprecated function: Select/filter an \code{idaifield_resources}- or
+\code{idaifield_docs}-list}
 \usage{
 select_by(idaifield_docs, by = c("category", "isRecordedIn"), value = NULL)
 }
 \arguments{
-\item{idaifield_docs}{An `idaifield_resources`- or `idaifield_docs`-list
-as returned by `get_idaifield_docs()` etc.}
+\item{idaifield_docs}{An \code{idaifield_resources}- or \code{idaifield_docs}-list
+as returned by \code{get_idaifield_docs()} etc.}
 
 \item{by}{Any name of a field that might by present in the resource lists,
 e.g. category, identifier, processor etc.}
@@ -19,17 +19,17 @@ that will be selected for (e.g. "Layer", "Pottery"), can also be vector of
 multiple values.}
 }
 \value{
-A list of class `idaifield_resources` containing the resources
+A list of class \code{idaifield_resources} containing the resources
 which contain the specified values.
 }
 \description{
 This function has been deprecated in favour
-of \code{\link{idf_select_by}}.
+of \code{\link[=idf_select_by]{idf_select_by()}}.
 }
 \details{
 Subset or filter the list of the docs or resources by the
 given parameters. You may want to consider querying the database
-directly using \code{\link{idf_query}} or \code{\link{idf_index_query}}.
+directly using \code{\link[=idf_query]{idf_query()}} or \code{\link[=idf_index_query]{idf_index_query()}}.
 }
 \examples{
 \dontrun{
@@ -47,6 +47,6 @@ value = "Anna Allgemeinperson")
 }
 }
 \seealso{
-\code{\link{idf_select_by}}
+\code{\link[=idf_select_by]{idf_select_by()}}
 }
 \keyword{deprecated}

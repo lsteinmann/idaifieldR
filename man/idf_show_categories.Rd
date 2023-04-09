@@ -2,22 +2,22 @@
 % Please edit documentation in R/select_idaifield.R
 \name{idf_show_categories}
 \alias{idf_show_categories}
-\title{Show the categories present in an `idaifield_docs`- or
-`idaifield_resources`-list}
+\title{Show the \emph{categories} Present in an \code{idaifield_docs}- or
+\code{idaifield_resources}-list}
 \usage{
 idf_show_categories(idaifield_docs)
 }
 \arguments{
-\item{idaifield_docs}{An an `idaifield_docs`- or `idaifield_resources`-list
-as returned by \code{\link{get_idaifield_docs}} or \code{\link{idf_query}}
-and \code{\link{idf_index_query}}.}
+\item{idaifield_docs}{An an \code{idaifield_docs}- or \code{idaifield_resources}-list
+as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}}
+and \code{\link[=idf_index_query]{idf_index_query()}}.}
 }
 \value{
 A character vector with the unique categories present in
 the iDAI.field 2 / Field Desktop database the list was imported from.
 }
 \description{
-Returns a list of all categories present in the
+Returns a list of all \emph{categories} present in the
 iDAI.field 2 / Field Desktop database the list was imported from.
 }
 \examples{
@@ -32,7 +32,4 @@ idaifield_docs <- get_idaifield_docs(connection = connection)
 idf_show_categories(idaifield_docs)
 }
 
-}
-\references{
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }

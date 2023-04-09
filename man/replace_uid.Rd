@@ -2,23 +2,23 @@
 % Please edit documentation in R/replace_uid.R
 \name{replace_uid}
 \alias{replace_uid}
-\title{Replace a vector of UUIDs with their identifiers}
+\title{Replace a Vector of UUIDs with their \emph{identifier}s}
 \usage{
 replace_uid(uidvector, uidlist)
 }
 \arguments{
-\item{uidvector}{a vector of UUIDs to be replaced with their identifiers}
+\item{uidvector}{a vector of UUIDs to be replaced with their \emph{identifier}s}
 
 \item{uidlist}{a uidlist resp. index of as returned by
-\code{\link{get_uid_list}} and \code{\link{get_field_index}}}
+\code{\link[=get_uid_list]{get_uid_list()}} and \code{\link[=get_field_index]{get_field_index()}}}
 }
 \value{
-The corresponding identifier(s) (a character string/vector)
+The corresponding \emph{identifier}(s) (a character string/vector)
 }
 \description{
 When handed an item (a vector or a single variable) first checks if it is
 actually a UUID as defined in check_if_uid() and if so, replaces it with
-the corresponding identifier from the uidlist (also handed to the function).
+the corresponding \emph{identifier} from the uidlist (also handed to the function).
 }
 \examples{
 \dontrun{
@@ -28,5 +28,7 @@ replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
 }
 }
 \seealso{
-\code{\link{simplify_idaifield}}, \code{\link{fix_relations}}
+\itemize{
+\item This function is used in: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=fix_relations]{fix_relations()}}
+}
 }

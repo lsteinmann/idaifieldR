@@ -18,7 +18,7 @@ a data frame with the column "var" and "label" containing the
 value in var and its respective translation / display value in "label"
 }
 \description{
-Helper to \code{\link{get_language_lookup}}
+Helper to \code{\link[=get_language_lookup]{get_language_lookup()}}
 }
 \examples{
 \dontrun{

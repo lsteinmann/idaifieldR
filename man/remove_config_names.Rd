@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{remove_config_names}
 \alias{remove_config_names}
-\title{Remove everything before the colon in a character vector}
+\title{Remove Everything Before the Colon in a Character Vector}
 \usage{
 remove_config_names(conf_names = c("identifier", "configname:test"))
 }
@@ -16,7 +16,7 @@ the first colon (including the colon) removed.
 \description{
 This function removes everything before the first
 colon (including the colon) in a character vector.
-It is used as a helper function for `simplify_idaifield()`.
+It is used as a helper function for \code{simplify_idaifield()}.
 }
 \examples{
 \dontrun{
@@ -26,5 +26,8 @@ remove_config_names(nameslist)
 }
 }
 \seealso{
-\code{\link{simplify_idaifield}}
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=get_field_index]{get_field_index()}}
+and \code{\link[=get_uid_list]{get_uid_list()}}
+}
 }

@@ -2,12 +2,12 @@
 % Please edit documentation in R/check_and_unnest.R
 \name{check_and_unnest}
 \alias{check_and_unnest}
-\title{Check and unnest an idaifield_docs object}
+\title{Check and Unnest an \code{idaifield_docs}-list}
 \usage{
 check_and_unnest(idaifield_docs, force = FALSE)
 }
 \arguments{
-\item{idaifield_docs}{An object of class `idaifield_docs` to be processed.}
+\item{idaifield_docs}{An object of class \code{idaifield_docs} to be processed.}
 
 \item{force}{TRUE/FALSE. Should the function attempt to unnest the input
 object regardless of type or class? Default is FALSE.}
@@ -17,15 +17,15 @@ If already unnested, the same object as handed to it. If not,
 the same list with the top-level lists removed down to the "resource"-level.
 }
 \description{
-Checks if the input object is an idaifield_docs object,
-and if it is already unnested (i.e., of class `idaifield_resources` or
-`idaifield_simple`). If the object is not unnested, the function unnests
+Checks if the input object is an \code{idaifield_docs}-list,
+and if it is already unnested (i.e., of class \code{idaifield_resources} or
+\code{idaifield_simple}). If the object is not unnested, the function unnests
 it by stripping all top-level lists and returning only the list
 called "resource" within the db docs. If the input
-object cannot be processed because it is not an idaifield_docs or an
-unnested idaifield_resources or idaifield_simple object,
+object cannot be processed because it is not an \code{idaifield_docs} or an
+unnested \code{idaifield_resources} or \code{idaifield_simple} object,
 the function issues a warning and returns the same object. You may force
-the function to process it anyway using "force = TRUE", but the outcome
+the function to process it anyway using \code{force = TRUE}, but the outcome
 is uncertain.
 }
 \examples{

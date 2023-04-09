@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplify_idaifield_resources.R
 \name{simplify_idaifield}
 \alias{simplify_idaifield}
-\title{Simplify a list imported from an iDAI.field-Database}
+\title{Simplify a List Imported from an iDAI.field / Field Desktop-Database}
 \usage{
 simplify_idaifield(
   idaifield_docs,
@@ -15,57 +15,59 @@ simplify_idaifield(
 )
 }
 \arguments{
-\item{idaifield_docs}{An "idaifield_docs" or "idaifield_resources"-list as
-returned by \code{\link{get_idaifield_docs}} or \code{\link{idf_query}}
-and \code{\link{idf_index_query}}.}
+\item{idaifield_docs}{An \code{idaifield_docs} or \code{idaifield_resources}-list as
+returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}}
+and \code{\link[=idf_index_query]{idf_index_query()}}.}
 
 \item{keep_geometry}{TRUE/FALSE: Should the geographical
-information be kept or removed? Defaults is FALSE.}
+information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
 
 \item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
-corresponding identifiers? Defaults is TRUE.}
+corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with \code{\link[=replace_uid]{replace_uid()}}}
 
 \item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
-automatically generated within this function. This only makes sense if
-the list handed to `simplify_idaifield()` had not been selected yet. If it
+automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
+the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
 has been, you should supply a data.frame as returned
-by \code{\link{get_field_index}}.}
+by \code{\link[=get_field_index]{get_field_index()}}.}
 
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the multi-language input fields, defaults to keeping all
-languages as sub-lists ("all").}
+languages as sub-lists ("all"). Uses: \code{\link[=gather_languages]{gather_languages()}}}
 
 \item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value
-of a checkbox-field? Default is TRUE.}
+of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_configuration()}},
+\code{\link[=get_field_inputtypes]{get_field_inputtypes()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}}
 
 \item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
-dates be used in case there are any? Default is FALSE.}
+dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
 }
 \value{
-an "idaifield_simple" list
+An \code{idaifield_simple}-list containing the same resources in
+a different format depending on the parameters used.
 }
 \description{
 The function will take a list as returned by
-\code{\link{get_idaifield_docs}}, \code{\link{idf_query}} or
-\code{\link{idf_index_query}} and process it to make the list more useable.
+\code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}} or
+\code{\link[=idf_index_query]{idf_index_query()}} and process it to make the list more usable.
 It will unnest a view lists, including the dimension-lists and the
 period-list to provide single values for later processing with
-\code{\link{idaifield_as_matrix}}.
+\code{\link[=idaifield_as_matrix]{idaifield_as_matrix()}}.
 If a connection to the database can be established, the function will
 get the relevant project configuration and convert custom checkboxes-fields
 to multiple lists, each for every value from the respective valuelist,
 to make them more accessible during the conversion with
-\code{\link{idaifield_as_matrix}}.
+\code{\link[=idaifield_as_matrix]{idaifield_as_matrix()}}.
 It will also remove the custom configuration field names that are in use
 since iDAI.field 3 / Field Desktop and consist of "projectname:fieldName".
 Only the "projectname:"-part will be removed.
 }
 \details{
 Please note: The function will need an Index (i.e. uidlist as provided
-by `get_uid_list()`) of the complete project database to correctly replace
+by \code{get_uid_list()}) of the complete project database to correctly replace
 the UUIDs with their corresponding identifiers! Especially if a selected
-list is passed to `simplify_idaifield()`, you need to supply the uidlist
+list is passed to \code{simplify_idaifield()}, you need to supply the uidlist
 of the complete project database as well.
 
 Formatting of various lists: Dimension measurements as well as dating are
@@ -85,11 +87,14 @@ projectname = "rtest")
 simpler_idaifield <- simplify_idaifield(idaifield_docs)
 }
 }
-\references{
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
-}
 \seealso{
-\code{\link{idf_sepdim}}, \code{\link{remove_config_names}},
-\code{\link{gather_languages}}, \code{\link{fix_dating}},
-\code{\link{convert_to_onehot}}, \code{\link{reformat_geometry}}
+\itemize{
+\item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}},
+\item \code{\link[=fix_dating]{fix_dating()}} with the outcome depending on the \code{use_exact_dates}-argument.
+\item When selecting a language: \code{\link[=gather_languages]{gather_languages()}}
+\item Depending on the \code{spread_fields}-argument: \code{\link[=convert_to_onehot]{convert_to_onehot()}}
+\item Depending on the \code{keep_geometry}-argument: \code{\link[=reformat_geometry]{reformat_geometry()}}
+\item Depending on the \code{replace_uids}-argument: \code{\link[=fix_relations]{fix_relations()}} with \code{\link[=replace_uid]{replace_uid()}}
+\item If \code{uidlist = NULL}: \code{\link[=get_uid_list]{get_uid_list()}}
+}
 }

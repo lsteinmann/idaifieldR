@@ -2,10 +2,10 @@
 #'
 #' This function is a helper to `simplify_idaifield()`.
 #'
-#' @param resource One resource (element) from an idaifield_resources-list.
+#' @param resource One resource (element) from an `idaifield_resources`-list.
 #' @inheritParams simplify_idaifield
 #'
-#' @return A single resource (element) for an idaifield_resource-list.
+#' @returns A single resource (element) for an `idaifield_resources`-list.
 #'
 #' @keywords internal
 #'
@@ -178,19 +178,19 @@ simplify_single_resource <- function(resource,
   return(resource)
 }
 
-#' Simplify a list imported from an iDAI.field-Database
+#' Simplify a List Imported from an iDAI.field / Field Desktop-Database
 #'
 #' The function will take a list as returned by
-#' \code{\link{get_idaifield_docs}}, \code{\link{idf_query}} or
-#' \code{\link{idf_index_query}} and process it to make the list more useable.
+#' [get_idaifield_docs()], [idf_query()] or
+#' [idf_index_query()] and process it to make the list more usable.
 #' It will unnest a view lists, including the dimension-lists and the
 #' period-list to provide single values for later processing with
-#' \code{\link{idaifield_as_matrix}}.
+#' [idaifield_as_matrix()].
 #' If a connection to the database can be established, the function will
 #' get the relevant project configuration and convert custom checkboxes-fields
 #' to multiple lists, each for every value from the respective valuelist,
 #' to make them more accessible during the conversion with
-#' \code{\link{idaifield_as_matrix}}.
+#' [idaifield_as_matrix()].
 #' It will also remove the custom configuration field names that are in use
 #' since iDAI.field 3 / Field Desktop and consist of "projectname:fieldName".
 #' Only the "projectname:"-part will be removed.
@@ -208,38 +208,47 @@ simplify_single_resource <- function(resource,
 #' For the dimension-fields, if a ranged measurement was selected, a mean
 #' will be returned.
 #'
-#' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
-#' returned by \code{\link{get_idaifield_docs}} or \code{\link{idf_query}}
-#' and \code{\link{idf_index_query}}.
+#' @param idaifield_docs An `idaifield_docs` or `idaifield_resources`-list as
+#' returned by [get_idaifield_docs()] or [idf_query()]
+#' and [idf_index_query()].
 #' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
-#' corresponding identifiers? Defaults is TRUE.
+#' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with [replace_uid()]
 #' @param uidlist If NULL (default) the list of UUIDs and identifiers is
-#' automatically generated within this function. This only makes sense if
-#' the list handed to `simplify_idaifield()` had not been selected yet. If it
+#' automatically generated within this function using [get_uid_list()]. This only makes sense if
+#' the list handed to [simplify_idaifield()] had not been selected yet. If it
 #' has been, you should supply a data.frame as returned
-#' by \code{\link{get_field_index}}.
+#' by [get_field_index()].
 #' @param keep_geometry TRUE/FALSE: Should the geographical
-#' information be kept or removed? Defaults is FALSE.
+#' information be kept or removed? Defaults is FALSE. Uses: [reformat_geometry()]
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the multi-language input fields, defaults to keeping all
-#' languages as sub-lists ("all").
+#' languages as sub-lists ("all"). Uses: [gather_languages()]
 #' @param spread_fields TRUE/FALSE: Should checkbox-fields be
 #' spread across multiple lists to facilitate boolean-columns for each value
-#' of a checkbox-field? Default is TRUE.
+#' of a checkbox-field? Default is TRUE. Uses: [get_configuration()],
+#' [get_field_inputtypes()], [convert_to_onehot()]
 #' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
-#' dates be used in case there are any? Default is FALSE.
+#' dates be used in case there are any? Default is FALSE. Changes outcome of [fix_dating()].
 #'
-#' @return an "idaifield_simple" list
+#' @returns An `idaifield_simple`-list containing the same resources in
+#' a different format depending on the parameters used.
+#'
+#'
 #' @export
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
 #'
 #'
-#' @seealso \code{\link{idf_sepdim}}, \code{\link{remove_config_names}},
-#' \code{\link{gather_languages}}, \code{\link{fix_dating}},
-#' \code{\link{convert_to_onehot}}, \code{\link{reformat_geometry}}
+#'
+#'
+#' @seealso
+#' * This function uses: [idf_sepdim()], [remove_config_names()],
+#' * [fix_dating()] with the outcome depending on the `use_exact_dates`-argument.
+#' * When selecting a language: [gather_languages()]
+#' * Depending on the `spread_fields`-argument: [convert_to_onehot()]
+#' * Depending on the `keep_geometry`-argument: [reformat_geometry()]
+#' * Depending on the `replace_uids`-argument: [fix_relations()] with [replace_uid()]
+#' * If `uidlist = NULL`: [get_uid_list()]
 #'
 #'
 #' @examples

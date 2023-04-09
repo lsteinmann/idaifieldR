@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{gather_languages}
 \alias{gather_languages}
-\title{Gather fields with multiple language values}
+\title{Gather Fields with Multiple Language Values}
 \usage{
 gather_languages(input_list, language = "en", silent = FALSE)
 }
@@ -33,5 +33,7 @@ gather_languages(input_list, language = "de")
 }
 }
 \seealso{
-\code{\link{simplify_idaifield}}
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}
+}
 }

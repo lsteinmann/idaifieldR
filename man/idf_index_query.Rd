@@ -2,7 +2,7 @@
 % Please edit documentation in R/idf_query.R
 \name{idf_index_query}
 \alias{idf_index_query}
-\title{Query resources from an iDAI.field database based on the uidlist}
+\title{Query \emph{docs} from an iDAI.field Database Based on an Index (uidlist)}
 \usage{
 idf_index_query(
   connection,
@@ -14,24 +14,26 @@ idf_index_query(
 }
 \arguments{
 \item{connection}{A connection object as returned
-by \code{\link{connect_idaifield}}}
+by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
 \item{field}{character. The resource field that should be selected for
-(options are limited to the columns names of the uidlist).}
+(options are limited to the column names of the uidlist).}
 
 \item{value}{character. The value to be selected for in the specified field.}
 
-\item{uidlist}{A data.frame as returned by \code{\link{get_field_index}}
-(or \code{\link{get_uid_list}}).}
+\item{uidlist}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}}
+(or \code{\link[=get_uid_list]{get_uid_list()}}).}
 
 \item{projectname}{The name of the project to be queried (overrides
 the one listed in the connection-object).}
 }
 \value{
-An 'idaifield_docs' list
+An \code{idaifield_docs} list
 }
 \description{
-Query resources from an iDAI.field database based on the uidlist
+This function can be used to gather \emph{docs} from an iDAI.field / Field
+Desktop Database according to the values of listed in an index as returned
+by \code{\link[=get_field_index]{get_field_index()}} or \code{\link[=get_uid_list]{get_uid_list()}}.
 }
 \examples{
 \dontrun{
@@ -43,7 +45,4 @@ idf_index_query(conn,
                 uidlist = uidlist)
 }
 
-}
-\references{
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }

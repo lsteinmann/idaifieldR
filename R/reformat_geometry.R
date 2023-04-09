@@ -1,9 +1,9 @@
-#' Converts coordinate list from idaifield to a matrix
+#' Converts coordinate list from iDAI.field to a Matrix
 #'
 #' @param coordinates a list of the format that any coordinateslist has
 #' in the iDAI.field 2 / Field Desktop database
 #'
-#' @return a matrix that displays the same coordinates
+#' @returns a matrix that displays the same coordinates
 #'
 #' @keywords internal
 #'
@@ -34,28 +34,37 @@ convert_to_coordmat <- function(coordinates) {
 }
 
 
-#' reformat the geometry of an iDAI.field resource
+#' Reformat the Geometry of a single iDAI.field / Field Desktop resource
 #'
-#' @param geometry the list in `docs$resource$geometry` of `idaifield_...`-list
+#' @param geometry The list in `resource$geometry` of an `idaifield_docs`-
+#' or `idaifield_resources`-list.
 #'
-#' @return the same data in a more handy format that can be processed with
-#' tools like the sp-package to produce polygons etc.
+#' @returns The geometry of the resource in a more usable format that can
+#' be processed with tools like the [sp::SpatialPoints()] etc. to work with
+#' spatial data.
 #'
-#' @seealso \code{\link{simplify_idaifield}}
+#' @seealso
+#' * This function is used in: [simplify_idaifield()]
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #' @export
 #'
 #' @examples
-#' test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),
-#' list(list(1), list(2)),
-#' list(list(2), list(2)),
-#' list(list(1), list(1))))
+#' \dontrun{
+#' test_2 <- list(type = "Polygon",
+#'     coordinates = list(list(list(1), list(1)),
+#'                        list(list(1), list(2)),
+#'                        list(list(2), list(2)),
+#'                        list(list(1), list(1))
+#'                        )
+#' )
 #'
 #' reformat_geometry(test_2)
+#'
+#' }
 reformat_geometry <- function(geometry) {
   type <- geometry$type
 

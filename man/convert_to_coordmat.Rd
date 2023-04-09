@@ -2,7 +2,7 @@
 % Please edit documentation in R/reformat_geometry.R
 \name{convert_to_coordmat}
 \alias{convert_to_coordmat}
-\title{Converts coordinate list from idaifield to a matrix}
+\title{Converts coordinate list from iDAI.field to a Matrix}
 \usage{
 convert_to_coordmat(coordinates)
 }
@@ -14,7 +14,7 @@ in the iDAI.field 2 / Field Desktop database}
 a matrix that displays the same coordinates
 }
 \description{
-Converts coordinate list from idaifield to a matrix
+Converts coordinate list from iDAI.field to a Matrix
 }
 \examples{
 \dontrun{

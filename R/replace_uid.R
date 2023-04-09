@@ -1,16 +1,21 @@
-#' Replace a vector of UUIDs with their identifiers
+#' Replace a Vector of UUIDs with their *identifier*s
 #'
 #' When handed an item (a vector or a single variable) first checks if it is
 #' actually a UUID as defined in check_if_uid() and if so, replaces it with
-#' the corresponding identifier from the uidlist (also handed to the function).
+#' the corresponding *identifier* from the uidlist (also handed to the function).
 #'
-#' @seealso \code{\link{simplify_idaifield}}, \code{\link{fix_relations}}
+#' @seealso
+#' * This function is used in: [simplify_idaifield()], [fix_relations()]
 #'
-#' @param uidvector a vector of UUIDs to be replaced with their identifiers
+#' @param uidvector a vector of UUIDs to be replaced with their *identifier*s
 #' @param uidlist a uidlist resp. index of as returned by
-#' \code{\link{get_uid_list}} and \code{\link{get_field_index}}
+#' [get_uid_list()] and [get_field_index()]
 #'
-#' @return The corresponding identifier(s) (a character string/vector)
+#' @returns The corresponding *identifier*(s) (a character string/vector)
+#'
+#'
+#'
+#'
 #'
 #' @export
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{name_docs_list}
 \alias{name_docs_list}
-\title{Name the list of idaifield_docs by identifier}
+\title{Name the list of \code{idaifield_docs} by identifier}
 \usage{
 name_docs_list(docs)
 }
@@ -13,6 +13,6 @@ name_docs_list(docs)
 same, but named
 }
 \description{
-Name the list of idaifield_docs by identifier
+Name the list of \code{idaifield_docs} by identifier
 }
 \keyword{internal}

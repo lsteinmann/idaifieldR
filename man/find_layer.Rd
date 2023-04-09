@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_layer.R
 \name{find_layer}
 \alias{find_layer}
-\title{Find the Layer a resource is contained in}
+\title{Find the Layer a Resource is Contained in}
 \usage{
 find_layer(
   resource = resource,
@@ -13,9 +13,9 @@ find_layer(
 )
 }
 \arguments{
-\item{resource}{One resource (element) from an idaifield_resources-list.}
+\item{resource}{One resource (element) from an \code{idaifield_resources}-list.}
 
-\item{uidlist}{A data.frame as returned by `get_field_index()`.}
+\item{uidlist}{A data.frame as returned by \code{get_field_index()}.}
 
 \item{liesWithin}{Only for recursion: a dataframe this function hands
 to itself, otherwith usually NULL}
@@ -33,5 +33,11 @@ Helper to simplify_single_resource(). Traces the liesWithin fields to
 find the one that is a Layer and returns the corresponding identifier.
 
 #TODO: Somehow this is super convoluted.
+}
+\seealso{
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=get_field_index]{get_field_index()}},
+\code{\link[=get_uid_list]{get_uid_list()}}.
+}
 }
 \keyword{internal}

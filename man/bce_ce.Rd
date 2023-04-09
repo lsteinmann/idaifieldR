@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{bce_ce}
 \alias{bce_ce}
-\title{Translate a dating value from iDAI.field to a positive or negative number}
+\title{Translate a Dating Value from iDAI.field to a Positive or Negative Number}
 \usage{
 bce_ce(list)
 }
@@ -32,6 +32,6 @@ bce_ce(list)
 }
 }
 \seealso{
-\code{\link{simplify_idaifield}}
+\code{\link[=fix_dating]{fix_dating()}}
 }
 \keyword{internal}

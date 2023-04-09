@@ -1,58 +1,67 @@
-#' Connect to iDAI.field / Field Desktop Client
+#' Connect to an iDAI.field / Field Desktop Client
 #'
 #' @description This function establishes a connection to the database of your
-#' iDAI.field / Field Desktop Client, and returns a connection object
-#' containing the necessary information for other functions to access
-#' the database, such as \code{\link{get_idaifield_docs}},
-#' \code{\link{idf_query}} or  \code{\link{idf_index_query}}.
+#' [iDAI.field / Field Desktop Client](https://github.com/dainst/idai-field),
+#' and returns a connection object containing the necessary information for
+#' other functions to access the database, such as [get_idaifield_docs()],
+#' [idf_query()] or  [idf_index_query()].
 #'
 #' @details By default, if you are using Field Desktop on the same machine,
 #' you should not need to specify the `serverip` argument, as it defaults to
 #' the common localhost address. Similarly, the `user` argument
 #' is currently not needed for access. The `pwd` argument needs to be
 #' set to the password that is set in your Field Desktop Client under
-#' Tools/Werkzeuge > Settings/Einstellungen: 'Your password'/'Eigenes Passwort'.
+#' *Tools/Werkzeuge* > *Settings/Einstellungen*: 'Your password'/'Eigenes Passwort'.
 #' If the default `serverip` argument does not work for you,
 #' or you want to access a client on the same network that is not running
 #' on the same machine as R, you can exchange it for the address listed above
 #' the password (without the port (':3000')). The `version` argument does
 #' not need to be specified if you are using the current version of
-#' Field Desktop (3), but will help you connect if you are using 'iDAI.field 2'.
+#' Field Desktop (3), but will help you connect if you are using *iDAI.field 2*.
 #' You can set the `project` that you want to work with in this function,
 #' but be aware that other functions will overwrite this setting if
-#' you supply a project name there. `connect_idaifield()` will check if
+#' you supply a project name there. [connect_idaifield()] will check if
 #' the project actually exists and throw an error if it does not.
 #'
 #' @param serverip The IP address of the Field Client. If you are using
-#' Field Desktop on the same machine, the default value is "127.0.0.1".
+#' Field Desktop on the same machine, the default value (*127.0.0.1*)
+#' should usually work.
 #' @param project The name of the project you want to work with.
 #' If you do not supply this parameter, other functions will use the
-#' project recorded in the connection object.
-#' @param user (optional) The username for the connection.
+#' project recorded in the connection object. For a list of available
+#' projects, use [idf_projects()].
+#' @param user (*optional*) The username for the connection.
 #' This parameter is not currently needed.
 #' @param pwd The password used to authenticate with the Field
 #' Client (default is "password").
 #' @param version The version number of the Field Client. By default,
 #' the value is set to 3.
 #' @param ping logical. Whether to test the connection on creation
-#' (default is TRUE). If TRUE, connect_idaifield() also checks if the
+#' (default is TRUE). If TRUE, [connect_idaifield()] also checks if the
 #' project exists.
 #'
-#' @return `connect_idaifield()` returns an `idf_connection_settings`
+#' @returns [connect_idaifield()] returns an `idf_connection_settings`
 #' object that contains the connection settings needed to connect to the
-#' database of your iDAI.field / Field Desktop Client.
+#' database of your
+#' [iDAI.field / Field Desktop Client](https://github.com/dainst/idai-field).
 #' @export
 #'
 #' @seealso
-#' \code{\link{idf_ping}}, \code{\link{idf_projects}}
+#' * Ping the connection with [idf_ping()]
+#' * Get a list of projects in the database with [idf_projects()]
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
+#' conn <- connect_idaifield(
+#'   serverip = "127.0.0.1",
+#'   user = "R",
+#'   pwd = "hallo",
+#'   project = "rtest"
+#' )
 #'
 #' conn$status
 #'
@@ -110,23 +119,23 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
   return(conn)
 }
 
-#' Check for the existence of a project in a Field Database (internal)
+#' Check for the Existence of a Project in a Field Database (internal)
 #'
 #' This function checks if a given project exists in the Field Database.
 #' If the project does not exist, it throws an error.
 #'
 #' @param conn The connection settings as returned
-#' by \code{\link{connect_idaifield}}
+#' by [connect_idaifield()]
 #' @param project (optional) character. Name of the project-database to
 #' check for. If not supplied, the function will use the project specified
 #' in the connection settings.
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #' @keywords internal
-#' @return NULL
+#' @returns NULL
 #'
 #' @examples
 #' \dontrun{
@@ -149,24 +158,25 @@ idf_check_for_project <- function(conn, project = NULL) {
 
 
 
-#' Create a client connection to a Field database (internal)
+#' Create a Connection Client to a Field database (internal)
 #'
-#' This function creates a `crul::HttpClient` object for use in retrieving
+#' This function creates a [crul::HttpClient]object for use in retrieving
 #' all documents from or querying a Field database associated with a
 #' specific project. This function is intended for internal use only.
 #'
-#' @param conn A connection object returned by \code{\link{connect_idaifield}}.
+#' @param conn A connection object returned by [connect_idaifield()].
 #' @param project character. Name of the project-database that should be loaded.
 #'
-#' @references
-#' For more information about the crul package, see: \url{https://cran.r-project.org/package=crul}
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' * [crul on CRAN](https://cran.r-project.org/package=crul)
+#' 
+#'
 #'
 #' @seealso
-#' \code{\link{connect_idaifield}} for information about connecting to Field
-#' and `?crul::HttpClient` which this function uses.
+#' [connect_idaifield()] for information about connecting to Field
+#' and [crul::HttpClient()] which this function uses.
 #'
-#' @return A `crul::HttpClient` object.
+#' @returns A [crul::HttpClient()] object.
 #' @keywords internal
 #'
 #' @examples
@@ -225,25 +235,29 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
   return(proj_conn)
 }
 
-#' Ping the Field-Database
+#' @title Ping the Field-Database
 #'
+#' @description
 #' This function checks if a connection to the Field Database
 #' can be established. It returns a boolean value indicating if the
-#' connection was successful or not.
+#' connection was successful or not. Warnings are used to indicate why
+#' the connection failed, if so.
 #'
 #' @param conn An object that contains the connection settings, as
-#' returned by \code{\link{connect_idaifield}} or a `crul::HttpClient`.
+#' returned by [connect_idaifield()].
 #'
-#' @return A boolean value indicating if the connection
+#' @returns A boolean value indicating if the connection
 #' was successful (TRUE) or not (FALSE).
 #'
 #' @export
 #'
-#' @seealso \code{\link{connect_idaifield}}, \code{\link{idf_projects}}
+#' @seealso
+#' * Produce a Connection-Settings list with: [connect_idaifield()]
+#' * Find all projects in the database with: [idf_projects()]
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #'
 #' @examples

@@ -1,19 +1,21 @@
-#' @title Break down a list from a checkbox field to onehot-coded values
+#' @title Break down a List from a Checkbox Field to Onehot-Coded Values
 #'
 #' @description This function is a helper function to
-#' `simplify_idaifield()` that takes a list from one of the
+#' [simplify_idaifield()] that takes a list from one of the
 #' fields marked in the config as containing checkboxes and converts
 #' the list to onehot-coded values.
 #'
-#' @param resource A list from one of the fields that can have multiple values
-#' from a single resource (element).
-#' @param fieldtypes a matrix of fields with the given inputType as
-#' returned by `get_field_inputtypes()`
+#' @param resource The resource to process (from an `idaifield_resources`-list).
+#' @param fieldtypes A matrix of fields with the given inputType as
+#' returned by [get_field_inputtypes()]
 #'
-#' @return The resource object with the values of checkboxes
+#' @returns The resource object with the values of checkboxes
 #' separated into one-hot-coded versions.
 #'
-#' @seealso \code{\link{simplify_idaifield}}, \code{\link{get_field_inputtypes}}
+#'
+#' @seealso
+#' * This function is used by: [simplify_idaifield()]
+#' * Needs output of: [get_field_inputtypes()]
 #'
 #' @export
 #'
@@ -60,7 +62,7 @@ convert_to_onehot <- function(resource, fieldtypes) {
 }
 
 
-#' @title Convert a list of dimensions to simple values
+#' @title Convert a List of Dimensions to Simpler Values
 #'
 #' @description This function breaks down a list of dimensions
 #' (e.g. `dimensionLength`, `dimensionWidth`, etc.) from a single
@@ -74,11 +76,12 @@ convert_to_onehot <- function(resource, fieldtypes) {
 #' @param name character. The name of the corresponding dimension list.
 #' Defaults to "dimension".
 #'
-#' @return A list containing simple values for each measured dimension
+#' @returns A list containing simple values for each measured dimension
 #' from the list. If a range was entered, the function returns the mean
 #' without further comment.
 #'
-#' @seealso \code{\link{simplify_idaifield}}
+#' @seealso
+#' * This function is used by: [simplify_idaifield()]
 #'
 #'
 #' @export
@@ -134,7 +137,7 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 }
 
 
-#' @title Remove everything before the colon in a character vector
+#' @title Remove Everything Before the Colon in a Character Vector
 #'
 #' @description This function removes everything before the first
 #' colon (including the colon) in a character vector.
@@ -142,10 +145,12 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 #'
 #' @param conf_names A character vector.
 #'
-#' @return The same character vector with everything before
+#' @returns The same character vector with everything before
 #' the first colon (including the colon) removed.
 #'
-#' @seealso \code{\link{simplify_idaifield}}
+#' @seealso
+#' * This function is used by: [simplify_idaifield()], [get_field_index()]
+#' and [get_uid_list()]
 #'
 #' @export
 #'
@@ -160,7 +165,7 @@ remove_config_names <- function(conf_names = c("identifier", "configname:test"))
   return(new_names)
 }
 
-#' @title Gather fields with multiple language values
+#' @title Gather Fields with Multiple Language Values
 #'
 #' @description This function extracts the values for a preferred language
 #' from a list containing values in multiple languages.
@@ -174,11 +179,12 @@ remove_config_names <- function(conf_names = c("identifier", "configname:test"))
 #' @param silent TRUE/FALSE: Should gather_languages() issue messages
 #' and warnings?
 #'
-#' @return A character vector containing the values in the preferred language.
+#' @returns A character vector containing the values in the preferred language.
 #'
 #' @export
 #'
-#' @seealso \code{\link{simplify_idaifield}}
+#' @seealso
+#' * This function is used by: [simplify_idaifield()]
 #'
 #' @examples
 #' \dontrun{
@@ -236,7 +242,7 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
 
 
 
-#' @title Translate a dating value from iDAI.field to a positive or negative number
+#' @title Translate a Dating Value from iDAI.field to a Positive or Negative Number
 #'
 #' @description This function takes a list containing a numerical year and a type of dating
 #' (either "bce", "ce", or "bp") and returns the year as a number with a
@@ -251,12 +257,12 @@ gather_languages <- function(input_list, language = "en", silent = FALSE) {
 #' for the inputYear value. Must be one of "bce", "ce", or "bp".}
 #' }
 #'
-#' @return A numerical value representing the year, with a negative
+#' @returns A numerical value representing the year, with a negative
 #' sign indicating BCE and a positive sign indicating CE.
 #'
 #' @keywords internal
 #'
-#' @seealso \code{\link{simplify_idaifield}}
+#' @seealso [fix_dating()]
 #'
 #' @examples
 #' \dontrun{
@@ -282,7 +288,7 @@ bce_ce <- function(list) {
   }
 }
 
-#' @title Reduce the Dating-list to min/max-values
+#' @title Reduce the Dating-list to *min*/*max*-Values
 #'
 #' @description Reformats the "dating"-list of any resource from an `idaifield_docs`-
 #' or `idaifield_resources`-list to contain min and max dating and
@@ -294,10 +300,15 @@ bce_ce <- function(list) {
 #' present, sets the min and max dating to the value of the exact dating.
 #' Default is FALSE.
 #'
-#' @return A reformatted list containing min and max dating and additional
-#' information as well as all original values in the "comment"-element.
+#' @returns A reformatted list containing min and max dating and additional
+#' information as well as all original values in the "comment"-element. If
+#' `use_exact_dates = TRUE` contains the value of the exact dating in both
+#' *dating.min* and *dating.max*.
 #'
-#' @seealso \code{\link{simplify_idaifield}}
+#'
+#' @seealso
+#' * This function is used by: [simplify_idaifield()]
+#'
 #'
 #' @export
 #'

@@ -2,24 +2,24 @@
 % Please edit documentation in R/get_configuration.R
 \name{get_field_inputtypes}
 \alias{get_field_inputtypes}
-\title{Produce a matrix of field inputTypes from the custom project configuration}
+\title{Produce a Matrix of Field \emph{inputTypes} from the Custom Project Configuration}
 \usage{
 get_field_inputtypes(config, inputType = "all")
 }
 \arguments{
 \item{config}{A configuration list as returned
-by \code{\link{get_configuration}}}
+by \code{\link[=get_configuration]{get_configuration()}}}
 
-\item{inputType}{if specified, matrix is filtered to return only the
-specified type}
+\item{inputType}{If specified, matrix is filtered to return only the
+specified type.}
 }
 \value{
-A matrix of fields with the given inputType
+A matrix of fields (with the given \emph{inputType}).
 }
 \description{
-This function retrieves a matrix containing the inputTypes of all
-custom fields and their corresponding inputTypes from a project
-configuration (if existent) of an iDAI.field project.
+This function retrieves a matrix containing the \emph{inputTypes} of all
+custom fields from a project configuration of an
+\href{https://github.com/dainst/idai-field}{iDAI.field} project.
 }
 \examples{
 \dontrun{
@@ -30,9 +30,9 @@ config <- get_configuration(connection = conn)
 checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
 }
 }
-\references{
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
-}
 \seealso{
-\code{\link{get_configuration}}, \code{\link{convert_to_onehot}}
+\itemize{
+\item \code{\link[=get_configuration]{get_configuration()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
+}
 }

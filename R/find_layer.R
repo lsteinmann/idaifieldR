@@ -1,4 +1,4 @@
-#' Find the Layer a resource is contained in
+#' Find the Layer a Resource is Contained in
 #'
 #' Warning: recursive and currently no error handling
 #'
@@ -7,14 +7,17 @@
 #'
 #' #TODO: Somehow this is super convoluted.
 #'
+#' @seealso
+#' * This function is used by: [simplify_idaifield()], [get_field_index()],
+#' [get_uid_list()].
 #'
-#' @param resource One resource (element) from an idaifield_resources-list.
+#' @param resource One resource (element) from an `idaifield_resources`-list.
 #' @param uidlist A data.frame as returned by `get_field_index()`.
 #' @param liesWithin Only for recursion: a dataframe this function hands
 #' to itself, otherwith usually NULL
 #' @param strict TRUE/FALSE (currently only for testing)
 #'
-#' @return chr
+#' @returns chr
 #' @keywords internal
 find_layer <- function(resource = resource,
                        uidlist = NULL,

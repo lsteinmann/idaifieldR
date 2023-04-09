@@ -2,31 +2,38 @@
 % Please edit documentation in R/reformat_geometry.R
 \name{reformat_geometry}
 \alias{reformat_geometry}
-\title{reformat the geometry of an iDAI.field resource}
+\title{Reformat the Geometry of a single iDAI.field / Field Desktop resource}
 \usage{
 reformat_geometry(geometry)
 }
 \arguments{
-\item{geometry}{the list in `docs$resource$geometry` of `idaifield_...`-list}
+\item{geometry}{The list in \code{resource$geometry} of an \code{idaifield_docs}-
+or \code{idaifield_resources}-list.}
 }
 \value{
-the same data in a more handy format that can be processed with
-tools like the sp-package to produce polygons etc.
+The geometry of the resource in a more usable format that can
+be processed with tools like the \code{\link[sp:SpatialPoints]{sp::SpatialPoints()}} etc. to work with
+spatial data.
 }
 \description{
-reformat the geometry of an iDAI.field resource
+Reformat the Geometry of a single iDAI.field / Field Desktop resource
 }
 \examples{
-test_2 <- list(type = "Polygon", coordinates = list(list(list(1), list(1)),
-list(list(1), list(2)),
-list(list(2), list(2)),
-list(list(1), list(1))))
+\dontrun{
+test_2 <- list(type = "Polygon",
+    coordinates = list(list(list(1), list(1)),
+                       list(list(1), list(2)),
+                       list(list(2), list(2)),
+                       list(list(1), list(1))
+                       )
+)
 
 reformat_geometry(test_2)
+
 }
-\references{
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }
 \seealso{
-\code{\link{simplify_idaifield}}
+\itemize{
+\item This function is used in: \code{\link[=simplify_idaifield]{simplify_idaifield()}}
+}
 }

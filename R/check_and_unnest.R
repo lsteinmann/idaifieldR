@@ -1,21 +1,21 @@
-#' @title Check and unnest an idaifield_docs object
+#' @title Check and Unnest an `idaifield_docs`-list
 #'
-#' @description Checks if the input object is an idaifield_docs object,
+#' @description Checks if the input object is an `idaifield_docs`-list,
 #' and if it is already unnested (i.e., of class `idaifield_resources` or
 #' `idaifield_simple`). If the object is not unnested, the function unnests
 #' it by stripping all top-level lists and returning only the list
 #' called "resource" within the db docs. If the input
-#' object cannot be processed because it is not an idaifield_docs or an
-#' unnested idaifield_resources or idaifield_simple object,
+#' object cannot be processed because it is not an `idaifield_docs` or an
+#' unnested `idaifield_resources` or `idaifield_simple` object,
 #' the function issues a warning and returns the same object. You may force
-#' the function to process it anyway using "force = TRUE", but the outcome
+#' the function to process it anyway using `force = TRUE`, but the outcome
 #' is uncertain.
 #'
 #' @param idaifield_docs An object of class `idaifield_docs`.
 #' Typically, this is a list obtained from a CouchDB export that has been
 #' converted to a list from JSON by the function
-#' \code{\link{get_idaifield_docs}} or the query functions of this package
-#' (\code{\link{idf_query}}, \code{\link{idf_index_query}}).
+#' [get_idaifield_docs()] or the query functions of this package
+#' ([idf_query()], [idf_index_query()]).
 #' If the object is of class `idaifield_docs`, the function removes the
 #' top level lists, which contain information such as revisions and
 #' creation dates, and returns a new object of class `idaifield_resources`.
@@ -24,10 +24,15 @@
 #' @param force TRUE/FALSE. Should the function attempt to unnest the input
 #' object regardless of type or class? Default is FALSE.
 #'
-#' @return If already unnested, the same object as handed to it. If not,
+#' @returns If already unnested, the same object as handed to it. If not,
 #' the same list with the top-level lists removed down to the "resource"-level.
 #'
 #' @export
+
+#'
+#' 
+#' 
+#'
 #'
 #'
 #' @examples

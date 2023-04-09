@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_uid_list.R
 \name{get_field_index}
 \alias{get_field_index}
-\title{Get the index of an iDAI.field/Field Desktop database}
+\title{Get the Index of an iDAI.field / Field Desktop Database}
 \usage{
 get_field_index(
   connection,
@@ -12,7 +12,7 @@ get_field_index(
 )
 }
 \arguments{
-\item{connection}{An object as returned by \code{\link{connect_idaifield}}}
+\item{connection}{An object as returned by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
 \item{verbose}{TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 including identifier and shortDescription which is more convenient to read,
@@ -40,15 +40,15 @@ Field Desktop are stored and referenced with their Universally Unique
 Identifier (UUID) in the relations fields. Therefore, for many purposes a
 lookup-table needs to be provided in order to get to the actual identifiers
 of the resources referenced. Single UUIDs or vectors of UUIDs can be
-replaced individually using \code{\link{replace_uid}} from this package.
+replaced individually using \code{\link[=replace_uid]{replace_uid()}} from this package.
 
 This function is also good for a quick overview / a list of all the
 resources that exist along with their identifiers and short descriptions
 and can be used to select the resources along their respective
 Categories (e.g. Pottery, Layer etc., formerly names "types").
 Please note that in any case the internal names of everything will be used.
-If you relabeled `Trench` to `Schnitt` in your language-configuration,
-the name will still be `Trench` here. None of these functions have any
+If you relabeled \code{Trench} to \code{Schnitt} in your language-configuration,
+the name will still be \code{Trench} here. None of these functions have any
 respect for language settings of a project configuration, i.e. the
 front end languages of valuelists and fields are not displayed, and
 instead their background names are used. You can see these in the project
@@ -62,9 +62,9 @@ connection <- connect_idaifield(serverip = "127.0.0.1",
 index <- get_index(connection, verbose = TRUE)
 }
 }
-\references{
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
-}
 \seealso{
-\code{\link{get_uid_list}}
+\itemize{
+\item \code{\link[=get_uid_list]{get_uid_list()}} returns the same data.frame from an \code{idaifield_docs} or
+\code{idaifield_resources}-list without querying the database.
+}
 }

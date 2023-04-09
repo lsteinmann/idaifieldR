@@ -2,13 +2,13 @@
 % Please edit documentation in R/connect_idaifield.R
 \name{idf_check_for_project}
 \alias{idf_check_for_project}
-\title{Check for the existence of a project in a Field Database (internal)}
+\title{Check for the Existence of a Project in a Field Database (internal)}
 \usage{
 idf_check_for_project(conn, project = NULL)
 }
 \arguments{
 \item{conn}{The connection settings as returned
-by \code{\link{connect_idaifield}}}
+by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
 \item{project}{(optional) character. Name of the project-database to
 check for. If not supplied, the function will use the project specified
@@ -23,8 +23,5 @@ If the project does not exist, it throws an error.
 conn <- connect_idaifield(pwd = "hallo", project = "rtest")
 check_for_project(conn) # Will not return anything
 }
-}
-\references{
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
 }
 \keyword{internal}

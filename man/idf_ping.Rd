@@ -8,7 +8,7 @@ idf_ping(conn)
 }
 \arguments{
 \item{conn}{An object that contains the connection settings, as
-returned by \code{\link{connect_idaifield}} or a `crul::HttpClient`.}
+returned by \code{\link[=connect_idaifield]{connect_idaifield()}}.}
 }
 \value{
 A boolean value indicating if the connection
@@ -17,7 +17,8 @@ was successful (TRUE) or not (FALSE).
 \description{
 This function checks if a connection to the Field Database
 can be established. It returns a boolean value indicating if the
-connection was successful or not.
+connection was successful or not. Warnings are used to indicate why
+the connection failed, if so.
 }
 \examples{
 \dontrun{
@@ -28,9 +29,9 @@ conn <- connect_idaifield(ping = FALSE)
 idf_ping(conn)
 }
 }
-\references{
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
-}
 \seealso{
-\code{\link{connect_idaifield}}, \code{\link{idf_projects}}
+\itemize{
+\item Produce a Connection-Settings list with: \code{\link[=connect_idaifield]{connect_idaifield()}}
+\item Find all projects in the database with: \code{\link[=idf_projects]{idf_projects()}}
+}
 }

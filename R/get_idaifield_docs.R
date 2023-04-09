@@ -1,16 +1,17 @@
-#' @title Import all docs from an iDAI.field / Field Desktop project
+#' @title Import all *docs* from an iDAI.field / Field Desktop project
 #'
-#' @description Imports all docs from an idaifield-database that is
+#' @description Imports all *docs* from an iDAI.Field-database that is
 #' currently running and syncing into a list-object for further processing
-#' in R. The function is only useful for the import from iDAI.field 2 or
-#' Field Desktop with the respective client running on the same computer as
-#' the R-script.
+#' in R. The function is only useful for the import from
+#' [iDAI.field 2 or Field Desktop](https://github.com/dainst/idai-field)
+#' with the respective client running on the same computer or
+#' in the same network as the R-script.
 #'
 #' @details When using `raw = TRUE` (the default) this function will allow
 #' you to get the change log for each resource, i.e. which user changed
 #' something in the resource at what time and who created it.
 #' Setting `raw = FALSE` will only return a list of the actual data.
-#' You can do this at a later time using \code{\link{check_and_unnest}}
+#' You can do this at a later time using [check_and_unnest()]
 #' from this package.
 #' NOTE: If you are planning on using the coordinates stored in the database,
 #' I strongly suggest you consider changing your R digits-setting to a higher
@@ -21,29 +22,30 @@
 #'
 #'
 #' @param connection A connection object as returned
-#' by \code{\link{connect_idaifield}}
-#' @param raw logical. default TRUE. If you wish to get an unnested version
-#' of only the resources, without the change log, set it to FALSE.
-#' @param json logical. default FALSE; if TRUE output cannot be simplified
-#' with the functions from this package and is instead of a list returned in
-#' JSON-format that can freely be manipulated using e.g. the jsonlite package.
+#' by [connect_idaifield()]
+#' @param raw TRUE/FALSE. Should the result already be unnested to
+#' resource level using [check_and_unnest()]? (Default is FALSE.)
+#' @param json TRUE/FALSE. Should the function return a JSON-character string?
+#' (Default is FALSE.) If TRUE output cannot be processed with the functions
+#' from this package. Can be parsed using e.g. [jsonlite::fromJSON()].
 #' @param projectname The name of the project in the Field Client that one
-#' wishes to load. Will overwrite the project set in the connection-object.
+#' wishes to load. Will overwrite the project set in the `connection`-object.
+#' See [idf_projects()] for all available projects.
 #'
-#' @return an object (list) of class 'idaifield_docs' if `raw = TRUE` and
-#' 'idaifield_resources' if `raw = FALSE` that contains all docs/resources
+#' @returns an object (list) of class `idaifield_docs` if `raw = TRUE` and
+#' `idaifield_resources` if `raw = FALSE` that contains all *docs*/*resources*
 #' in the selected project except for the project configuration.
-#' The connection, projectname and configuration are attached as
-#' attributes for later use.(If json is set to TRUE, returns a character
-#' string in json-format.)
+#' The `connection` and `projectname` are attached as attributes for
+#' later use. (If `json = TRUE`, returns a character string in JSON-format.)
 #'
-#' @seealso \code{\link{idf_query}},\code{\link{idf_index_query}},
-#' \code{\link{idf_select_by}}, \code{\link{simplify_idaifield}},
-#' \code{\link{check_and_unnest}}
+#' @seealso
+#' * For querying the database: [idf_query()],[idf_index_query()]
+#' * For filtering / selecting an `idaifield_docs`- or `idaifield_resources`-list: [idf_select_by()]
+#' * For processing the list: [check_and_unnest()], [simplify_idaifield()]
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #' @export
 #'

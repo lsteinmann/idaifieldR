@@ -1,8 +1,8 @@
 #' Download a Language-List from GitHub
 #'
 #' This function downloads language lists from the
-#' iDAI.field-GitHub-repository and can be used to supply
-#' additional lists to \code{\link{get_language_lookup}}.
+#' [iDAI.field-GitHub-repository](https://github.com/dainst/idai-field)
+#' and can be used to supply additional lists to [get_language_lookup()].
 #'
 #'
 #' @param project name of the project for which the language files should be
@@ -13,16 +13,17 @@
 #' defaults to "en"
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #'
-#' @return a list that can be processed with \code{\link{get_language_lookup}}.
+#' @returns A list that can be processed with [get_language_lookup()].
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' lang_list <- download_language_list(language = "de")
+#' get_language_lookup(lang_list)
 #' }
 download_language_list <- function(project = "core",
                                    language = "en") {

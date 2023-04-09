@@ -1,18 +1,18 @@
-#' @title Show the categories present in an `idaifield_docs`- or
+#' @title Show the *categories* Present in an `idaifield_docs`- or
 #' `idaifield_resources`-list
 #'
-#' @description Returns a list of all categories present in the
+#' @description Returns a list of all *categories* present in the
 #' iDAI.field 2 / Field Desktop database the list was imported from.
 #'
 #' @param idaifield_docs An an `idaifield_docs`- or `idaifield_resources`-list
-#' as returned by \code{\link{get_idaifield_docs}} or \code{\link{idf_query}}
-#' and \code{\link{idf_index_query}}.
+#' as returned by [get_idaifield_docs()] or [idf_query()]
+#' and [idf_index_query()].
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
-#' @return A character vector with the unique categories present in
+#' @returns A character vector with the unique categories present in
 #' the iDAI.field 2 / Field Desktop database the list was imported from.
 #'
 #' @examples
@@ -41,11 +41,11 @@ idf_show_categories <- function(idaifield_docs) {
 #' `idaifield_docs`-list
 #'
 #' @description This function has been deprecated in favour
-#' of \code{\link{idf_select_by}}.
+#' of [idf_select_by()].
 #'
 #' @details Subset or filter the list of the docs or resources by the
 #' given parameters. You may want to consider querying the database
-#' directly using \code{\link{idf_query}} or \code{\link{idf_index_query}}.
+#' directly using [idf_query()] or [idf_index_query()].
 #'
 #' @param idaifield_docs An `idaifield_resources`- or `idaifield_docs`-list
 #' as returned by `get_idaifield_docs()` etc.
@@ -55,14 +55,14 @@ idf_show_categories <- function(idaifield_docs) {
 #' that will be selected for (e.g. "Layer", "Pottery"), can also be vector of
 #' multiple values.
 #'
-#' @return A list of class `idaifield_resources` containing the resources
+#' @returns A list of class `idaifield_resources` containing the resources
 #' which contain the specified values.
 #'
 #' @export
 #'
 #' @keywords deprecated
 #'
-#' @seealso \code{\link{idf_select_by}}
+#' @seealso [idf_select_by()]
 #'
 #' @examples
 #' \dontrun{
@@ -89,32 +89,32 @@ select_by <- function(idaifield_docs,
   return(result)
 }
 
-#' @title Select/filter an `idaifield_resources`- or `idaifield_docs`-list
+#' @title Select/Filter an `idaifield_resources`- or `idaifield_docs`-list
 #'
-#' @description Subset or filter the list of the docs or resources by the
+#' @description Subset or filter the list of the *docs* or *resources* by the
 #' given parameters. You may want to consider querying the database
-#' directly using \code{\link{idf_query}} or \code{\link{idf_index_query}}.
+#' directly using [idf_query()] or [idf_index_query()].
 #'
 #' @param idaifield_docs An `idaifield_resources`- or `idaifield_docs`-list
-#' as returned by \code{\link{get_idaifield_docs}}  or \code{\link{idf_query}}
-#' and \code{\link{idf_index_query}}.
+#' as returned by [get_idaifield_docs()]  or [idf_query()]
+#' and [idf_index_query()].
 #' @param by Any name of a field that might by present in the resource lists,
 #' e.g. category, identifier, processor etc.
 #' @param value character. Should be the internal name of the value
 #' that will be selected for (e.g. "Layer", "Pottery"), can also be vector of
 #' multiple values.
 #'
-#' @return A list of class `idaifield_resources` containing the resources
+#' @returns A list of class `idaifield_resources` containing the resources
 #' which contain the specified values.
 #'
 #'
-#' @references
-#' Field Desktop Client: \url{https://github.com/dainst/idai-field}
+#' 
+#' 
 #'
 #' @export
 #'
-#' @seealso \code{\link{get_idaifield_docs}}, \code{\link{idf_show_categories}}
-#' \code{\link{idf_query}}, \code{\link{idf_index_query}}
+#' @seealso [get_idaifield_docs()], [idf_show_categories()]
+#' [idf_query()], [idf_index_query()]
 #'
 #' @examples
 #' \dontrun{

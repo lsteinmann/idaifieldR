@@ -2,20 +2,23 @@
 % Please edit documentation in R/connect_idaifield.R
 \name{proj_idf_client}
 \alias{proj_idf_client}
-\title{Create a client connection to a Field database (internal)}
+\title{Create a Connection Client to a Field database (internal)}
 \usage{
 proj_idf_client(conn, project = NULL, include = "all")
 }
 \arguments{
-\item{conn}{A connection object returned by \code{\link{connect_idaifield}}.}
+\item{conn}{A connection object returned by \code{\link[=connect_idaifield]{connect_idaifield()}}.}
 
-\item{project}{character. Name of the project-database that should be loaded.}
+\item{project}{character. Name of the project-database that should be loaded.
+\itemize{
+\item \href{https://cran.r-project.org/package=crul}{crul on CRAN}
+}}
 }
 \value{
-A `crul::HttpClient` object.
+A \code{\link[crul:HttpClient]{crul::HttpClient()}} object.
 }
 \description{
-This function creates a `crul::HttpClient` object for use in retrieving
+This function creates a \link[crul:HttpClient]{crul::HttpClient}object for use in retrieving
 all documents from or querying a Field database associated with a
 specific project. This function is intended for internal use only.
 }
@@ -25,12 +28,8 @@ specific project. This function is intended for internal use only.
   client <- proj_idf_client(conn = connection)
 }
 }
-\references{
-For more information about the crul package, see: \url{https://cran.r-project.org/package=crul}
-Field Desktop Client: \url{https://github.com/dainst/idai-field}
-}
 \seealso{
-\code{\link{connect_idaifield}} for information about connecting to Field
-and `?crul::HttpClient` which this function uses.
+\code{\link[=connect_idaifield]{connect_idaifield()}} for information about connecting to Field
+and \code{\link[crul:HttpClient]{crul::HttpClient()}} which this function uses.
 }
 \keyword{internal}

@@ -5,12 +5,14 @@
 \alias{idaifieldr_demodata}
 \title{idaifieldR Demodata}
 \format{
-## `idaifieldr_demodata`
-A list (idaifield_docs) with 108 elements:
+\subsection{\code{idaifieldr_demodata}}{
+
+A list (\code{idaifield_docs}) with 108 elements:
 \describe{
-  \item{identifier}{identifier / Kurzbezeichner}
-  \item{all other values}{entries in the field database}
-  ...
+\item{identifier}{identifier / Kurzbezeichner}
+\item{all other values}{entries in the field database}
+...
+}
 }
 }
 \source{

@@ -6,6 +6,7 @@
 * update `idf_select_by()` and `idf_show_categories()`
 * update vignettes
 * update/enhanced documentation 
+* add a sticker
 
 
 # idaifieldR 0.3.1 _2023-04-02_

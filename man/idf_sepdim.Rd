@@ -2,14 +2,14 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{idf_sepdim}
 \alias{idf_sepdim}
-\title{Convert a list of dimensions to simple values}
+\title{Convert a List of Dimensions to Simpler Values}
 \usage{
 idf_sepdim(dimensionList, name = NULL)
 }
 \arguments{
-\item{dimensionList}{A list of dimensions (e.g. `dimensionLength`,
-`dimensionWidth`, etc.) from a single resource (element) of an
-`idaifield_docs` or `idaifield_resources` object.}
+\item{dimensionList}{A list of dimensions (e.g. \code{dimensionLength},
+\code{dimensionWidth}, etc.) from a single resource (element) of an
+\code{idaifield_docs} or \code{idaifield_resources} object.}
 
 \item{name}{character. The name of the corresponding dimension list.
 Defaults to "dimension".}
@@ -21,10 +21,10 @@ without further comment.
 }
 \description{
 This function breaks down a list of dimensions
-(e.g. `dimensionLength`, `dimensionWidth`, etc.) from a single
-resource (element) of an `idaifield_docs` or `idaifield_resources` object
+(e.g. \code{dimensionLength}, \code{dimensionWidth}, etc.) from a single
+resource (element) of an \code{idaifield_docs} or \code{idaifield_resources} object
 and converts them to simple values.It is used as a helper function
-for `simplify_idaifield()`.
+for \code{simplify_idaifield()}.
 }
 \examples{
 \dontrun{
@@ -32,5 +32,7 @@ dimensionLength_new <- idf_sepdim(idaifield_resources[[1]]$dimensionLength, "dim
 }
 }
 \seealso{
-\code{\link{simplify_idaifield}}
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}
+}
 }
