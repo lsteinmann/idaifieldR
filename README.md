@@ -1,5 +1,5 @@
+# idaifieldR	<a href='https://lsteinmann.github.io/idaifieldR/'><img src='inst/idaifieldr_hex.png' align="right" height="139" /></a>
 
-# idaifieldR
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/lsteinmann/idaifieldR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lsteinmann/idaifieldR/actions/workflows/R-CMD-check.yaml)
