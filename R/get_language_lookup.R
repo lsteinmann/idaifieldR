@@ -115,7 +115,9 @@ get_language_lookup <- function(lang_list, language = "en") {
       sublist <- unlist(lang_list[[name]], recursive = FALSE, use.names = FALSE)
       ind <- unlist(lapply(sublist, function(x) is.null(names(x))))
       ind <- which(ind)
-      sublist <- sublist[-ind]
+      if (length(ind) != 0) {
+        sublist <- sublist[-ind]
+      }
       sublist <- unlist(sublist, recursive = FALSE, use.names = TRUE)
       label_df_sec <- extract_field_names(sublist)
       label_df <- rbind(label_df, label_df_sec)
