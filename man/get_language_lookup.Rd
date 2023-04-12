@@ -4,7 +4,7 @@
 \alias{get_language_lookup}
 \title{Prepare a Language List as a Lookup Table}
 \usage{
-get_language_lookup(lang_list, language = "en")
+get_language_lookup(lang_list, language = "en", remove_config_names = TRUE)
 }
 \arguments{
 \item{lang_list}{A list in the format used by iDAI.fields configuration,
@@ -14,6 +14,9 @@ are contained. Can be obtained with \code{\link[=get_configuration]{get_configur
 
 \item{language}{Language short name that is to be extracted, e.g. "en",
 defaults to "en"}
+
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)}
 }
 \value{
 A data.frame that can serve as a lookup table, with the background

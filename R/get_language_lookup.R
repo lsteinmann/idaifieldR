@@ -61,6 +61,8 @@ extract_field_names <- function(fields_list) {
 #' are contained. Can be obtained with [get_configuration()].
 #' @param language Language short name that is to be extracted, e.g. "en",
 #' defaults to "en"
+#' @param remove_config_names TRUE/FALSE: Should the name of the project be
+#' removed from field names of the configuration? (Default is TRUE.)
 #'
 #' @returns A data.frame that can serve as a lookup table, with the background
 #' name in the "var" column, and the selected language in the "label" column.
@@ -72,8 +74,8 @@ extract_field_names <- function(fields_list) {
 #' default configurations available online: [download_language_list()]
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @examples
 #' \dontrun{
@@ -83,7 +85,9 @@ extract_field_names <- function(fields_list) {
 #' config <- get_configuration(connection = conn)
 #' lookup <- get_language_lookup(config$languages, language = "en")
 #' }
-get_language_lookup <- function(lang_list, language = "en") {
+get_language_lookup <- function(lang_list,
+                                language = "en",
+                                remove_config_names = TRUE) {
   # if any of the reversed results of grepl are true, we need to skip because
   # the names are not in language-list forma, e.g. "en", "de", "fr"
   # (the reverse/any combination is weird, but we have to reverse the matches
@@ -135,7 +139,9 @@ get_language_lookup <- function(lang_list, language = "en") {
   if (nrow(result) != 0) {
     rownames(result) <- 1:nrow(result)
   }
-  result$var <- remove_config_names(result$var)
+  if(remove_config_names) {
+    result$var <- remove_config_names(result$var)
+  }
 
   return(result)
 }
