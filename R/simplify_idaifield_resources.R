@@ -196,9 +196,9 @@ simplify_single_resource <- function(resource,
 #' Only the "projectname:"-part will be removed.
 #'
 #' Please note: The function will need an Index (i.e. uidlist as provided
-#' by `get_uid_list()`) of the complete project database to correctly replace
+#' by [get_uid_list()]) of the complete project database to correctly replace
 #' the UUIDs with their corresponding identifiers! Especially if a selected
-#' list is passed to `simplify_idaifield()`, you need to supply the uidlist
+#' list is passed to [simplify_idaifield()], you need to supply the uidlist
 #' of the complete project database as well.
 #'
 #' Formatting of various lists: Dimension measurements as well as dating are

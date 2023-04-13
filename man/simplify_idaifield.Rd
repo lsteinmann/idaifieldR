@@ -65,9 +65,9 @@ Only the "projectname:"-part will be removed.
 }
 \details{
 Please note: The function will need an Index (i.e. uidlist as provided
-by \code{get_uid_list()}) of the complete project database to correctly replace
+by \code{\link[=get_uid_list]{get_uid_list()}}) of the complete project database to correctly replace
 the UUIDs with their corresponding identifiers! Especially if a selected
-list is passed to \code{simplify_idaifield()}, you need to supply the uidlist
+list is passed to \code{\link[=simplify_idaifield]{simplify_idaifield()}}, you need to supply the uidlist
 of the complete project database as well.
 
 Formatting of various lists: Dimension measurements as well as dating are
