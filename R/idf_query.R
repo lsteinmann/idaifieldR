@@ -16,8 +16,8 @@
 #' @returns An `idaifield_docs` list containing all *docs* that fit the query parameters.
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @export
 #'
@@ -31,17 +31,22 @@ idf_query <- function(connection,
                       value = "Pottery",
                       projectname = NULL) {
 
+
   if (field == "type" | field == "category") {
     query <- paste0('{ "selector": { "$or": [  { "resource.type": "', value, '" },
     { "resource.category": "', value, '" }]}}')
   } else {
-    query <- paste0('{ "selector": { "resource.',
-                    field, '": "', value, '"}}')
+    query <- paste0('{ "selector": { "$or": [  { "resource.', field, '": "', value, '" },
+    { "resource.', field, '": ["', value, '"] }]}}')
+  }
+  if (!jsonlite::validate(query)) {
+    stop("Could not validate JSON structure of query.")
   }
 
   proj_client <- proj_idf_client(connection,
                                  project = projectname,
                                  include = "query")
+
 
   response <- proj_client$post(body = query)
   response <- response_to_list(response)
@@ -88,8 +93,8 @@ idf_query <- function(connection,
 #' @returns An `idaifield_docs` list
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @export
 #'

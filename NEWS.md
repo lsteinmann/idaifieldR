@@ -1,6 +1,7 @@
 # idaifieldR 0.3.2 _tba_
 * add option to use or not use exact dates as min/max values for dating if present
 * fix error in get_language_lookup()
+* fix bug in query function where it would not get values from fields with possibility of multiple entries
 * remove config as attribute to save space
 * rename `select_by()` to `idf_select_by()`
 * rename `show_categories()` to `idf_show_categories()`
