@@ -7,20 +7,31 @@
 idf_ping(conn)
 }
 \arguments{
-\item{conn}{The connection settings as returned by `connect_idaifield()` or
-a direct Client as returned by `proj_idf_client()` for internal functions}
+\item{conn}{An object that contains the connection settings, as
+returned by \code{\link[=connect_idaifield]{connect_idaifield()}}.}
 }
 \value{
-returns TRUE if connection works, FALSE if failed to connect
+A boolean value indicating if the connection
+was successful (TRUE) or not (FALSE).
 }
 \description{
-Helper for all functions that access the database to display
-specific warning messages.
+This function checks if a connection to the Field Database
+can be established. It returns a boolean value indicating if the
+connection was successful or not. Warnings are used to indicate why
+the connection failed, if so.
 }
 \examples{
 \dontrun{
-idaifield_connection <- connect_idaifield(ping = FALSE)
-idf_ping(idaifield_connection)
-}
+# Establish a connection to the Field Database
+conn <- connect_idaifield(ping = FALSE)
 
+# Ping the Field Database
+idf_ping(conn)
+}
+}
+\seealso{
+\itemize{
+\item Produce a Connection-Settings list with: \code{\link[=connect_idaifield]{connect_idaifield()}}
+\item Find all projects in the database with: \code{\link[=idf_projects]{idf_projects()}}
+}
 }

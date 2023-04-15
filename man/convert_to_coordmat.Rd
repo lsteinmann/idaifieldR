@@ -2,19 +2,19 @@
 % Please edit documentation in R/reformat_geometry.R
 \name{convert_to_coordmat}
 \alias{convert_to_coordmat}
-\title{Converts coordinate list from idaifield to a matrix}
+\title{Converts Coordinate List from iDAI.field to a Matrix}
 \usage{
 convert_to_coordmat(coordinates)
 }
 \arguments{
-\item{coordinates}{a list of the format that any coordinateslist has
-in the iDAI.field 2 / Field Desktop database}
+\item{coordinates}{a list of the format that any coordinates list has
+in the iDAI.field 2 / Field Desktop database.}
 }
 \value{
-a matrix that displays the same coordinates
+a matrix that displays the same coordinates.
 }
 \description{
-Converts coordinate list from idaifield to a matrix
+Converts Coordinate List from iDAI.field to a Matrix
 }
 \examples{
 \dontrun{

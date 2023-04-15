@@ -1,6 +1,6 @@
 #' Create a data.frame from a list of labels and descriptions from iDAI.field
 #'
-#' Helper to get_language_lookup()
+#' Helper to [get_language_lookup()]
 #'
 #'
 #' @param fields_list A named list that contains one or two other
@@ -8,7 +8,7 @@
 #' language of the respective internal value (i.e. the name of the list)
 #' @param language
 #'
-#' @return a data frame with the column "var" and "label" containing the
+#' @returns a data frame with the column "var" and "label" containing the
 #' value in var and its respective translation / display value in "label"
 #'
 #' @keywords internal
@@ -39,18 +39,43 @@ extract_field_names <- function(fields_list) {
   return(fields_df)
 }
 
-#' get_language_lookup(): Prepare a Language List as a Lookup Table
+#' @title Prepare a Language List as a Lookup Table
+#'
+#' @description The function compiles a table of background values and their translations
+#' in the language selected from the configuration supplied to it. Current
+#' Configuration resources from the database obtained by
+#' [get_configuration()] only contain canges made after the
+#' addition of the project configuration editor in iDAI.field 3.
+#' You can obtain older language configurations with
+#' [download_language_list()] from the iDAI.field GitHub repository.
+#'
+#'
+#' @details Be aware: if two things have the same name
+#' in the background of the database / project configuration but you use
+#' different translations this will result in only one of the
+#' translations being used.
 #'
 #' @param lang_list A list in the format used by iDAI.fields configuration,
 #' containing a separate list for each language with its short
 #' name (e.g. "en", "de") in which the "commons", "categories" etc. lists
-#' are contained.
+#' are contained. Can be obtained with [get_configuration()].
 #' @param language Language short name that is to be extracted, e.g. "en",
 #' defaults to "en"
+#' @param remove_config_names TRUE/FALSE: Should the name of the project be
+#' removed from field names of the configuration? (Default is TRUE.)
 #'
-#' @return A data.frame that can serve as a lookup table, with the background
+#' @returns A data.frame that can serve as a lookup table, with the background
 #' name in the "var" column, and the selected language in the "label" column.
+#'
 #' @export
+#'
+#' @seealso
+#' * Get the necessary configuration: [get_configuration()] or the
+#' default configurations available online: [download_language_list()]
+#'
+#'
+#'
+#'
 #'
 #' @examples
 #' \dontrun{
@@ -60,7 +85,9 @@ extract_field_names <- function(fields_list) {
 #' config <- get_configuration(connection = conn)
 #' lookup <- get_language_lookup(config$languages, language = "en")
 #' }
-get_language_lookup <- function(lang_list, language = "en") {
+get_language_lookup <- function(lang_list,
+                                language = "en",
+                                remove_config_names = TRUE) {
   # if any of the reversed results of grepl are true, we need to skip because
   # the names are not in language-list forma, e.g. "en", "de", "fr"
   # (the reverse/any combination is weird, but we have to reverse the matches
@@ -92,7 +119,9 @@ get_language_lookup <- function(lang_list, language = "en") {
       sublist <- unlist(lang_list[[name]], recursive = FALSE, use.names = FALSE)
       ind <- unlist(lapply(sublist, function(x) is.null(names(x))))
       ind <- which(ind)
-      sublist <- sublist[-ind]
+      if (length(ind) != 0) {
+        sublist <- sublist[-ind]
+      }
       sublist <- unlist(sublist, recursive = FALSE, use.names = TRUE)
       label_df_sec <- extract_field_names(sublist)
       label_df <- rbind(label_df, label_df_sec)
@@ -110,7 +139,9 @@ get_language_lookup <- function(lang_list, language = "en") {
   if (nrow(result) != 0) {
     rownames(result) <- 1:nrow(result)
   }
-  result$var <- remove_config_names(result$var)
+  if(remove_config_names) {
+    result$var <- remove_config_names(result$var)
+  }
 
   return(result)
 }

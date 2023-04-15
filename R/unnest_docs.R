@@ -1,4 +1,4 @@
-#' Unnesting a idaifield_docs-List down to resource level
+#' Unnesting a `idaifield_docs`-List down to resource level
 #'
 #' This function unnests the lists provided by iDAI.field 2 / Field Desktop.
 #' The actual data of a resource is usually stored in a sub-list
@@ -7,14 +7,14 @@
 #' about who created and modified the resource at what time and
 #' is irrelevant for any analysis of the database contents itself.
 #'
-#' @param idaifield_docs A list as provided by `get_idaifield_docs()`.
-#' `get_idaifield_docs()` employs this function already when
+#' @param idaifield_docs A list as provided by [get_idaifield_docs()].
+#' [get_idaifield_docs()] employs this function already when
 #' setting `raw = FALSE`.
 #'
 #' @keywords internal
 #'
 #'
-#' @return a list of class idaifield_resources (same as idaifield_docs,
+#' @returns a list of class `idaifield_resources` (same as `idaifield_docs`,
 #' but the top-level with meta-information has been removed to make the actual
 #' resource data more accessible)
 #'
@@ -47,7 +47,7 @@ unnest_docs <- function(docs) {
 #'
 #' @param list a list formatted from a CouchDB-JSON-output
 #'
-#' @return the list of resource-lists
+#' @returns the list of resource-lists
 #'
 #' @keywords internal
 #'

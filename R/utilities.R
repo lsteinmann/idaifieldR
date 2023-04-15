@@ -11,7 +11,7 @@
 #'
 #' @keywords internal
 #'
-#' @return NA if empty, or the object that has been handed to it
+#' @returns NA if empty, or the object that has been handed to it
 #'
 #' @examples
 #' \dontrun{
@@ -35,7 +35,7 @@ na_if_empty <- function(item) {
 #'
 #' @param testobject An object that should be evaluated.
 #'
-#' @return a matrix that allows other functions to determine which type of
+#' @returns a matrix that allows other functions to determine which type of
 #' list the object is
 #'
 #' @keywords internal
@@ -84,11 +84,10 @@ check_if_idaifield <- function(testobject) {
 
 #' Checks if a list has sub-lists and returns TRUE if so
 #'
-#' # TODO absolutely stupid
 #'
 #' @param single_resource_field a list to be checked
 #'
-#' @return TRUE/FALSE
+#' @returns TRUE/FALSE
 #'
 #' @keywords internal
 #'
@@ -106,7 +105,6 @@ check_for_sublist <- function(single_resource_field) {
                        FUN.VALUE = logical(1))
     has_sublist <- any(sublists)
   } else {
-    message("Object is not a list.")
     has_sublist <- FALSE
   }
   return(has_sublist)
@@ -117,7 +115,7 @@ check_for_sublist <- function(single_resource_field) {
 #' @param string A character string or vector of character strings that should
 #' be checked for being a UID as used in iDAI.field 2 / Field Desktop
 #'
-#' @return a vector of the same length as string containing TRUE if
+#' @returns a vector of the same length as string containing TRUE if
 #' the corresponding item in string is a UID, FALSE if not
 #'
 #' @keywords internal
@@ -140,7 +138,7 @@ check_if_uid <- function(string) {
 #' a character vector with exact column names that will then place these as
 #' the first n columns of the matrix produced by idaifield_as_matrix()
 #'
-#' @return a character vector
+#' @returns a character vector
 #'
 #' @keywords internal
 #'
@@ -170,7 +168,7 @@ reorder_colnames <- function(colnames, order = "default") {
 #' @param response "HttpResponse" as returned by client$get where
 #' client was produced by `proj_idf_client()`
 #'
-#' @return a list
+#' @returns a list
 #' @keywords internal
 response_to_list <- function(response = NULL) {
   if ("HttpResponse" %in% class(response)) {
@@ -186,7 +184,7 @@ response_to_list <- function(response = NULL) {
 #'
 #' @param idaifield_docs
 #'
-#' @return the docs with "type" renamed to "category"
+#' @returns the docs with "type" renamed to "category"
 #'
 #' @keywords internal
 type_to_category <- function(docs) {
@@ -201,11 +199,11 @@ type_to_category <- function(docs) {
 }
 
 
-#' Name the list of idaifield_docs by identifier
+#' Name the list of `idaifield_docs` by identifier
 #'
 #' @param docs idaifield_docs
 #'
-#' @return same, but named
+#' @returns same, but named
 #' @keywords internal
 name_docs_list <- function(docs) {
   new_names <- lapply(docs, function(x)

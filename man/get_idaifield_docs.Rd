@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_idaifield_docs.R
 \name{get_idaifield_docs}
 \alias{get_idaifield_docs}
-\title{get_idaifield_docs: Import all docs from an iDAI.field / Field Desktop project}
+\title{Import all \emph{docs} from an iDAI.field / Field Desktop project}
 \usage{
 get_idaifield_docs(
   connection = connect_idaifield(serverip = "127.0.0.1", project = "rtest", user = "R",
@@ -13,44 +13,47 @@ get_idaifield_docs(
 )
 }
 \arguments{
-\item{connection}{A connection object as returned by `connect_idaifield()`}
+\item{connection}{A connection object as returned
+by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
-\item{raw}{logical. default TRUE. If you wish to get an unnested version
-of only the resources, without the change log, set it to FALSE.}
+\item{raw}{TRUE/FALSE. Should the result already be unnested to
+resource level using \code{\link[=check_and_unnest]{check_and_unnest()}}? (Default is FALSE.)}
 
-\item{json}{logical. default FALSE; if TRUE output cannot be simplified with the
-functions from this package and is instead of a list returned in json format
-that can freely be manipulated using e.g. the jsonlite package.}
+\item{json}{TRUE/FALSE. Should the function return a JSON-character string?
+(Default is FALSE.) If TRUE output cannot be processed with the functions
+from this package. Can be parsed using e.g. \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}}.}
 
 \item{projectname}{The name of the project in the Field Client that one
-wishes to load. Will overwrite the project set in the connection-object.}
+wishes to load. Will overwrite the project set in the \code{connection}-object.
+See \code{\link[=idf_projects]{idf_projects()}} for all available projects.}
 }
 \value{
-an object (list) of class 'idaifield_docs' if `raw = TRUE` and
-'idaifield_resources' if `raw = FALSE` that contains all docs/resources
+an object (list) of class \code{idaifield_docs} if \code{raw = TRUE} and
+\code{idaifield_resources} if \code{raw = FALSE} that contains all \emph{docs}/\emph{resources}
 in the selected project except for the project configuration.
-The connection, projectname and configuration are attached as
-attributes for later use.(If json is set to TRUE, returns a character
-string in json-format.)
+The \code{connection} and \code{projectname} are attached as attributes for
+later use. (If \code{json = TRUE}, returns a character string in JSON-format.)
 }
 \description{
-Imports all docs from an idaifield-database that is currently running
-and syncing into a list-object for further processing in R.
-The function is only useful for the import from iDAI.field 2 or
-Field Desktop with the respective client running on the same computer as
-the R-script.
-When using `raw = TRUE` (the default) this function will allow you to
-get the change log for each resource, i.e. which user changed something
-in the resource at what time and who created it. Setting `raw = FALSE`
-will only return a list of the actual data. You can do this at a later time
-using `check_and_unnest()` from this package.
+Imports all \emph{docs} from an iDAI.Field-database that is
+currently running and syncing into a list-object for further processing
+in R. The function is only useful for the import from
+\href{https://github.com/dainst/idai-field}{iDAI.field 2 or Field Desktop}
+with the respective client running on the same computer or
+in the same network as the R-script.
 }
 \details{
+When using \code{raw = TRUE} (the default) this function will allow
+you to get the change log for each resource, i.e. which user changed
+something in the resource at what time and who created it.
+Setting \code{raw = FALSE} will only return a list of the actual data.
+You can do this at a later time using \code{\link[=check_and_unnest]{check_and_unnest()}}
+from this package.
 NOTE: If you are planning on using the coordinates stored in the database,
 I strongly suggest you consider changing your R digits-setting to a higher
 value than the default. Depending on the projection used, coordinates may
 be represented by rather long numbers which R might automatically round on
-import. `options(digits = 20)` should more than do the trick. (That applies
+import. \code{options(digits = 20)} should more than do the trick. (That applies
 to other fields containing long numbers as well.)
 }
 \examples{
@@ -59,4 +62,11 @@ conn <- connect_idaifield(project = "rtest", pwd = "hallo")
 idaifield_docs <- get_idaifield_docs(connection = conn)
 }
 
+}
+\seealso{
+\itemize{
+\item For querying the database: \code{\link[=idf_query]{idf_query()}},\code{\link[=idf_index_query]{idf_index_query()}}, \code{\link[=idf_json_query]{idf_json_query()}}
+\item For filtering / selecting an \code{idaifield_docs}- or \code{idaifield_resources}-list: \code{\link[=idf_select_by]{idf_select_by()}}
+\item For processing the list: \code{\link[=check_and_unnest]{check_and_unnest()}}, \code{\link[=simplify_idaifield]{simplify_idaifield()}}
+}
 }

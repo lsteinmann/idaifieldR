@@ -13,7 +13,7 @@ check_for_sublist(single_resource_field)
 TRUE/FALSE
 }
 \description{
-# TODO absolutely stupid
+Checks if a list has sub-lists and returns TRUE if so
 }
 \examples{
 \dontrun{

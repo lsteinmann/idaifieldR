@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{check_if_idaifield}
 \alias{check_if_idaifield}
-\title{Check for `idaifield_...` classes}
+\title{Check for \code{idaifield_...} classes}
 \usage{
 check_if_idaifield(testobject)
 }

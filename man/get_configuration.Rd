@@ -2,32 +2,42 @@
 % Please edit documentation in R/get_configuration.R
 \name{get_configuration}
 \alias{get_configuration}
-\title{Get the custom project configuration as stored in the project database}
+\title{Get the Custom Project Configuration as Stored in the Project Database}
 \usage{
 get_configuration(connection, projectname = NULL)
 }
 \arguments{
-\item{connection}{A connection object as returned by `connect_idaifield()`}
+\item{connection}{A connection object as returned
+by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
 \item{projectname}{The name of the project in the Field Client that one
 wishes to load. Will overwrite the project argument that was set
-in `connect_idaifield()`.}
+in \code{\link[=connect_idaifield]{connect_idaifield()}}.}
 }
 \value{
-a list containing the project configuration; NA if the configuration
+A list containing the project configuration; \code{NA} if the configuration
 could not be found or the connection failed.
 }
 \description{
 This function retrieves the project configuration (if existent) from an
-iDAI.field project. The list will only contain fields and valuelists
+\href{https://github.com/dainst/idai-field}{iDAI.field} project.
+The list will only contain fields and valuelists
 that have been edited in the project configuration editor in iDAI.field 3
-(Field Desktop) and does not encompass fields, valuelists and translation
-added before the update to iDAI.field 3.
+(Field Desktop) and does not encompass \emph{fields}, \emph{valuelists} and
+\emph{translation} added before the update to
+\href{https://github.com/dainst/idai-field}{iDAI.field} 3.
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
+conn <- connect_idaifield(serverip = "127.0.0.1",
+user = "R", pwd = "hallo", project = "rtest")
 config <- get_configuration(connection = conn,
 projectname = "rtest")
+}
+}
+\seealso{
+\itemize{
+\item Get the inputTypes from a Configuration: \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
 }
 }

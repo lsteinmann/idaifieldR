@@ -16,14 +16,16 @@ library will be downloaded.}
 defaults to "en"}
 }
 \value{
-a list that can be processed with `get_language_lookup()`
+A list that can be processed with \code{\link[=get_language_lookup]{get_language_lookup()}}.
 }
 \description{
-This function downloads language lists from the idai-field GitHub-repository
-and can be used to supply additional lists to `get_language_lookup()`.
+This function downloads language lists from the
+\href{https://github.com/dainst/idai-field}{iDAI.field-GitHub-repository}
+and can be used to supply additional lists to \code{\link[=get_language_lookup]{get_language_lookup()}}.
 }
 \examples{
 \dontrun{
 lang_list <- download_language_list(language = "de")
+get_language_lookup(lang_list)
 }
 }

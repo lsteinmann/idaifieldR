@@ -3,11 +3,6 @@ source(file = "../load_testdata.R")
 uidlist <- get_uid_list(test_docs)
 
 
-
-# FOR NOW - massive todo: rename type everywhere to category,
-# it makes much more sense and will be the case sooner or later.
-# cannot be bothered right now because too many scripts use "type",
-# currently
 test_that("renames type to category", {
   resource <- test_resources[[5]]
   resource$category <- "TEST"
@@ -126,6 +121,15 @@ test_that("returns same object if already simple", {
 })
 
 
+
+conn <- skip_if_no_connection()
+
+projs <- try(idf_projects(conn), silent = TRUE)
+
+if (!"idaifieldr-demo" %in% projs) {
+  skip("Needs project db 'idaifieldr-demo'")
+}
+
 # language support
 data("idaifieldr_demodata")
 
@@ -159,7 +163,6 @@ test_that("notify for unavailable language", {
                  lang)
 })
 
-
 test_that("return correct language", {
   lang <- "de"
   val <- idaifieldr_demodata[[1]]$doc$resource$shortDescription$de
@@ -183,6 +186,9 @@ test_that("return all languages", {
     "all languages")
   expect_true(all(c("en", "de") %in% names(test[[1]]$shortDescription)))
 })
+
+
+
 
 
 test_that("colnames from checkboxes are spread", {

@@ -2,26 +2,32 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{remove_config_names}
 \alias{remove_config_names}
-\title{Remove everything before the : in a character vector}
+\title{Remove Everything Before the Colon in a Character Vector}
 \usage{
-remove_config_names(nameslist = c("identifier", "configname:test"))
+remove_config_names(conf_names = c("identifier", "configname:test"))
 }
 \arguments{
-\item{nameslist}{a character vector}
+\item{conf_names}{A character vector.}
 }
 \value{
-same character vector without everything before
-the ":" including the ":"
+The same character vector with everything before
+the first colon (including the colon) removed.
 }
 \description{
-This function is a helper to `simplify_single_resource()`.
+This function removes everything before the first
+colon (including the colon) in a character vector.
+It is used as a helper function for \code{simplify_idaifield()}.
 }
 \examples{
 \dontrun{
-nameslist <- c("relation.liesWithin","relation.liesWithinLayer",
-"campaign.2022","milet:test")
-nameslist <- remove_config_names(nameslist)
-nameslist
+nameslist <- c("relation.liesWithin", "relation.liesWithinLayer",
+"campaign.2022", "rtest:test", "pergamon:neuesFeld")
+remove_config_names(nameslist)
 }
 }
-\keyword{internal}
+\seealso{
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=get_field_index]{get_field_index()}}
+and \code{\link[=get_uid_list]{get_uid_list()}}
+}
+}

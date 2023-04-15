@@ -1,11 +1,12 @@
-#' get_uid_list: Get the index of an idaifield_docs/resources object.
+#' @title Get the Index of an `idaifield_docs`/`idaifield_resources`-list
 #'
-#' All resources in the project databases in iDAI.field / Field Desktop are
+#' @description All resources in the project databases in
+#' [iDAI.field / Field Desktop](https://github.com/dainst/idai-field) are
 #' stored and referenced with their Universally Unique Identifier (UUID)
 #' in the relations fields. Therefore, for many purposes a lookup-table needs
 #' to be provided in order to get to the actual identifiers of the resources
 #' referenced. Single UUIDs or vectors of UUIDs can be replaced individually
-#' using `replace_uid()` from this package.
+#' using [replace_uid()] from this package.
 #'
 #' This function is also good for a quick overview / a list of all the
 #' resources that exist along with their identifiers and short descriptions
@@ -19,7 +20,7 @@
 #' instead their background names are used. You can see these in the project
 #' configuration settings.
 #'
-#' @param idaifield_docs An object as returned by `get_idaifield_docs()`
+#' @param idaifield_docs An object as returned by [get_idaifield_docs()]
 #' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 #' including identifier and shortDescription which is more convenient to read,
 #' and FALSE returns only UUID, category (former: type) and basic relations,
@@ -33,9 +34,12 @@
 #' defaults to all (`language = "all"`). Will select other available languages
 #' in alphabetical order if the selected language is not available.
 #'
-#' @return a data.frame with identifiers and corresponding UUIDs along with
+#' @returns a data.frame with identifiers and corresponding UUIDs along with
 #' the category (former: type), basic relations and depending on settings
 #' place, shortDescription and "liesWithinLayer" of each element
+#'
+#' @seealso
+#' * Superseded by [get_field_index()], which queries the database directly.
 #'
 #' @export
 #'
@@ -113,8 +117,12 @@ get_uid_list <- function(idaifield_docs,
     } else {
       uidlist$shortDescription <- gather_languages(desc, language = language)
     }
-    uidlist$liesWithinLayer <- unlist(lapply(idaifield_docs,
-                                             function(x) na_if_empty(x$relation.liesWithinLayer)))
+    lwl <- lapply(uidlist$UID, function(x) {
+      layer <- find_layer(x, id_type = "UID", uidlist)
+      layer <- na_if_empty(layer)
+      return(layer)
+      })
+    uidlist$liesWithinLayer <- unlist(lwl)
   }
 
   uidlist$isRecordedIn <- replace_uid(uidlist$isRecordedIn, uidlist)
@@ -129,14 +137,14 @@ get_uid_list <- function(idaifield_docs,
 
 
 
-#' Get the index of an iDAI.field/Field Desktop database
+#' @title Get the Index of an iDAI.field / Field Desktop Database
 #'
-#' All resources in the project databases in iDAI.field / Field Desktop are
-#' stored and referenced with their Universally Unique Identifier (UUID)
-#' in the relations fields. Therefore, for many purposes a lookup-table needs
-#' to be provided in order to get to the actual identifiers of the resources
-#' referenced. Single UUIDs or vectors of UUIDs can be replaced individually
-#' using `replace_uid()` from this package.
+#' @description All resources in the project databases in iDAI.field /
+#' Field Desktop are stored and referenced with their Universally Unique
+#' Identifier (UUID) in the relations fields. Therefore, for many purposes a
+#' lookup-table needs to be provided in order to get to the actual identifiers
+#' of the resources referenced. Single UUIDs or vectors of UUIDs can be
+#' replaced individually using [replace_uid()] from this package.
 #'
 #' This function is also good for a quick overview / a list of all the
 #' resources that exist along with their identifiers and short descriptions
@@ -150,7 +158,7 @@ get_uid_list <- function(idaifield_docs,
 #' instead their background names are used. You can see these in the project
 #' configuration settings.
 #'
-#' @param connection An object as returned by `connect_idaifield()`
+#' @param connection An object as returned by [connect_idaifield()]
 #' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 #' including identifier and shortDescription which is more convenient to read,
 #' and FALSE returns only UUID, category (former: type) and basic relations,
@@ -164,31 +172,29 @@ get_uid_list <- function(idaifield_docs,
 #' defaults to english ("en") and will select other available languages in
 #' alphabetical order if the selected language is not available.
 #'
-#' @return a data.frame with identifiers and corresponding UUIDs along with
-#' the category (former: type), basic relations and depending on settings place and
-#' shortDescription of each element
+#' @returns a data.frame with identifiers and corresponding UUIDs along with
+#' the category (former: type), basic relations and depending on settings place
+#' and shortDescription of each element
 #' @export
+#'
+#' @seealso
+#' * [get_uid_list()] returns the same data.frame from an `idaifield_docs` or
+#' `idaifield_resources`-list without querying the database.
+#'
+#'
+#'
+#'
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#'                                 user = "R", pwd = "hallo")
+#' connection <- connect_idaifield(pwd = "hallo", project = "rtest")
 #'
-#' index <- get_index(connection, verbose = TRUE)
+#' index <- get_field_index(connection, verbose = TRUE)
 #' }
 get_field_index <- function(connection, verbose = FALSE,
                       gather_trenches = FALSE,
                       language = "en") {
 
-  query <- paste0(
-    '{ "selector": { "$not": { "resource.id": "" } },
-   "fields": [ "resource.id", "resource.identifier" ]}')
-  client <- proj_idf_client(connection, include = "query")
-
-  response <- response_to_list(client$post(body = query))
-  uuids <- unnest_docs(response)
-  uuids <- do.call(rbind.data.frame, uuids)
-  colnames(uuids) <- c("UID", "identifier")
 
   fields <- c("type", "category",
               "id", "identifier",
@@ -206,6 +212,7 @@ get_field_index <- function(connection, verbose = FALSE,
     stop("Something went wrong. Could not validate query.")
   }
 
+  client <- proj_idf_client(connection, include = "query")
   response <- response_to_list(client$post(body = query))
   response <- unnest_docs(response)
 
@@ -226,29 +233,24 @@ get_field_index <- function(connection, verbose = FALSE,
       x[fields[to_add]] <- NA
     }
     x <- x[fields]
-    x$shortDescription <- gather_languages(x$shortDescription,
-                                           language = language)
-    if (check_if_uid(x$isRecordedIn)) {
-      x$isRecordedIn <- replace_uid(x$isRecordedIn, uuids)
-    }
-    if (check_if_uid(x$liesWithin)) {
-      x$liesWithin <- replace_uid(x$liesWithin, uuids)
-    }
+    return(x)
+  })
+  index_tmp <- do.call(rbind.data.frame, index)
 
+  index <- lapply(index, function(x) {
+    x$isRecordedIn <- replace_uid(x$isRecordedIn, index_tmp[, c("identifier", "id")])
+    x$liesWithin <- replace_uid(x$liesWithin, index_tmp[, c("identifier", "id")])
+    if (verbose) {
+      x$shortDescription <- gather_languages(x$shortDescription,
+                                             language = language)
+      x$liesWithinLayer <- find_layer(x$id,
+                                      id_type = "id",
+                                      index_tmp)
+      x$liesWithinLayer <- replace_uid(x$liesWithinLayer, index_tmp[, c("identifier", "id")])
+    }
     return(x)
   })
   index_df <- do.call(rbind.data.frame, index)
-
-  if (verbose) {
-    index <- lapply(index, function(x) {
-      lw <- list(liesWithin = x$liesWithin)
-      x$liesWithinLayer <- find_layer(lw, index_df)
-      return(x)
-    })
-    lwl <- lapply(index, function(x) x$liesWithinLayer)
-    lwl <- unlist(na_if_empty(lwl))
-    index_df$liesWithinLayer <- lwl
-  }
 
   if (gather_trenches) {
     index_df$Place <- gather_trenches(index_df)
@@ -265,9 +267,14 @@ get_field_index <- function(connection, verbose = FALSE,
 
 #' Get a vector of places each element from the uidlist is located in
 #'
-#' @param uidlist as returned by `get_uid_list()` and `get_field_index()`
+#' @param uidlist as returned by [get_uid_list()]
+#' and [get_field_index()]
 #'
-#' @return a vector of Place-resources
+#' @returns a vector of Place-resources
+#'
+#'
+#'
+#'
 #'
 #' @keywords internal
 #'

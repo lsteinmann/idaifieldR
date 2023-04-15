@@ -11,27 +11,43 @@ simplify_single_resource(
   keep_geometry = TRUE,
   fieldtypes = NULL,
   language = "all",
-  spread_fields = TRUE
+  spread_fields = TRUE,
+  use_exact_dates = FALSE
 )
 }
 \arguments{
-\item{resource}{One resource (element) from an idaifield_resources-list.}
+\item{resource}{One resource (element) from an \code{idaifield_resources}-list.}
 
-\item{replace_uids}{see `?simplify_idaifield()`}
+\item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
+corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
+\code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
 
-\item{uidlist}{see `?simplify_idaifield()`}
+\item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
+automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
+the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
+has been, you should supply a data.frame as returned
+by \code{\link[=get_field_index]{get_field_index()}}.}
 
-\item{keep_geometry}{see `?simplify_idaifield()`}
+\item{keep_geometry}{TRUE/FALSE: Should the geographical
+information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
 
-\item{language}{see `?simplify_idaifield()`}
+\item{language}{the short name (e.g. "en", "de", "fr") of the language that
+is preferred for the multi-language input fields, defaults to keeping all
+languages as sub-lists ("all"). Uses: \code{\link[=gather_languages]{gather_languages()}}}
 
-\item{spread_fields}{see `?simplify_idaifield()`}
+\item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
+spread across multiple lists to facilitate boolean-columns for each value
+of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_configuration()}},
+\code{\link[=get_field_inputtypes]{get_field_inputtypes()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}}
+
+\item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
+dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
 }
 \value{
-A single resource (element) for an idaifield_resource-list.
+A single resource (element) for an \code{idaifield_resources}-list.
 }
 \description{
-This function is a helper to `simplify_idaifield()`.
+This function is a helper to \code{simplify_idaifield()}.
 }
 \examples{
 \dontrun{

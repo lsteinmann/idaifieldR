@@ -15,10 +15,6 @@ test_that("type is never empty", {
   expect_false(any(is.na(uidlist$category)))
 })
 
-
-
-
-
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 
 test_that("contains no special config names", {
@@ -69,12 +65,12 @@ for (sample in samples) {
 }
 
 test_that("gets uidlist from simplified list", {
-  test <- get_uid_list(simplify_idaifield(test_resources))
+  test <- get_uid_list(test_simple)
   expect_true("Schnitt 1" %in% test$isRecordedIn)
 })
 
 test_that("gets uidlist from simplified list", {
-  test <- get_uid_list(simplify_idaifield(test_resources))
+  test <- get_uid_list(test_simple)
   expect_true("Befund_6" %in% test$liesWithin)
 })
 
@@ -108,3 +104,4 @@ test_that("get_uid_list() and get_field_index() return the same thing", {
   expect_identical(colnames(uidlist), colnames(field_index))
   expect_identical(uidlist$identifier, field_index$identifier)
 })
+

@@ -1,24 +1,32 @@
-#' Get the custom project configuration as stored in the project database
+#' Get the Custom Project Configuration as Stored in the Project Database
 #'
 #' This function retrieves the project configuration (if existent) from an
-#' iDAI.field project. The list will only contain fields and valuelists
+#' [iDAI.field](https://github.com/dainst/idai-field) project.
+#' The list will only contain fields and valuelists
 #' that have been edited in the project configuration editor in iDAI.field 3
-#' (Field Desktop) and does not encompass fields, valuelists and translation
-#' added before the update to iDAI.field 3.
+#' (Field Desktop) and does not encompass *fields*, *valuelists* and
+#' *translation* added before the update to
+#' [iDAI.field](https://github.com/dainst/idai-field) 3.
 #'
-#' @param connection A connection object as returned by `connect_idaifield()`
+#' @param connection A connection object as returned
+#' by [connect_idaifield()]
 #' @param projectname The name of the project in the Field Client that one
 #' wishes to load. Will overwrite the project argument that was set
-#' in `connect_idaifield()`.
+#' in [connect_idaifield()].
 #'
-#' @return a list containing the project configuration; NA if the configuration
+#' @returns A list containing the project configuration; `NA` if the configuration
 #' could not be found or the connection failed.
+#'
+#' @seealso
+#' * Get the inputTypes from a Configuration: [get_field_inputtypes()]
+#' * This function is used by: [simplify_idaifield()].
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1", user = "R", pwd = "hallo", project = "rtest")
+#' conn <- connect_idaifield(serverip = "127.0.0.1",
+#' user = "R", pwd = "hallo", project = "rtest")
 #' config <- get_configuration(connection = conn,
 #' projectname = "rtest")
 #' }
@@ -45,18 +53,27 @@ get_configuration <- function(connection, projectname = NULL) {
 }
 
 
-#' Produce a matrix of field inputTypes from the custom project configuration
+#' Produce a Matrix of Field *inputTypes* from the Custom Project Configuration
 #'
-#' This function retrieves a matrix containing the inputTypes of all
-#' custom fields and their corresponding inputTypes from a project
-#' configuration (if existent) of an iDAI.field project.
+#' This function retrieves a matrix containing the *inputTypes* of all
+#' custom fields from a project configuration of an
+#' [iDAI.field](https://github.com/dainst/idai-field) project.
 #'
 #'
-#' @param config A configuration list as returned by `get_configuration()`
-#' @param inputType if specified, matrix is filtered to return only the
-#' specified type
+#' @param config A configuration list as returned
+#' by [get_configuration()]
+#' @param inputType If specified, matrix is filtered to return only the
+#' specified type.
 #'
-#' @return a matrix of fields with the given inputType
+#' @returns A matrix of fields (with the given *inputType*).
+#'
+#' @seealso
+#' * [get_configuration()], [convert_to_onehot()]
+#' * This function is used by: [simplify_idaifield()].
+#'
+#'
+#' 
+#' 
 #'
 #' @export
 #'

@@ -2,24 +2,29 @@
 % Please edit documentation in R/idf_projects.R
 \name{idf_projects}
 \alias{idf_projects}
-\title{Get a vector of project names present in the database}
+\title{Get a Vector of Project Names Present in the Database}
 \usage{
 idf_projects(connection)
 }
 \arguments{
 \item{connection}{The connection settings as
-returned by `connect_idaifield()`}
+returned by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 }
 \value{
 A character vector containing the projects present in the database,
 NA if connection was refused.
 }
 \description{
-Get a vector of project names present in the database
+Get a Vector of Project Names Present in the Database
 }
 \examples{
 \dontrun{
  connection <- connect_idaifield(pwd = "hallo")
  idf_project_list(connection)
+}
+}
+\seealso{
+\itemize{
+\item \code{\link[=connect_idaifield]{connect_idaifield()}}, \code{\link[=idf_ping]{idf_ping()}}
 }
 }

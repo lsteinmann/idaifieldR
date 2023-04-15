@@ -2,34 +2,38 @@
 % Please edit documentation in R/check_and_unnest.R
 \name{check_and_unnest}
 \alias{check_and_unnest}
-\title{Check and unnest a list}
+\title{Check and Unnest an \code{idaifield_docs}-list}
 \usage{
 check_and_unnest(idaifield_docs, force = FALSE)
 }
 \arguments{
-\item{idaifield_docs}{An object to be used by one of the
-functions in this package}
+\item{idaifield_docs}{An object of class \code{idaifield_docs} to be processed.}
 
-\item{force}{logical. Should the function attempt to process
-regardless of class?}
+\item{force}{TRUE/FALSE. Should the function attempt to unnest the input
+object regardless of type or class? Default is FALSE.}
 }
 \value{
-if already unnested, the same object as handed to it. if not,
-the same list with the toplevel removed.
+If already unnested, the same object as handed to it. If not,
+the same list with the top-level lists removed down to the "resource"-level.
 }
 \description{
-Checks for list of class "idaifield_docs" and if the object is already
-unnested (i.e. of class "idaifield_resources"); if it is not, does so.
-If it cannot be processed, because it is not an idaifield_docs or
-idaifield_resources object, issues a warning and returns the same object.
+Checks if the input object is an \code{idaifield_docs}-list,
+and if it is already unnested (i.e., of class \code{idaifield_resources} or
+\code{idaifield_simple}). If the object is not unnested, the function unnests
+it by stripping all top-level lists and returning only the list
+called "resource" within the db docs. If the input
+object cannot be processed because it is not an \code{idaifield_docs} or an
+unnested \code{idaifield_resources} or \code{idaifield_simple} object,
+the function issues a warning and returns the same object. You may force
+the function to process it anyway using \code{force = TRUE}, but the outcome
+is uncertain.
 }
 \examples{
 \dontrun{
-idaifield_docs <- get_idaifield_docs(projectname = "rtest",
-connection = connect_idaifield(serverip = "127.0.0.1",
-user = "R",
-pwd = "password"))
+conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+idaifield_docs <- get_idaifield_docs(conn, raw = TRUE)
 
-check_and_unnest(idaifield_docs)
+# Check if idaifield_docs is already unnested, and if not, do so:
+idaifield_docs <- check_and_unnest(idaifield_docs)
 }
 }

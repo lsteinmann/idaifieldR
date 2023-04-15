@@ -29,7 +29,7 @@ dat_list_sec <- list(type = "exact",
                      end = list(inputYear = 1234, inputType = "ce"))
 
 test_that("prefers exact dating", {
-  test <- fix_dating(list(dat_list, dat_list_sec))
+  test <- fix_dating(list(dat_list, dat_list_sec), use_exact_dates = TRUE)
   expect_equal(test$dating.min, 1234)
   expect_equal(test$dating.max, 1234)
 })

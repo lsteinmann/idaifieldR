@@ -7,7 +7,8 @@
 gather_trenches(uidlist)
 }
 \arguments{
-\item{uidlist}{as returned by `get_uid_list()` and `get_field_index()`}
+\item{uidlist}{as returned by \code{\link[=get_uid_list]{get_uid_list()}}
+and \code{\link[=get_field_index]{get_field_index()}}}
 }
 \value{
 a vector of Place-resources

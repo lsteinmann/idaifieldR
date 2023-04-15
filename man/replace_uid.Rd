@@ -2,27 +2,34 @@
 % Please edit documentation in R/replace_uid.R
 \name{replace_uid}
 \alias{replace_uid}
-\title{replace_uid}
+\title{Replace a Vector of UUIDs with their \emph{identifier}s}
 \usage{
 replace_uid(uidvector, uidlist)
 }
 \arguments{
-\item{uidvector}{a vector of UUIDs to be replaced with their identifiers}
+\item{uidvector}{a vector of UUIDs to be replaced with their \emph{identifier}s}
 
-\item{uidlist}{a uidlist resp. index of as returned by get_uid_list()}
+\item{uidlist}{a uidlist resp. index of as returned by
+\code{\link[=get_uid_list]{get_uid_list()}} and \code{\link[=get_field_index]{get_field_index()}}}
 }
 \value{
-The corresponding identifier(s) (a character string/vector)
+The corresponding \emph{identifier}(s) (a character string/vector)
 }
 \description{
 When handed an item (a vector or a single variable) first checks if it is
 actually a UUID as defined in check_if_uid() and if so, replaces it with
-the corresponding identifier from the uidlist (also handed to the function).
+the corresponding \emph{identifier} from the uidlist (also handed to the function).
 }
 \examples{
 \dontrun{
-uidlist <- get_uid_list(idaifield_docs)
+conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+index <- get_field_index(conn)
 
-replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
+replace_uid("02932bc4-22ce-3080-a205-e050b489c0c2", uidlist = index[, c("identifier", "UID")])
+}
+}
+\seealso{
+\itemize{
+\item This function is used in: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=fix_relations]{fix_relations()}}
 }
 }

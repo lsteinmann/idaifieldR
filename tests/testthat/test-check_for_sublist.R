@@ -17,12 +17,10 @@ test_that("check_for_sublist identifies sublists", {
 })
 
 test_that("says FALSE to non-list", {
-  expect_message(check_for_sublist(1))
   expect_false(suppressWarnings(check_for_sublist(1)))
 })
 
 test_that("handles empty object (should be false)", {
-  expect_message(check_for_sublist(NULL))
   expect_false(suppressWarnings(check_for_sublist(NULL)))
 })
 

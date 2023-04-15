@@ -2,27 +2,36 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{bce_ce}
 \alias{bce_ce}
-\title{Translate a list for one dating value from iDAI.field to a positive or negative number}
+\title{Translate a Dating Value from iDAI.field to a Positive or Negative Number}
 \usage{
 bce_ce(list)
 }
 \arguments{
-\item{list}{A named list containing (at least): inputYear (number),
-and inputType ("bce", "ce", "bp")}
+\item{list}{A named list containing at least the following elements:
+\describe{
+\item{inputYear}{A numerical value representing a year.}
+\item{inputType}{A character string indicating the type of dating
+for the inputYear value. Must be one of "bce", "ce", or "bp".}
+}}
 }
 \value{
-The year as a number, negative when BCE, positive when CE
+A numerical value representing the year, with a negative
+sign indicating BCE and a positive sign indicating CE.
 }
 \description{
-(Field does save numbers in this format, but apparently not all of them.
-This corrects for wrong numbers. Numbers bp/before present are subtracted
-from 1950 to get dates BCE.)
+This function takes a list containing a numerical year and a type of dating
+(either "bce", "ce", or "bp") and returns the year as a number with a
+positive or negative sign indicating whether the year is BCE or CE.
+If the dating type is "bp", the year is subtracted from 1950
+to get a BCE year.
 }
 \examples{
 \dontrun{
 list <- list(inputYear = 100, inputType = "bce")
 bce_ce(list)
 }
-
+}
+\seealso{
+\code{\link[=fix_dating]{fix_dating()}}
 }
 \keyword{internal}

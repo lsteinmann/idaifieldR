@@ -4,7 +4,7 @@
 #' no real world representation.
 #'
 #' @format ## `idaifieldr_demodata`
-#' A list (idaifield_docs) with 108 elements:
+#' A list (`idaifield_docs`) with 108 elements:
 #' \describe{
 #'   \item{identifier}{identifier / Kurzbezeichner}
 #'   \item{all other values}{entries in the field database}

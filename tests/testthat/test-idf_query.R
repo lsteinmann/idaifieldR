@@ -42,7 +42,22 @@ test_that("returns appropriate number of entries", {
   expect_equal(length(res), count)
 })
 
+test_that("works for relations", {
+  uid <- uidlist[which(uidlist$identifier == "Befund_6"), "UID"]
+  res <- idf_query(connection, field = "relations.liesWithin", value = uid)
+  liesWithin <- unlist(lapply(res, function(x) x$doc$resource$relations$liesWithin))
+  expect_true(all(liesWithin == uid))
+})
 
+test_that("works for campaign field", {
+  res <- idf_query(connection, field = "campaign", value = "2021")
+  expect_gt(length(res), 1)
+})
+
+test_that("works for other fields with single values", {
+  res <- idf_query(connection, field = "storagePlace", value = "Museum")
+  expect_gt(length(res), 1)
+})
 
 
 

@@ -1,13 +1,8 @@
-connection <- suppressMessages(connect_idaifield(serverip = "127.0.0.1",
+connection <- suppressWarnings(connect_idaifield(serverip = "127.0.0.1",
                                                  pwd = "hallo",
                                                  ping = FALSE))
-ping <- try(idf_ping(connection))
+ping <- suppressWarnings(idf_ping(connection))
 
-if (inherits(ping, "try-error")) {
-  ping <- FALSE
-} else {
-  ping <- TRUE
-}
 
 connection$status <- FALSE
 
@@ -29,7 +24,7 @@ test_that("re-pings when status is FALSE and fails", {
   conn <- connect_idaifield(serverip = "128.0.0.1", pwd = "hallo",
                             project = "rtest", ping = FALSE)
   conn$status <- FALSE
-  expect_error(suppressMessages(proj_idf_client(conn = conn, project = "rtest")),
+  expect_error(suppressWarnings(proj_idf_client(conn = conn, project = "rtest")),
                "connection")
 })
 
@@ -43,7 +38,7 @@ skip_on_cran()
 if(!ping) { skip("Tests skipped, no DB-connection") }
 
 
-conn <- suppressMessages(connect_idaifield(serverip = "127.0.0.1",
+conn <- suppressWarnings(connect_idaifield(serverip = "127.0.0.1",
                                            pwd = "hallo",
                                            ping = ping))
 
@@ -84,7 +79,7 @@ test_that("sets project from connection", {
 test_that("error on failed connection", {
   conn <- connect_idaifield(serverip = "128.0.0.1", pwd = "hallo",
                             project = "rtest", ping = FALSE)
-  expect_error(proj_idf_client(conn = conn), "connection")
+  expect_error(suppressWarnings(proj_idf_client(conn = conn)), "connection")
 })
 
 test_that("re-pings when status is FALSE", {

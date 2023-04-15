@@ -1,11 +1,19 @@
-#' Get a vector of project names present in the database
+#' Get a Vector of Project Names Present in the Database
 #'
 #' @param connection The connection settings as
-#' returned by `connect_idaifield()`
+#' returned by [connect_idaifield()]
 #'
-#' @return A character vector containing the projects present in the database,
+#' @returns A character vector containing the projects present in the database,
 #' NA if connection was refused.
+#'
+#' @seealso
+#' * [connect_idaifield()], [idf_ping()]
+#'
 #' @export
+#'
+#'
+#' 
+#' 
 #'
 #' @examples
 #' \dontrun{

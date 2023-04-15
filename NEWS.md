@@ -1,3 +1,18 @@
+# idaifieldR 0.3.2 _2023_04-15_
+* add option to use or not use exact dates as min/max values for dating if present
+* add `idf_json_query()` which lets users construct their own queries to the CouchDB-API 
+* improve and export `find_layer()`
+* fix error in get_language_lookup()
+* fix bug in query function where it would not get values from fields with possibility of multiple entries
+* remove config as attribute to save space
+* rename `select_by()` to `idf_select_by()`
+* rename `show_categories()` to `idf_show_categories()`
+* update `idf_select_by()` and `idf_show_categories()`
+* update vignettes
+* update/enhanced documentation 
+* add a sticker
+
+
 # idaifieldR 0.3.1 _2023-04-02_
 * of course, I missed half of it.
 * fix `idf_query()`/`idf_index_query()`: rename "type" to "category" in resource lists

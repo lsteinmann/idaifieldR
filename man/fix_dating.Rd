@@ -2,28 +2,45 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{fix_dating}
 \alias{fix_dating}
-\title{Reduce the Dating-list to min/max-values}
+\title{Reduce the Dating-list to \emph{min}/\emph{max}-Values}
 \usage{
-fix_dating(dat_list)
+fix_dating(dat_list, use_exact_dates = FALSE)
 }
 \arguments{
-\item{dat_list}{The "dating"-list of any resource from
-an `idaifield_...`-list}
+\item{dat_list}{A "dating"-list of any resource from an \code{idaifield_docs}-
+or \code{idaifield_resources}-list.}
+
+\item{use_exact_dates}{TRUE/FALSE: If TRUE and "exact" dating type is
+present, sets the min and max dating to the value of the exact dating.
+Default is FALSE.}
 }
 \value{
-a reformatted list, containing min and max dating and additional
-info as well as the original values in the "comment"-element
+A reformatted list containing min and max dating and additional
+information as well as all original values in the "comment"-element. If
+\code{use_exact_dates = TRUE} contains the value of the exact dating in both
+\emph{dating.min} and \emph{dating.max}.
 }
 \description{
-Note: This function will evaluate all begin and end values for the
-dating of the resource object and evaluate only their min and max values!
+Reformats the "dating"-list of any resource from an \code{idaifield_docs}-
+or \code{idaifield_resources}-list to contain min and max dating and
+additional info as well as the original values in the "comment"-element.
 }
 \examples{
 \dontrun{
-dat_list <- list(type = "range",
-                 begin = list(inputYear = 2000, inputType = "bce"),
-                 end = list(inputYear = 2000, inputType = "ce"))
+dat_list <- list(list(type = "range",
+                     begin = list(inputYear = 2000, inputType = "bce"),
+                     end = list(inputYear = 2000, inputType = "ce")),
+                list(type = "exact",
+                     begin = list(inputYear = 130, inputType = "bce"),
+                     end = list(inputYear = 130, inputType = "bce")))
+# Use the true min/max dating:
 fix_dating(dat_list)
+# use the available exact dating:
+fix_dating(dat_list, use_exact_dates = TRUE)
 }
 }
-\keyword{internal}
+\seealso{
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}
+}
+}

@@ -2,28 +2,37 @@
 % Please edit documentation in R/simplify_utilities.R
 \name{idf_sepdim}
 \alias{idf_sepdim}
-\title{Break down a list from a dimension field to a single value}
+\title{Convert a List of Dimensions to Simpler Values}
 \usage{
-idf_sepdim(dimensionList, name = "dimensionLength")
+idf_sepdim(dimensionList, name = NULL)
 }
 \arguments{
-\item{dimensionList}{A list from one of the measurement fields
-(dimensionLength, dimensionWidth, etc.) from a single resource (element).}
+\item{dimensionList}{A list of dimensions (e.g. \code{dimensionLength},
+\code{dimensionWidth}, etc.) from a single resource (element) of an
+\code{idaifield_docs} or \code{idaifield_resources} object.}
 
-\item{name}{The name of the corresponding dimension List.}
+\item{name}{character. The name of the corresponding dimension list.
+Defaults to "dimension".}
 }
 \value{
-A list containing simple values for each measured dimension from
-the list; note: if a range was entered, it returns the mean without further
-comment.
+A list containing simple values for each measured dimension
+from the list. If a range was entered, the function returns the mean
+without further comment.
 }
 \description{
-This function is a helper to `simplify_single_resource()`.
+This function breaks down a list of dimensions
+(e.g. \code{dimensionLength}, \code{dimensionWidth}, etc.) from a single
+resource (element) of an \code{idaifield_docs} or \code{idaifield_resources} object
+and converts them to simple values.It is used as a helper function
+for \code{simplify_idaifield()}.
 }
 \examples{
 \dontrun{
-dimensionLength_new <- idf_sepdim(idaifield_resources[[1]]$dimensionLength,
-"dimensionLength")
+dimensionLength_new <- idf_sepdim(idaifield_resources[[1]]$dimensionLength, "dimensionLength")
 }
 }
-\keyword{internal}
+\seealso{
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}
+}
+}

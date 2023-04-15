@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_uid_list.R
 \name{get_uid_list}
 \alias{get_uid_list}
-\title{get_uid_list: Get the index of an idaifield_docs/resources object.}
+\title{Get the Index of an \code{idaifield_docs}/\code{idaifield_resources}-list}
 \usage{
 get_uid_list(
   idaifield_docs,
@@ -12,7 +12,7 @@ get_uid_list(
 )
 }
 \arguments{
-\item{idaifield_docs}{An object as returned by `get_idaifield_docs()`}
+\item{idaifield_docs}{An object as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}}
 
 \item{verbose}{TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 including identifier and shortDescription which is more convenient to read,
@@ -26,7 +26,7 @@ the project database is organized accordingly.)}
 
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the multi-language input "shortDescription",
-defaults to all (`language = "all"`). Will select other available languages
+defaults to all (\code{language = "all"}). Will select other available languages
 in alphabetical order if the selected language is not available.}
 }
 \value{
@@ -35,21 +35,21 @@ the category (former: type), basic relations and depending on settings
 place, shortDescription and "liesWithinLayer" of each element
 }
 \description{
-All resources in the project databases in iDAI.field / Field Desktop are
+All resources in the project databases in
+\href{https://github.com/dainst/idai-field}{iDAI.field / Field Desktop} are
 stored and referenced with their Universally Unique Identifier (UUID)
 in the relations fields. Therefore, for many purposes a lookup-table needs
 to be provided in order to get to the actual identifiers of the resources
 referenced. Single UUIDs or vectors of UUIDs can be replaced individually
-using `replace_uid()` from this package.
-}
-\details{
+using \code{\link[=replace_uid]{replace_uid()}} from this package.
+
 This function is also good for a quick overview / a list of all the
 resources that exist along with their identifiers and short descriptions
 and can be used to select the resources along their respective
 Categories (e.g. Pottery, Layer etc., formerly named "type").
 Please note that in any case the internal names of everything will be used.
-If you relabeled `Trench` to `Schnitt` in your language-configuration,
-the name will still be `Trench` here. None of these functions have any
+If you relabeled \code{Trench} to \code{Schnitt} in your language-configuration,
+the name will still be \code{Trench} here. None of these functions have any
 respect for language settings of a project configuration, i.e. the
 front end languages of valuelists and fields are not displayed, and
 instead their background names are used. You can see these in the project
@@ -63,5 +63,10 @@ idaifield_docs <- get_idaifield_docs(connection = connection,
                                      projectname = "rtest")
 
 uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
+}
+}
+\seealso{
+\itemize{
+\item Superseded by \code{\link[=get_field_index]{get_field_index()}}, which queries the database directly.
 }
 }

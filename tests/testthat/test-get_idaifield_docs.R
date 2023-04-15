@@ -34,42 +34,15 @@ test_docs_raw <- get_idaifield_docs(projectname = "rtest",
                                 connection = connection,
                                 raw = TRUE)
 
-test_resources <- get_idaifield_docs(projectname = "rtest",
-                                connection = connection,
-                                raw = FALSE)
-
-test_simple <- simplify_idaifield(test_resources)
-
-
-
-test_that("simple has connection as attribute", {
-  test <- attr(test_simple, "connection")
-  expect_true("idf_connection_settings" %in% class(test))
-})
-
-
-test_that("raw has config as attribute", {
-  test <- attr(test_docs_raw, "config")
-  expect_identical(test$identifier, "Configuration")
-})
-
-test_that("resources has config as attribute", {
-  test <- attr(test_resources, "config")
-  expect_identical(test$identifier, "Configuration")
-})
-
-test_that("simple has config as attribute", {
-  test <- attr(test_simple, "config")
-  expect_identical(test$identifier, "Configuration")
-})
-
-
 test_that("returns docs-lists", {
   check <- check_if_idaifield(test_docs_raw)
   expect_true(check["idaifield_docs"], TRUE)
 })
 
 test_that("returns resource-lists", {
+  test_resources <- get_idaifield_docs(projectname = "rtest",
+                                       connection = connection,
+                                       raw = FALSE)
   check <- check_if_idaifield(test_resources)
   expect_true(check["idaifield_resources"], TRUE)
 })

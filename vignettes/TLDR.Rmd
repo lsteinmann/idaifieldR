@@ -33,7 +33,7 @@ Using the following few lines and all default arguments while selecting from the
 ```{r eval = FALSE}
 library(dplyr)
 pottery <- db %>%
-  select_by(by = "category", value = "Pottery") %>%
+  idf_select_by(by = "category", value = "Pottery") %>%
   # Note: simplify_idaifield() needs the index of the complete project database 
   # as a lookup-table to replace all UUIDs with their identifiers
   simplify_idaifield(uidlist = index) %>%
@@ -52,6 +52,8 @@ pottery <- idf_query(connection = conn,
   idaifield_as_matrix() %>%
   as.data.frame()
 ```
+See also: `?idf_index_query`, `?idf_query` and `?idf_json_query`.
+
 
 ## Language Lookup: Example
 
@@ -60,7 +62,7 @@ Downloading translations and converting them into a lookup table:
 ```{r eval = FALSE}
 core_lang_list <- download_language_list(project = "core", language = "de")
 pergamon_lang_list <- download_language_list(project = "Pergamon", language = "de")
-config_lang_list <- attr(db, "config")
+config_lang_list <- get_configuration(attr(db, "connection"))
 config_lang_list <- config_lang_list$languages
 
 lookup <- get_language_lookup(core_lang_list, language = "de")

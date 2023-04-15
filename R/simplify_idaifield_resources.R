@@ -2,14 +2,10 @@
 #'
 #' This function is a helper to `simplify_idaifield()`.
 #'
-#' @param resource One resource (element) from an idaifield_resources-list.
-#' @param replace_uids see `?simplify_idaifield()`
-#' @param uidlist see `?simplify_idaifield()`
-#' @param keep_geometry see `?simplify_idaifield()`
-#' @param language see `?simplify_idaifield()`
-#' @param spread_fields see `?simplify_idaifield()`
+#' @param resource One resource (element) from an `idaifield_resources`-list.
+#' @inheritParams simplify_idaifield
 #'
-#' @return A single resource (element) for an idaifield_resource-list.
+#' @returns A single resource (element) for an `idaifield_resources`-list.
 #'
 #' @keywords internal
 #'
@@ -26,7 +22,8 @@ simplify_single_resource <- function(resource,
                                      keep_geometry = TRUE,
                                      fieldtypes = NULL,
                                      language = "all",
-                                     spread_fields = TRUE) {
+                                     spread_fields = TRUE,
+                                     use_exact_dates = FALSE) {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -47,10 +44,9 @@ simplify_single_resource <- function(resource,
   # liesWithinLayer variable and appended to the resource as a new field
   # called relation.liesWithinLayer.
   if (replace_uids) {
-    lw <- list(liesWithin = resource$relation.liesWithin)
-    liesWithinLayer <- find_layer(resource = lw,
+    liesWithinLayer <- find_layer(id = resource$identifier,
                                   uidlist = uidlist,
-                                  liesWithin = NULL)
+                                  id_type = "identifier")
     resource <- append(resource,
                        list(relation.liesWithinLayer = liesWithinLayer))
   }
@@ -100,7 +96,7 @@ simplify_single_resource <- function(resource,
 
   dating <- resource[["dating", exact = TRUE]]
   if (!is.null(dating)) {
-    dating <- fix_dating(dating)
+    dating <- fix_dating(dating, use_exact_dates = use_exact_dates)
     resource$dating <- NULL
     resource <- append(resource, dating)
   }
@@ -181,24 +177,27 @@ simplify_single_resource <- function(resource,
   return(resource)
 }
 
-#' Simplify a list imported from an iDAI.field-Database
+#' Simplify a List Imported from an iDAI.field / Field Desktop-Database
 #'
-#' The function will take a list as returned by `get_idaifield_docs()` and
-#' process it to make the list more useable. It will unnest a view lists,
-#' including the dimension-lists and the period-list to provide single values
-#' for later processing with `idaifield_as_matrix()`. If a connection to the
-#' database can be established, the function will get the relevant project
-#' configuration and convert custom checkboxes-fields to multiple lists,
-#' each for every value from the respective valuelist, to make them more
-#' accessible during the conversion with `idaifield_as_matrix()`. It will also
-#' remove the custom configuration field names that are in use since
-#' iDAI.field 3 / Field Desktop and consist of "projectname:fieldName". Only
-#' the "projectname:"-part will be removed.
+#' The function will take a list as returned by
+#' [get_idaifield_docs()], [idf_query()], [idf_index_query()], or
+#' [idf_json_query()] and process it to make the list more usable.
+#' It will unnest a view lists, including the dimension-lists and the
+#' period-list to provide single values for later processing with
+#' [idaifield_as_matrix()].
+#' If a connection to the database can be established, the function will
+#' get the relevant project configuration and convert custom checkboxes-fields
+#' to multiple lists, each for every value from the respective valuelist,
+#' to make them more accessible during the conversion with
+#' [idaifield_as_matrix()].
+#' It will also remove the custom configuration field names that are in use
+#' since iDAI.field 3 / Field Desktop and consist of "projectname:fieldName".
+#' Only the "projectname:"-part will be removed.
 #'
 #' Please note: The function will need an Index (i.e. uidlist as provided
-#' by `get_uid_list()`) of the complete project database to correctly replace
+#' by [get_uid_list()]) of the complete project database to correctly replace
 #' the UUIDs with their corresponding identifiers! Especially if a selected
-#' list is passed to `simplify_idaifield()`, you need to supply the uidlist
+#' list is passed to [simplify_idaifield()], you need to supply the uidlist
 #' of the complete project database as well.
 #'
 #' Formatting of various lists: Dimension measurements as well as dating are
@@ -208,25 +207,49 @@ simplify_single_resource <- function(resource,
 #' For the dimension-fields, if a ranged measurement was selected, a mean
 #' will be returned.
 #'
-#' @param idaifield_docs An "idaifield_docs" or "idaifield_resources"-list as
-#' returned by `get_idaifield_docs()` or `idf_query()` and `idf_index_query()`.
-#' @param replace_uids logical. Should UUIDs be automatically replaced with the
-#' corresponding identifiers? (Defaults to TRUE).
+#' @param idaifield_docs An `idaifield_docs` or `idaifield_resources`-list as
+#' returned by [get_idaifield_docs()] or [idf_query()],
+#' [idf_index_query()], and [idf_json_query()].
+#' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
+#' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with
+#' [replace_uid()], and also: [find_layer()]
 #' @param uidlist If NULL (default) the list of UUIDs and identifiers is
-#' automatically generated within this function. This only makes sense if
-#' the list handed to `simplify_idaifield()` had not been selected yet. If it
-#' has been, you should supply a data.frame as returned by `get_uid_list()`.
-#' @param keep_geometry logical. (Defaults to FALSE) Should the geographical
-#' information be kept or removed?
+#' automatically generated within this function using [get_uid_list()]. This only makes sense if
+#' the list handed to [simplify_idaifield()] had not been selected yet. If it
+#' has been, you should supply a data.frame as returned
+#' by [get_field_index()].
+#' @param keep_geometry TRUE/FALSE: Should the geographical
+#' information be kept or removed? Defaults is FALSE. Uses: [reformat_geometry()]
 #' @param language the short name (e.g. "en", "de", "fr") of the language that
 #' is preferred for the multi-language input fields, defaults to keeping all
-#' languages as sub-lists ("all").
-#' @param spread_fields logical. (Defaults to TRUE) Should checkbox-fields be
+#' languages as sub-lists ("all"). Uses: [gather_languages()]
+#' @param spread_fields TRUE/FALSE: Should checkbox-fields be
 #' spread across multiple lists to facilitate boolean-columns for each value
-#' of a checkbox-field?
+#' of a checkbox-field? Default is TRUE. Uses: [get_configuration()],
+#' [get_field_inputtypes()], [convert_to_onehot()]
+#' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
+#' dates be used in case there are any? Default is FALSE. Changes outcome of [fix_dating()].
 #'
-#' @return an "idaifield_simple" list
+#' @returns An `idaifield_simple`-list containing the same resources in
+#' a different format depending on the parameters used.
+#'
+#'
 #' @export
+#'
+#'
+#'
+#'
+#'
+#'
+#' @seealso
+#' * This function uses: [idf_sepdim()], [remove_config_names()], [find_layer()]
+#' * [fix_dating()] with the outcome depending on the `use_exact_dates`-argument.
+#' * When selecting a language: [gather_languages()]
+#' * Depending on the `spread_fields`-argument: [convert_to_onehot()]
+#' * Depending on the `keep_geometry`-argument: [reformat_geometry()]
+#' * Depending on the `replace_uids`-argument: [fix_relations()] with [replace_uid()]
+#' * If `uidlist = NULL`: [get_uid_list()]
+#'
 #'
 #' @examples
 #' \dontrun{
@@ -242,7 +265,8 @@ simplify_idaifield <- function(idaifield_docs,
                                replace_uids = TRUE,
                                uidlist = NULL,
                                language = "all",
-                               spread_fields = TRUE) {
+                               spread_fields = TRUE,
+                               use_exact_dates = FALSE) {
 
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_simple"] == TRUE) {
@@ -256,14 +280,13 @@ simplify_idaifield <- function(idaifield_docs,
     uidlist <- get_uid_list(idaifield_docs)
   }
 
-  config <- attr(idaifield_docs, "config")
   projectname <- attr(idaifield_docs, "projectname")
+  conn <- attr(idaifield_docs, "connection")
 
-  if (inherits(config, "try-error")) {
-    fieldtypes <- NA
-  } else {
+  ping <- suppressWarnings(idf_ping(conn))
+  if (ping) {
+    config <- get_configuration(conn, projectname = projectname)
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
-
     ## Language handling / messages
     languages <- unlist(config$projectLanguages)
     if (language != "all") {
@@ -282,6 +305,8 @@ simplify_idaifield <- function(idaifield_docs,
     } else {
       message("Keeping all languages for input fields.")
     }
+  } else {
+    fieldtypes <- NA
   }
 
   idaifield_simple <- lapply(idaifield_docs, function(x)
@@ -292,14 +317,14 @@ simplify_idaifield <- function(idaifield_docs,
       keep_geometry = keep_geometry,
       fieldtypes = fieldtypes,
       language = language,
-      spread_fields = spread_fields
+      spread_fields = spread_fields,
+      use_exact_dates = use_exact_dates
     )
   )
 
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
   attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
   attr(idaifield_simple, "projectname") <- attr(idaifield_docs, "projectname")
-  attr(idaifield_simple, "config") <- config
   attr(idaifield_simple, "language") <- language
 
   return(idaifield_simple)

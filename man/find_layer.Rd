@@ -2,36 +2,43 @@
 % Please edit documentation in R/find_layer.R
 \name{find_layer}
 \alias{find_layer}
-\title{Find the Layer a resource is contained in}
+\title{Find the Layer a Resource is Contained in}
 \usage{
-find_layer(
-  resource = resource,
-  uidlist = NULL,
-  liesWithin = NULL,
-  strict = FALSE,
-  opts = NULL
-)
+find_layer(id, id_type = "identifier", uidlist = NULL, layer_categories = NULL)
 }
 \arguments{
-\item{resource}{One resource (element) from an idaifield_resources-list.}
+\item{id}{Either the UUID or the identifier of a resource from an
+\code{idaifield_...}-list as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}},
+\code{\link[=idf_index_query]{idf_index_query()}} or \code{\link[=idf_json_query]{idf_json_query()}}.}
 
-\item{uidlist}{A data.frame as returned by `get_field_index()`.}
+\item{id_type}{one of "identifier" or "UID" - Should the function use
+\emph{identifier}s or \emph{UUID}s to find the layer?}
 
-\item{liesWithin}{Only for recursion: a dataframe this function hands
-to itself, otherwith usually NULL}
+\item{uidlist}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}} or
+\code{\link[=get_uid_list]{get_uid_list()}}.}
 
-\item{strict}{TRUE/FALSE (currently only for testing)}
+\item{layer_categories}{A vector of \emph{categories} that are classified as
+\emph{Layer}s. See or change the default: \code{getOption("idaifield_categories")$layers}}
 }
 \value{
-chr
+The identifier or UUID of the first "Layer"-category resource the
+given id/identifier lies within.
 }
 \description{
-Warning: recursive and currently no error handling
-}
-\details{
-Helper to simplify_single_resource(). Traces the liesWithin fields to
+Helper to \code{\link[=simplify_idaifield]{simplify_idaifield()}}. Traces the liesWithin fields to
 find the one that is a Layer and returns the corresponding identifier.
-
-#TODO: Somehow this is super convoluted.
 }
-\keyword{internal}
+\examples{
+\dontrun{
+conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+index <- get_field_index(conn)
+index[which(index$identifier == "Befund_1_InschriftAufMünze"), ]
+find_layer("Befund_1_InschriftAufMünze", id_type = "identifier", index)
+}
+}
+\seealso{
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=get_field_index]{get_field_index()}},
+\code{\link[=get_uid_list]{get_uid_list()}}.
+}
+}

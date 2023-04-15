@@ -2,26 +2,26 @@
 % Please edit documentation in R/idaifield_as_matrix.R
 \name{idaifield_as_matrix}
 \alias{idaifield_as_matrix}
-\title{idaifield_as_matrix}
+\title{Convert an \code{idaifield_simple}-list to a Matrix}
 \usage{
 idaifield_as_matrix(idaifield)
 }
 \arguments{
-\item{idaifield}{An object as returned by `get_idaifield_docs(...)`,
-`check_and_unnest(...)` or `simplify_idaifield(...)`}
+\item{idaifield}{An object as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}},
+\code{\link[=check_and_unnest]{check_and_unnest()}} or \code{\link[=simplify_idaifield]{simplify_idaifield()}}}
 }
 \value{
 a matrix (depending on selection and project database
 it can be very large)
 }
 \description{
-Converts a list of class `idaifield_docs`, `idaifield_resource` or
-`idaifield_simple` into a matrix. Recommended to use with
-`idaifield_simple`-lists as returned by `simplify_idaifield()`.
-If given a list of class `idaifield_docs` containing all meta-info,
+Converts a list of class \code{idaifield_docs}, \code{idaifield_resource}
+or \code{idaifield_simple} into a matrix. Recommended to use with
+\code{idaifield_simple}-lists as returned by \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
+If given a list of class \code{idaifield_docs} containing all meta-info,
 it will automatically unnest to resource level. It is recommended to
-select the list first using `select_by()` from this package to reduce
-the amount of columns returned. See example.
+select the list first using \code{\link[=idf_select_by]{idf_select_by()}} from this
+package to reduce the amount of columns returned. See example.
 }
 \examples{
 \dontrun{
@@ -34,5 +34,10 @@ pottery <- select_by(idaifield_docs, by = "category", value = "Pottery")
 pottery <- simplify_idaifield(pottery,
                               uidlist = get_uid_list(idaifield_docs))
 pottery <- idaifield_as_matrix(pottery)
+}
+}
+\seealso{
+\itemize{
+\item \code{\link[=simplify_idaifield]{simplify_idaifield()}}
 }
 }

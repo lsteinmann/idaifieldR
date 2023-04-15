@@ -2,33 +2,55 @@
 % Please edit documentation in R/fix_relations.R
 \name{fix_relations}
 \alias{fix_relations}
-\title{Unnest the relations in a resource and replace the UUIDs with identifiers}
+\title{Unnest the Relations in a Resource and Replace the UUIDs with \emph{identifiers}}
 \usage{
 fix_relations(resource, replace_uids = TRUE, uidlist = NULL)
 }
 \arguments{
-\item{resource}{One item from a list of class idaifield_resources}
+\item{resource}{One element from a list of class \code{idaifield_resources}.}
 
-\item{replace_uids}{logical. If TRUE, replaces the UUIDs in each relation with
-the corresponding identifiers. If FALSE, just unnests the list.}
+\item{replace_uids}{TRUE/FALSE. If TRUE, replaces the UUIDs in each relation
+with the corresponding identifiers. If FALSE, just flattens the list.
+Default is TRUE.}
 
-\item{uidlist}{Only needs to be provided if replace_uids = TRUE. A data.frame
-as returned by `get_uid_list()`}
+\item{uidlist}{Only needs to be provided if \code{replace_uids = TRUE}.
+A data.frame as returned by \code{\link[=get_uid_list]{get_uid_list()}} or
+\code{\link[=get_field_index]{get_field_index()}}.}
 }
 \value{
 The same resource with its relations unnested (and replaced with
-identifiers if replace_uids is set to TRUE).
+\emph{identifier}s if \code{replace_uids} is set to \code{TRUE}).
 }
 \description{
 The function will flatten the relations list to more non-nested lists with
-with "relation."-prefix and replace the UUIDs in the lists values with
-the corresponding identifiers from the uidlist using `replace_uid()`
-to make the result more readable.
+with \emph{relation.}-prefix and replace the UUIDs in the lists values with
+the corresponding \emph{identifier}s from the uidlist/index
+(see \code{\link[=get_field_index]{get_field_index()}} or \code{\link[=get_uid_list]{get_uid_list()}}) using
+\code{\link[=replace_uid]{replace_uid()}} to make the result more readable.
 }
 \examples{
 \dontrun{
-new_relations_list <- fix_relations(resource,
-replace_uids = FALSE,
-uidlist = NULL)
+index <- data.frame(
+  identifier = c("name1", "name2"),
+  UID = c("15754929-dd98-acfa-bfc2-016b4d5582fe",
+          "bf06c7b0-dba0-dcfa-6d8e-3b3509fee5b6")
+ )
+resource <- list(relations = list(
+    isRecordedIn = list("15754929-dd98-acfa-bfc2-016b4d5582fe"),
+    liesWithin = list("bf06c7b0-dba0-dcfa-6d8e-3b3509fee5b6")
+  ),
+  identifier = "res_1"
+)
+
+new_relations_list <- fix_relations(resource, replace_uids = TRUE, uidlist = index)
+new_relations_list
+
+new_relations_list <- fix_relations(resource, replace_uids = FALSE)
+new_relations_list
+}
+}
+\seealso{
+\itemize{
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
 }
 }
