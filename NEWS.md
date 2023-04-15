@@ -1,4 +1,4 @@
-# idaifieldR 0.3.2 _tba_
+# idaifieldR 0.3.2 _2023_04-15_
 * add option to use or not use exact dates as min/max values for dating if present
 * add `idf_json_query()` which lets users construct their own queries to the CouchDB-API 
 * improve and export `find_layer()`
