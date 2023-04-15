@@ -5,30 +5,26 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="idaifieldR imports data from the iDAI.field 2 / Field Desktop
+<meta name="description" content="idaifieldR imports data from the iDAI.field / Field Desktop
     database into R. The core functions of this package use the API of 
-    CouchDB to query a syncing iDAI.field 2 or Field Desktop client and 
-    store the whole database or a subset in a list in R (in memory), 
-    avoiding the csv-export that would otherwise be needed and
-    gathering all documents at once, which is not possible with said
-    csv-export. Any R-Script using idaifieldR to import the database can
-    be re-run and updated with new data flexibly without exporting from
-    the iDAI.field itself.">
+    CouchDB to query a syncing Field Desktop client and store the whole 
+    database or a subset in a list in R (in memory), avoiding the csv-export. 
+    The package offers functions to simplify and reformat that data somewhat. 
+    Any R-Script using idaifieldR to import the database can be re-run and 
+    updated with new data flexibly without exporting from the Client itself.">
 <title>Importing Data from iDAI.field into R • idaifieldR</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Importing Data from iDAI.field into R">
-<meta property="og:description" content="idaifieldR imports data from the iDAI.field 2 / Field Desktop
+<meta property="og:description" content="idaifieldR imports data from the iDAI.field / Field Desktop
     database into R. The core functions of this package use the API of 
-    CouchDB to query a syncing iDAI.field 2 or Field Desktop client and 
-    store the whole database or a subset in a list in R (in memory), 
-    avoiding the csv-export that would otherwise be needed and
-    gathering all documents at once, which is not possible with said
-    csv-export. Any R-Script using idaifieldR to import the database can
-    be re-run and updated with new data flexibly without exporting from
-    the iDAI.field itself.">
+    CouchDB to query a syncing Field Desktop client and store the whole 
+    database or a subset in a list in R (in memory), avoiding the csv-export. 
+    The package offers functions to simplify and reformat that data somewhat. 
+    Any R-Script using idaifieldR to import the database can be re-run and 
+    updated with new data flexibly without exporting from the Client itself.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -42,7 +38,7 @@
     
     <a class="navbar-brand me-2" href="index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,31 +80,46 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="idaifieldr">idaifieldR<a class="anchor" aria-label="anchor" href="#idaifieldr"></a>
+<div class="page-header"><h1 id="idaifieldr-">idaifieldR <a href="https://lsteinmann.github.io/idaifieldR/"><img src="reference/figures/idaifieldr_hex_small.png" align="right" height="150"></a>
+<a class="anchor" aria-label="anchor" href="#idaifieldr-"></a>
 </h1></div>
 <!-- badges: start -->
 
-<p>idaifieldR imports data from the <a href="https://github.com/dainst/idai-field" class="external-link">iDAI.field 2 / Field Desktop database</a> into R. The core functions of this package use the <a href="https://docs.couchdb.org/en/stable/api/database/index.html" class="external-link">CouchDB-API</a> with <a href="https://cran.r-project.org/web/packages/crul/index.html" class="external-link">crul</a> to connect to a running iDAI.field 2 or 3 (Field Desktop) client and store the whole database or a subset in a list in R (in memory), avoiding the csv-export that would otherwise be needed and gathering all documents at once, which is not possible with said csv-export. Any R-Script using idaifieldR to import the database can be re-run and updated with new data flexibly without exporting from the Field client itself.</p>
-<p>The exports can be automatically formatted for easier processing in R (e.g. UUIDs are replaced with the appropriate identifiers, lists are somewhat unnested, and the geometry is reformatted to be usable with the <a href="https://cran.r-project.org/web/packages/sp/index.html" class="external-link">sp</a>-package). See the Demo-Vignette for more info. However, processing all resources from the database is very slow for larger databases and uses up a lot of memory.</p>
-<div class="section level2">
-<h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
-</h2>
+<p>The R-package <strong>idaifieldR</strong> imports data from the <a href="https://github.com/dainst/idai-field" class="external-link">iDAI.field 2 / Field Desktop database</a> into R without the hassle of CSV-exports. This package uses the <a href="https://docs.couchdb.org/en/stable/api/database/index.html" class="external-link">CouchDB-API</a> to connect to your running Field Desktop client and store the entire database (or just a subset) in a list right in R’s memory. With idaifieldR, you can update your data on-the-fly and flexibly re-run any R-script.</p>
+<p>In addition to importing data, idaifieldR also offers some formatting to enhance processing in R. The relevant functions replace UUIDs with the corresponding identifiers, unnest lists, and reformat the geometry to be compatible with, e.g., the <a href="https://cran.r-project.org/web/packages/sp/index.html" class="external-link">sp</a>-package. For more information, check out the Demo-Vignette. It’s worth noting that processing all resources from larger databases can be time-consuming and memory-intensive, so I recommend only processing the subsets actually needed for your analyses.</p>
+</div>
+<div class="section level1">
+<h1 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
+</h1>
+<ul>
+<li>Import from a running iDAI.field 2 or 3 (Field Desktop) client into R</li>
+<li>Query it, or get the complete project database into R</li>
+<li>Automatically format the data for easier processing</li>
+<li>Get metadata such as creation and modification dates by user</li>
+<li>Just like anything done with R: <strong>easily re-run any analyses when your data has changed!</strong>
+</li>
+</ul>
+</div>
+<div class="section level1">
+<h1 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
+</h1>
 <p>idaifieldR needs a syncing <a href="https://github.com/dainst/idai-field" class="external-link">iDAI.field/Field Desktop-Client</a> on the same computer or in the same network to work. Other than that, the package depends on <a href="https://cran.r-project.org/web/packages/crul/index.html" class="external-link">crul</a> and <a href="https://cran.r-project.org/web/packages/jsonlite/index.html" class="external-link">jsonlite</a>, both available on CRAN and automatically installed as dependencies.</p>
 </div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>You can install the current version of idaifieldR from github using <code>devtools</code> or <code>remotes</code>:</p>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
+<p>You can install the current version of idaifieldR from GitHub using <code>devtools</code> or <code>remotes</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lsteinmann/idaifieldR"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># OR</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lsteinmann/idaifieldR"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="example--basic">Example / Basic<a class="anchor" aria-label="anchor" href="#example--basic"></a>
-</h2>
-<p>This is a basic example which shows you how to use idaifieldR. See the Demo.Rmd-vignette (<code>browseVignettes("idaifieldR")</code>) for a bit more explanation or the TLDR.Rmd-vignette for a very short example.</p>
-<p>In the example below, we connect to the project “rtest” with <code><a href="reference/connect_idaifield.html">connect_idaifield()</a></code> and get an index with only a few fields that every resource has with <code><a href="reference/get_field_index.html">get_field_index()</a></code>. After that, all resources (docs) from the database are imported into a single list of lists with <code><a href="reference/get_idaifield_docs.html">get_idaifield_docs()</a></code>. This contains metadata about changes and the users that made them as well. This may take rather long, use up much RAM, and is not always reasonable to work with. A better option is to query the database directly, getting all resources of category pottery using <code><a href="reference/idf_query.html">idf_query()</a></code>. In the next step, <code><a href="reference/simplify_idaifield.html">simplify_idaifield()</a></code> transforms the nested list into a more usable format, replacing the UUIDs with identifiers, and converting, e.g., the dating fields to minimum and maximum values. If a configuration is available, variables from checkbox-fields are also converted to multiple columns with boolean values. <code><a href="reference/idaifield_as_matrix.html">idaifield_as_matrix()</a></code> will produce a matrix, where every row is a database entry (a resource) and every column a field, or a value from a checkbox field. The matrix can easily be coerced to a data.frame.</p>
+<div class="section level1">
+<h1 id="basic-workflow-example">Basic Workflow Example<a class="anchor" aria-label="anchor" href="#basic-workflow-example"></a>
+</h1>
+<p>Here’s a basic example of how to use idaifieldR. For a more detailed explanation, check out the Demo.Rmd-vignette (<code>browseVignettes("idaifieldR")</code>) or the TLDR.Rmd-vignette for a shorter overview.</p>
+<p>First, we connect to the “rtest” project using <code><a href="reference/connect_idaifield.html">connect_idaifield()</a></code> and retrieve an index of all resources using <code><a href="reference/get_field_index.html">get_field_index()</a></code>. Next, we import all resources from the database into a single list of lists using <code><a href="reference/get_idaifield_docs.html">get_idaifield_docs()</a></code>. While this provides metadata about changes and users, it can be slow and use up a lot of memory. Alternatively, we can query the database directly using <code><a href="reference/idf_query.html">idf_query()</a></code> to retrieve only the resources we need, such as all resources of the “pottery” category.</p>
+<p>After importing the data, we use <code><a href="reference/simplify_idaifield.html">simplify_idaifield()</a></code> to transform the nested list into a more usable format, replacing <em>UUID</em>s with <em>identifier</em>s and converting dating fields to minimum and maximum values. If a configuration is available, variables from checkbox-fields are also converted to multiple columns with boolean values. Lastly, we can use <code><a href="reference/idaifield_as_matrix.html">idaifield_as_matrix()</a></code> to produce a matrix where each row represents a resource and each column represents a field or a checkbox value. This matrix can be easily converted into a data.frame for further analysis:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lsteinmann/idaifieldR" class="external-link">idaifieldR</a></span><span class="op">)</span></span>
 <span><span class="co"># Connect to iDAI.field:</span></span>
@@ -132,7 +143,12 @@
 <span><span class="co"># Look at the result:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">pottery_mat</span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level1">
+<h1 id="contribution">Contribution<a class="anchor" aria-label="anchor" href="#contribution"></a>
+</h1>
+<p>As I constantly use it for my own work, I am improving this package and trying to stay up-to-date with everything as I go. A special thanks goes to ChatGPT for helping me a lot with the documentation. Much of the code is rather old and reflects my learning process much more than good practice. However, I would be happy about any feedback – be it in the form of issues or feature requests – and would be even happier if anyone would like to collaborate on this project. If you are interested in contributing to idaifieldR, feel free to get in touch with me – or don’t, and just fork it! ;)</p>
 </div>
+
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">

@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ selecting from the whole database:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="va">db</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/idf_select_by.html">idf_select_by</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co"># Note: simplify_idaifield() needs the index of the complete project database </span></span>
 <span>  <span class="co"># as a lookup-table to replace all UUIDs with their identifiers</span></span>
 <span>  <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span>uidlist <span class="op">=</span> <span class="va">index</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -118,6 +118,8 @@ database:</p>
 <span>  <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span>uidlist <span class="op">=</span> <span class="va">index</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/idaifield_as_matrix.html">idaifield_as_matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>See also: <code><a href="../reference/idf_index_query.html">?idf_index_query</a></code>, <code><a href="../reference/idf_query.html">?idf_query</a></code> and
+<code><a href="../reference/idf_json_query.html">?idf_json_query</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="language-lookup-example">Language Lookup: Example<a class="anchor" aria-label="anchor" href="#language-lookup-example"></a>
@@ -126,7 +128,7 @@ database:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">core_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_language_list.html">download_language_list</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"core"</span>, language <span class="op">=</span> <span class="st">"de"</span><span class="op">)</span></span>
 <span><span class="va">pergamon_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_language_list.html">download_language_list</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"Pergamon"</span>, language <span class="op">=</span> <span class="st">"de"</span><span class="op">)</span></span>
-<span><span class="va">config_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">db</span>, <span class="st">"config"</span><span class="op">)</span></span>
+<span><span class="va">config_lang_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_configuration.html">get_configuration</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">db</span>, <span class="st">"connection"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">config_lang_list</span> <span class="op">&lt;-</span> <span class="va">config_lang_list</span><span class="op">$</span><span class="va">languages</span></span>
 <span></span>
 <span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">core_lang_list</span>, language <span class="op">=</span> <span class="st">"de"</span><span class="op">)</span></span>

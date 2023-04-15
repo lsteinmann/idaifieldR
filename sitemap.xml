@@ -100,7 +100,13 @@
     <loc>https://lsteinmann.github.io/idaifieldR/reference/idaifieldr_demodata.html</loc>
   </url>
   <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_check_for_project.html</loc>
+  </url>
+  <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_index_query.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_json_query.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_ping.html</loc>
@@ -112,7 +118,13 @@
     <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_query.html</loc>
   </url>
   <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_select_by.html</loc>
+  </url>
+  <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_sepdim.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/idf_show_categories.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/index.html</loc>
@@ -143,9 +155,6 @@
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/select_by.html</loc>
-  </url>
-  <url>
-    <loc>https://lsteinmann.github.io/idaifieldR/reference/show_categories.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.html</loc>

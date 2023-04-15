@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,12 +65,22 @@
           
           <code><a href="check_and_unnest.html">check_and_unnest()</a></code> 
         </dt>
-        <dd>Check and unnest a list</dd>
+        <dd>Check and Unnest an <code>idaifield_docs</code>-list</dd>
       </dl><dl><dt>
           
           <code><a href="connect_idaifield.html">connect_idaifield()</a></code> 
         </dt>
-        <dd>Establish a connection to the iDAI.field / Field Desktop Client</dd>
+        <dd>Connect to an iDAI.field / Field Desktop Client</dd>
+      </dl><dl><dt>
+          
+          <code><a href="convert_to_onehot.html">convert_to_onehot()</a></code> 
+        </dt>
+        <dd>Break down a List from a Checkbox Field to Onehot-Coded Values</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dot-onLoad.html">.onLoad()</a></code> 
+        </dt>
+        <dd>Loads the iDAI.field Categories</dd>
       </dl><dl><dt>
           
           <code><a href="download_language_list.html">download_language_list()</a></code> 
@@ -78,44 +88,59 @@
         <dd>Download a Language-List from GitHub</dd>
       </dl><dl><dt>
           
+          <code><a href="find_layer.html">find_layer()</a></code> 
+        </dt>
+        <dd>Find the Layer a Resource is Contained in</dd>
+      </dl><dl><dt>
+          
+          <code><a href="fix_dating.html">fix_dating()</a></code> 
+        </dt>
+        <dd>Reduce the Dating-list to <em>min</em>/<em>max</em>-Values</dd>
+      </dl><dl><dt>
+          
           <code><a href="fix_relations.html">fix_relations()</a></code> 
         </dt>
-        <dd>Unnest the relations in a resource and replace the UUIDs with identifiers</dd>
+        <dd>Unnest the Relations in a Resource and Replace the UUIDs with <em>identifiers</em></dd>
+      </dl><dl><dt>
+          
+          <code><a href="gather_languages.html">gather_languages()</a></code> 
+        </dt>
+        <dd>Gather Fields with Multiple Language Values</dd>
       </dl><dl><dt>
           
           <code><a href="get_configuration.html">get_configuration()</a></code> 
         </dt>
-        <dd>Get the custom project configuration as stored in the project database</dd>
+        <dd>Get the Custom Project Configuration as Stored in the Project Database</dd>
       </dl><dl><dt>
           
           <code><a href="get_field_index.html">get_field_index()</a></code> 
         </dt>
-        <dd>Get the index of an iDAI.field/Field Desktop database</dd>
+        <dd>Get the Index of an iDAI.field / Field Desktop Database</dd>
       </dl><dl><dt>
           
           <code><a href="get_field_inputtypes.html">get_field_inputtypes()</a></code> 
         </dt>
-        <dd>Produce a matrix of field inputTypes from the custom project configuration</dd>
+        <dd>Produce a Matrix of Field <em>inputTypes</em> from the Custom Project Configuration</dd>
       </dl><dl><dt>
           
           <code><a href="get_idaifield_docs.html">get_idaifield_docs()</a></code> 
         </dt>
-        <dd>get_idaifield_docs: Import all docs from an iDAI.field / Field Desktop project</dd>
+        <dd>Import all <em>docs</em> from an iDAI.field / Field Desktop project</dd>
       </dl><dl><dt>
           
           <code><a href="get_language_lookup.html">get_language_lookup()</a></code> 
         </dt>
-        <dd>get_language_lookup(): Prepare a Language List as a Lookup Table</dd>
+        <dd>Prepare a Language List as a Lookup Table</dd>
       </dl><dl><dt>
           
           <code><a href="get_uid_list.html">get_uid_list()</a></code> 
         </dt>
-        <dd>get_uid_list: Get the index of an idaifield_docs/resources object.</dd>
+        <dd>Get the Index of an <code>idaifield_docs</code>/<code>idaifield_resources</code>-list</dd>
       </dl><dl><dt>
           
           <code><a href="idaifield_as_matrix.html">idaifield_as_matrix()</a></code> 
         </dt>
-        <dd>idaifield_as_matrix</dd>
+        <dd>Convert an <code>idaifield_simple</code>-list to a Matrix</dd>
       </dl><dl><dt>
           
           <code><a href="idaifieldr_demodata.html">idaifieldr_demodata</a></code> 
@@ -125,7 +150,12 @@
           
           <code><a href="idf_index_query.html">idf_index_query()</a></code> 
         </dt>
-        <dd>Query resources from an iDAI.field database based on the uidlist</dd>
+        <dd>Query <em>docs</em> from an iDAI.field Database Based on an Index (uidlist)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="idf_json_query.html">idf_json_query()</a></code> 
+        </dt>
+        <dd>Query <em>docs</em> from an iDAI.field Database Based on a JSON-Query</dd>
       </dl><dl><dt>
           
           <code><a href="idf_ping.html">idf_ping()</a></code> 
@@ -135,32 +165,54 @@
           
           <code><a href="idf_projects.html">idf_projects()</a></code> 
         </dt>
-        <dd>Get a vector of project names present in the database</dd>
+        <dd>Get a Vector of Project Names Present in the Database</dd>
       </dl><dl><dt>
           
           <code><a href="idf_query.html">idf_query()</a></code> 
         </dt>
-        <dd>Query resources from an iDAI.field database directly</dd>
+        <dd>Query <em>docs</em> from an iDAI.field Database Directly</dd>
+      </dl><dl><dt>
+          
+          <code><a href="idf_select_by.html">idf_select_by()</a></code> 
+        </dt>
+        <dd>Select/Filter an <code>idaifield_resources</code>- or <code>idaifield_docs</code>-list</dd>
+      </dl><dl><dt>
+          
+          <code><a href="idf_sepdim.html">idf_sepdim()</a></code> 
+        </dt>
+        <dd>Convert a List of Dimensions to Simpler Values</dd>
+      </dl><dl><dt>
+          
+          <code><a href="idf_show_categories.html">idf_show_categories()</a></code> 
+        </dt>
+        <dd>Show the <em>categories</em> Present in an <code>idaifield_docs</code>- or
+<code>idaifield_resources</code>-list</dd>
+      </dl><dl><dt>
+          
+          <code><a href="reformat_geometry.html">reformat_geometry()</a></code> 
+        </dt>
+        <dd>Reformat the Geometry of a single iDAI.field / Field Desktop resource</dd>
+      </dl><dl><dt>
+          
+          <code><a href="remove_config_names.html">remove_config_names()</a></code> 
+        </dt>
+        <dd>Remove Everything Before the Colon in a Character Vector</dd>
       </dl><dl><dt>
           
           <code><a href="replace_uid.html">replace_uid()</a></code> 
         </dt>
-        <dd>replace_uid</dd>
+        <dd>Replace a Vector of UUIDs with their <em>identifier</em>s</dd>
       </dl><dl><dt>
           
           <code><a href="select_by.html">select_by()</a></code> 
         </dt>
-        <dd>select_by</dd>
-      </dl><dl><dt>
-          
-          <code><a href="show_categories.html">show_categories()</a></code> 
-        </dt>
-        <dd>show_categories</dd>
+        <dd>Deprecated function: Select/filter an <code>idaifield_resources</code>- or
+<code>idaifield_docs</code>-list</dd>
       </dl><dl><dt>
           
           <code><a href="simplify_idaifield.html">simplify_idaifield()</a></code> 
         </dt>
-        <dd>Simplify a list imported from an iDAI.field-Database</dd>
+        <dd>Simplify a List Imported from an iDAI.field / Field Desktop-Database</dd>
       </dl></div>
   </main></div>
 

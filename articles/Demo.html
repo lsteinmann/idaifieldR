@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,32 +81,35 @@
 
     
     
-<p>idaifieldR imports data from the <a href="https://github.com/dainst/idai-field" class="external-link">iDAI.field 2 / Field Desktop
-database</a> into R. The core functions of this package connect to a
-running iDAI.field 2 or 3 (Field Desktop) client via its API and store
-the whole project database or a subset in a list in R (in memory),
-avoiding the csv-export that would otherwise be needed and gathering all
-documents at once, which is not possible with said csv-export. Any
-R-Script using idaifieldR to import the database can be re-run and
-updated with new data flexibly without exporting from the Field client
-itself.</p>
-<p>idaifieldR encompasses functionality to clean up and format the
-imported list objects for easier processing in R. Using
-<code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code>, the UUIDs can be replaced with the
-appropriate identifiers, the geometry can be reformatted to be usable
-with R-packages for spatial analysis such as <a href="https://cran.r-project.org/web/packages/sp/index.html" class="external-link">sp</a>, a
-preferred language for multi-language input fields can be selected, and
-more. Be aware that processing all resources from the database at once
-can be slow for larger databases and uses up a lot of memory.</p>
+<p>The <code>idaifieldR</code>-package is a tool for importing data from
+the <a href="https://github.com/dainst/idai-field" class="external-link">iDAI.field / Field
+Desktop</a> database into R. Its core functions establish a connection
+to a running iDAI.field 2 or 3 (Field Desktop) client through its API
+and retrieve the entire project database or a subset of it into a list
+in R memory. This eliminates the need for exporting data to CSV files,
+which can be time-consuming and limiting, and allows for the retrieval
+of all documents at once. Scripts can be re-run and updated with new
+data flexibly.</p>
+<p>One of the key features of <strong>idaifieldR</strong> is its ability
+to clean and format the imported data for easier processing in R. The
+<code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> function, for example, can replace
+UUIDs with appropriate identifiers, reformat geometry for use with
+R-packages like <a href="https://cran.r-project.org/web/packages/sp/index.html" class="external-link">sp</a>, and
+select preferred language inputs for multi-language fields, among other
+tasks. However, it’s important to keep in mind that processing large
+databases can be slow and memory-intensive.</p>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<p>Since idaifieldR is not available on CRAN (yet), we need to install
-it from GitHub. We can either download the current release from the <a href="https://github.com/lsteinmann/idaifieldR/releases" class="external-link">idaifieldR-GitHub
+<p>To use <code>idaifieldR</code>, you’ll need to install it from GitHub
+since it is not yet available on CRAN. You can download the current
+release from the <a href="https://github.com/lsteinmann/idaifieldR/releases" class="external-link">idaifieldR-GitHub
 page</a> and <a href="https://riptutorial.com/r/example/5556/install-package-from-local-source" class="external-link">install
-from the file</a>, or more conveniently use the <a href="https://cran.r-project.org/web/packages/devtools/index.html" class="external-link">devtools</a>
-or <a href="https://cran.r-project.org/web/packages/remotes/" class="external-link">remotes</a>
-package to install it from GitHub directly:</p>
+from the file</a>. Alternatively, you can use either the
+<code>devtools</code> or <code>remotes</code> package to install it
+directly from GitHub.</p>
+<p>Here’s an example of installing and loading <code>idaifieldR</code>
+using <code>remotes</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lsteinmann/idaifieldR"</span><span class="op">)</span></span>
@@ -114,66 +117,83 @@ package to install it from GitHub directly:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lsteinmann/idaifieldR" class="external-link">idaifieldR</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="loading-the-database-index">Loading the Database / Index<a class="anchor" aria-label="anchor" href="#loading-the-database-index"></a>
+<h3 id="loading-the-database-and-creating-an-index">Loading the Database and Creating an Index<a class="anchor" aria-label="anchor" href="#loading-the-database-and-creating-an-index"></a>
 </h3>
-<p>If you want to follow along with this tutorial directly using the
-same data, load the backup file located at (‘<a href="https://github.com/lsteinmann/idaifieldR/blob/main/inst/testdata/rtest.jsonl" class="external-link">inst/testdata/rtest.jsonl</a>’)
-from the GitHub repository into a new project called ‘rtest’ in you
-Field Client. This demo dataset uses a very slightly customized project
+<p>To follow along with this tutorial using the same data, you can load
+the backup file located at ‘<a href="https://github.com/lsteinmann/idaifieldR/blob/main/inst/testdata/rtest.jsonl" class="external-link">inst/testdata/rtest.jsonl</a>’
+from the GitHub repository into a new project called ‘rtest’ in your
+Field Client. This demo dataset uses a slightly customized project
 configuration to demonstrate relevant functions.</p>
-<p>Our first step will be to load the complete database and create an
-object that serves as the index for further processing. First, create a
-connection object that will contain all the information R needs to
-connect to the database server Field Desktop uses:</p>
+<p>To load the complete database and create an object to serve as an
+index for further processing, you need to create a connection object
+that contains all the information R needs to connect to the Field
+Desktop database server. This can be done using the following code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>serverip <span class="op">=</span> <span class="st">"127.0.0.1"</span>, </span>
 <span>                          pwd <span class="op">=</span> <span class="st">"hallo"</span>,</span>
 <span>                          project <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span></code></pre></div>
-<p>This already pings the database and lets us know if the connection is
-working. If you are using Field Desktop on the same computer, you should
-not need the <code>serverip</code>-argument, as it defaults to the
+<p>This code will ping the database and check if the connection is
+working. If you are using Field Desktop on the same computer, you may
+not need the <code>serverip</code> argument, as it defaults to the
 common localhost address. Enter the password that is set in your Field
-Desktop-Client under Tools/Werkzeuge &gt; Settings/Einstellungen: ‘Your
-password’/‘Eigenes Passwort’ as <code>pwd</code>. <code>project</code>
-corresponds to the name of the project you want to work with. See the
-documentation for more info and additional arguments:</p>
+Desktop-Client under ‘Tools/Werkzeuge’ &gt; ‘Settings/Einstellungen’:
+‘Your password’/‘Eigenes Passwort’ as <code>pwd</code>.
+<code>project</code> corresponds to the name of the project you want to
+work with. For more information and additional arguments, please see the
+documentation:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">?</span><span class="fu"><a href="../reference/connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>You can get the complete rtest-dataset into R using the
-<code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code>-function with the connection-object
-named <code>conn</code> that we created earlier
-(<code>connection</code>):</p>
+<code class="sourceCode R"><span><span class="op">?</span><span class="va">connect_idaifield</span></span></code></pre></div>
+<p>To load the complete ‘rtest’-dataset into R, we can use the
+<code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code> function and the connection object
+<code>conn</code> that we created earlier:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">idaifield_test_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span><span class="op">)</span></span></code></pre></div>
-<p>If you are using RStudio, you can get a convenient look at the result
-using <code>View(idaifield_test_docs)</code> or by clicking on the list
-in the Environment-window. It is a named nested list with the custom
-class <code>idaifield_docs</code> that contains one element for each
-resource in the database and reflects the original
-<code>json</code>-structure. The name of each list is the identifier of
-the associated resource. The <code>doc$resource</code> sub-list contains
-the actual entry for each resource, while the other sub-lists contain
-information about the changes made to each resource along with its basic
-data such as the <em>UUID</em> that Field Desktop uses internally as the
-unique name of each resource. You can use this list to visualize changes
-made to database entries on a time axis sorted by users, etc., but we
-will continue to utilize <code>idaifieldR</code>s functions to work with
-the actual data.</p>
-<p>Though it is not necessary for further processing, you can use
-<code>idaifieldR</code>s <code><a href="../reference/check_and_unnest.html">check_and_unnest()</a></code>-function (see
-<code>?check_and_unnest()</code>) to reduce the list to the resource
-level:</p>
+<p>This function retrieves all the documents from the project specified
+in the <code>conn</code> object and stores them in a list called
+<code>idaifield_test_docs</code>. Note that retrieving all the documents
+at once can take some time and use up a lot of memory, especially for
+larger datasets.</p>
+<p>After loading the dataset, you can take a look at its contents using
+the <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> function in <em>RStudio</em> or by exploring the
+<code>idaifield_test_docs</code> object in the Environment window. The
+<code>idaifield_test_docs</code> object is a named nested list with the
+custom class <code>idaifield_docs</code> that contains one element for
+each resource in the database, reflecting the original JSON-structure.
+The name of each list is the identifier of the associated resource.</p>
+<p>The <code>doc$resource</code> sub-list contains the actual entry for
+each resource, while the other sub-lists contain information about the
+changes made to each resource along with its basic data, such as the
+<strong>UUID</strong> that Field Desktop uses internally as the unique
+name of each resource. You can use this list to visualize changes made
+to database entries on a time axis sorted by users, etc., but we will
+continue to utilize <code>idaifieldR</code>’s functions to work with the
+actual data.</p>
+<p>The <code><a href="../reference/check_and_unnest.html">check_and_unnest()</a></code> function from
+<code>idaifieldR</code> can be used to reduce the
+<code>idaifield_test_docs</code> list to the resource level. Although
+this step is not necessary for further processing, it can make the data
+easier to work with. You can use the following code to apply
+<code><a href="../reference/check_and_unnest.html">check_and_unnest()</a></code> to the <code>idaifield_test_docs</code>
+list:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">idaifield_test_resources</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/check_and_unnest.html">check_and_unnest</a></span><span class="op">(</span><span class="va">idaifield_test_docs</span><span class="op">)</span></span></code></pre></div>
-<p>You will see that it is now an <code>idaifield_resources</code>
-object and is taking up less memory. When browsing the object with
-<code>View(idaifield_test_resources)</code> in RStudio, you can see that
-is contains only the information of each ‘resource’, i.e. the actual
-data you entered in Field Desktop. This step is automatically done by
-<code>idaifieldR</code>-functions internally.</p>
-<p>To get a very quick overview of our data, we can generate an index of
-the database by querying it. The index contains only the most basic
-information about each object:</p>
+<p>For more information on <code><a href="../reference/check_and_unnest.html">check_and_unnest()</a></code> and its
+arguments, you can check out the documentation using
+<code><a href="../reference/check_and_unnest.html">?check_and_unnest</a></code>. The unnested list contains only the
+actual data you entered in Field Desktop, and it takes up less memory
+than the original nested list. You can browse this object using
+<code>View(idaifield_test_resources)</code> in RStudio, or by accessing
+its elements such as
+<code>idaifield_test_resources$Befund_6_KER_18</code> to see the
+difference. This step is done automatically by idaifieldR functions
+internally, so you don’t have to worry about it.</p>
+<p>To give you a quick overview of our data, we can generate an index of
+the database by querying it using the <code><a href="../reference/get_field_index.html">get_field_index()</a></code>
+function with the connection object <code>conn</code> and the argument
+<code>language = "en"</code> to set the language of the returned index
+to English. This index contains only the most basic information about
+each object, such as its <em>UUID</em>, its <em>identifier</em>, and its
+category:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_field_index.html">get_field_index</a></span><span class="op">(</span><span class="va">conn</span>,</span>
 <span>                         verbose <span class="op">=</span> <span class="cn">TRUE</span>, </span>
@@ -182,13 +202,13 @@ information about each object:</p>
 <pre><code><span><span class="co">#&gt; The list was already unnested to resource-level.</span></span></code></pre>
 <table class="table">
 <colgroup>
-<col width="6%">
-<col width="27%">
-<col width="17%">
-<col width="9%">
-<col width="14%">
+<col width="5%">
+<col width="23%">
+<col width="15%">
+<col width="8%">
 <col width="12%">
-<col width="11%">
+<col width="10%">
+<col width="23%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">category</th>
@@ -207,7 +227,7 @@ information about each object:</p>
 <td align="left">Schnitt 1</td>
 <td align="left">SE02</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">bf06c7b0-dba0-dcfa-6d8e-3b3509fee5b6</td>
 </tr>
 <tr class="even">
 <td align="left">Survey</td>
@@ -225,7 +245,7 @@ information about each object:</p>
 <td align="left">Schnitt 1</td>
 <td align="left">Grab_1</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">ee5ceade-2595-de2e-bf83-a7b25d6c47a6</td>
 </tr>
 <tr class="even">
 <td align="left">Pottery</td>
@@ -234,7 +254,7 @@ information about each object:</p>
 <td align="left">Schnitt 1</td>
 <td align="left">Befund_6</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">02932bc4-22ce-3080-a205-e050b489c0c2</td>
 </tr>
 <tr class="odd">
 <td align="left">Pottery</td>
@@ -243,7 +263,7 @@ information about each object:</p>
 <td align="left">Schnitt 1</td>
 <td align="left">Befund_6</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">02932bc4-22ce-3080-a205-e050b489c0c2</td>
 </tr>
 <tr class="even">
 <td align="left">Mollusk</td>
@@ -252,18 +272,21 @@ information about each object:</p>
 <td align="left">Schnitt 1</td>
 <td align="left">Befund_5</td>
 <td align="left">DO NOT CHANGE</td>
-<td align="left">NA</td>
+<td align="left">0ea7c837-7c35-b53a-cd03-bbfaca247b08</td>
 </tr>
 </tbody>
 </table>
-<p>The <code>verbose = TRUE</code>-argument mainly includes the short
-description entered in the database, while <code>language = "en"</code>
-controls which language from the multi-language text input field is to
-be used. Switch it so <code>language = "de"</code> to see the difference
-with the demo data. We can produce our first plot from the index that
-will give us a very general idea about our data. I am using the
-pipe-operator from <code>dplyr</code> and <code>ggplot2</code> for
-this:</p>
+<p>When using the <code><a href="../reference/get_field_index.html">get_field_index()</a></code> function with
+<code>verbose = TRUE</code>, it includes the field
+<code>shortDescription</code> of each object from the database. By
+default, tries to get the English values from multi-language fields, but
+you can specify the preferred language. For example, setting
+<code>language = "de"</code> will display the German language
+description. If the selected language does not exist, the function will
+substitute another language.</p>
+<p>To visualize the data from the index, we can use <code>ggplot2</code>
+and the pipe-operator from <code>dplyr</code>. This will give us a
+general idea of the data we are working with.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -282,8 +305,8 @@ and produce some more useful plots, we will now simplify our
 </h3>
 <p>The function <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> takes several
 arguments that control the output. You can learn more about them in the
-documentation (<code>?simplify_idaifield()</code>). Mostly, it should
-suffice to use the defaults and only pass the imported
+documentation (<code><a href="../reference/simplify_idaifield.html">?simplify_idaifield</a></code>). In most cases, it
+should suffice to use the defaults and only pass the imported
 <code>idaifield_docs</code> or <code>idaifield_resources</code>
 list.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -293,49 +316,64 @@ list.</p>
 <span>                                            uidlist <span class="op">=</span> <span class="va">index</span>,</span>
 <span>                                            language <span class="op">=</span> <span class="st">"en"</span>,</span>
 <span>                                            spread_fields <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; The list was already unnested to resource-level.</span></span>
-<span><span class="co">#&gt; Selected language ('en') not available. Trying 'all' instead.</span></span></code></pre></div>
-<p>The function will also notify you that it tries to use the English
-values from multi-language input fields if possible. If the respective
-input field has no English value, <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> will
-use the next available language (in alphabetical order). If you wish to
-keep all languages from the multi-language input fields, you can use
-<code>language = "all"</code>. <code>keep_geometry = FALSE</code>
-removes all coordinate information from the resources.
-<code>replace_uids</code> is set to <code>TRUE</code> by default and
-replaces UUIDs in the data with their corresponding identifiers to be
-more readable. Checkbox fields as well as the campaign field are
-automatically spread across multiple entries, so that they will be
-stored in multiple columns in a matrix. If you dislike this behaviour,
-set the argument <code>spread_fields</code> to <code>FALSE</code>. If
-you process the complete database with this function, there is no need
-to supply the index as we did just now, because it will generate its own
-index. If, however, you choose to process only a subset of all data, you
-need to supply an index of the complete database.</p>
+<span><span class="co">#&gt; The list was already unnested to resource-level.</span></span></code></pre></div>
+<p>The <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> function provides a convenient
+way to simplify the format of an <code>idaifield_docs</code> or
+<code>idaifield_resources</code> list. By default, it tries to use the
+English values from multi-language input fields, and if not available,
+it uses the next available language in alphabetical order. You can, of
+course, select the language of your data as well. If you want to keep
+all languages from the multi-language input fields, you can set
+<code>language = "all"</code>.</p>
+<p>In addition, <code>keep_geometry = FALSE</code> removes all
+coordinate information from the resources. This may be useful if you
+don’t need the geographical data or want to save memory. By default,
+<code>replace_uids</code> is set to <code>TRUE</code>, which replaces
+<em>UUID</em>s in the data with their corresponding <em>identifier</em>s
+to make them more readable.</p>
+<p>Checkbox fields and the campaign field are automatically spread
+across multiple entries to later store them in multiple columns in a
+matrix. This behaviour can be changed by setting
+<code>spread_fields = FALSE</code>.</p>
+<p>If you process the entire database with
+<code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code>, you don’t need to supply an index.
+The function will generate its own index. However, if you only process a
+subset of the data, you will need to supply an index of the complete
+database.</p>
+<p>In summary, <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> provides several
+options to control the output of the data extraction. For more
+information on the available options, you can consult the documentation
+using the <code><a href="../reference/simplify_idaifield.html">?simplify_idaifield</a></code> command.</p>
 <p>The list now has the <code>idaifield_simple</code> class. Browse the
 resulting list by clicking on it in your Environment-window in RStudio
 or use <code>View(idaifield_test_simple)</code>. All
 <code>idaifield_...</code>-objects carry the connection and name of the
 project as attributes with them for later use. You can view them with
 <code>attributes(idaifield_test_simple)</code>.</p>
-<p>If you wish to get the most out of you data, I recommend you use this
-list and process it according to your own needs. However,
-<code>idaifieldR</code> comes with a function that will turn the list
-into a matrix. For this, it makes a lot of sense to select the data
-first and get only the Pottery-resources that we want to work with. The
-<code><a href="../reference/select_by.html">select_by()</a></code>-function from <code>idaifieldR</code> can do
-this for us (see the documentation at <code>?select_by()</code>)</p>
+<p>If you want to analyze your data in a customized way, it’s
+recommended that you work directly with the
+<code>idaifield_resources</code>-list and extract the information you
+need. However, if you prefer to have a matrix format,
+<code>idaifieldR</code> provides a function that can convert the list
+into a matrix. Before doing so, it’s useful to select only the resources
+that are relevant to your analysis. For example, if you are only
+interested in pottery, you can use the <code><a href="../reference/idf_select_by.html">idf_select_by()</a></code>
+function from idaifieldR to filter the list accordingly. The
+documentation for this function can be found at
+<code><a href="../reference/idf_select_by.html">?idf_select_by</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span><span class="va">idaifield_test_simple</span>, by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idf_select_by.html">idf_select_by</a></span><span class="op">(</span><span class="va">idaifield_test_simple</span>, by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; The list was already unnested to resource-level and simplified.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="queries">Queries<a class="anchor" aria-label="anchor" href="#queries"></a>
 </h3>
 <p>The same outcome can be achieved by querying the database directly.
-See the documentation of <code>?idf_index_query()</code> and
-<code>?idf_query()</code>. This may be useful when you frequently want
-to update your data, but have a large amount of resources in the
-database of which you only need a small subset:</p>
+See the documentation of <code><a href="../reference/idf_index_query.html">?idf_index_query</a></code>,
+<code><a href="../reference/idf_query.html">?idf_query</a></code> and <code><a href="../reference/idf_json_query.html">?idf_json_query</a></code>. This may be
+useful when you frequently want to update your data, but have a large
+amount of resources in the database of which you only need a small
+subset:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idf_query.html">idf_query</a></span><span class="op">(</span><span class="va">conn</span>, </span>
 <span>                          field <span class="op">=</span> <span class="st">"category"</span>, </span>
@@ -355,13 +393,17 @@ object with 37 elements. This, we will turn into a matrix, or directly
 into a data.frame to make plots easier:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idaifield_as_matrix.html">idaifield_as_matrix</a></span><span class="op">(</span><span class="va">pottery</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; The list was already unnested to resource-level.</span></span></code></pre></div>
 <p>When viewing the resulting <code>Pottery</code>-data frame, you will
 notice that the campaign-field has been converted to multiple columns.
-If a custom configuration is present, this will happen to all custom
+If a custom configuration is present and can be accessed by
+<code><a href="../reference/get_configuration.html">get_configuration()</a></code>, this will happen to all custom
 checkbox-fields, as there is no other way to conveniently deal with such
-fields in a data frame. To make different or better use of it, try to
-format the original list itself according to your needs.</p>
+fields in a data frame. You can prevent this by setting
+<code>spread_field = FALSE</code> in <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code>.
+To make different or better use of it, try to format the original list
+itself according to your needs.</p>
 <p>From the data frame, we can produce some basic plots and take a look
 at the distribution of periods across our layers:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -391,11 +433,12 @@ prepared everything. You can prepare a lookup-table like this:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">core_lang_list</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span>
 <span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">lookup</span>, <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">milet_lang_list</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>To get the translations from the Project configuration, you can use
-the config-attribute from any <code>idaifield_...</code>-list. This will
-also give you an impression of how the lookup-table is set up:</p>
+<p>To get the translations from the Project configuration, you can get
+it using <code><a href="../reference/get_configuration.html">get_configuration()</a></code>. Please note that you need to
+be able to connect to the database in order to do that. This will also
+give you an impression of how the lookup-table is set up:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">idaifield_test_simple</span><span class="op">)</span><span class="op">$</span><span class="va">config</span></span>
+<code class="sourceCode R"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_configuration.html">get_configuration</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span>
 <span><span class="va">lookup_conf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_language_lookup.html">get_language_lookup</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">languages</span>, language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lookup_conf</span><span class="op">)</span></span></code></pre></div>
@@ -433,14 +476,15 @@ always necessary:</p>
 selecting from the whole database:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="va">db</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/select_by.html">select_by</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/idf_select_by.html">idf_select_by</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"category"</span>, value <span class="op">=</span> <span class="st">"Pottery"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co"># Note: simplify_idaifield() needs the index of the complete project database </span></span>
 <span>  <span class="co"># as a lookup-table to replace all UUIDs with their identifiers</span></span>
 <span>  <span class="fu"><a href="../reference/simplify_idaifield.html">simplify_idaifield</a></span><span class="op">(</span>uidlist <span class="op">=</span> <span class="va">index</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/idaifield_as_matrix.html">idaifield_as_matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Or using the following few lines with direct queries to the
-database:</p>
+<p>Or using the following few lines with direct queries to the database,
+see also <code><a href="../reference/idf_index_query.html">?idf_index_query</a></code> and
+<code><a href="../reference/idf_json_query.html">?idf_json_query</a></code>:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pottery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/idf_query.html">idf_query</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">conn</span>,</span>
 <span>                     project <span class="op">=</span> <span class="st">"idaifieldr-demo"</span>, </span>
