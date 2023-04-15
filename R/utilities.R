@@ -105,7 +105,6 @@ check_for_sublist <- function(single_resource_field) {
                        FUN.VALUE = logical(1))
     has_sublist <- any(sublists)
   } else {
-    message("Object is not a list.")
     has_sublist <- FALSE
   }
   return(has_sublist)
