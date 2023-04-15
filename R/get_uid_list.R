@@ -178,8 +178,8 @@ get_uid_list <- function(idaifield_docs,
 #' `idaifield_resources`-list without querying the database.
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @examples
 #' \dontrun{
@@ -240,12 +240,8 @@ get_field_index <- function(connection, verbose = FALSE,
     x <- x[fields]
     x$shortDescription <- gather_languages(x$shortDescription,
                                            language = language)
-    if (check_if_uid(x$isRecordedIn)) {
-      x$isRecordedIn <- replace_uid(x$isRecordedIn, uuids)
-    }
-    if (check_if_uid(x$liesWithin)) {
-      x$liesWithin <- replace_uid(x$liesWithin, uuids)
-    }
+    x$isRecordedIn <- replace_uid(x$isRecordedIn, uuids)
+    x$liesWithin <- replace_uid(x$liesWithin, uuids)
 
     return(x)
   })
@@ -283,8 +279,8 @@ get_field_index <- function(connection, verbose = FALSE,
 #' @returns a vector of Place-resources
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @keywords internal
 #'
