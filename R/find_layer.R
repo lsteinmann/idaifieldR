@@ -50,19 +50,32 @@ find_layer <- function(id,
     layer_categories <- getOption("idaifield_categories")$layers
   }
 
-  current <- id
-  current_cat <- uidlist$category[uidlist[, id_type] == current]
+
+  all_ids <- uidlist[, id_type]
+  current <- match(id, all_ids)
+  all_cats <- uidlist$category
+  all_lw <- uidlist$liesWithin
+
+  current_cat <- all_cats[current]
+  start_lw <- all_lw[current]
+
+  if (current_cat %in% c(layer_categories, "Feature")) {
+    return(start_lw)
+  }
+  if (is.na(start_lw)) {
+    return(NA)
+  }
 
   while(!(current_cat %in% layer_categories)) {
-    current_cat <- uidlist$category[uidlist[, id_type] == current]
+    current_cat <- all_cats[current]
     if (current_cat %in% layer_categories) {
-      return(current)
+      return(all_ids[current])
     }
-    liesWithin <- uidlist$liesWithin[uidlist[, id_type] == current]
+    liesWithin <- all_lw[current]
     if (is.na(liesWithin)) {
       return(NA)
     }
-    current <- liesWithin
+    current <- match(liesWithin, all_ids)
   }
 
 }
