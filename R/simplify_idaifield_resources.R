@@ -44,10 +44,9 @@ simplify_single_resource <- function(resource,
   # liesWithinLayer variable and appended to the resource as a new field
   # called relation.liesWithinLayer.
   if (replace_uids) {
-    lw <- list(liesWithin = resource$relation.liesWithin)
-    liesWithinLayer <- find_layer(resource = lw,
+    liesWithinLayer <- find_layer(id = resource$identifier,
                                   uidlist = uidlist,
-                                  liesWithin = NULL)
+                                  id_type = "identifier")
     resource <- append(resource,
                        list(relation.liesWithinLayer = liesWithinLayer))
   }
@@ -212,7 +211,8 @@ simplify_single_resource <- function(resource,
 #' returned by [get_idaifield_docs()] or [idf_query()],
 #' [idf_index_query()], and [idf_json_query()].
 #' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
-#' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with [replace_uid()]
+#' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with
+#' [replace_uid()], and also: [find_layer()]
 #' @param uidlist If NULL (default) the list of UUIDs and identifiers is
 #' automatically generated within this function using [get_uid_list()]. This only makes sense if
 #' the list handed to [simplify_idaifield()] had not been selected yet. If it
@@ -242,7 +242,7 @@ simplify_single_resource <- function(resource,
 #'
 #'
 #' @seealso
-#' * This function uses: [idf_sepdim()], [remove_config_names()],
+#' * This function uses: [idf_sepdim()], [remove_config_names()], [find_layer()]
 #' * [fix_dating()] with the outcome depending on the `use_exact_dates`-argument.
 #' * When selecting a language: [gather_languages()]
 #' * Depending on the `spread_fields`-argument: [convert_to_onehot()]

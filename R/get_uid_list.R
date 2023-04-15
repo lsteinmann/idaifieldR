@@ -117,8 +117,12 @@ get_uid_list <- function(idaifield_docs,
     } else {
       uidlist$shortDescription <- gather_languages(desc, language = language)
     }
-    uidlist$liesWithinLayer <- unlist(lapply(idaifield_docs,
-                                             function(x) na_if_empty(x$relation.liesWithinLayer)))
+    lwl <- lapply(uidlist$UID, function(x) {
+      layer <- find_layer(x, id_type = "UID", uidlist)
+      layer <- na_if_empty(layer)
+      return(layer)
+      })
+    uidlist$liesWithinLayer <- unlist(lwl)
   }
 
   uidlist$isRecordedIn <- replace_uid(uidlist$isRecordedIn, uidlist)
@@ -183,10 +187,9 @@ get_uid_list <- function(idaifield_docs,
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#'                                 user = "R", pwd = "hallo")
+#' connection <- connect_idaifield(pwd = "hallo", project = "rtest")
 #'
-#' index <- get_index(connection, verbose = TRUE)
+#' index <- get_field_index(connection, verbose = TRUE)
 #' }
 get_field_index <- function(connection, verbose = FALSE,
                       gather_trenches = FALSE,
@@ -249,8 +252,7 @@ get_field_index <- function(connection, verbose = FALSE,
 
   if (verbose) {
     index <- lapply(index, function(x) {
-      lw <- list(liesWithin = x$liesWithin)
-      x$liesWithinLayer <- find_layer(lw, index_df)
+      x$liesWithinLayer <- na_if_empty(find_layer(x$identifier, id_type = "identifier", index_df))
       return(x)
     })
     lwl <- lapply(index, function(x) x$liesWithinLayer)

@@ -56,10 +56,9 @@ configuration settings.
 }
 \examples{
 \dontrun{
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R", pwd = "hallo")
+connection <- connect_idaifield(pwd = "hallo", project = "rtest")
 
-index <- get_index(connection, verbose = TRUE)
+index <- get_field_index(connection, verbose = TRUE)
 }
 }
 \seealso{

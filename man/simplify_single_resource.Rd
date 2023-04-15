@@ -19,7 +19,8 @@ simplify_single_resource(
 \item{resource}{One resource (element) from an \code{idaifield_resources}-list.}
 
 \item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
-corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with \code{\link[=replace_uid]{replace_uid()}}}
+corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
+\code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
 
 \item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
 automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if

@@ -4,71 +4,46 @@ uidlist <- get_uid_list(test_docs)
 
 proj_in <- which(uidlist$category == "Project")
 
-find_in <- which(uidlist$category %in% c("Find", "Pottery", "Terracotta", "Brick",
-                                     "Bone", "Glass", "Metal", "Stone", "Wood",
-                                     "Coin", "PlasterFragment", "Mollusk"))
-
-test_resources <- lapply(test_resources, function(x) fix_relations(x, replace_uids = TRUE,
-                                                                   uidlist = uidlist))
-
 test_that("returns na for project", {
-  expect_identical(find_layer(resource = test_resources[[proj_in]],
+  expect_identical(find_layer(id = test_resources[[proj_in]]$identifier,
+                              id_type = "identifier",
                               uidlist = uidlist),
                    NA)
 })
 
 test_that("returns na without uidlist", {
-  expect_warning(find_layer(resource = test_resources[[pottery_in[5]]],
-                              uidlist = NULL),
+  expect_warning(test <- find_layer(id = uidlist$identifier[5],
+                                    id_type = "identifier",
+                                    uidlist = NULL),
                    "uidlist")
-  test <- suppressWarnings(find_layer(resource = test_resources[[pottery_in[5]]],
-                                      uidlist = NULL))
   expect_identical(test, NA)
 })
 
-which(uidlist$identifier == "Befund_1_InschriftAufMünze")
-
 test_that("returns layer for inscription in coin", {
-  index <- which(uidlist$identifier == "Befund_1_InschriftAufMünze")
-  expect_identical(find_layer(resource = test_resources[[index]],
-                            uidlist = uidlist),
+  expect_identical(find_layer(id = "Befund_1_InschriftAufMünze",
+                              id_type = "identifier",
+                              uidlist = uidlist),
                    "Befund_1")
 })
 
 
 
-for (i in sample(find_in, size = 10)) {
-  if (is.null(test_resources[[find_in[1]]]$relation.liesWithin) & is.null(test_resources[[i]]$relations$liesWithin)) {
-    next
-  } else {
-    if (!is.na(uidlist$liesWithin[i])) {
-      test_that("returns chr when resource lies within layer", {
-        resource <- fix_relations(test_resources[[i]],
-                                  replace_uids = TRUE,
-                                  uidlist = uidlist)
-        layer <- find_layer(resource = resource,
-                            uidlist = uidlist,
-                            strict = FALSE)
-        expect_type(layer,
-                    "character")
-      })
-    }
+uuids <- data.frame(
+  category = c("Coin", "Layer", "Inscription"),
+  UID = c(
+    "2ab1de16-eddb-0737-79ea-299b0c3a0d06", "b6014881-d8b7-2bb6-b5df-73245374e791",
+    "d95e59f3-1440-46fd-9e71-5835b2b888d0"
+  ),
+  identifier = c("MÜNZE_1", "Befund_1", "Befund_1_InschriftAufMünze"),
+  liesWithin = c("b6014881-d8b7-2bb6-b5df-73245374e791", "SE01", "2ab1de16-eddb-0737-79ea-299b0c3a0d06")
+)
 
-  }
-}
-
-# this absolutely does not work in any way and has to be done at some point
-test_that("returns layer(!) when strict", {
-  item <- which(uidlist$identifier == "Befund_1_InschriftAufMünze")
-  resource <- fix_relations(test_resources[[item]],
-                            replace_uids = TRUE,
-                            uidlist = uidlist)
-  layer <- find_layer(resource = resource,
-                      uidlist = uidlist,
-                      strict = TRUE)
-  strict_layers <- getOption("idaifield_categories")$layers_strict
-
-  expect_true(uidlist$category[which(uidlist$identifier == layer)] %in% strict_layers)
+test_that("returns layer for inscription in coin when using UUIDs", {
+  expect_identical(find_layer(id = "d95e59f3-1440-46fd-9e71-5835b2b888d0",
+                              id_type = "UID",
+                              uidlist = uuids),
+                   "b6014881-d8b7-2bb6-b5df-73245374e791")
 })
+
 
 

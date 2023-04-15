@@ -23,7 +23,8 @@ returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\li
 information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
 
 \item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
-corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with \code{\link[=replace_uid]{replace_uid()}}}
+corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
+\code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
 
 \item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
 automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
@@ -89,7 +90,7 @@ simpler_idaifield <- simplify_idaifield(idaifield_docs)
 }
 \seealso{
 \itemize{
-\item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}},
+\item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}}, \code{\link[=find_layer]{find_layer()}}
 \item \code{\link[=fix_dating]{fix_dating()}} with the outcome depending on the \code{use_exact_dates}-argument.
 \item When selecting a language: \code{\link[=gather_languages]{gather_languages()}}
 \item Depending on the \code{spread_fields}-argument: \code{\link[=convert_to_onehot]{convert_to_onehot()}}
