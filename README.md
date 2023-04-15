@@ -64,5 +64,5 @@ View(pottery_mat)
 ```
 
 # Contribution
-As I constantly use it for my own work, I am improving this package and trying to stay up-to-date with everything as I go. Much of the code is rather old and reflects my learning process much more than good practice. However, I would be happy about any feedback -- be it in the form of issues or feature requests -- and would be even happier if anyone would like to collaborate on this project. If you are interested in contributing to idaifieldR, feel free to get in touch with me -- or don't, and just fork it! ;)
+As I constantly use it for my own work, I am improving this package and trying to stay up-to-date with everything as I go. A special thanks goes to ChatGPT for helping me a lot with the documentation. Much of the code is rather old and reflects my learning process much more than good practice. However, I would be happy about any feedback -- be it in the form of issues or feature requests -- and would be even happier if anyone would like to collaborate on this project. If you are interested in contributing to idaifieldR, feel free to get in touch with me -- or don't, and just fork it! ;)
 
