@@ -22,9 +22,10 @@ the corresponding \emph{identifier} from the uidlist (also handed to the functio
 }
 \examples{
 \dontrun{
-uidlist <- get_uid_list(idaifield_docs)
+conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+index <- get_field_index(conn)
 
-replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
+replace_uid("02932bc4-22ce-3080-a205-e050b489c0c2", uidlist = index[, c("identifier", "UID")])
 }
 }
 \seealso{
