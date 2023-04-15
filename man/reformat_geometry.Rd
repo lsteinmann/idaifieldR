@@ -12,8 +12,8 @@ or \code{idaifield_resources}-list.}
 }
 \value{
 The geometry of the resource in a more usable format that can
-be processed with tools like the \code{\link[sp:SpatialPoints]{sp::SpatialPoints()}} etc. to work with
-spatial data.
+be processed with tools like \code{\link[sp:SpatialPoints]{sp::SpatialPoints()}} etc. to work with
+spatial data. The geometry is returned as a a matrix in a list.
 }
 \description{
 Reformat the Geometry of a single iDAI.field / Field Desktop resource
