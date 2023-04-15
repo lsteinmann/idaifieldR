@@ -195,15 +195,6 @@ get_field_index <- function(connection, verbose = FALSE,
                       gather_trenches = FALSE,
                       language = "en") {
 
-  query <- paste0(
-    '{ "selector": { "$not": { "resource.id": "" } },
-   "fields": [ "resource.id", "resource.identifier" ]}')
-  client <- proj_idf_client(connection, include = "query")
-
-  response <- response_to_list(client$post(body = query))
-  uuids <- unnest_docs(response)
-  uuids <- do.call(rbind.data.frame, uuids)
-  colnames(uuids) <- c("UID", "identifier")
 
   fields <- c("type", "category",
               "id", "identifier",
@@ -221,6 +212,7 @@ get_field_index <- function(connection, verbose = FALSE,
     stop("Something went wrong. Could not validate query.")
   }
 
+  client <- proj_idf_client(connection, include = "query")
   response <- response_to_list(client$post(body = query))
   response <- unnest_docs(response)
 
@@ -241,24 +233,24 @@ get_field_index <- function(connection, verbose = FALSE,
       x[fields[to_add]] <- NA
     }
     x <- x[fields]
-    x$shortDescription <- gather_languages(x$shortDescription,
-                                           language = language)
-    x$isRecordedIn <- replace_uid(x$isRecordedIn, uuids)
-    x$liesWithin <- replace_uid(x$liesWithin, uuids)
+    return(x)
+  })
+  index_tmp <- do.call(rbind.data.frame, index)
 
+  index <- lapply(index, function(x) {
+    x$isRecordedIn <- replace_uid(x$isRecordedIn, index_tmp[, c("identifier", "id")])
+    x$liesWithin <- replace_uid(x$liesWithin, index_tmp[, c("identifier", "id")])
+    if (verbose) {
+      x$shortDescription <- gather_languages(x$shortDescription,
+                                             language = language)
+      x$liesWithinLayer <- find_layer(x$id,
+                                      id_type = "id",
+                                      index_tmp)
+      x$liesWithinLayer <- replace_uid(x$liesWithinLayer, index_tmp[, c("identifier", "id")])
+    }
     return(x)
   })
   index_df <- do.call(rbind.data.frame, index)
-
-  if (verbose) {
-    index <- lapply(index, function(x) {
-      x$liesWithinLayer <- na_if_empty(find_layer(x$identifier, id_type = "identifier", index_df))
-      return(x)
-    })
-    lwl <- lapply(index, function(x) x$liesWithinLayer)
-    lwl <- unlist(na_if_empty(lwl))
-    index_df$liesWithinLayer <- lwl
-  }
 
   if (gather_trenches) {
     index_df$Place <- gather_trenches(index_df)

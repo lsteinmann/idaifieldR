@@ -37,7 +37,7 @@ find_layer <- function(id,
                        uidlist = NULL,
                        layer_categories = NULL) {
 
-  id_type <- match.arg(id_type, c("identifier", "UID"), several.ok = FALSE)
+  id_type <- match.arg(id_type, c("identifier", "UID", "id"), several.ok = FALSE)
   if (is.null(id)) {
     stop("Need either an identifier or a UUID as 'id = '.")
   }

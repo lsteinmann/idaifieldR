@@ -14,33 +14,26 @@
 #' @returns The corresponding *identifier*(s) (a character string/vector)
 #'
 #'
-#'
-#'
-#'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' uidlist <- get_uid_list(idaifield_docs)
+#' conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+#' index <- get_field_index(conn)
 #'
-#' replace_uid("9e436b96-134d-e610-c032-136fc9e8e26e", uidlist = uidlist)
+#' replace_uid("02932bc4-22ce-3080-a205-e050b489c0c2", uidlist = index[, c("identifier", "UID")])
 #' }
 replace_uid <- function(uidvector, uidlist) {
   opt <- c("UID", "UUID", "id")
   which <- opt %in% colnames(uidlist)
   sel <- opt[which]
 
-  # Create a logical vector indicating which entries in uidvector are in uidlist
-  matches <- match(uidvector, uidlist[, sel])
+  identifier <- uidlist$identifier
+  uuids <- uidlist[, sel]
 
-  # Return the corresponding entries in uidlist,
-  # or the original entries if no match is found
-  identifiers <- ifelse(is.na(matches), uidvector, uidlist$identifier[matches])
+  matches <- match(uidvector, uuids)
 
-  # Check for remaining UUIDs in uidvector
-  #is_uid <- check_if_uid(identifiers)
-  #if (any(is_uid)) {
-  #  message("Not all UIDs were replaced.")
-  #}
-  return(identifiers)
+  result <- ifelse(is.na(matches), uidvector, identifier[matches])
+
+  return(result)
 }
