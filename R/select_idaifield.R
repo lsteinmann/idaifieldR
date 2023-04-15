@@ -5,12 +5,12 @@
 #' iDAI.field 2 / Field Desktop database the list was imported from.
 #'
 #' @param idaifield_docs An an `idaifield_docs`- or `idaifield_resources`-list
-#' as returned by [get_idaifield_docs()] or [idf_query()]
-#' and [idf_index_query()].
+#' as returned by [get_idaifield_docs()] or [idf_query()], [idf_index_query()]
+#' and [idf_json_query()].
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @returns A character vector with the unique categories present in
 #' the iDAI.field 2 / Field Desktop database the list was imported from.
@@ -45,7 +45,7 @@ idf_show_categories <- function(idaifield_docs) {
 #'
 #' @details Subset or filter the list of the docs or resources by the
 #' given parameters. You may want to consider querying the database
-#' directly using [idf_query()] or [idf_index_query()].
+#' directly using [idf_query()], [idf_index_query()] and [idf_json_query()].
 #'
 #' @param idaifield_docs An `idaifield_resources`- or `idaifield_docs`-list
 #' as returned by `get_idaifield_docs()` etc.
@@ -93,11 +93,11 @@ select_by <- function(idaifield_docs,
 #'
 #' @description Subset or filter the list of the *docs* or *resources* by the
 #' given parameters. You may want to consider querying the database
-#' directly using [idf_query()] or [idf_index_query()].
+#' directly using [idf_query()], [idf_index_query()], or [idf_json_query()].
 #'
 #' @param idaifield_docs An `idaifield_resources`- or `idaifield_docs`-list
-#' as returned by [get_idaifield_docs()]  or [idf_query()]
-#' and [idf_index_query()].
+#' as returned by [get_idaifield_docs()]  or [idf_query()], [idf_index_query()],
+#' and [idf_json_query()].
 #' @param by Any name of a field that might by present in the resource lists,
 #' e.g. category, identifier, processor etc.
 #' @param value character. Should be the internal name of the value
@@ -108,13 +108,13 @@ select_by <- function(idaifield_docs,
 #' which contain the specified values.
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @export
 #'
 #' @seealso [get_idaifield_docs()], [idf_show_categories()]
-#' [idf_query()], [idf_index_query()]
+#' [idf_query()], [idf_index_query()], [idf_json_query()]
 #'
 #' @examples
 #' \dontrun{

@@ -15,7 +15,7 @@
 #' Typically, this is a list obtained from a CouchDB export that has been
 #' converted to a list from JSON by the function
 #' [get_idaifield_docs()] or the query functions of this package
-#' ([idf_query()], [idf_index_query()]).
+#' ([idf_query()], [idf_index_query()], [idf_json_query()]).
 #' If the object is of class `idaifield_docs`, the function removes the
 #' top level lists, which contain information such as revisions and
 #' creation dates, and returns a new object of class `idaifield_resources`.
@@ -30,8 +30,8 @@
 #' @export
 
 #'
-#' 
-#' 
+#'
+#'
 #'
 #'
 #'

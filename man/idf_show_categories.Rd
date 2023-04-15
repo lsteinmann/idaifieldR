@@ -9,8 +9,8 @@ idf_show_categories(idaifield_docs)
 }
 \arguments{
 \item{idaifield_docs}{An an \code{idaifield_docs}- or \code{idaifield_resources}-list
-as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}}
-and \code{\link[=idf_index_query]{idf_index_query()}}.}
+as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_index_query]{idf_index_query()}}
+and \code{\link[=idf_json_query]{idf_json_query()}}.}
 }
 \value{
 A character vector with the unique categories present in

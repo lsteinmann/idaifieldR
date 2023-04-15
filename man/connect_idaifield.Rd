@@ -47,7 +47,7 @@ This function establishes a connection to the database of your
 \href{https://github.com/dainst/idai-field}{iDAI.field / Field Desktop Client},
 and returns a connection object containing the necessary information for
 other functions to access the database, such as \code{\link[=get_idaifield_docs]{get_idaifield_docs()}},
-\code{\link[=idf_query]{idf_query()}} or  \code{\link[=idf_index_query]{idf_index_query()}}.
+\code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_index_query]{idf_index_query()}}, or \code{\link[=idf_json_query]{idf_json_query()}}.
 }
 \details{
 By default, if you are using Field Desktop on the same machine,

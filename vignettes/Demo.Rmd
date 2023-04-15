@@ -144,7 +144,7 @@ pottery <- idf_select_by(idaifield_test_simple, by = "category", value = "Potter
 
 ## Queries
 
-The same outcome can be achieved by querying the database directly. See the documentation of `?idf_index_query` and `?idf_query`. This may be useful when you frequently want to update your data, but have a large amount of resources in the database of which you only need a small subset:
+The same outcome can be achieved by querying the database directly. See the documentation of `?idf_index_query`, `?idf_query` and `?idf_json_query`. This may be useful when you frequently want to update your data, but have a large amount of resources in the database of which you only need a small subset:
 
 ```{r query normal, eval = FALSE}
 pottery_docs <- idf_query(conn, 
@@ -245,7 +245,7 @@ pottery <- db %>%
   as.data.frame()
 ```
 
-Or using the following few lines with direct queries to the database:
+Or using the following few lines with direct queries to the database, see also `?idf_index_query` and `?idf_json_query`:
 
 ```{r pipeexsec, eval = FALSE}
 pottery <- idf_query(connection = conn,

@@ -39,13 +39,13 @@
 #' later use. (If `json = TRUE`, returns a character string in JSON-format.)
 #'
 #' @seealso
-#' * For querying the database: [idf_query()],[idf_index_query()]
+#' * For querying the database: [idf_query()],[idf_index_query()], [idf_json_query()]
 #' * For filtering / selecting an `idaifield_docs`- or `idaifield_resources`-list: [idf_select_by()]
 #' * For processing the list: [check_and_unnest()], [simplify_idaifield()]
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @export
 #'

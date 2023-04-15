@@ -16,8 +16,8 @@ simplify_idaifield(
 }
 \arguments{
 \item{idaifield_docs}{An \code{idaifield_docs} or \code{idaifield_resources}-list as
-returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}}
-and \code{\link[=idf_index_query]{idf_index_query()}}.}
+returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}},
+\code{\link[=idf_index_query]{idf_index_query()}}, and \code{\link[=idf_json_query]{idf_json_query()}}.}
 
 \item{keep_geometry}{TRUE/FALSE: Should the geographical
 information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
@@ -49,8 +49,8 @@ a different format depending on the parameters used.
 }
 \description{
 The function will take a list as returned by
-\code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}} or
-\code{\link[=idf_index_query]{idf_index_query()}} and process it to make the list more usable.
+\code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_index_query]{idf_index_query()}}, or
+\code{\link[=idf_json_query]{idf_json_query()}} and process it to make the list more usable.
 It will unnest a view lists, including the dimension-lists and the
 period-list to provide single values for later processing with
 \code{\link[=idaifield_as_matrix]{idaifield_as_matrix()}}.

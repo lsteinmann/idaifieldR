@@ -65,7 +65,7 @@ idaifield_docs <- get_idaifield_docs(connection = conn)
 }
 \seealso{
 \itemize{
-\item For querying the database: \code{\link[=idf_query]{idf_query()}},\code{\link[=idf_index_query]{idf_index_query()}}
+\item For querying the database: \code{\link[=idf_query]{idf_query()}},\code{\link[=idf_index_query]{idf_index_query()}}, \code{\link[=idf_json_query]{idf_json_query()}}
 \item For filtering / selecting an \code{idaifield_docs}- or \code{idaifield_resources}-list: \code{\link[=idf_select_by]{idf_select_by()}}
 \item For processing the list: \code{\link[=check_and_unnest]{check_and_unnest()}}, \code{\link[=simplify_idaifield]{simplify_idaifield()}}
 }

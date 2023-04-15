@@ -4,7 +4,7 @@
 #' [iDAI.field / Field Desktop Client](https://github.com/dainst/idai-field),
 #' and returns a connection object containing the necessary information for
 #' other functions to access the database, such as [get_idaifield_docs()],
-#' [idf_query()] or  [idf_index_query()].
+#' [idf_query()], [idf_index_query()], or [idf_json_query()].
 #'
 #' @details By default, if you are using Field Desktop on the same machine,
 #' you should not need to specify the `serverip` argument, as it defaults to
@@ -50,8 +50,8 @@
 #' * Ping the connection with [idf_ping()]
 #' * Get a list of projects in the database with [idf_projects()]
 #'
-#' 
-#' 
+#'
+#'
 #'
 #'
 #' @examples
@@ -131,8 +131,8 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
 #' in the connection settings.
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @keywords internal
 #' @returns NULL
@@ -167,9 +167,9 @@ idf_check_for_project <- function(conn, project = NULL) {
 #' @param conn A connection object returned by [connect_idaifield()].
 #' @param project character. Name of the project-database that should be loaded.
 #'
-#' 
+#'
 #' * [crul on CRAN](https://cran.r-project.org/package=crul)
-#' 
+#'
 #'
 #'
 #' @seealso
@@ -256,8 +256,8 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
 #' * Find all projects in the database with: [idf_projects()]
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #'
 #' @examples

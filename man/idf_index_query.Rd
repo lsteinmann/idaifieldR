@@ -46,3 +46,8 @@ idf_index_query(conn,
 }
 
 }
+\seealso{
+\itemize{
+\item Alternative functions: \code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_json_query]{idf_json_query()}}
+}
+}

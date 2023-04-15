@@ -29,7 +29,7 @@ of \code{\link[=idf_select_by]{idf_select_by()}}.
 \details{
 Subset or filter the list of the docs or resources by the
 given parameters. You may want to consider querying the database
-directly using \code{\link[=idf_query]{idf_query()}} or \code{\link[=idf_index_query]{idf_index_query()}}.
+directly using \code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_index_query]{idf_index_query()}} and \code{\link[=idf_json_query]{idf_json_query()}}.
 }
 \examples{
 \dontrun{

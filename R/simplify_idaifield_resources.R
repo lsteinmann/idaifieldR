@@ -181,8 +181,8 @@ simplify_single_resource <- function(resource,
 #' Simplify a List Imported from an iDAI.field / Field Desktop-Database
 #'
 #' The function will take a list as returned by
-#' [get_idaifield_docs()], [idf_query()] or
-#' [idf_index_query()] and process it to make the list more usable.
+#' [get_idaifield_docs()], [idf_query()], [idf_index_query()], or
+#' [idf_json_query()] and process it to make the list more usable.
 #' It will unnest a view lists, including the dimension-lists and the
 #' period-list to provide single values for later processing with
 #' [idaifield_as_matrix()].
@@ -209,8 +209,8 @@ simplify_single_resource <- function(resource,
 #' will be returned.
 #'
 #' @param idaifield_docs An `idaifield_docs` or `idaifield_resources`-list as
-#' returned by [get_idaifield_docs()] or [idf_query()]
-#' and [idf_index_query()].
+#' returned by [get_idaifield_docs()] or [idf_query()],
+#' [idf_index_query()], and [idf_json_query()].
 #' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
 #' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with [replace_uid()]
 #' @param uidlist If NULL (default) the list of UUIDs and identifiers is

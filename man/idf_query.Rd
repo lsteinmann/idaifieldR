@@ -37,3 +37,8 @@ conn <- connect_idaifield(pwd = "hallo", project = "rtest")
 idf_query(conn, field = "category", value = "Brick")
 }
 }
+\seealso{
+\itemize{
+\item Alternative functions: \code{\link[=idf_index_query]{idf_index_query()}}, \code{\link[=idf_json_query]{idf_json_query()}}
+}
+}

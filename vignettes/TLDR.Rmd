@@ -52,6 +52,8 @@ pottery <- idf_query(connection = conn,
   idaifield_as_matrix() %>%
   as.data.frame()
 ```
+See also: `?idf_index_query`, `?idf_query` and `?idf_json_query`.
+
 
 ## Language Lookup: Example
 

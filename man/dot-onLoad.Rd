@@ -2,16 +2,23 @@
 % Please edit documentation in R/global_options.R
 \name{.onLoad}
 \alias{.onLoad}
-\title{Title}
+\title{Loads the iDAI.field Categories}
 \usage{
 .onLoad(libname, pkgname)
 }
 \arguments{
-\item{libname}{libname}
+\item{libname}{The name of the library.}
 
-\item{pkgname}{pkgname}
+\item{pkgname}{The name of the package.}
+}
+\value{
+A list of options.
 }
 \description{
-Title
+This function loads the iDAI.field categories with the default values.
 }
-\keyword{internal}
+\examples{
+\dontrun{
+idaifield_categories <- .onLoad("mylib", "idaifieldR")
+}
+}
