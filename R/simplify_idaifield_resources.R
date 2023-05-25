@@ -182,7 +182,7 @@ simplify_single_resource <- function(resource,
 #' The function will take a list as returned by
 #' [get_idaifield_docs()], [idf_query()], [idf_index_query()], or
 #' [idf_json_query()] and process it to make the list more usable.
-#' It will unnest a view lists, including the dimension-lists and the
+#' It will unnest a few lists, including the dimension-lists and the
 #' period-list to provide single values for later processing with
 #' [idaifield_as_matrix()].
 #' If a connection to the database can be established, the function will
