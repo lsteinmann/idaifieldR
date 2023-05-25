@@ -96,10 +96,21 @@ reformat_geometry <- function(geometry) {
       # if the type is a polygon, line string or multi point
     } else if (type %in% c("Polygon", "LineString", "MultiPoint")) {
       # convert the coordinates to a matrix
+      coord_length <- unlist(lapply(geometry$coordinates, length))
+      # over three to provision for z-values
+      if(any(coord_length > 3)) {
+        geometry$coordinates <- unlist(geometry$coordinates, recursive = FALSE)
+      }
       geometry$coordinates <- list(convert_to_coordmat(geometry$coordinates))
 
       # if the type is a multi polygon or multi line string
-    } else if (type %in% c("MultiPolygon", "MultiLineString")) {
+    } else if (type == "MultiPolygon") {
+      # removed nested level
+      new_coordinates <- unlist(geometry$coordinates, recursive = FALSE)
+      # convert each list of coordinates to a matrix
+      geometry$coordinates <- lapply(new_coordinates,
+                                     function(x) convert_to_coordmat(x))
+    } else if (type == "MultiLineString") {
       # convert each list of coordinates to a matrix
       geometry$coordinates <- lapply(geometry$coordinates,
                                      function(x) convert_to_coordmat(x))

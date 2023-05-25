@@ -1,3 +1,8 @@
+# idaifieldR 0.3.3 _2023_05-25_ (wip)
+* fix problem in reformat_geometry() (MultiPolygons have to be unnested before processing)
+* additionally, imported polygons may be formatted improperly, unnest if necessary (reformat_geometry())
+* #TODO: better solution for handling geometry overall
+
 # idaifieldR 0.3.2 _2023_04-15_
 * add option to use or not use exact dates as min/max values for dating if present
 * add `idf_json_query()` which lets users construct their own queries to the CouchDB-API 
