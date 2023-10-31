@@ -144,6 +144,8 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 #' It is used as a helper function for `simplify_idaifield()`.
 #'
 #' @param conf_names A character vector.
+#' @param silent Should the message that duplicates were
+#' detected be suppressed? Default is FALSE.
 #'
 #' @returns The same character vector with everything before
 #' the first colon (including the colon) removed.
@@ -158,10 +160,21 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 #' \dontrun{
 #' nameslist <- c("relation.liesWithin", "relation.liesWithinLayer",
 #' "campaign.2022", "rtest:test", "pergamon:neuesFeld")
-#' remove_config_names(nameslist)
+#' remove_config_names(nameslist, silent = FALSE)
 #' }
-remove_config_names <- function(conf_names = c("identifier", "configname:test")) {
+remove_config_names <- function(conf_names = c("identifier", "configname:test"),
+                                silent = FALSE) {
   new_names <- gsub("^.*:", "", conf_names)
+
+  if (!silent) {
+    tbl <- table(new_names)
+    if (any(tbl > 1)) {
+      basic_msg <- "Removal of configuration specific names produced duplicates: "
+      items <- paste(names(tbl > 1), collapse = ", ")
+      message(paste0(basic_msg, items))
+    }
+  }
+
   return(new_names)
 }
 

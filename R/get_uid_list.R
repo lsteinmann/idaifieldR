@@ -85,7 +85,7 @@ get_uid_list <- function(idaifield_docs,
     uidlist$category <- category
   }
 
-  uidlist$category <- remove_config_names(uidlist$category)
+  uidlist$category <- remove_config_names(uidlist$category, silent = TRUE)
 
   uidlist$identifier <- unlist(lapply(idaifield_docs,
                                       FUN = function(x) na_if_empty(x$identifier)))
@@ -224,7 +224,7 @@ get_field_index <- function(connection, verbose = FALSE,
     if (any(type_ind)) {
       names(x)[type_ind] <- "category"
     }
-    x$category <- remove_config_names(x$category)
+    x$category <- remove_config_names(x$category, silent = TRUE)
     rel <- unlist(x$relations)
     x$relations <- NULL
     x <- append(x, rel)

@@ -16,7 +16,16 @@ test_that("remove_config_names handles list", {
 
 # Test that the function returns an error for non-character inputs
 test_that("remove_config_names can handle NA", {
-  names <- c(NA, "test", "test:test")
-  correct <- c(NA, "test", "test")
+  names <- c(NA, "test:test")
+  correct <- c(NA, "test")
   expect_identical(remove_config_names(names), correct)
 })
+
+# Test that the function warns about duplicate field names
+test_that("remove_config_names can handle duplicates", {
+  names <- c(NA, "test", "test:test")
+  correct <- c(NA, "test", "test")
+  expect_message(remove_config_names(names, silent = FALSE), "duplicates")
+})
+
+

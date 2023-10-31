@@ -1,6 +1,7 @@
 # idaifieldR 0.3.3 _2023_05-25_ (wip)
 * fix problem in reformat_geometry() (MultiPolygons have to be unnested before processing)
 * additionally, imported polygons may be formatted improperly, unnest if necessary (reformat_geometry())
+* `remove_config_names()` can issue a message about duplicate fields if it is appropriate - this may prevent accidental creation of multiple columns with the same name, as e.g. 'diameter' and 'projectName:diameter' may both have existed in the data after redefining or updating a field in the project configuration. This may need a check and attempt to merge the data (or not merge it).
 * #TODO: better solution for handling geometry overall
 
 # idaifieldR 0.3.2 _2023_04-15_

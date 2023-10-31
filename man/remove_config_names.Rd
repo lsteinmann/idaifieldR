@@ -4,10 +4,16 @@
 \alias{remove_config_names}
 \title{Remove Everything Before the Colon in a Character Vector}
 \usage{
-remove_config_names(conf_names = c("identifier", "configname:test"))
+remove_config_names(
+  conf_names = c("identifier", "configname:test"),
+  silent = FALSE
+)
 }
 \arguments{
 \item{conf_names}{A character vector.}
+
+\item{silent}{Should the message that duplicates were
+detected be suppressed? Default is FALSE.}
 }
 \value{
 The same character vector with everything before
@@ -22,7 +28,7 @@ It is used as a helper function for \code{simplify_idaifield()}.
 \dontrun{
 nameslist <- c("relation.liesWithin", "relation.liesWithinLayer",
 "campaign.2022", "rtest:test", "pergamon:neuesFeld")
-remove_config_names(nameslist)
+remove_config_names(nameslist, silent = FALSE)
 }
 }
 \seealso{
