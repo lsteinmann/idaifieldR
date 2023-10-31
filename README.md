@@ -30,10 +30,9 @@ devtools::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
 # OR
 remotes::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
 ```
-
 # Basic Workflow Example
 
-Here's a basic example of how to use idaifieldR. For a more detailed explanation, check out the Demo.Rmd-vignette (`browseVignettes("idaifieldR")`) or the TLDR.Rmd-vignette for a shorter overview.
+A demonstration of the package and some of its uses is included in the paper ["R wie in: Reproduzierbar. Auswertung von Daten aus Field Desktop mit idaifieldR"](https://doi.org/10.34780/068b-q6c7) published in the [Forum for Digital Archaeology and Infrastructure](https://publications.dainst.org/journals/FdAI/index) (2023, DOI: 10.34780/068b-q6c7) and the corresponding [supplement](https://repo.dainst.org/dataset/digitales-supplement-zu-r-wie-in-reproduzierbar). Alternatively, you can check out the [Demo.Rmd-vignette](https://lsteinmann.github.io/idaifieldR/articles/Demo.html) (`browseVignettes("idaifieldR")`) or the [TLDR.Rmd-vignette](https://lsteinmann.github.io/idaifieldR/articles/TLDR.html) for a shorter overview.
 
 First, we connect to the "rtest" project using `connect_idaifield()` and retrieve an index of all resources using `get_field_index()`. Next, we import all resources from the database into a single list of lists using `get_idaifield_docs()`. While this provides metadata about changes and users, it can be slow and use up a lot of memory. Alternatively, we can query the database directly using `idf_query()` to retrieve only the resources we need, such as all resources of the "pottery" category.
 
