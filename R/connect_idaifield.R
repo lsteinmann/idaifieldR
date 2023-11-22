@@ -51,9 +51,6 @@
 #' * Get a list of projects in the database with [idf_projects()]
 #'
 #'
-#'
-#'
-#'
 #' @examples
 #' \dontrun{
 #' conn <- connect_idaifield(
@@ -167,7 +164,7 @@ idf_check_for_project <- function(conn, project = NULL) {
 #' @param conn A connection object returned by [connect_idaifield()].
 #' @param project character. Name of the project-database that should be loaded.
 #' @param include Arguments: "all", "query", "changes" . Should the client
-#' use _all_docs, "_find" or "_changes" as paths.
+#' use "*_all_docs*", "*_find*" or "*_changes*" as paths.
 #'
 #'
 #' * [crul on CRAN](https://cran.r-project.org/package=crul)
