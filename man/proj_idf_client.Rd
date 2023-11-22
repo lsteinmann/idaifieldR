@@ -12,7 +12,7 @@ proj_idf_client(conn, project = NULL, include = "all")
 \item{project}{character. Name of the project-database that should be loaded.}
 
 \item{include}{Arguments: "all", "query", "changes" . Should the client
-use _all_docs, "_find" or "_changes" as paths.
+use "\emph{_all_docs}", "\emph{_find}" or "\emph{_changes}" as paths.
 \itemize{
 \item \href{https://cran.r-project.org/package=crul}{crul on CRAN}
 }}

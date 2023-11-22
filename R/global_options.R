@@ -3,12 +3,7 @@
 #' @param libname The name of the library.
 #' @param pkgname The name of the package.
 #' @return A list of options.
-#' @export
-#' @examples
-#' \dontrun{
-#' idaifield_categories <- .onLoad("mylib", "idaifieldR")
-#' }
-.onLoad <- function(libname, pkgname) {
+.onLoad <- function(lib, pkg) {
   # The options are set in a list.
   options(
     # The list contains a list of options.
@@ -27,4 +22,8 @@
     )
     )
   )
+}
+
+.onAttach <- function(lib, pkg) {
+  check_idf_version(getNamespaceVersion('idaifieldR'))
 }

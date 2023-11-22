@@ -4,7 +4,7 @@
 \alias{.onLoad}
 \title{Loads the iDAI.field Categories}
 \usage{
-.onLoad(libname, pkgname)
+.onLoad(lib, pkg)
 }
 \arguments{
 \item{libname}{The name of the library.}
@@ -16,9 +16,4 @@ A list of options.
 }
 \description{
 This function loads the iDAI.field categories with the default values.
-}
-\examples{
-\dontrun{
-idaifield_categories <- .onLoad("mylib", "idaifieldR")
-}
 }
