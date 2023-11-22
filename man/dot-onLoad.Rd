@@ -2,18 +2,15 @@
 % Please edit documentation in R/onLoad.R
 \name{.onLoad}
 \alias{.onLoad}
-\title{Loads the iDAI.field Categories}
+\title{onLoad / onAttach}
 \usage{
 .onLoad(lib, pkg)
 }
 \arguments{
-\item{libname}{The name of the library.}
+\item{lib}{The name of the library.}
 
-\item{pkgname}{The name of the package.}
-}
-\value{
-A list of options.
+\item{pkg}{The name of the package.}
 }
 \description{
-This function loads the iDAI.field categories with the default values.
+onLoad / onAttach
 }

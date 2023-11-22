@@ -1,8 +1,6 @@
-#' @title Loads the iDAI.field Categories
-#' @description This function loads the iDAI.field categories with the default values.
-#' @param libname The name of the library.
-#' @param pkgname The name of the package.
-#' @return A list of options.
+#' @title onLoad / onAttach
+#' @param lib The name of the library.
+#' @param pkg The name of the package.
 .onLoad <- function(lib, pkg) {
   # The options are set in a list.
   options(

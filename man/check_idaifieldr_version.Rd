@@ -6,11 +6,14 @@
 \usage{
 check_idaifieldr_version(installed_version = getNamespaceVersion("idaifieldR"))
 }
+\arguments{
+\item{installed_version}{version of idaifieldR currently in use}
+}
 \value{
 nothing
 }
 \description{
-Runs on load and checks if a new version of idaifieldR is available.
+Checks if a new version of idaifieldR is available (runs on attach).
 }
 \examples{
 \dontrun{

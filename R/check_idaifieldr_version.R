@@ -1,8 +1,11 @@
 #' Check Version of idaifieldR
 #'
-#' Runs on load and checks if a new version of idaifieldR is available.
+#' Checks if a new version of idaifieldR is available (runs on attach).
+#'
+#' @param installed_version version of idaifieldR currently in use
 #'
 #' @return nothing
+#'
 #' @export
 #'
 #' @examples
