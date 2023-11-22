@@ -10,7 +10,7 @@
 #' (i.e. "category" for the category of resource (*Pottery*, *Brick*, *Layer*)).
 #' @param value character. The value to be selected for in the specified
 #' field (i.e. "*Brick*" when looking for resources of category *Brick*).
-#' @param projectname The name of the project to be queried (overrides
+#' @param projectname (deprecated) The name of the project to be queried (overrides
 #' the one listed in the connection-object).
 #'
 #' @returns An `idaifield_docs` list containing all *docs* that fit the query parameters.
@@ -33,6 +33,12 @@ idf_query <- function(connection,
                       value = "Pottery",
                       projectname = NULL) {
 
+  warn_for_project(project = projectname)
+
+  if (is.null(connection$project)) {
+    connection$project <- projectname
+  }
+
 
   if (field == "type" | field == "category") {
     query <- paste0('{ "selector": { "$or": [  { "resource.type": "', value, '" },
@@ -42,7 +48,7 @@ idf_query <- function(connection,
     { "resource.', field, '": ["', value, '"] }]}}')
   }
 
-  result <- idf_json_query(connection, query, projectname)
+  result <- idf_json_query(connection, query)
 
   return(result)
 }
@@ -63,7 +69,7 @@ idf_query <- function(connection,
 #' @param value character. The value to be selected for in the specified field.
 #' @param uidlist A data.frame as returned by [get_field_index()]
 #' (or [get_uid_list()]).
-#' @param projectname The name of the project to be queried (overrides
+#' @param projectname (deprecated) The name of the project to be queried (overrides
 #' the one listed in the connection-object).
 #'
 #' @returns An `idaifield_docs` list
@@ -99,6 +105,12 @@ idf_index_query <- function(connection,
     stop("Supply a field that corresponds to the columns in the UID-List.")
   }
 
+  warn_for_project(project = projectname)
+
+  if (is.null(connection$project)) {
+    connection$project <- projectname
+  }
+
   doc_ids <- uidlist$UID[which(uidlist[, field] == value)]
 
   doc_ids <- paste('"', doc_ids, '"', collapse = ", ", sep = "")
@@ -127,7 +139,7 @@ idf_index_query <- function(connection,
 #' @param query A valid JSON-query as detailed in the relevant section of the
 #' [CouchDB-API](https://docs.couchdb.org/en/stable/api/database/find.html)
 #' documentation.
-#' @param projectname The name of the project to be queried (overrides
+#' @param projectname (deprecated) The name of the project to be queried (overrides
 #' the one listed in the connection-object).
 #'
 #' @seealso
@@ -162,6 +174,12 @@ idf_index_query <- function(connection,
 idf_json_query <- function(connection, query, projectname = NULL) {
   if (!jsonlite::validate(query)) {
     stop("Could not validate JSON structure of query.")
+  }
+
+  warn_for_project(project = projectname)
+
+  if (is.null(connection$project)) {
+    connection$project <- projectname
   }
 
   proj_client <- proj_idf_client(connection,
