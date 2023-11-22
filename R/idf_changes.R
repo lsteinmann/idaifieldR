@@ -129,7 +129,7 @@ idf_get_changes <- function(connection, ids) {
 
 
   if (is.null(connection$project)) {
-    check_conn_for_project(project = NULL, fail = TRUE)
+    stop("Please supply a project to `connect_idaifield()`.")
   }
 
   result <- idf_json_query(connection, query)
