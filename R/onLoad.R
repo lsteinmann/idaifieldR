@@ -25,5 +25,5 @@
 }
 
 .onAttach <- function(lib, pkg) {
-  check_idf_version(getNamespaceVersion('idaifieldR'))
+  check_idaifieldr_version(getNamespaceVersion('idaifieldR'))
 }

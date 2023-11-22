@@ -7,9 +7,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' check_idf_version(packageVersion('idaifieldR'))
+#' check_idaifieldr_version(packageVersion('idaifieldR'))
 #' }
-check_idf_version <- function(installed_version = getNamespaceVersion('idaifieldR')) {
+check_idaifieldr_version <- function(installed_version = getNamespaceVersion('idaifieldR')) {
   repo <- 'lsteinmann/idaifieldR'
   gh <- try(suppressWarnings(
     jsonlite::read_json(paste0('https://api.github.com/repos/',
