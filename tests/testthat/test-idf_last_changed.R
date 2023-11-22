@@ -1,0 +1,83 @@
+skip_on_cran()
+
+connection <- skip_if_no_connection()
+
+index <- get_field_index(connection)
+
+test_that("returns a character vector of length n", {
+  n <- 5
+  res <- idf_last_changed(connection = connection, n = n)
+  expect_equal(class(res), "character")
+  expect_length(res, n)
+})
+
+test_that("returns a character vector of
+          length nrow(index)+1 (no config in index)
+          when n = 'all' or n = Inf", {
+  n <- "all"
+  res <- idf_last_changed(connection = connection, n = n)
+  expect_equal(class(res), "character")
+  expect_length(res, nrow(index)+1)
+
+  n <- Inf
+  res <- idf_last_changed(connection = connection, n = n)
+  expect_equal(class(res), "character")
+  expect_length(res, nrow(index)+1)
+})
+
+test_that("error if n is not numeric (and not Inf/all)", {
+  n <- "börek"
+  expect_error(idf_last_changed(connection = connection, n = n),
+               "is.numeric")
+})
+
+test_that("returns UUIDs when no index available", {
+  n <- 10
+  res <- idf_last_changed(connection = connection, n = n)
+  check <- check_if_uid(res)
+  exception <- c("project", "configuration")
+  exception <- which(res %in% exception)
+  expect_true(all(check[-exception]))
+})
+
+test_that("returns no UUIDs when index available", {
+  n <- 10
+  res <- idf_last_changed(connection = connection,
+                          index = index,
+                          n = n)
+  check <- check_if_uid(res)
+  exception <- c("project", "configuration")
+  exception <- which(res %in% exception)
+  expect_false(all(check[-exception]))
+})
+
+test_that("returns UUIDs + warning when index is wrong", {
+  no_index <- "börek"
+  expect_warning(res <- idf_last_changed(connection = connection,
+                          index = no_index,
+                          n = 5), "index")
+  check <- check_if_uid(res)
+  exception <- c("project", "configuration")
+  exception <- which(res %in% exception)
+  expect_true(all(check[-exception]))
+})
+
+test_that("returns UUIDs + warning when index is wrong", {
+  no_index <- index
+  colnames(no_index) <- c("category", "börek", "identifier", "isRecordedIn", "liesWithin")
+  expect_warning(res <- idf_last_changed(connection = connection,
+                                         index = no_index,
+                                         n = 5), "index")
+  check <- check_if_uid(res)
+  exception <- c("project", "configuration")
+  exception <- which(res %in% exception)
+  expect_true(all(check[-exception]))
+})
+
+test_that("error if connection settings dont have project", {
+  connection$project <- NULL
+  expect_error(idf_last_changed(connection = connection, n = 5),
+               "project")
+})
+
+

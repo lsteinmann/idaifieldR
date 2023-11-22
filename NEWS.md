@@ -3,6 +3,8 @@
 * additionally, imported polygons may be formatted improperly, unnest if necessary (reformat_geometry())
 * `remove_config_names()` can issue a message about duplicate fields if it is appropriate - this may prevent accidental creation of multiple columns with the same name, as e.g. 'diameter' and 'projectName:diameter' may both have existed in the data after redefining or updating a field in the project configuration. This may need a check and attempt to merge the data (or not merge it).
 * #TODO: better solution for handling geometry overall
+* Add `idf_last_changed(connection, n = n)`: Returns a vector with the last n changed resources in the database. 
+* Add `idf_get_changes(connection, ids = c(...))`: Returns a data.frame in which each change to one of the resources listed in ids (can be either their 'identifier' or 'UUID') corresponds to one row separated by creation or modification.
 
 # idaifieldR 0.3.2 _2023_04-15_
 * add option to use or not use exact dates as min/max values for dating if present

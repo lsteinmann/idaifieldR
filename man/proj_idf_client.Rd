@@ -9,7 +9,10 @@ proj_idf_client(conn, project = NULL, include = "all")
 \arguments{
 \item{conn}{A connection object returned by \code{\link[=connect_idaifield]{connect_idaifield()}}.}
 
-\item{project}{character. Name of the project-database that should be loaded.
+\item{project}{character. Name of the project-database that should be loaded.}
+
+\item{include}{Arguments: "all", "query", "changes" . Should the client
+use _all_docs, "_find" or "_changes" as paths.
 \itemize{
 \item \href{https://cran.r-project.org/package=crul}{crul on CRAN}
 }}
