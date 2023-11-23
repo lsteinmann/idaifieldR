@@ -47,6 +47,11 @@ idf_last_changed <- function(connection,
   response <- client$post(query = params)
   response <- response_to_list(response)
 
+  if (length(response$result) == 0) {
+    message("No changes recorded in /db/_changes/.")
+    return(NA)
+  }
+
   response <- lapply(response$results, function(x) {
     x$id
   })

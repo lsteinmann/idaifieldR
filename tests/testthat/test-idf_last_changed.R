@@ -2,6 +2,17 @@ skip_on_cran()
 
 connection <- skip_if_no_connection()
 
+check <- idf_last_changed(connection = connection, n = 5)
+if (all(is.na(check))) {
+  skip("Test skipped, no changes recorded in 'rtest'-project database in this docker.")
+}
+
+test_that("message & NA on non-existing changes", {
+  connection$project <- "empty-db"
+  expect_message(res <- idf_last_changed(connection = connection), "_changes")
+  expect_true(is.na(res))
+})
+
 index <- get_field_index(connection)
 
 test_that("returns a character vector of length n", {
@@ -79,5 +90,3 @@ test_that("error if connection settings dont have project", {
   expect_error(idf_last_changed(connection = connection, n = 5),
                "project")
 })
-
-
