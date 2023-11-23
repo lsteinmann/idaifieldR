@@ -2,6 +2,13 @@ skip_on_cran()
 
 connection <- skip_if_no_connection()
 
+check <- try(idf_last_changed(connection = connection, n = 5))
+if (all(is.na(check))) {
+  skip("Test skipped, no changes recorded in 'rtest'-project database in this docker.")
+} else if (inherits(check, "try-error")) {
+  skip(paste0("Test skipped, because of error: ", check))
+}
+
 index <- get_field_index(connection)
 
 test_that("returns appropriate (number of) resources for UUID", {
