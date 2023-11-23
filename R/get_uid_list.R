@@ -260,7 +260,9 @@ get_field_index <- function(connection, verbose = FALSE,
   colnames(index_df)[uuidcol] <- "UID"
 
   config_ind <- which(index_df$identifier == "Configuration")
-  index_df <- index_df[-config_ind, ]
+  if (length(config_ind) != 0) {
+    index_df <- index_df[-config_ind, ]
+  }
 
   return(index_df)
 }
