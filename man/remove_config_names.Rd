@@ -5,7 +5,7 @@
 \title{Remove Everything Before the Colon in a Character Vector}
 \usage{
 remove_config_names(
-  conf_names = c("identifier", "configname:test"),
+  conf_names = c("identifier", "configname:test", "test"),
   silent = FALSE
 )
 }

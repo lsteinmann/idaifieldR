@@ -101,8 +101,13 @@ get_field_inputtypes <- function(config, inputType = "all") {
   colnames(fields_mat) <- c("category", "field", "inputType")
   fields_mat[, 1] <- gsub("\\..*", "", names(fields))
   fields_mat[, 2] <- gsub(".*\\.", "", names(fields))
-  fields_mat[, 1] <- remove_config_names(fields_mat[, 1], silent = FALSE)
-  fields_mat[, 2] <- remove_config_names(fields_mat[, 2], silent = FALSE)
+  tmp <- remove_config_names(fields_mat[, 1], silent = FALSE)
+  attrib_dupl <- attributes(tmp)$duplicate_names
+  fields_mat[, 1] <- tmp
+  tmp <- remove_config_names(fields_mat[, 2], silent = FALSE)
+  attrib_dupl <- list(categories = attrib_dupl, fields  = attributes(tmp)$duplicate_names)
+  fields_mat[, 2] <- tmp
   fields_mat[, 3] <- unname(fields)
+  attributes(fields_mat)$duplicate_names <- attrib_dupl
   return(fields_mat)
 }

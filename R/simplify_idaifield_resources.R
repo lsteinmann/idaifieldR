@@ -330,6 +330,7 @@ simplify_idaifield <- function(idaifield_docs,
   attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
   attr(idaifield_simple, "projectname") <- attr(idaifield_docs, "projectname")
   attr(idaifield_simple, "language") <- language
+  attr(idaifield_simple, "duplicate_names") <- attributes(fieldtypes)$duplicate_names
 
   return(idaifield_simple)
 }

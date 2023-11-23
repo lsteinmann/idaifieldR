@@ -162,20 +162,25 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 #' "campaign.2022", "rtest:test", "pergamon:neuesFeld")
 #' remove_config_names(nameslist, silent = FALSE)
 #' }
-remove_config_names <- function(conf_names = c("identifier", "configname:test"),
+remove_config_names <- function(conf_names = c("identifier", "configname:test", "test"),
                                 silent = FALSE) {
   new_names <- gsub("^.*:", "", conf_names)
 
-  if (!silent) {
-    tbl <- table(new_names)
-    if (any(tbl > 1)) {
-      basic_msg <- "Removal of configuration specific names produced duplicates: "
-      items <- paste(names(tbl > 1), collapse = ", ")
-      message(paste0(basic_msg, items))
+  tbl <- table(new_names)
+  tbl <- tbl[tbl > 1]
+
+  if (length(tbl) >= 1) {
+    n_dupl <- length(tbl)
+    msg <- paste0("Removal of configuration specific names produced ",
+                  n_dupl,  " duplicate(s). See attributes() for more info.")
+    if (!silent) {
+      message(msg)
     }
   }
+  result <- new_names
+  attributes(result)$duplicate_names <- names(tbl)
 
-  return(new_names)
+  return(result)
 }
 
 #' @title Gather Fields with Multiple Language Values
