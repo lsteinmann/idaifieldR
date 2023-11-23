@@ -311,6 +311,7 @@ simplify_idaifield <- function(idaifield_docs,
     }
   } else {
     fieldtypes <- NA
+    attributes(fieldtypes)$duplicate_names <- NA
   }
 
   idaifield_simple <- lapply(idaifield_docs, function(x)
