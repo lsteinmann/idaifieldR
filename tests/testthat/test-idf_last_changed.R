@@ -28,12 +28,20 @@ test_that("returns a character vector of
   n <- "all"
   res <- idf_last_changed(connection = connection, n = n)
   expect_equal(class(res), "character")
-  expect_length(res, nrow(index)+1)
+  if ("configuration" %in% res) {
+    expect_length(res, nrow(index)+1)
+  } else {
+    expect_length(res, nrow(index))
+  }
 
   n <- Inf
   res <- idf_last_changed(connection = connection, n = n)
   expect_equal(class(res), "character")
-  expect_length(res, nrow(index)+1)
+  if ("configuration" %in% res) {
+    expect_length(res, nrow(index)+1)
+  } else {
+    expect_length(res, nrow(index))
+  }
 })
 
 test_that("error if n is not numeric (and not Inf/all)", {
@@ -52,14 +60,18 @@ test_that("returns UUIDs when no index available", {
 })
 
 test_that("returns no UUIDs when index available", {
-  n <- 10
+  n <- 100
   res <- idf_last_changed(connection = connection,
                           index = index,
                           n = n)
   check <- check_if_uid(res)
   exception <- c("project", "configuration")
   exception <- which(res %in% exception)
-  expect_false(all(check[-exception]))
+  if (length(exception) == 0) {
+    expect_false(all(check))
+  } else {
+    expect_false(all(check[-exception]))
+  }
 })
 
 test_that("returns UUIDs + warning when index is wrong", {
