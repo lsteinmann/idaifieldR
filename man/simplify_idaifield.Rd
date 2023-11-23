@@ -52,7 +52,7 @@ a different format depending on the parameters used.
 The function will take a list as returned by
 \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_index_query]{idf_index_query()}}, or
 \code{\link[=idf_json_query]{idf_json_query()}} and process it to make the list more usable.
-It will unnest a view lists, including the dimension-lists and the
+It will unnest a few lists, including the dimension-lists and the
 period-list to provide single values for later processing with
 \code{\link[=idaifield_as_matrix]{idaifield_as_matrix()}}.
 If a connection to the database can be established, the function will

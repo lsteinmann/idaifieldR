@@ -104,19 +104,23 @@ simplify_single_resource <- function(resource,
   # The function then gets the names of all the fields in the resource,
   # and checks if any of them contain a colon (:). If so, the
   # remove_config_names() function is applied to the list of field names
-  # to remove the portion after the colon. The resulting list of field names
+  # to remove the portion before the colon. The resulting list of field names
   # is then assigned back to the resource. If the category field of the resource
   # contains a colon, the remove_config_names() function is also applied to
-  # this field to remove the portion after the colon
+  # this field to remove the portion before the colon.
+  # The notification about duplicates is only displayed for the field names,
+  # since that is the only place where it could be relevant for further
+  # processing of the data (i.e. multiple columns with the same name in a
+  # table / data.frame.)
   list_names <- names(resource)
 
   if (any(grepl(":", list_names))) {
-    list_names <- remove_config_names(list_names)
+    list_names <- remove_config_names(list_names, silent = FALSE)
     names(resource) <- list_names
   }
 
   if (any(grepl(":", resource$category))) {
-    resource$category <- remove_config_names(resource$category)
+    resource$category <- remove_config_names(resource$category, silent = TRUE)
   }
 
 
@@ -182,7 +186,7 @@ simplify_single_resource <- function(resource,
 #' The function will take a list as returned by
 #' [get_idaifield_docs()], [idf_query()], [idf_index_query()], or
 #' [idf_json_query()] and process it to make the list more usable.
-#' It will unnest a view lists, including the dimension-lists and the
+#' It will unnest a few lists, including the dimension-lists and the
 #' period-list to provide single values for later processing with
 #' [idaifield_as_matrix()].
 #' If a connection to the database can be established, the function will
@@ -307,6 +311,7 @@ simplify_idaifield <- function(idaifield_docs,
     }
   } else {
     fieldtypes <- NA
+    attributes(fieldtypes)$duplicate_names <- NA
   }
 
   idaifield_simple <- lapply(idaifield_docs, function(x)
@@ -326,6 +331,7 @@ simplify_idaifield <- function(idaifield_docs,
   attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
   attr(idaifield_simple, "projectname") <- attr(idaifield_docs, "projectname")
   attr(idaifield_simple, "language") <- language
+  attr(idaifield_simple, "duplicate_names") <- attributes(fieldtypes)$duplicate_names
 
   return(idaifield_simple)
 }

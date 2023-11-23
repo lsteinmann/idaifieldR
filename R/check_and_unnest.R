@@ -28,12 +28,6 @@
 #' the same list with the top-level lists removed down to the "resource"-level.
 #'
 #' @export
-
-#'
-#'
-#'
-#'
-#'
 #'
 #' @examples
 #' \dontrun{

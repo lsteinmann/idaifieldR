@@ -172,4 +172,24 @@ test_that("keeps height values", {
                10)
 })
 
+multipoly <- list(type = "MultiPolygon",
+                  coordinates = list(
+                    list(list(list(523593L, 4153416L),
+                              list(523708L, 4153395L),
+                              list(523692L, 4153288L),
+                              list(523556L, 4153325L))),
+                    list(list(list(523435L, 4153402L),
+                              list(523603L, 4153376L),
+                              list(523642L, 4153480L),
+                              list(523503L, 4153475L))),
+                    list(list(list(523435L, 4153402L),
+                              list(523603L, 4153376L),
+                              list(523642L, 4153480L),
+                              list(523503L, 4153475L)))))
+
+test_that("processes multipolygon", {
+  res <- reformat_geometry(multipoly)
+  expect_equal(length(res$coordinates), length(multipoly$coordinates))
+  expect_equal(unlist(lapply(res$coordinates, length)), c(12, 12, 12))
+})
 

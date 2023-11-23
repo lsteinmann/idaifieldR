@@ -15,7 +15,7 @@ skip_if_no_connection <- function() {
                       pwd = "hallo", ping = FALSE)
     )
 
-  ping <- suppressWarnings(idf_ping(connection))
+  ping <- suppressWarnings(suppressMessages(idf_ping(connection)))
 
   if (ping) {
     connection$status <- idf_ping(connection)

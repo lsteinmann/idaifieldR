@@ -51,9 +51,6 @@
 #' * Get a list of projects in the database with [idf_projects()]
 #'
 #'
-#'
-#'
-#'
 #' @examples
 #' \dontrun{
 #' conn <- connect_idaifield(
@@ -166,6 +163,8 @@ idf_check_for_project <- function(conn, project = NULL) {
 #'
 #' @param conn A connection object returned by [connect_idaifield()].
 #' @param project character. Name of the project-database that should be loaded.
+#' @param include Arguments: "all", "query", "changes" . Should the client
+#' use "*_all_docs*", "*_find*" or "*_changes*" as paths.
 #'
 #'
 #' * [crul on CRAN](https://cran.r-project.org/package=crul)
@@ -198,7 +197,7 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
     url <- paste0(conn$settings$base_url, "/", project)
   }
 
-  include <- match.arg(include, c("all", "query"), several.ok = FALSE)
+  include <- match.arg(include, c("all", "query", "changes"), several.ok = FALSE)
 
   if (is.na(conn$status) || !conn$status) {
     message(paste0("Status set to '", conn$status,
@@ -226,6 +225,8 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
     url <- paste0(url, "/_all_docs")
   } else if (include == "query") {
     url <- paste0(url, "/_find")
+  } else if (include == "changes") {
+    url <- paste0(url, "/_changes")
   }
 
   proj_conn <- crul::HttpClient$new(url = url,

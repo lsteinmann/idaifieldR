@@ -9,6 +9,11 @@ test_that("returns a matrix", {
   expect_true(is.matrix(fields))
 })
 
+test_that("attaches attribute for duplicate names", {
+  fields <- get_field_inputtypes(config, inputType = "checkboxes")
+  expect_contains(names(attributes(fields)), "duplicate_names")
+})
+
 test_that("returns correct inputtype", {
   fields <- get_field_inputtypes(config, inputType = "checkboxes")
   expect_true(fields[1, 3] == "checkboxes")

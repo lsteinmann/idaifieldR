@@ -1,9 +1,22 @@
-# idaifieldR 0.3.2 _2023_04-15_
+# idaifieldR 0.3.3 _wip_
+### New features
+* Add `idf_last_changed(connection, n = n)`: Returns a vector with the last n changed resources in the database. 
+* Add `idf_get_changes(connection, ids = c(...))`: Returns a data.frame in which each change to one of the resources listed in ids (can be either their 'identifier' or 'UUID') corresponds to one row separated by creation or modification.
+* `remove_config_names()` issues a message about duplicate field or category names if it is appropriate. Functions may override data when multiple columns with the same name would otherwise exist, as e.g. 'diameter' and 'projectName:diameter'. Attaches an attribute that lists the duplicate field/category names.
+
+### Minor changes
+* Notify of new / different version on GitHub on attaching the package (`check_idaifieldr_version()`).
+
+### Fixes
+* Fix problem in `reformat_geometry()` (MultiPolygons have to be unnested before processing). (Imported Polygons may be formatted improperly, unnest if necessary (`reformat_geometry()`). Geometry is still a *work in progress*.)
+* Fix a bug in `get_field_index()`, where it would return an empty data.frame if there was no configuration-resource.
+
+# idaifieldR 0.3.2 _2023-04-15_
 * add option to use or not use exact dates as min/max values for dating if present
 * add `idf_json_query()` which lets users construct their own queries to the CouchDB-API 
 * improve and export `find_layer()`
-* fix error in get_language_lookup()
-* fix bug in query function where it would not get values from fields with possibility of multiple entries
+* fix error in `get_language_lookup()`
+* fix bug in `idf_query()`-function where it would not get values from fields with possibility of multiple entries
 * remove config as attribute to save space
 * rename `select_by()` to `idf_select_by()`
 * rename `show_categories()` to `idf_show_categories()`
