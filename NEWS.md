@@ -1,13 +1,17 @@
-# idaifieldR 0.3.3 _2023_05-25_ (wip)
-* fix problem in `reformat_geometry()` (MultiPolygons have to be unnested before processing)
-* additionally, imported polygons may be formatted improperly, unnest if necessary (`reformat_geometry()`)
-* `remove_config_names()` can issue a message about duplicate fields if it is appropriate - this may prevent accidental creation of multiple columns with the same name, as e.g. 'diameter' and 'projectName:diameter' may both have existed in the data after redefining or updating a field in the project configuration. This may need a check and attempt to merge the data (or not merge it). #TODO this produces absolutely horribly long messages.
-* #TODO: better solution for handling geometry overall
+# idaifieldR 0.3.3 _wip_
+### New features
 * Add `idf_last_changed(connection, n = n)`: Returns a vector with the last n changed resources in the database. 
 * Add `idf_get_changes(connection, ids = c(...))`: Returns a data.frame in which each change to one of the resources listed in ids (can be either their 'identifier' or 'UUID') corresponds to one row separated by creation or modification.
+* `remove_config_names()` issues a message about duplicate field or category names if it is appropriate. Functions may override data when multiple columns with the same name would otherwise exist, as e.g. 'diameter' and 'projectName:diameter'. Attaches an attribute that lists the duplicate field/category names.
+
+### Minor changes
 * Notify of new / different version on GitHub on attaching the package (`check_idaifieldr_version()`).
 
-# idaifieldR 0.3.2 _2023_04-15_
+### Fixes
+* Fix problem in `reformat_geometry()` (MultiPolygons have to be unnested before processing). (Imported Polygons may be formatted improperly, unnest if necessary (`reformat_geometry()`). Geometry is still a *work in progress*.)
+* Fix a bug in `get_field_index()`, where it would return an empty data.frame if there was no configuration-resource.
+
+# idaifieldR 0.3.2 _2023-04-15_
 * add option to use or not use exact dates as min/max values for dating if present
 * add `idf_json_query()` which lets users construct their own queries to the CouchDB-API 
 * improve and export `find_layer()`
