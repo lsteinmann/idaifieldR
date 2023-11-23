@@ -14,7 +14,7 @@ It is used as a helper function for simplify_idaifield()."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,13 +64,21 @@ It is used as a helper function for <code><a href="simplify_idaifield.html">simp
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">remove_config_names</span><span class="op">(</span>conf_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"identifier"</span>, <span class="st">"configname:test"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">remove_config_names</span><span class="op">(</span></span>
+<span>  conf_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"identifier"</span>, <span class="st">"configname:test"</span>, <span class="st">"test"</span><span class="op">)</span>,</span>
+<span>  silent <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>conf_names</dt>
 <dd><p>A character vector.</p></dd>
+
+
+<dt>silent</dt>
+<dd><p>Should the message that duplicates were
+detected be suppressed? Default is FALSE.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -93,7 +101,7 @@ and <code><a href="get_uid_list.html">get_uid_list()</a></code></p></li>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">nameslist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"relation.liesWithin"</span>, <span class="st">"relation.liesWithinLayer"</span>,</span></span>
 <span class="r-in"><span><span class="st">"campaign.2022"</span>, <span class="st">"rtest:test"</span>, <span class="st">"pergamon:neuesFeld"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">remove_config_names</span><span class="op">(</span><span class="va">nameslist</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">remove_config_names</span><span class="op">(</span><span class="va">nameslist</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
