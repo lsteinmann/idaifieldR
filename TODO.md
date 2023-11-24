@@ -3,6 +3,7 @@
 ## In general
 * Better structure of tests with less specialized cases?
 * Update the couch-db action a bit? See problems with _changes etc., and different configurations and contents.
+* Remove the project(name) argument/option everywhere except in `connect_idaifield()` (because it doesn't really make that much sense.)
 
 ## for v0.3.4 ?
 * Handling geometry does not work very well and should be reconsidered. Maybe 
