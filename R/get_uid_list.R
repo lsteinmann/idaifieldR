@@ -192,8 +192,8 @@ get_uid_list <- function(idaifield_docs,
 #' index <- get_field_index(connection, verbose = TRUE)
 #' }
 get_field_index <- function(connection, verbose = FALSE,
-                      gather_trenches = FALSE,
-                      language = "en") {
+                            gather_trenches = FALSE,
+                            language = "en") {
 
 
   fields <- c("type", "category",
@@ -212,6 +212,7 @@ get_field_index <- function(connection, verbose = FALSE,
     stop("Something went wrong. Could not validate query.")
   }
 
+  # db query here
   client <- proj_idf_client(connection, include = "query")
   response <- response_to_list(client$post(body = query))
   response <- unnest_docs(response)
@@ -219,38 +220,44 @@ get_field_index <- function(connection, verbose = FALSE,
   fields <- gsub("relations.", "", fields)
   fields <- fields[!fields == "type"]
 
-  index <- lapply(response, function(x) {
+  index_df <- lapply(response, function(x) {
+    # switch remaining 'type' list names to 'category'
     type_ind <- names(x) == "type"
     if (any(type_ind)) {
       names(x)[type_ind] <- "category"
     }
-    x$category <- remove_config_names(x$category, silent = TRUE)
+    # unlist and append the relations list to top level list
     rel <- unlist(x$relations)
-    x$relations <- NULL
     x <- append(x, rel)
+    x$relations <- NULL
+    # add empty lists if necessary to that rbind will work
     if (length(fields) != length(names(x))) {
       to_add <- which(!fields %in% names(x))
       x[fields[to_add]] <- NA
     }
+    # reorder the list
     x <- x[fields]
-    return(x)
   })
-  index_tmp <- do.call(rbind.data.frame, index)
+  index_df <- do.call(rbind.data.frame, index_df)
 
-  index <- lapply(index, function(x) {
-    x$isRecordedIn <- replace_uid(x$isRecordedIn, index_tmp[, c("identifier", "id")])
-    x$liesWithin <- replace_uid(x$liesWithin, index_tmp[, c("identifier", "id")])
-    if (verbose) {
-      x$shortDescription <- gather_languages(x$shortDescription,
-                                             language = language)
-      x$liesWithinLayer <- find_layer(x$id,
-                                      id_type = "id",
-                                      index_tmp)
-      x$liesWithinLayer <- replace_uid(x$liesWithinLayer, index_tmp[, c("identifier", "id")])
-    }
-    return(x)
-  })
-  index_df <- do.call(rbind.data.frame, index)
+  # get rid of UUIDs
+  index_df$isRecordedIn <- replace_uid(index_df$isRecordedIn, index_df)
+  index_df$liesWithin <- replace_uid(index_df$liesWithin, index_df)
+
+  if (verbose) {
+    # not sure if this really works, but seems okay?
+    index_df$shortDescription <- gather_languages(index_df$shortDescription,
+                                                  language = language)
+    # technically, this should be its own option and it takes LONG
+    layer_temp <- lapply(index_df$id, function(x) {
+      find_layer(x,
+                 id_type = "id",
+                 index_df)}
+    )
+    # get rid of UUIDs and safe to df
+    layer_temp <- replace_uid(unlist(layer_temp), index_df)
+    index_df$liesWithinLayer <- layer_temp
+  }
 
   if (gather_trenches) {
     index_df$Place <- gather_trenches(index_df)
@@ -259,6 +266,7 @@ get_field_index <- function(connection, verbose = FALSE,
   uuidcol <- which(colnames(index_df) == "id")
   colnames(index_df)[uuidcol] <- "UID"
 
+  # remove the Configuration as it metadata
   config_ind <- which(index_df$identifier == "Configuration")
   if (length(config_ind) != 0) {
     index_df <- index_df[-config_ind, ]
@@ -267,16 +275,12 @@ get_field_index <- function(connection, verbose = FALSE,
   return(index_df)
 }
 
-#' Get a vector of places each element from the uidlist is located in
+#' Get a vector of *Place*-resources each element from the index is located in
 #'
 #' @param uidlist as returned by [get_uid_list()]
 #' and [get_field_index()]
 #'
-#' @returns a vector of Place-resources
-#'
-#'
-#'
-#'
+#' @returns a vector containing the Place each resource is located in
 #'
 #' @keywords internal
 #'

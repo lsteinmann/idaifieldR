@@ -1,4 +1,7 @@
-# idaifieldR 0.3.3 _2023-11-25_
+# idaifieldR 0.3.4 _2023-11-24_
+* Make `get_field_index()` more efficient by utilizing vectors instead of `lapply()`. 
+
+# idaifieldR 0.3.3 _2023-11-23_
 ### New features
 * Add `idf_last_changed(connection, n = n)`: Returns a vector with the last n changed resources in the database. 
 * Add `idf_get_changes(connection, ids = c(...))`: Returns a data.frame in which each change to one of the resources listed in ids (can be either their 'identifier' or 'UUID') corresponds to one row separated by creation or modification.
