@@ -240,6 +240,9 @@ get_field_index <- function(connection, verbose = FALSE,
   })
   index_df <- do.call(rbind.data.frame, index_df)
 
+  # get rid of confignames
+  index_df$category <- remove_config_names(index_df$category, silent = TRUE)
+
   # get rid of UUIDs
   index_df$isRecordedIn <- replace_uid(index_df$isRecordedIn, index_df)
   index_df$liesWithin <- replace_uid(index_df$liesWithin, index_df)
