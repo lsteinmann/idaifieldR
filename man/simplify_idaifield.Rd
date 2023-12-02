@@ -8,6 +8,7 @@ simplify_idaifield(
   idaifield_docs,
   keep_geometry = FALSE,
   replace_uids = TRUE,
+  find_layers = TRUE,
   uidlist = NULL,
   language = "all",
   spread_fields = TRUE,
@@ -25,6 +26,17 @@ information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_g
 \item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
 corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
 \code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
+
+\item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
+with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
+modified) in which a resource is contained  recursively. That means that
+even if it does not immediately lie within this layer, but is
+contained by one or several other resources in said layer, a new column
+("liesWithinLayer") will still show the layer.
+Example: A sample "A" in Find "001" from layer "Layer1" will
+usually have "001" as the value in "liesWithin". With find_layers, there will
+be another column called "liesWithinLayer" which contains "Layer1" for both
+sample "A" and Find "001".}
 
 \item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
 automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
@@ -90,7 +102,8 @@ simpler_idaifield <- simplify_idaifield(idaifield_docs)
 }
 \seealso{
 \itemize{
-\item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}}, \code{\link[=find_layer]{find_layer()}}
+\item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}}
+\item When find_layers = TRUE: \code{\link[=find_layer]{find_layer()}}, this only works when the function can get an index/uidlist!
 \item \code{\link[=fix_dating]{fix_dating()}} with the outcome depending on the \code{use_exact_dates}-argument.
 \item When selecting a language: \code{\link[=gather_languages]{gather_languages()}}
 \item Depending on the \code{spread_fields}-argument: \code{\link[=convert_to_onehot]{convert_to_onehot()}}

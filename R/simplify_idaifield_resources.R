@@ -18,6 +18,7 @@
 #' }
 simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
+                                     find_layers = TRUE,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
                                      fieldtypes = NULL,
@@ -43,10 +44,13 @@ simplify_single_resource <- function(resource,
   # and NULL as arguments. The resulting value is assigned to the
   # liesWithinLayer variable and appended to the resource as a new field
   # called relation.liesWithinLayer.
-  if (replace_uids) {
-    liesWithinLayer <- find_layer(id = resource$identifier,
+  if (find_layers) {
+    liesWithinLayer <- find_layer(id = resource$id,
                                   uidlist = uidlist,
-                                  id_type = "identifier")
+                                  id_type = "UID")
+    if (replace_uids) {
+      liesWithinLayer <- replace_uid(liesWithinLayer, uidlist)
+    }
     resource <- append(resource,
                        list(relation.liesWithinLayer = liesWithinLayer))
   }
@@ -217,6 +221,7 @@ simplify_single_resource <- function(resource,
 #' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
 #' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with
 #' [replace_uid()], and also: [find_layer()]
+#' @inheritParams get_field_index
 #' @param uidlist If NULL (default) the list of UUIDs and identifiers is
 #' automatically generated within this function using [get_uid_list()]. This only makes sense if
 #' the list handed to [simplify_idaifield()] had not been selected yet. If it
@@ -238,6 +243,7 @@ simplify_single_resource <- function(resource,
 #' a different format depending on the parameters used.
 #'
 #'
+#'
 #' @export
 #'
 #'
@@ -246,7 +252,8 @@ simplify_single_resource <- function(resource,
 #'
 #'
 #' @seealso
-#' * This function uses: [idf_sepdim()], [remove_config_names()], [find_layer()]
+#' * This function uses: [idf_sepdim()], [remove_config_names()]
+#' * When find_layers = TRUE: [find_layer()], this only works when the function can get an index/uidlist!
 #' * [fix_dating()] with the outcome depending on the `use_exact_dates`-argument.
 #' * When selecting a language: [gather_languages()]
 #' * Depending on the `spread_fields`-argument: [convert_to_onehot()]
@@ -267,6 +274,7 @@ simplify_single_resource <- function(resource,
 simplify_idaifield <- function(idaifield_docs,
                                keep_geometry = FALSE,
                                replace_uids = TRUE,
+                               find_layers = TRUE,
                                uidlist = NULL,
                                language = "all",
                                spread_fields = TRUE,
@@ -318,6 +326,7 @@ simplify_idaifield <- function(idaifield_docs,
     simplify_single_resource(
       x,
       replace_uids = replace_uids,
+      find_layers = find_layers,
       uidlist = uidlist,
       keep_geometry = keep_geometry,
       fieldtypes = fieldtypes,

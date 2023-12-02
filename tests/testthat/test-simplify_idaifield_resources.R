@@ -7,7 +7,9 @@ test_that("renames type to category", {
   resource <- test_resources[[5]]
   resource$category <- "TEST"
   resource$category <- NULL
-  test <- simplify_single_resource(resource = resource, replace_uids = FALSE)
+  test <- simplify_single_resource(resource = resource,
+                                   find_layers = FALSE,
+                                   replace_uids = FALSE)
   expect_false(any(names(test) == "type"))
   expect_identical(test$category, resource$type)
 })
@@ -75,15 +77,24 @@ for (item in items) {
                  "valid")
   })
 
-  test_that("fail without uidlist when replaceuid = T", {
+  test_that("fail without uidlist when replace_uids = TRUE", {
     expect_error(simplify_single_resource(test_resources[[item]],
                                           replace_uids = TRUE,
+                                          find_layers = FALSE,
                                           uidlist = NULL))
   })
 
-  test_that("pass without uidlist when replaceuid = F", {
+  test_that("warning without uidlist when find_layers = TRUE", {
+    expect_warning(simplify_single_resource(test_resources[[item]],
+                                          replace_uids = FALSE,
+                                          find_layers = TRUE,
+                                          uidlist = NULL))
+  })
+
+  test_that("pass without uidlist when replace_uids = FALSE", {
     test <- simplify_single_resource(test_resources[[item]],
                                      replace_uids = FALSE,
+                                     find_layer = FALSE,
                                      uidlist = NULL)
     expect_identical(class(test), "list")
   })

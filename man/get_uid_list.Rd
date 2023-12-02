@@ -8,12 +8,11 @@ get_uid_list(
   idaifield_docs,
   verbose = FALSE,
   gather_trenches = FALSE,
+  find_layers = FALSE,
   language = "all"
 )
 }
 \arguments{
-\item{idaifield_docs}{An object as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}}
-
 \item{verbose}{TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 including identifier and shortDescription which is more convenient to read,
 and FALSE returns only UUID, category (former: type) and basic relations,
@@ -21,8 +20,19 @@ which is sufficient for internal use.}
 
 \item{gather_trenches}{defaults to FALSE. If TRUE, adds another column that
 records the Place each corresponding Trench and its sub-resources lie within.
-(Useful for grouping the finds of several trenches, but will only work if
-the project database is organized accordingly.)}
+(Useful for grouping the finds of several trenches, but will only work if the
+project database is organized accordingly.)}
+
+\item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
+with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
+modified) in which a resource is contained  recursively. That means that
+even if it does not immediately lie within this layer, but is
+contained by one or several other resources in said layer, a new column
+("liesWithinLayer") will still show the layer.
+Example: A sample "A" in Find "001" from layer "Layer1" will
+usually have "001" as the value in "liesWithin". With find_layers, there will
+be another column called "liesWithinLayer" which contains "Layer1" for both
+sample "A" and Find "001".}
 
 \item{language}{the short name (e.g. "en", "de", "fr") of the language that
 is preferred for the multi-language input "shortDescription",
@@ -68,5 +78,7 @@ uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
 \seealso{
 \itemize{
 \item Superseded by \code{\link[=get_field_index]{get_field_index()}}, which queries the database directly.
+\item \code{\link[=find_layer]{find_layer()}} is used when \code{find_layers = TRUE} to search for the
+containing layer-resource recursively.
 }
 }

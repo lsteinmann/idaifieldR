@@ -20,19 +20,7 @@
 #' instead their background names are used. You can see these in the project
 #' configuration settings.
 #'
-#' @param idaifield_docs An object as returned by [get_idaifield_docs()]
-#' @param verbose TRUE or FALSE. Defaults to FALSE. TRUE returns a list
-#' including identifier and shortDescription which is more convenient to read,
-#' and FALSE returns only UUID, category (former: type) and basic relations,
-#' which is sufficient for internal use.
-#' @param gather_trenches defaults to FALSE. If TRUE, adds another column that
-#' records the Place each corresponding Trench and its sub-resources lie within.
-#' (Useful for grouping the finds of several trenches, but will only work if
-#' the project database is organized accordingly.)
-#' @param language the short name (e.g. "en", "de", "fr") of the language that
-#' is preferred for the multi-language input "shortDescription",
-#' defaults to all (`language = "all"`). Will select other available languages
-#' in alphabetical order if the selected language is not available.
+#' @inheritParams get_field_index
 #'
 #' @returns a data.frame with identifiers and corresponding UUIDs along with
 #' the category (former: type), basic relations and depending on settings
@@ -40,6 +28,8 @@
 #'
 #' @seealso
 #' * Superseded by [get_field_index()], which queries the database directly.
+#' * [find_layer()] is used when `find_layers = TRUE` to search for the
+#' containing layer-resource recursively.
 #'
 #' @export
 #'
@@ -55,9 +45,14 @@
 get_uid_list <- function(idaifield_docs,
                          verbose = FALSE,
                          gather_trenches = FALSE,
+                         find_layers = FALSE,
                          language = "all") {
   #.Deprecated("get_field_index()", package = "idaifieldR", #msg,
   #            old = "get_uid_list()")
+
+  stopifnot(is.logical(verbose))
+  stopifnot(is.logical(gather_trenches))
+  stopifnot(is.logical(find_layers))
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
 
@@ -117,11 +112,14 @@ get_uid_list <- function(idaifield_docs,
     } else {
       uidlist$shortDescription <- gather_languages(desc, language = language)
     }
+  }
+
+  if (find_layers) {
     lwl <- lapply(uidlist$UID, function(x) {
       layer <- find_layer(x, id_type = "UID", uidlist)
       layer <- na_if_empty(layer)
       return(layer)
-      })
+    })
     uidlist$liesWithinLayer <- unlist(lwl)
   }
 
@@ -171,6 +169,16 @@ get_uid_list <- function(idaifield_docs,
 #' is preferred for the multi-language input "shortDescription",
 #' defaults to english ("en") and will select other available languages in
 #' alphabetical order if the selected language is not available.
+#' @param find_layers TRUE/FALSE. Default is FALSE. If TRUE, adds another column
+#' with the 'Layer' (see `getOption("idaifield_categories")$layers`, can be
+#' modified) in which a resource is contained  recursively. That means that
+#' even if it does not immediately lie within this layer, but is
+#' contained by one or several other resources in said layer, a new column
+#' ("liesWithinLayer") will still show the layer.
+#' Example: A sample "A" in Find "001" from layer "Layer1" will
+#' usually have "001" as the value in "liesWithin". With find_layers, there will
+#' be another column called "liesWithinLayer" which contains "Layer1" for both
+#' sample "A" and Find "001".
 #'
 #' @returns a data.frame with identifiers and corresponding UUIDs along with
 #' the category (former: type), basic relations and depending on settings place
@@ -180,7 +188,8 @@ get_uid_list <- function(idaifield_docs,
 #' @seealso
 #' * [get_uid_list()] returns the same data.frame from an `idaifield_docs` or
 #' `idaifield_resources`-list without querying the database.
-#'
+#' * [find_layer()] is used when `find_layers = TRUE` to search for the
+#' containing layer-resource recursively.
 #'
 #'
 #'
@@ -193,7 +202,13 @@ get_uid_list <- function(idaifield_docs,
 #' }
 get_field_index <- function(connection, verbose = FALSE,
                             gather_trenches = FALSE,
-                            language = "en") {
+                            find_layers = FALSE,
+
+                            language = "all") {
+
+  stopifnot(is.logical(verbose))
+  stopifnot(is.logical(gather_trenches))
+  stopifnot(is.logical(find_layers))
 
 
   fields <- c("type", "category",
@@ -251,7 +266,8 @@ get_field_index <- function(connection, verbose = FALSE,
     # not sure if this really works, but seems okay?
     index_df$shortDescription <- gather_languages(index_df$shortDescription,
                                                   language = language)
-    # technically, this should be its own option and it takes LONG
+  }
+  if (find_layers) {
     layer_temp <- lapply(index_df$id, function(x) {
       find_layer(x,
                  id_type = "id",
