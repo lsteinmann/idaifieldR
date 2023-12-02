@@ -23,5 +23,6 @@
 }
 
 .onAttach <- function(lib, pkg) {
-  check_idaifieldr_version(getNamespaceVersion('idaifieldR'))
+  checked_idf <- check_idaifieldr_version(getNamespaceVersion('idaifieldR'))
+  rm(checked_idf)
 }
