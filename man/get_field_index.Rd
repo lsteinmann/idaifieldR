@@ -8,8 +8,8 @@ get_field_index(
   connection,
   verbose = FALSE,
   gather_trenches = FALSE,
-  language = "en"
   find_layers = FALSE,
+  language = "all"
 )
 }
 \arguments{
@@ -25,10 +25,6 @@ records the Place each corresponding Trench and its sub-resources lie within.
 (Useful for grouping the finds of several trenches, but will only work if the
 project database is organized accordingly.)}
 
-\item{language}{the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the multi-language input "shortDescription",
-defaults to english ("en") and will select other available languages in
-alphabetical order if the selected language is not available.}
 \item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
 with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
 modified) in which a resource is contained  recursively. That means that
@@ -40,6 +36,11 @@ usually have "001" as the value in "liesWithin". With find_layers, there will
 be another column called "liesWithinLayer" which contains "Layer1" for both
 sample "A" and Find "001".}
 
+\item{language}{The short name (e.g. "en", "de", "fr") of the language
+that is preferred for the fields. Special value "all" (the default) can be
+used to return a concatenated string of all available languages.
+\code{\link[=gather_languages]{gather_languages()}} will select other available languages
+in alphabetical order if the selected language is not available.}
 }
 \value{
 a data.frame with identifiers and corresponding UUIDs along with

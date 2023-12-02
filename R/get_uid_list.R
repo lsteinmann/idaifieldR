@@ -165,10 +165,6 @@ get_uid_list <- function(idaifield_docs,
 #' records the Place each corresponding Trench and its sub-resources lie within.
 #' (Useful for grouping the finds of several trenches, but will only work if the
 #' project database is organized accordingly.)
-#' @param language the short name (e.g. "en", "de", "fr") of the language that
-#' is preferred for the multi-language input "shortDescription",
-#' defaults to english ("en") and will select other available languages in
-#' alphabetical order if the selected language is not available.
 #' @param find_layers TRUE/FALSE. Default is FALSE. If TRUE, adds another column
 #' with the 'Layer' (see `getOption("idaifield_categories")$layers`, can be
 #' modified) in which a resource is contained  recursively. That means that
@@ -179,6 +175,7 @@ get_uid_list <- function(idaifield_docs,
 #' usually have "001" as the value in "liesWithin". With find_layers, there will
 #' be another column called "liesWithinLayer" which contains "Layer1" for both
 #' sample "A" and Find "001".
+#' @inheritParams gather_languages
 #'
 #' @returns a data.frame with identifiers and corresponding UUIDs along with
 #' the category (former: type), basic relations and depending on settings place

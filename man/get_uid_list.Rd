@@ -34,9 +34,10 @@ usually have "001" as the value in "liesWithin". With find_layers, there will
 be another column called "liesWithinLayer" which contains "Layer1" for both
 sample "A" and Find "001".}
 
-\item{language}{the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the multi-language input "shortDescription",
-defaults to all (\code{language = "all"}). Will select other available languages
+\item{language}{The short name (e.g. "en", "de", "fr") of the language
+that is preferred for the fields. Special value "all" (the default) can be
+used to return a concatenated string of all available languages.
+\code{\link[=gather_languages]{gather_languages()}} will select other available languages
 in alphabetical order if the selected language is not available.}
 }
 \value{

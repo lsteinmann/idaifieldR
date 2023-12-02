@@ -191,9 +191,10 @@ remove_config_names <- function(conf_names = c("identifier", "configname:test", 
 #' @param input_list A list with character values containing (or not)
 #' sublists for each language.
 #' @param language The short name (e.g. "en", "de", "fr") of the language
-#' that is preferred for the fields, defaults to English ("en"). Special
-#' value "all" can be used to return a concatenated string of all
-#' available languages.
+#' that is preferred for the fields. Special value "all" (the default) can be
+#' used to return a concatenated string of all available languages.
+#' [gather_languages()] will select other available languages
+#' in alphabetical order if the selected language is not available.
 #' @param silent TRUE/FALSE: Should gather_languages() issue messages
 #' and warnings?
 #'
@@ -210,7 +211,7 @@ remove_config_names <- function(conf_names = c("identifier", "configname:test", 
 #'                    list("en" = "Another english text", "de" = "Weiterer dt. Text"))
 #' gather_languages(input_list, language = "de")
 #' }
-gather_languages <- function(input_list, language = "en", silent = FALSE) {
+gather_languages <- function(input_list, language = "all", silent = FALSE) {
   # if this has a sublist / more than one entry, it means that there is
   # more than one language
   has_list <- suppressMessages(check_for_sublist(input_list))

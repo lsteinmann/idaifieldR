@@ -4,16 +4,17 @@
 \alias{gather_languages}
 \title{Gather Fields with Multiple Language Values}
 \usage{
-gather_languages(input_list, language = "en", silent = FALSE)
+gather_languages(input_list, language = "all", silent = FALSE)
 }
 \arguments{
 \item{input_list}{A list with character values containing (or not)
 sublists for each language.}
 
 \item{language}{The short name (e.g. "en", "de", "fr") of the language
-that is preferred for the fields, defaults to English ("en"). Special
-value "all" can be used to return a concatenated string of all
-available languages.}
+that is preferred for the fields. Special value "all" (the default) can be
+used to return a concatenated string of all available languages.
+\code{\link[=gather_languages]{gather_languages()}} will select other available languages
+in alphabetical order if the selected language is not available.}
 
 \item{silent}{TRUE/FALSE: Should gather_languages() issue messages
 and warnings?}

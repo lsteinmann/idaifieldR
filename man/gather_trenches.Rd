@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_uid_list.R
 \name{gather_trenches}
 \alias{gather_trenches}
-\title{Get a vector of places each element from the uidlist is located in}
+\title{Get a vector of \emph{Place}-resources each element from the index is located in}
 \usage{
 gather_trenches(uidlist)
 }
@@ -11,10 +11,10 @@ gather_trenches(uidlist)
 and \code{\link[=get_field_index]{get_field_index()}}}
 }
 \value{
-a vector of Place-resources
+a vector containing the Place each resource is located in
 }
 \description{
-Get a vector of places each element from the uidlist is located in
+Get a vector of \emph{Place}-resources each element from the index is located in
 }
 \examples{
 \dontrun{

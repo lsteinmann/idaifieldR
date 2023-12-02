@@ -43,9 +43,11 @@ by \code{\link[=get_field_index]{get_field_index()}}.}
 \item{keep_geometry}{TRUE/FALSE: Should the geographical
 information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
 
-\item{language}{the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the multi-language input fields, defaults to keeping all
-languages as sub-lists ("all"). Uses: \code{\link[=gather_languages]{gather_languages()}}}
+\item{language}{The short name (e.g. "en", "de", "fr") of the language
+that is preferred for the fields. Special value "all" (the default) can be
+used to return a concatenated string of all available languages.
+\code{\link[=gather_languages]{gather_languages()}} will select other available languages
+in alphabetical order if the selected language is not available.}
 
 \item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value

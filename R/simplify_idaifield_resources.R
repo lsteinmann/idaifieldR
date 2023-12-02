@@ -229,15 +229,13 @@ simplify_single_resource <- function(resource,
 #' by [get_field_index()].
 #' @param keep_geometry TRUE/FALSE: Should the geographical
 #' information be kept or removed? Defaults is FALSE. Uses: [reformat_geometry()]
-#' @param language the short name (e.g. "en", "de", "fr") of the language that
-#' is preferred for the multi-language input fields, defaults to keeping all
-#' languages as sub-lists ("all"). Uses: [gather_languages()]
 #' @param spread_fields TRUE/FALSE: Should checkbox-fields be
 #' spread across multiple lists to facilitate boolean-columns for each value
 #' of a checkbox-field? Default is TRUE. Uses: [get_configuration()],
 #' [get_field_inputtypes()], [convert_to_onehot()]
 #' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
 #' dates be used in case there are any? Default is FALSE. Changes outcome of [fix_dating()].
+#' @inheritParams gather_languages
 #'
 #' @returns An `idaifield_simple`-list containing the same resources in
 #' a different format depending on the parameters used.
