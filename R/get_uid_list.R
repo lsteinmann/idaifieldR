@@ -20,6 +20,7 @@
 #' instead their background names are used. You can see these in the project
 #' configuration settings.
 #'
+#' @param idaifield_docs An object as returned by [get_idaifield_docs()]
 #' @inheritParams get_field_index
 #'
 #' @returns a data.frame with identifiers and corresponding UUIDs along with

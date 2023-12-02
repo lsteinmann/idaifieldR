@@ -13,6 +13,8 @@ get_uid_list(
 )
 }
 \arguments{
+\item{idaifield_docs}{An object as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}}
+
 \item{verbose}{TRUE or FALSE. Defaults to FALSE. TRUE returns a list
 including identifier and shortDescription which is more convenient to read,
 and FALSE returns only UUID, category (former: type) and basic relations,
