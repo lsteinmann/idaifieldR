@@ -122,6 +122,7 @@ get_uid_list <- function(idaifield_docs,
       return(layer)
     })
     uidlist$liesWithinLayer <- unlist(lwl)
+    uidlist$liesWithinLayer <- replace_uid(uidlist$liesWithinLayer, uidlist)
   }
 
   uidlist$isRecordedIn <- replace_uid(uidlist$isRecordedIn, uidlist)
@@ -266,9 +267,9 @@ get_field_index <- function(connection, verbose = FALSE,
                                                   language = language)
   }
   if (find_layers) {
-    layer_temp <- lapply(index_df$id, function(x) {
+    layer_temp <- lapply(index_df$identifier, function(x) {
       find_layer(x,
-                 id_type = "id",
+                 id_type = "identifier",
                  index_df)}
     )
     # get rid of UUIDs and safe to df
