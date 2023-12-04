@@ -325,7 +325,7 @@ simplify_idaifield <- function(idaifield_docs,
   }
 
   if (find_layers == TRUE) {
-    liesWithinLayer <- find_layer(names(idaifield_docs), uidlist)
+    liesWithinLayer <- find_layer(names(idaifield_docs), uidlist, silent = silent)
   }
 
   idaifield_simple <- lapply(idaifield_docs, function(x) {
