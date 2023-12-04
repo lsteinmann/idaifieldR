@@ -5,6 +5,7 @@
 * Update the couch-db action a bit? See problems with _changes etc., and different configurations and contents.
 * Remove the project(name) argument/option everywhere except in `connect_idaifield()` (because it doesn't really make that much sense.)
 * Fix everything about `find_layer()`
+* Redo simplify...
 
 ## for v0.3.4 ?
 * Handling geometry does not work very well and should be reconsidered. Maybe 

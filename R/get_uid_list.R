@@ -116,13 +116,8 @@ get_uid_list <- function(idaifield_docs,
   }
 
   if (find_layers) {
-    lwl <- lapply(uidlist$UID, function(x) {
-      layer <- find_layer(x, id_type = "UID", uidlist)
-      layer <- na_if_empty(layer)
-      return(layer)
-    })
-    uidlist$liesWithinLayer <- unlist(lwl)
-    uidlist$liesWithinLayer <- replace_uid(uidlist$liesWithinLayer, uidlist)
+    lwl <- find_layer(uidlist$UID, uidlist)
+    uidlist$liesWithinLayer <- replace_uid(lwl, uidlist)
   }
 
   uidlist$isRecordedIn <- replace_uid(uidlist$isRecordedIn, uidlist)
@@ -199,10 +194,10 @@ get_uid_list <- function(idaifield_docs,
 #'
 #' index <- get_field_index(connection, verbose = TRUE)
 #' }
-get_field_index <- function(connection, verbose = FALSE,
+get_field_index <- function(connection,
+                            verbose = FALSE,
                             gather_trenches = FALSE,
                             find_layers = FALSE,
-
                             language = "all") {
 
   stopifnot(is.logical(verbose))
@@ -267,14 +262,7 @@ get_field_index <- function(connection, verbose = FALSE,
                                                   language = language)
   }
   if (find_layers) {
-    layer_temp <- lapply(index_df$identifier, function(x) {
-      find_layer(x,
-                 id_type = "identifier",
-                 index_df)}
-    )
-    # get rid of UUIDs and safe to df
-    layer_temp <- replace_uid(unlist(layer_temp), index_df)
-    index_df$liesWithinLayer <- layer_temp
+    index_df$liesWithinLayer <- find_layer(index_df$identifier, index_df)
   }
 
   if (gather_trenches) {

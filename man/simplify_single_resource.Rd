@@ -13,7 +13,8 @@ simplify_single_resource(
   fieldtypes = NULL,
   language = "all",
   spread_fields = TRUE,
-  use_exact_dates = FALSE
+  use_exact_dates = FALSE,
+  silent = FALSE
 )
 }
 \arguments{
@@ -56,6 +57,8 @@ of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_
 
 \item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
 dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
+
+\item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
 }
 \value{
 A single resource (element) for an \code{idaifield_resources}-list.

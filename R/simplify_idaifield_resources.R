@@ -24,7 +24,8 @@ simplify_single_resource <- function(resource,
                                      fieldtypes = NULL,
                                      language = "all",
                                      spread_fields = TRUE,
-                                     use_exact_dates = FALSE) {
+                                     use_exact_dates = FALSE,
+                                     silent = FALSE) {
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -45,9 +46,9 @@ simplify_single_resource <- function(resource,
   # liesWithinLayer variable and appended to the resource as a new field
   # called relation.liesWithinLayer.
   if (find_layers) {
-    liesWithinLayer <- find_layer(id = resource$id,
+    liesWithinLayer <- find_layer(ids = resource$id,
                                   uidlist = uidlist,
-                                  id_type = "UID")
+                                  silent = TRUE)
     if (replace_uids) {
       liesWithinLayer <- replace_uid(liesWithinLayer, uidlist)
     }
@@ -119,12 +120,12 @@ simplify_single_resource <- function(resource,
   list_names <- names(resource)
 
   if (any(grepl(":", list_names))) {
-    list_names <- remove_config_names(list_names, silent = FALSE)
+    list_names <- remove_config_names(list_names, silent = silent)
     names(resource) <- list_names
   }
 
   if (any(grepl(":", resource$category))) {
-    resource$category <- remove_config_names(resource$category, silent = TRUE)
+    resource$category <- remove_config_names(resource$category, silent = silent)
   }
 
 
@@ -233,6 +234,7 @@ simplify_single_resource <- function(resource,
 #' spread across multiple lists to facilitate boolean-columns for each value
 #' of a checkbox-field? Default is TRUE. Uses: [get_configuration()],
 #' [get_field_inputtypes()], [convert_to_onehot()]
+#' @param silent TRUE/FALSE, default: FALSE. Should messages be suppressed?
 #' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
 #' dates be used in case there are any? Default is FALSE. Changes outcome of [fix_dating()].
 #' @inheritParams gather_languages
@@ -263,9 +265,10 @@ simplify_single_resource <- function(resource,
 #' @examples
 #' \dontrun{
 #' connection <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = connection,
-#' projectname = "rtest")
+#'     project = "rtest",
+#'     user = "R",
+#'     pwd = "hallo")
+#' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
 #' simpler_idaifield <- simplify_idaifield(idaifield_docs)
 #' }
@@ -276,7 +279,8 @@ simplify_idaifield <- function(idaifield_docs,
                                uidlist = NULL,
                                language = "all",
                                spread_fields = TRUE,
-                               use_exact_dates = FALSE) {
+                               use_exact_dates = FALSE,
+                               silent = FALSE) {
 
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_simple"] == TRUE) {
@@ -320,18 +324,31 @@ simplify_idaifield <- function(idaifield_docs,
     attributes(fieldtypes)$duplicate_names <- NA
   }
 
-  idaifield_simple <- lapply(idaifield_docs, function(x)
-    simplify_single_resource(
+  if (find_layers == TRUE) {
+    liesWithinLayer <- find_layer(names(idaifield_docs), uidlist)
+  }
+
+  idaifield_simple <- lapply(idaifield_docs, function(x) {
+    new_res <- simplify_single_resource(
       x,
       replace_uids = replace_uids,
-      find_layers = find_layers,
+      find_layers = FALSE,
       uidlist = uidlist,
       keep_geometry = keep_geometry,
       fieldtypes = fieldtypes,
       language = language,
       spread_fields = spread_fields,
-      use_exact_dates = use_exact_dates
+      use_exact_dates = use_exact_dates,
+      silent = silent
     )
+    if (find_layers == TRUE) {
+      lwl <- which(names(liesWithinLayer) == x$identifier)
+      lwl <- liesWithinLayer[lwl]
+      names(lwl) <- "relation.liesWithinLayer"
+      new_res <- append(new_res, lwl)
+    }
+    return(new_res)
+  }
   )
 
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
