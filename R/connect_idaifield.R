@@ -279,7 +279,7 @@ idf_ping <- function(conn) {
     ping <- try(conn$get()$parse("UTF-8"), silent = TRUE)
     if(inherits(ping, "try-error")) {
       # throw error when curl "Could not resolve host"
-      if (grepl("refused", ping[1])) {
+      if (grepl("refused", ping[1]) | grepl("Couldn't connect", ping[1])) {
         warning("Either Field Desktop is not running, or the serverip in `connect_idaifield()` is incorrect.")
       } else {
         warning(paste0("Unexpected Error in `idf_ping()`:\n", ping[1]))
