@@ -299,7 +299,7 @@ idf_ping <- function(conn) {
     }
   } else {
     # return FALSE if passed object was not a connection
-    warning("Did nothing. Supply an 'idf_connection_settings'-object as returned by `connect_idaifield()` or a crul 'HttpClient'.)")
+    warning("Supply an 'idf_connection_settings'-object as returned by `connect_idaifield()` or a crul 'HttpClient'.)")
     return(FALSE)
   }
 }

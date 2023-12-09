@@ -2,7 +2,7 @@ no_conn <- connect_idaifield(serverip = "123.456.789.999",
                              pwd = "hallo", ping = FALSE)
 
 test_that("gives warning for invalid connection object", {
-  expect_warning(test <- idf_ping(NA), "Did nothing")
+  expect_warning(test <- idf_ping(NA), "connect_idaifield")
   expect_false(test)
 })
 
