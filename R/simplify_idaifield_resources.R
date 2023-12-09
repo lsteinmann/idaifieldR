@@ -344,8 +344,10 @@ simplify_idaifield <- function(idaifield_docs,
     if (find_layers == TRUE) {
       lwl <- which(names(liesWithinLayer) == x$identifier)
       lwl <- liesWithinLayer[lwl]
-      names(lwl) <- "relation.liesWithinLayer"
-      new_res <- append(new_res, lwl)
+      if (length(lwl) > 0) {
+        names(lwl) <- "relation.liesWithinLayer"
+        new_res <- append(new_res, lwl)
+      }
     }
     return(new_res)
   }
@@ -359,3 +361,4 @@ simplify_idaifield <- function(idaifield_docs,
 
   return(idaifield_simple)
 }
+
