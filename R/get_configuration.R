@@ -64,6 +64,11 @@ get_configuration <- function(connection, projectname = NULL) {
 #' by [get_configuration()]
 #' @param inputType If specified, matrix is filtered to return only the
 #' specified type.
+#' @param remove_config_names TRUE/FALSE: Should the name of the project be
+#' removed from field names of the configuration? (Default is TRUE.)
+#' (Should e.g.: *test:amount* be renamed to *amount*,
+#' see [remove_config_names()].)
+#' @param silent TRUE/FALSE, default: FALSE. Should messages be suppressed?
 #'
 #' @returns A matrix of fields (with the given *inputType*).
 #'
@@ -85,7 +90,9 @@ get_configuration <- function(connection, projectname = NULL) {
 #' config <- get_configuration(connection = conn)
 #' checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
 #' }
-get_field_inputtypes <- function(config, inputType = "all") {
+get_field_inputtypes <- function(config, inputType = "all",
+                                 remove_config_names = TRUE,
+                                 silent = FALSE) {
   fields <- lapply(config$forms, FUN = function(x) (unlist(x$fields)))
   fields <- unlist(fields)
   if (is.null(fields)) {
@@ -101,12 +108,16 @@ get_field_inputtypes <- function(config, inputType = "all") {
   colnames(fields_mat) <- c("category", "field", "inputType")
   fields_mat[, 1] <- gsub("\\..*", "", names(fields))
   fields_mat[, 2] <- gsub(".*\\.", "", names(fields))
-  tmp <- remove_config_names(fields_mat[, 1], silent = FALSE)
-  attrib_dupl <- attributes(tmp)$duplicate_names
-  fields_mat[, 1] <- tmp
-  tmp <- remove_config_names(fields_mat[, 2], silent = FALSE)
-  attrib_dupl <- list(categories = attrib_dupl, fields  = attributes(tmp)$duplicate_names)
-  fields_mat[, 2] <- tmp
+  if (remove_config_names == TRUE) {
+    tmp <- remove_config_names(fields_mat[, 1], silent = silent)
+    attrib_dupl <- attributes(tmp)$duplicate_names
+    fields_mat[, 1] <- tmp
+    tmp <- remove_config_names(fields_mat[, 2], silent = silent)
+    attrib_dupl <- list(categories = attrib_dupl, fields  = attributes(tmp)$duplicate_names)
+    fields_mat[, 2] <- tmp
+  } else {
+    attrib_dupl <- NA
+  }
   fields_mat[, 3] <- unname(fields)
   attributes(fields_mat)$duplicate_names <- attrib_dupl
   return(fields_mat)

@@ -16,7 +16,9 @@ are contained. Can be obtained with \code{\link[=get_configuration]{get_configur
 defaults to "en"}
 
 \item{remove_config_names}{TRUE/FALSE: Should the name of the project be
-removed from field names of the configuration? (Default is TRUE.)}
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
 }
 \value{
 A data.frame that can serve as a lookup table, with the background

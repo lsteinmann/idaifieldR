@@ -8,6 +8,7 @@ get_field_index(
   connection,
   verbose = FALSE,
   gather_trenches = FALSE,
+  remove_config_names = TRUE,
   find_layers = FALSE,
   language = "all"
 )
@@ -24,6 +25,11 @@ which is sufficient for internal use.}
 records the Place each corresponding Trench and its sub-resources lie within.
 (Useful for grouping the finds of several trenches, but will only work if the
 project database is organized accordingly.)}
+
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
 
 \item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
 with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
