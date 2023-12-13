@@ -11,9 +11,11 @@ simplify_single_resource(
   uidlist = NULL,
   keep_geometry = TRUE,
   fieldtypes = NULL,
+  remove_config_names = TRUE,
   language = "all",
   spread_fields = TRUE,
-  use_exact_dates = FALSE
+  use_exact_dates = FALSE,
+  silent = FALSE
 )
 }
 \arguments{
@@ -43,6 +45,11 @@ by \code{\link[=get_field_index]{get_field_index()}}.}
 \item{keep_geometry}{TRUE/FALSE: Should the geographical
 information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
 
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
+
 \item{language}{The short name (e.g. "en", "de", "fr") of the language
 that is preferred for the fields. Special value "all" (the default) can be
 used to return a concatenated string of all available languages.
@@ -56,6 +63,9 @@ of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_
 
 \item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
 dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
+
+\item{silent}{TRUE/FALSE: Should gather_languages() issue messages
+and warnings?}
 }
 \value{
 A single resource (element) for an \code{idaifield_resources}-list.

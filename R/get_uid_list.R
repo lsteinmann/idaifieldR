@@ -46,6 +46,7 @@
 get_uid_list <- function(idaifield_docs,
                          verbose = FALSE,
                          gather_trenches = FALSE,
+                         remove_config_names = TRUE,
                          find_layers = FALSE,
                          language = "all") {
   #.Deprecated("get_field_index()", package = "idaifieldR", #msg,
@@ -53,6 +54,7 @@ get_uid_list <- function(idaifield_docs,
 
   stopifnot(is.logical(verbose))
   stopifnot(is.logical(gather_trenches))
+  stopifnot(is.logical(remove_config_names))
   stopifnot(is.logical(find_layers))
 
   idaifield_docs <- check_and_unnest(idaifield_docs)
@@ -81,7 +83,9 @@ get_uid_list <- function(idaifield_docs,
     uidlist$category <- category
   }
 
-  uidlist$category <- remove_config_names(uidlist$category, silent = TRUE)
+  if (remove_config_names) {
+    uidlist$category <- remove_config_names(uidlist$category, silent = TRUE)
+  }
 
   uidlist$identifier <- unlist(lapply(idaifield_docs,
                                       FUN = function(x) na_if_empty(x$identifier)))
@@ -178,6 +182,7 @@ get_uid_list <- function(idaifield_docs,
 #' be another column called "liesWithinLayer" which contains "Layer1" for both
 #' sample "A" and Find "001".
 #' @inheritParams gather_languages
+#' @inheritParams get_field_inputtypes
 #'
 #' @returns a data.frame with identifiers and corresponding UUIDs along with
 #' the category (former: type), basic relations and depending on settings place
@@ -201,12 +206,14 @@ get_uid_list <- function(idaifield_docs,
 #' }
 get_field_index <- function(connection, verbose = FALSE,
                             gather_trenches = FALSE,
+                            remove_config_names = TRUE,
                             find_layers = FALSE,
 
                             language = "all") {
 
   stopifnot(is.logical(verbose))
   stopifnot(is.logical(gather_trenches))
+  stopifnot(is.logical(remove_config_names))
   stopifnot(is.logical(find_layers))
 
 

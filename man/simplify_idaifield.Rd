@@ -11,8 +11,10 @@ simplify_idaifield(
   find_layers = TRUE,
   uidlist = NULL,
   language = "all",
+  remove_config_names = TRUE,
   spread_fields = TRUE,
-  use_exact_dates = FALSE
+  use_exact_dates = FALSE,
+  silent = FALSE
 )
 }
 \arguments{
@@ -50,6 +52,11 @@ used to return a concatenated string of all available languages.
 \code{\link[=gather_languages]{gather_languages()}} will select other available languages
 in alphabetical order if the selected language is not available.}
 
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
+
 \item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value
 of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_configuration()}},
@@ -57,6 +64,9 @@ of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_
 
 \item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
 dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
+
+\item{silent}{TRUE/FALSE: Should gather_languages() issue messages
+and warnings?}
 }
 \value{
 An \code{idaifield_simple}-list containing the same resources in

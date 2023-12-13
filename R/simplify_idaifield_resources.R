@@ -22,9 +22,21 @@ simplify_single_resource <- function(resource,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
                                      fieldtypes = NULL,
+                                     remove_config_names = TRUE,
                                      language = "all",
                                      spread_fields = TRUE,
-                                     use_exact_dates = FALSE) {
+                                     use_exact_dates = FALSE,
+                                     silent = FALSE) {
+
+  stopifnot(is.logical(keep_geometry))
+  stopifnot(is.logical(replace_uids))
+  stopifnot(is.logical(find_layers))
+  stopifnot(is.logical(remove_config_names))
+  stopifnot(is.logical(spread_fields))
+  stopifnot(is.logical(use_exact_dates))
+  stopifnot(is.logical(silent))
+
+
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -118,13 +130,13 @@ simplify_single_resource <- function(resource,
   # table / data.frame.)
   list_names <- names(resource)
 
-  if (any(grepl(":", list_names))) {
-    list_names <- remove_config_names(list_names, silent = FALSE)
+  if (remove_config_names && any(grepl(":", list_names))) {
+    list_names <- remove_config_names(list_names, silent = silent)
     names(resource) <- list_names
   }
 
-  if (any(grepl(":", resource$category))) {
-    resource$category <- remove_config_names(resource$category, silent = TRUE)
+  if (remove_config_names && any(grepl(":", resource$category))) {
+    resource$category <- remove_config_names(resource$category, silent = silent)
   }
 
 
@@ -236,6 +248,7 @@ simplify_single_resource <- function(resource,
 #' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
 #' dates be used in case there are any? Default is FALSE. Changes outcome of [fix_dating()].
 #' @inheritParams gather_languages
+#' @inheritParams get_field_inputtypes
 #'
 #' @returns An `idaifield_simple`-list containing the same resources in
 #' a different format depending on the parameters used.
@@ -275,8 +288,20 @@ simplify_idaifield <- function(idaifield_docs,
                                find_layers = TRUE,
                                uidlist = NULL,
                                language = "all",
+                               remove_config_names = TRUE,
                                spread_fields = TRUE,
-                               use_exact_dates = FALSE) {
+                               use_exact_dates = FALSE,
+                               silent = FALSE) {
+
+
+  stopifnot(is.logical(keep_geometry))
+  stopifnot(is.logical(replace_uids))
+  stopifnot(is.logical(find_layers))
+  stopifnot(is.logical(remove_config_names))
+  stopifnot(is.logical(spread_fields))
+  stopifnot(is.logical(use_exact_dates))
+  stopifnot(is.logical(silent))
+
 
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_simple"] == TRUE) {
@@ -329,6 +354,7 @@ simplify_idaifield <- function(idaifield_docs,
       keep_geometry = keep_geometry,
       fieldtypes = fieldtypes,
       language = language,
+      remove_config_names = remove_config_names,
       spread_fields = spread_fields,
       use_exact_dates = use_exact_dates
     )
