@@ -11,6 +11,7 @@ simplify_single_resource(
   uidlist = NULL,
   keep_geometry = TRUE,
   fieldtypes = NULL,
+  remove_config_names = TRUE,
   language = "all",
   spread_fields = TRUE,
   use_exact_dates = FALSE,
@@ -43,6 +44,11 @@ by \code{\link[=get_field_index]{get_field_index()}}.}
 
 \item{keep_geometry}{TRUE/FALSE: Should the geographical
 information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
+
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
 
 \item{language}{The short name (e.g. "en", "de", "fr") of the language
 that is preferred for the fields. Special value "all" (the default) can be

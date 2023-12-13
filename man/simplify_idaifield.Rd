@@ -11,6 +11,7 @@ simplify_idaifield(
   find_layers = TRUE,
   uidlist = NULL,
   language = "all",
+  remove_config_names = TRUE,
   spread_fields = TRUE,
   use_exact_dates = FALSE,
   silent = FALSE
@@ -50,6 +51,11 @@ that is preferred for the fields. Special value "all" (the default) can be
 used to return a concatenated string of all available languages.
 \code{\link[=gather_languages]{gather_languages()}} will select other available languages
 in alphabetical order if the selected language is not available.}
+
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
 
 \item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value
