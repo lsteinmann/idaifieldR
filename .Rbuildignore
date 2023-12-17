@@ -10,4 +10,4 @@
 ^docs$
 ^pkgdown$
 ^profile$
-TODO.md
+^TODO\.md$
