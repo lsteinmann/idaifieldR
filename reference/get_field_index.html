@@ -15,7 +15,7 @@ the name will still be Trench here. None of these functions have any
 respect for language settings of a project configuration, i.e. the
 front end languages of valuelists and fields are not displayed, and
 instead their background names are used. You can see these in the project
-configuration settings.'><title>Get the Index of an iDAI.field / Field Desktop Database — get_field_index • idaifieldR</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Get the Index of an iDAI.field / Field Desktop Database — get_field_index"><meta property="og:description" content='All resources in the project databases in iDAI.field /
+configuration settings.'><title>Get the Index of an iDAI.field / Field Desktop Database — get_field_index • idaifieldR</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Get the Index of an iDAI.field / Field Desktop Database — get_field_index"><meta property="og:description" content='All resources in the project databases in iDAI.field /
 Field Desktop are stored and referenced with their Universally Unique
 Identifier (UUID) in the relations fields. Therefore, for many purposes a
 lookup-table needs to be provided in order to get to the actual identifiers
@@ -42,7 +42,7 @@ configuration settings.'><!-- mathjax --><script src="https://cdnjs.cloudflare.c
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,9 @@ configuration settings.</p>
 <span>  <span class="va">connection</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  gather_trenches <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  language <span class="op">=</span> <span class="st">"en"</span></span>
+<span>  remove_config_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  find_layers <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  language <span class="op">=</span> <span class="st">"all"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -134,11 +136,32 @@ records the Place each corresponding Trench and its sub-resources lie within.
 project database is organized accordingly.)</p></dd>
 
 
+<dt>remove_config_names</dt>
+<dd><p>TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: <em>test:amount</em> be renamed to <em>amount</em>,
+see <code><a href="remove_config_names.html">remove_config_names()</a></code>.)</p></dd>
+
+
+<dt>find_layers</dt>
+<dd><p>TRUE/FALSE. Default is FALSE. If TRUE, adds another column
+with the 'Layer' (see <code>getOption("idaifield_categories")$layers</code>, can be
+modified) in which a resource is contained  recursively. That means that
+even if it does not immediately lie within this layer, but is
+contained by one or several other resources in said layer, a new column
+("liesWithinLayer") will still show the layer.
+Example: A sample "A" in Find "001" from layer "Layer1" will
+usually have "001" as the value in "liesWithin". With find_layers, there will
+be another column called "liesWithinLayer" which contains "Layer1" for both
+sample "A" and Find "001".</p></dd>
+
+
 <dt>language</dt>
-<dd><p>the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the multi-language input "shortDescription",
-defaults to english ("en") and will select other available languages in
-alphabetical order if the selected language is not available.</p></dd>
+<dd><p>The short name (e.g. "en", "de", "fr") of the language
+that is preferred for the fields. Special value "all" (the default) can be
+used to return a concatenated string of all available languages.
+<code><a href="gather_languages.html">gather_languages()</a></code> will select other available languages
+in alphabetical order if the selected language is not available.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -154,6 +177,8 @@ and shortDescription of each element</p>
     <div class="dont-index">
 <ul><li><p><code><a href="get_uid_list.html">get_uid_list()</a></code> returns the same data.frame from an <code>idaifield_docs</code> or
 <code>idaifield_resources</code>-list without querying the database.</p></li>
+<li><p><code><a href="find_layer.html">find_layer()</a></code> is used when <code>find_layers = TRUE</code> to search for the
+containing layer-resource recursively.</p></li>
 </ul></div>
     </div>
 

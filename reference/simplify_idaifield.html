@@ -12,7 +12,7 @@ to make them more accessible during the conversion with
 idaifield_as_matrix().
 It will also remove the custom configuration field names that are in use
 since iDAI.field 3 / Field Desktop and consist of "projectname:fieldName".
-Only the "projectname:"-part will be removed.'><title>Simplify a List Imported from an iDAI.field / Field Desktop-Database — simplify_idaifield • idaifieldR</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Simplify a List Imported from an iDAI.field / Field Desktop-Database — simplify_idaifield"><meta property="og:description" content='The function will take a list as returned by
+Only the "projectname:"-part will be removed.'><title>Simplify a List Imported from an iDAI.field / Field Desktop-Database — simplify_idaifield • idaifieldR</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Simplify a List Imported from an iDAI.field / Field Desktop-Database — simplify_idaifield"><meta property="og:description" content='The function will take a list as returned by
 get_idaifield_docs(), idf_query(), idf_index_query(), or
 idf_json_query() and process it to make the list more usable.
 It will unnest a few lists, including the dimension-lists and the
@@ -36,7 +36,7 @@ Only the "projectname:"-part will be removed.'><!-- mathjax --><script src="http
     
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,10 +101,13 @@ Only the "projectname:"-part will be removed.</p>
 <span>  <span class="va">idaifield_docs</span>,</span>
 <span>  keep_geometry <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  replace_uids <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  find_layers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  uidlist <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  language <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  remove_config_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  spread_fields <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  use_exact_dates <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  use_exact_dates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -127,6 +130,19 @@ corresponding identifiers? Defaults is TRUE. Uses: <code><a href="fix_relations.
 <code><a href="replace_uid.html">replace_uid()</a></code>, and also: <code><a href="find_layer.html">find_layer()</a></code></p></dd>
 
 
+<dt>find_layers</dt>
+<dd><p>TRUE/FALSE. Default is FALSE. If TRUE, adds another column
+with the 'Layer' (see <code>getOption("idaifield_categories")$layers</code>, can be
+modified) in which a resource is contained  recursively. That means that
+even if it does not immediately lie within this layer, but is
+contained by one or several other resources in said layer, a new column
+("liesWithinLayer") will still show the layer.
+Example: A sample "A" in Find "001" from layer "Layer1" will
+usually have "001" as the value in "liesWithin". With find_layers, there will
+be another column called "liesWithinLayer" which contains "Layer1" for both
+sample "A" and Find "001".</p></dd>
+
+
 <dt>uidlist</dt>
 <dd><p>If NULL (default) the list of UUIDs and identifiers is
 automatically generated within this function using <code><a href="get_uid_list.html">get_uid_list()</a></code>. This only makes sense if
@@ -136,9 +152,18 @@ by <code><a href="get_field_index.html">get_field_index()</a></code>.</p></dd>
 
 
 <dt>language</dt>
-<dd><p>the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the multi-language input fields, defaults to keeping all
-languages as sub-lists ("all"). Uses: <code><a href="gather_languages.html">gather_languages()</a></code></p></dd>
+<dd><p>The short name (e.g. "en", "de", "fr") of the language
+that is preferred for the fields. Special value "all" (the default) can be
+used to return a concatenated string of all available languages.
+<code><a href="gather_languages.html">gather_languages()</a></code> will select other available languages
+in alphabetical order if the selected language is not available.</p></dd>
+
+
+<dt>remove_config_names</dt>
+<dd><p>TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: <em>test:amount</em> be renamed to <em>amount</em>,
+see <code><a href="remove_config_names.html">remove_config_names()</a></code>.)</p></dd>
 
 
 <dt>spread_fields</dt>
@@ -151,6 +176,10 @@ of a checkbox-field? Default is TRUE. Uses: <code><a href="get_configuration.htm
 <dt>use_exact_dates</dt>
 <dd><p>TRUE/FALSE: Should the values from any "exact"
 dates be used in case there are any? Default is FALSE. Changes outcome of <code><a href="fix_dating.html">fix_dating()</a></code>.</p></dd>
+
+
+<dt>silent</dt>
+<dd><p>TRUE/FALSE, default: FALSE. Should messages be suppressed?</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -177,7 +206,8 @@ will be returned.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
-<ul><li><p>This function uses: <code><a href="idf_sepdim.html">idf_sepdim()</a></code>, <code><a href="remove_config_names.html">remove_config_names()</a></code>, <code><a href="find_layer.html">find_layer()</a></code></p></li>
+<ul><li><p>This function uses: <code><a href="idf_sepdim.html">idf_sepdim()</a></code>, <code><a href="remove_config_names.html">remove_config_names()</a></code></p></li>
+<li><p>When find_layers = TRUE: <code><a href="find_layer.html">find_layer()</a></code>, this only works when the function can get an index/uidlist!</p></li>
 <li><p><code><a href="fix_dating.html">fix_dating()</a></code> with the outcome depending on the <code>use_exact_dates</code>-argument.</p></li>
 <li><p>When selecting a language: <code><a href="gather_languages.html">gather_languages()</a></code></p></li>
 <li><p>Depending on the <code>spread_fields</code>-argument: <code><a href="convert_to_onehot.html">convert_to_onehot()</a></code></p></li>
@@ -191,9 +221,10 @@ will be returned.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">connection</span> <span class="op">&lt;-</span> <span class="fu"><a href="connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>serverip <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span></span>
-<span class="r-in"><span>user <span class="op">=</span> <span class="st">"R"</span>, pwd <span class="op">=</span> <span class="st">"hallo"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">idaifield_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">connection</span>,</span></span>
-<span class="r-in"><span>projectname <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    project <span class="op">=</span> <span class="st">"rtest"</span>,</span></span>
+<span class="r-in"><span>    user <span class="op">=</span> <span class="st">"R"</span>,</span></span>
+<span class="r-in"><span>    pwd <span class="op">=</span> <span class="st">"hallo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">idaifield_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">connection</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">simpler_idaifield</span> <span class="op">&lt;-</span> <span class="fu">simplify_idaifield</span><span class="op">(</span><span class="va">idaifield_docs</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

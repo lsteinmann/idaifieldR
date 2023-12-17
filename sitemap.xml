@@ -64,7 +64,16 @@
     <loc>https://lsteinmann.github.io/idaifieldR/reference/extract_field_names.html</loc>
   </url>
   <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/find_categories.html</loc>
+  </url>
+  <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/find_layer.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/find_parent_layer.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/find_parents.html</loc>
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/find_resource.html</loc>
@@ -179,5 +188,8 @@
   </url>
   <url>
     <loc>https://lsteinmann.github.io/idaifieldR/reference/unnest_docs.html</loc>
+  </url>
+  <url>
+    <loc>https://lsteinmann.github.io/idaifieldR/reference/warn_for_project.html</loc>
   </url>
 </urlset>
