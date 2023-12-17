@@ -34,11 +34,11 @@ test_that("project argument is correctly assigned", {
   expect_equal(connection$project, "rtest")
 })
 
-test_that("error and warning is issued when no project is supplied", {
-  expect_error(expect_warning(connect_idaifield(version = 3,
+test_that("warning is issued when no project is supplied", {
+  expect_warning(connect_idaifield(version = 3,
                                    project = NULL,
                                    pwd = "hallo",
-                                   ping = FALSE)),
+                                   ping = FALSE),
                  "project")
 })
 

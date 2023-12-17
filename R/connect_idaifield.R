@@ -71,7 +71,7 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
 
   if (is.null(project)) {
     warn_for_project(project = FALSE,
-                     fail = TRUE)
+                     fail = FALSE)
   }
 
   serverip <- as.character(serverip)
