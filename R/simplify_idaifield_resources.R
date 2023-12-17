@@ -18,12 +18,25 @@
 #' }
 simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
+                                     find_layers = TRUE,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
                                      fieldtypes = NULL,
+                                     remove_config_names = TRUE,
                                      language = "all",
                                      spread_fields = TRUE,
-                                     use_exact_dates = FALSE) {
+                                     use_exact_dates = FALSE,
+                                     silent = FALSE) {
+
+  stopifnot(is.logical(keep_geometry))
+  stopifnot(is.logical(replace_uids))
+  stopifnot(is.logical(find_layers))
+  stopifnot(is.logical(remove_config_names))
+  stopifnot(is.logical(spread_fields))
+  stopifnot(is.logical(use_exact_dates))
+  stopifnot(is.logical(silent))
+
+
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
@@ -43,10 +56,13 @@ simplify_single_resource <- function(resource,
   # and NULL as arguments. The resulting value is assigned to the
   # liesWithinLayer variable and appended to the resource as a new field
   # called relation.liesWithinLayer.
-  if (replace_uids) {
-    liesWithinLayer <- find_layer(id = resource$identifier,
+  if (find_layers) {
+    liesWithinLayer <- find_layer(ids = resource$id,
                                   uidlist = uidlist,
-                                  id_type = "identifier")
+                                  silent = TRUE)
+    if (replace_uids) {
+      liesWithinLayer <- replace_uid(liesWithinLayer, uidlist)
+    }
     resource <- append(resource,
                        list(relation.liesWithinLayer = liesWithinLayer))
   }
@@ -114,13 +130,13 @@ simplify_single_resource <- function(resource,
   # table / data.frame.)
   list_names <- names(resource)
 
-  if (any(grepl(":", list_names))) {
-    list_names <- remove_config_names(list_names, silent = FALSE)
+  if (remove_config_names && any(grepl(":", list_names))) {
+    list_names <- remove_config_names(list_names, silent = silent)
     names(resource) <- list_names
   }
 
-  if (any(grepl(":", resource$category))) {
-    resource$category <- remove_config_names(resource$category, silent = TRUE)
+  if (remove_config_names && any(grepl(":", resource$category))) {
+    resource$category <- remove_config_names(resource$category, silent = silent)
   }
 
 
@@ -217,6 +233,7 @@ simplify_single_resource <- function(resource,
 #' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
 #' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with
 #' [replace_uid()], and also: [find_layer()]
+#' @inheritParams get_field_index
 #' @param uidlist If NULL (default) the list of UUIDs and identifiers is
 #' automatically generated within this function using [get_uid_list()]. This only makes sense if
 #' the list handed to [simplify_idaifield()] had not been selected yet. If it
@@ -224,18 +241,19 @@ simplify_single_resource <- function(resource,
 #' by [get_field_index()].
 #' @param keep_geometry TRUE/FALSE: Should the geographical
 #' information be kept or removed? Defaults is FALSE. Uses: [reformat_geometry()]
-#' @param language the short name (e.g. "en", "de", "fr") of the language that
-#' is preferred for the multi-language input fields, defaults to keeping all
-#' languages as sub-lists ("all"). Uses: [gather_languages()]
 #' @param spread_fields TRUE/FALSE: Should checkbox-fields be
 #' spread across multiple lists to facilitate boolean-columns for each value
 #' of a checkbox-field? Default is TRUE. Uses: [get_configuration()],
 #' [get_field_inputtypes()], [convert_to_onehot()]
+#' @param silent TRUE/FALSE, default: FALSE. Should messages be suppressed?
 #' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
 #' dates be used in case there are any? Default is FALSE. Changes outcome of [fix_dating()].
+#' @inheritParams gather_languages
+#' @inheritParams get_field_inputtypes
 #'
 #' @returns An `idaifield_simple`-list containing the same resources in
 #' a different format depending on the parameters used.
+#'
 #'
 #'
 #' @export
@@ -246,7 +264,8 @@ simplify_single_resource <- function(resource,
 #'
 #'
 #' @seealso
-#' * This function uses: [idf_sepdim()], [remove_config_names()], [find_layer()]
+#' * This function uses: [idf_sepdim()], [remove_config_names()]
+#' * When find_layers = TRUE: [find_layer()], this only works when the function can get an index/uidlist!
 #' * [fix_dating()] with the outcome depending on the `use_exact_dates`-argument.
 #' * When selecting a language: [gather_languages()]
 #' * Depending on the `spread_fields`-argument: [convert_to_onehot()]
@@ -258,19 +277,33 @@ simplify_single_resource <- function(resource,
 #' @examples
 #' \dontrun{
 #' connection <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = connection,
-#' projectname = "rtest")
+#'     project = "rtest",
+#'     user = "R",
+#'     pwd = "hallo")
+#' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
 #' simpler_idaifield <- simplify_idaifield(idaifield_docs)
 #' }
 simplify_idaifield <- function(idaifield_docs,
                                keep_geometry = FALSE,
                                replace_uids = TRUE,
+                               find_layers = TRUE,
                                uidlist = NULL,
                                language = "all",
+                               remove_config_names = TRUE,
                                spread_fields = TRUE,
-                               use_exact_dates = FALSE) {
+                               use_exact_dates = FALSE,
+                               silent = FALSE) {
+
+
+  stopifnot(is.logical(keep_geometry))
+  stopifnot(is.logical(replace_uids))
+  stopifnot(is.logical(find_layers))
+  stopifnot(is.logical(remove_config_names))
+  stopifnot(is.logical(spread_fields))
+  stopifnot(is.logical(use_exact_dates))
+  stopifnot(is.logical(silent))
+
 
   check <- check_if_idaifield(idaifield_docs)
   if (check["idaifield_simple"] == TRUE) {
@@ -284,12 +317,15 @@ simplify_idaifield <- function(idaifield_docs,
     uidlist <- get_uid_list(idaifield_docs)
   }
 
-  projectname <- attr(idaifield_docs, "projectname")
+
   conn <- attr(idaifield_docs, "connection")
+  if (is.null(conn$project)) {
+    conn$project <- attr(idaifield_docs, "projectname")
+  }
 
   ping <- suppressWarnings(idf_ping(conn))
   if (ping) {
-    config <- get_configuration(conn, projectname = projectname)
+    config <- get_configuration(conn)
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
     ## Language handling / messages
     languages <- unlist(config$projectLanguages)
@@ -314,17 +350,34 @@ simplify_idaifield <- function(idaifield_docs,
     attributes(fieldtypes)$duplicate_names <- NA
   }
 
-  idaifield_simple <- lapply(idaifield_docs, function(x)
-    simplify_single_resource(
+  if (find_layers == TRUE) {
+    liesWithinLayer <- find_layer(names(idaifield_docs), uidlist, silent = silent)
+  }
+
+  idaifield_simple <- lapply(idaifield_docs, function(x) {
+    new_res <- simplify_single_resource(
       x,
       replace_uids = replace_uids,
+      find_layers = FALSE,
       uidlist = uidlist,
       keep_geometry = keep_geometry,
       fieldtypes = fieldtypes,
       language = language,
+      remove_config_names = remove_config_names,
       spread_fields = spread_fields,
-      use_exact_dates = use_exact_dates
+      use_exact_dates = use_exact_dates,
+      silent = silent
     )
+    if (find_layers == TRUE) {
+      lwl <- which(names(liesWithinLayer) == x$identifier)
+      lwl <- liesWithinLayer[lwl]
+      if (length(lwl) > 0) {
+        names(lwl) <- "relation.liesWithinLayer"
+        new_res <- append(new_res, lwl)
+      }
+    }
+    return(new_res)
+  }
   )
 
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
@@ -335,3 +388,4 @@ simplify_idaifield <- function(idaifield_docs,
 
   return(idaifield_simple)
 }
+

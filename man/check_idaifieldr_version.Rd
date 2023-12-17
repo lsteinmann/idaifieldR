@@ -10,7 +10,7 @@ check_idaifieldr_version(installed_version = getNamespaceVersion("idaifieldR"))
 \item{installed_version}{version of idaifieldR currently in use}
 }
 \value{
-nothing
+TRUE if current release is used, FALSE if not.
 }
 \description{
 Checks if a new version of idaifieldR is available (runs on attach).

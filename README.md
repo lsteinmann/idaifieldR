@@ -4,7 +4,6 @@
 [![R-CMD-check](https://github.com/lsteinmann/idaifieldR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lsteinmann/idaifieldR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/lsteinmann/idaifieldR/branch/main/graph/badge.svg)](https://codecov.io/gh/lsteinmann/idaifieldR?branch=main)
 [![Release](https://img.shields.io/github/v/release/lsteinmann/idaifieldR)](https://github.com/lsteinmann/idaifieldR/releases)
-[![Downloads](https://img.shields.io/github/downloads/lsteinmann/idaifieldR/total)](https://github.com/lsteinmann/idaifieldR/releases)
 [![Package documentation](https://img.shields.io/badge/Documentation-lsteinmann.github.io%2FidaifieldR-green)](https://lsteinmann.github.io/idaifieldR/)
 <!-- badges: end -->
 

@@ -8,10 +8,13 @@ simplify_idaifield(
   idaifield_docs,
   keep_geometry = FALSE,
   replace_uids = TRUE,
+  find_layers = TRUE,
   uidlist = NULL,
   language = "all",
+  remove_config_names = TRUE,
   spread_fields = TRUE,
-  use_exact_dates = FALSE
+  use_exact_dates = FALSE,
+  silent = FALSE
 )
 }
 \arguments{
@@ -26,15 +29,33 @@ information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_g
 corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
 \code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
 
+\item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
+with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
+modified) in which a resource is contained  recursively. That means that
+even if it does not immediately lie within this layer, but is
+contained by one or several other resources in said layer, a new column
+("liesWithinLayer") will still show the layer.
+Example: A sample "A" in Find "001" from layer "Layer1" will
+usually have "001" as the value in "liesWithin". With find_layers, there will
+be another column called "liesWithinLayer" which contains "Layer1" for both
+sample "A" and Find "001".}
+
 \item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
 automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
 the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
 has been, you should supply a data.frame as returned
 by \code{\link[=get_field_index]{get_field_index()}}.}
 
-\item{language}{the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the multi-language input fields, defaults to keeping all
-languages as sub-lists ("all"). Uses: \code{\link[=gather_languages]{gather_languages()}}}
+\item{language}{The short name (e.g. "en", "de", "fr") of the language
+that is preferred for the fields. Special value "all" (the default) can be
+used to return a concatenated string of all available languages.
+\code{\link[=gather_languages]{gather_languages()}} will select other available languages
+in alphabetical order if the selected language is not available.}
+
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
 
 \item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value
@@ -43,6 +64,8 @@ of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_
 
 \item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
 dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
+
+\item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
 }
 \value{
 An \code{idaifield_simple}-list containing the same resources in
@@ -81,16 +104,18 @@ will be returned.
 \examples{
 \dontrun{
 connection <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo")
-idaifield_docs <- get_idaifield_docs(connection = connection,
-projectname = "rtest")
+    project = "rtest",
+    user = "R",
+    pwd = "hallo")
+idaifield_docs <- get_idaifield_docs(connection = connection)
 
 simpler_idaifield <- simplify_idaifield(idaifield_docs)
 }
 }
 \seealso{
 \itemize{
-\item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}}, \code{\link[=find_layer]{find_layer()}}
+\item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}}
+\item When find_layers = TRUE: \code{\link[=find_layer]{find_layer()}}, this only works when the function can get an index/uidlist!
 \item \code{\link[=fix_dating]{fix_dating()}} with the outcome depending on the \code{use_exact_dates}-argument.
 \item When selecting a language: \code{\link[=gather_languages]{gather_languages()}}
 \item Depending on the \code{spread_fields}-argument: \code{\link[=convert_to_onehot]{convert_to_onehot()}}

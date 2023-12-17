@@ -48,7 +48,7 @@ test_that("empty matrix for empty config", {
 
 
 test_that("error when supplying wrong object", {
-  expect_error(test <- get_configuration(NA, projectname = "testproj"))
+  expect_error(test <- get_configuration(NA, projectname = NULL))
 })
 
 
@@ -57,20 +57,20 @@ skip_on_cran()
 connection <- skip_if_no_connection()
 
 test_that("returns NA for missing config", {
-  config <- suppressWarnings(get_configuration(connection,
-                                               projectname = "test"))
+  connection$project <- "test"
+  config <- suppressWarnings(get_configuration(connection))
   expect_equal(config, NA)
 })
 
 
 test_that("error for missing config not working, returns NA", {
-  expect_warning(test <- get_configuration(connection,
-                                           projectname = "test"),
+  connection$project <- "test"
+  expect_warning(test <- get_configuration(connection),
                  "no configuration")
   expect_identical(test, NA)
 })
 
 test_that("returns a list that is actually the configuration", {
-  config <- get_configuration(connection, projectname = "rtest")
+  config <- get_configuration(connection)
   expect_true(config$identifier == "Configuration")
 })

@@ -23,7 +23,7 @@ resource level using \code{\link[=check_and_unnest]{check_and_unnest()}}? (Defau
 (Default is FALSE.) If TRUE output cannot be processed with the functions
 from this package. Can be parsed using e.g. \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}}.}
 
-\item{projectname}{The name of the project in the Field Client that one
+\item{projectname}{(deprecated) The name of the project in the Field Client that one
 wishes to load. Will overwrite the project set in the \code{connection}-object.
 See \code{\link[=idf_projects]{idf_projects()}} for all available projects.}
 }

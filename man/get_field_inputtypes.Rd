@@ -4,7 +4,12 @@
 \alias{get_field_inputtypes}
 \title{Produce a Matrix of Field \emph{inputTypes} from the Custom Project Configuration}
 \usage{
-get_field_inputtypes(config, inputType = "all")
+get_field_inputtypes(
+  config,
+  inputType = "all",
+  remove_config_names = TRUE,
+  silent = FALSE
+)
 }
 \arguments{
 \item{config}{A configuration list as returned
@@ -12,6 +17,13 @@ by \code{\link[=get_configuration]{get_configuration()}}}
 
 \item{inputType}{If specified, matrix is filtered to return only the
 specified type.}
+
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
+
+\item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
 }
 \value{
 A matrix of fields (with the given \emph{inputType}).

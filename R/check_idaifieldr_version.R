@@ -4,7 +4,7 @@
 #'
 #' @param installed_version version of idaifieldR currently in use
 #'
-#' @return nothing
+#' @return TRUE if current release is used, FALSE if not.
 #'
 #' @export
 #'
@@ -29,6 +29,9 @@ check_idaifieldr_version <- function(installed_version = getNamespaceVersion('id
                     'remotes::install_github("', repo, '@',
                     gh$tag_name, '")')
       packageStartupMessage(msg)
+      return(FALSE)
+    } else {
+      return(TRUE)
     }
   }
 }

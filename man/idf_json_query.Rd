@@ -14,7 +14,7 @@ by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 \href{https://docs.couchdb.org/en/stable/api/database/find.html}{CouchDB-API}
 documentation.}
 
-\item{projectname}{The name of the project to be queried (overrides
+\item{projectname}{(deprecated) The name of the project to be queried (overrides
 the one listed in the connection-object).}
 }
 \value{

@@ -26,13 +26,11 @@
 #' @param serverip The IP address of the Field Client. If you are using
 #' Field Desktop on the same machine, the default value (*127.0.0.1*)
 #' should usually work.
-#' @param project The name of the project you want to work with.
-#' If you do not supply this parameter, other functions will use the
-#' project recorded in the connection object. For a list of available
-#' projects, use [idf_projects()].
+#' @param project (*required*) The name of the project you want to work with.
+#' For a list of available projects, see [idf_projects()].
 #' @param user (*optional*) The username for the connection.
 #' This parameter is not currently needed.
-#' @param pwd The password used to authenticate with the Field
+#' @param pwd (*required*) The password used to authenticate with the Field
 #' Client (default is "password").
 #' @param version The version number of the Field Client. By default,
 #' the value is set to 3.
@@ -71,10 +69,16 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
                               version     = 3,
                               ping        = TRUE) {
 
+  if (is.null(project)) {
+    warn_for_project(project = FALSE,
+                     fail = FALSE)
+  }
+
   serverip <- as.character(serverip)
   validip <- grepl("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", serverip)
   if (!validip || length(serverip) == 0) {
-    stop("Please supply a valid IP-Adress, e.g. '127.0.0.1' if Field Desktop is running on the same machine as R.")
+    stop(paste0("Please supply a valid IP-Adress, e.g. '127.0.0.1' ",
+                "if Field Desktop is running on the same machine as R."))
   }
 
   # set version to numeric if possible
@@ -123,7 +127,7 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
 #'
 #' @param conn The connection settings as returned
 #' by [connect_idaifield()]
-#' @param project (optional) character. Name of the project-database to
+#' @param project character. Name of the project-database to
 #' check for. If not supplied, the function will use the project specified
 #' in the connection settings.
 #'
@@ -140,6 +144,7 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
 #' check_for_project(conn) # Will not return anything
 #' }
 idf_check_for_project <- function(conn, project = NULL) {
+
   if (is.null(project) && is.null(conn$project)) {
     stop("No project supplied to `check_for_project()`")
   } else {
@@ -162,12 +167,13 @@ idf_check_for_project <- function(conn, project = NULL) {
 #' specific project. This function is intended for internal use only.
 #'
 #' @param conn A connection object returned by [connect_idaifield()].
-#' @param project character. Name of the project-database that should be loaded.
+#' @param project (deprecated) character. Name of the project-database that should be loaded.
 #' @param include Arguments: "all", "query", "changes" . Should the client
 #' use "*_all_docs*", "*_find*" or "*_changes*" as paths.
 #'
 #'
 #' * [crul on CRAN](https://cran.r-project.org/package=crul)
+#' * [CouchDB API](https://docs.couchdb.org/en/stable/api/database/)
 #'
 #'
 #'
@@ -187,6 +193,9 @@ proj_idf_client <- function(conn, project = NULL, include = "all") {
   if (!inherits(conn, "idf_connection_settings")) {
     stop("Need an 'idf_connection_settings'-object as returned by `connect_idaifield()`.")
   }
+
+  warn_for_project(project = project)
+
   if (is.null(project) & !is.null(conn$project)) {
     project <- conn$project
   }
@@ -279,7 +288,7 @@ idf_ping <- function(conn) {
     ping <- try(conn$get()$parse("UTF-8"), silent = TRUE)
     if(inherits(ping, "try-error")) {
       # throw error when curl "Could not resolve host"
-      if (grepl("refused", ping[1])) {
+      if (grepl("refused", ping[1]) | grepl("Couldn't connect", ping[1])) {
         warning("Either Field Desktop is not running, or the serverip in `connect_idaifield()` is incorrect.")
       } else {
         warning(paste0("Unexpected Error in `idf_ping()`:\n", ping[1]))
@@ -299,7 +308,7 @@ idf_ping <- function(conn) {
     }
   } else {
     # return FALSE if passed object was not a connection
-    warning("Did nothing. Supply an 'idf_connection_settings'-object as returned by `connect_idaifield()` or a crul 'HttpClient'.)")
+    warning("Supply an 'idf_connection_settings'-object as returned by `connect_idaifield()` or a crul 'HttpClient'.)")
     return(FALSE)
   }
 }

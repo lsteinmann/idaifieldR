@@ -18,15 +18,13 @@ connect_idaifield(
 Field Desktop on the same machine, the default value (\emph{127.0.0.1})
 should usually work.}
 
-\item{project}{The name of the project you want to work with.
-If you do not supply this parameter, other functions will use the
-project recorded in the connection object. For a list of available
-projects, use \code{\link[=idf_projects]{idf_projects()}}.}
+\item{project}{(\emph{required}) The name of the project you want to work with.
+For a list of available projects, see \code{\link[=idf_projects]{idf_projects()}}.}
 
 \item{user}{(\emph{optional}) The username for the connection.
 This parameter is not currently needed.}
 
-\item{pwd}{The password used to authenticate with the Field
+\item{pwd}{(\emph{required}) The password used to authenticate with the Field
 Client (default is "password").}
 
 \item{version}{The version number of the Field Client. By default,

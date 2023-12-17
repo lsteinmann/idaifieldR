@@ -10,7 +10,7 @@ get_configuration(connection, projectname = NULL)
 \item{connection}{A connection object as returned
 by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
-\item{projectname}{The name of the project in the Field Client that one
+\item{projectname}{(deprecated) The name of the project in the Field Client that one
 wishes to load. Will overwrite the project argument that was set
 in \code{\link[=connect_idaifield]{connect_idaifield()}}.}
 }

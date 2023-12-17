@@ -7,12 +7,15 @@
 simplify_single_resource(
   resource,
   replace_uids = TRUE,
+  find_layers = TRUE,
   uidlist = NULL,
   keep_geometry = TRUE,
   fieldtypes = NULL,
+  remove_config_names = TRUE,
   language = "all",
   spread_fields = TRUE,
-  use_exact_dates = FALSE
+  use_exact_dates = FALSE,
+  silent = FALSE
 )
 }
 \arguments{
@@ -21,6 +24,17 @@ simplify_single_resource(
 \item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
 corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
 \code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
+
+\item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
+with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
+modified) in which a resource is contained  recursively. That means that
+even if it does not immediately lie within this layer, but is
+contained by one or several other resources in said layer, a new column
+("liesWithinLayer") will still show the layer.
+Example: A sample "A" in Find "001" from layer "Layer1" will
+usually have "001" as the value in "liesWithin". With find_layers, there will
+be another column called "liesWithinLayer" which contains "Layer1" for both
+sample "A" and Find "001".}
 
 \item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
 automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
@@ -31,9 +45,16 @@ by \code{\link[=get_field_index]{get_field_index()}}.}
 \item{keep_geometry}{TRUE/FALSE: Should the geographical
 information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
 
-\item{language}{the short name (e.g. "en", "de", "fr") of the language that
-is preferred for the multi-language input fields, defaults to keeping all
-languages as sub-lists ("all"). Uses: \code{\link[=gather_languages]{gather_languages()}}}
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
+
+\item{language}{The short name (e.g. "en", "de", "fr") of the language
+that is preferred for the fields. Special value "all" (the default) can be
+used to return a concatenated string of all available languages.
+\code{\link[=gather_languages]{gather_languages()}} will select other available languages
+in alphabetical order if the selected language is not available.}
 
 \item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value
@@ -42,6 +63,8 @@ of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_
 
 \item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
 dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
+
+\item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
 }
 \value{
 A single resource (element) for an \code{idaifield_resources}-list.

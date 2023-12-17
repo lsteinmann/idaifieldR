@@ -212,3 +212,29 @@ name_docs_list <- function(docs) {
   names(docs) <- new_names
   return(docs)
 }
+
+
+#' TEMPORARY FUNCTION to warn about project(name)
+#'
+#' @param project connection$project
+#' @param fail should there be an error?
+#'
+#' @return TRUE/FALSE
+#'
+#' @keywords internal
+warn_for_project <- function(project = NULL, fail = FALSE) {
+  if (!is.null(project)) {
+    message <- paste("Please note: In the future, the project always",
+                     "has to be supplied to `connect_idaifield()`.",
+                     "Handing the project(name) as an argument to other",
+                     "functions will be deprecated in one of the next",
+                     "versions." )
+    warning(message)
+    if (fail) {
+      stop("Please supply a project to `connect_idaifield()`.")
+    } else {
+      return(TRUE)
+    }
+  }
+}
+

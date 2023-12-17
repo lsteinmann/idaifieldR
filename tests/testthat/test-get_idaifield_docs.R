@@ -1,7 +1,7 @@
 
 
 test_that("raw has connection as attribute", {
-  conn <- suppressWarnings(connect_idaifield(pwd = "wrongpwd", ping = FALSE))
+  conn <- suppressWarnings(connect_idaifield(pwd = "wrongpwd", project = "rtest", ping = FALSE))
   expect_error(suppressWarnings(get_idaifield_docs(conn)))
 })
 
@@ -30,9 +30,8 @@ skip_on_cran()
 connection <- skip_if_no_connection()
 
 
-test_docs_raw <- get_idaifield_docs(projectname = "rtest",
-                                connection = connection,
-                                raw = TRUE)
+test_docs_raw <- get_idaifield_docs(connection = connection,
+                                    raw = TRUE)
 
 test_that("returns docs-lists", {
   check <- check_if_idaifield(test_docs_raw)
@@ -40,8 +39,7 @@ test_that("returns docs-lists", {
 })
 
 test_that("returns resource-lists", {
-  test_resources <- get_idaifield_docs(projectname = "rtest",
-                                       connection = connection,
+  test_resources <- get_idaifield_docs(connection = connection,
                                        raw = FALSE)
   check <- check_if_idaifield(test_resources)
   expect_true(check["idaifield_resources"], TRUE)
@@ -54,8 +52,7 @@ test_that("returns simple-lists", {
 })
 
 test_that("returns json", {
-  output <- get_idaifield_docs(projectname = "rtest",
-                               connection = connection,
+  output <- get_idaifield_docs(connection = connection,
                                json = TRUE)
   expect_true(jsonlite::validate(output))
 })

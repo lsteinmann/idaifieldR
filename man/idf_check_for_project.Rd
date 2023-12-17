@@ -10,7 +10,7 @@ idf_check_for_project(conn, project = NULL)
 \item{conn}{The connection settings as returned
 by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
-\item{project}{(optional) character. Name of the project-database to
+\item{project}{character. Name of the project-database to
 check for. If not supplied, the function will use the project specified
 in the connection settings.}
 }

@@ -4,21 +4,38 @@
 \alias{find_layer}
 \title{Find the Layer a Resource is Contained in}
 \usage{
-find_layer(id, id_type = "identifier", uidlist = NULL, layer_categories = NULL)
+find_layer(
+  ids,
+  uidlist = NULL,
+  layer_categories = NULL,
+  max_depth = 20,
+  silent = FALSE,
+  id = NULL,
+  id_type = NULL
+)
 }
 \arguments{
-\item{id}{Either the UUID or the identifier of a resource from an
+\item{ids}{Either the UUIDs or the identifiers resources from an
 \code{idaifield_...}-list as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}},
 \code{\link[=idf_index_query]{idf_index_query()}} or \code{\link[=idf_json_query]{idf_json_query()}}.}
-
-\item{id_type}{one of "identifier" or "UID" - Should the function use
-\emph{identifier}s or \emph{UUID}s to find the layer?}
 
 \item{uidlist}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}} or
 \code{\link[=get_uid_list]{get_uid_list()}}.}
 
 \item{layer_categories}{A vector of \emph{categories} that are classified as
-\emph{Layer}s. See or change the default: \code{getOption("idaifield_categories")$layers}}
+\emph{Layer}s. (Encompasses \emph{SurveyUnit}.) See or change the default:
+\code{getOption("idaifield_categories")$layers}}
+
+\item{max_depth}{numeric. Maximum number of recursive
+iterations / maximum depth a resource may be nested below its layer.}
+
+\item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
+
+\item{id}{DEPRECATED. Either the UUID or the identifier of a resource from an
+\code{idaifield_...}-list as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}},
+\code{\link[=idf_index_query]{idf_index_query()}} or \code{\link[=idf_json_query]{idf_json_query()}}.}
+
+\item{id_type}{DEPRECATED.}
 }
 \value{
 The identifier or UUID of the first "Layer"-category resource the
@@ -32,8 +49,13 @@ find the one that is a Layer and returns the corresponding identifier.
 \dontrun{
 conn <- connect_idaifield(pwd = "hallo", project = "rtest")
 index <- get_field_index(conn)
+
+ # For a nested Find:
 index[which(index$identifier == "Befund_1_InschriftAufMünze"), ]
-find_layer("Befund_1_InschriftAufMünze", id_type = "identifier", index)
+find_layer("Befund_1_InschriftAufMünze", index)
+
+# For all resources:
+find_layer(index$identifier, index)
 }
 }
 \seealso{
