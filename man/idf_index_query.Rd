@@ -24,7 +24,7 @@ by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 \item{uidlist}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}}
 (or \code{\link[=get_uid_list]{get_uid_list()}}).}
 
-\item{projectname}{The name of the project to be queried (overrides
+\item{projectname}{(deprecated) The name of the project to be queried (overrides
 the one listed in the connection-object).}
 }
 \value{

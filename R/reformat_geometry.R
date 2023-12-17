@@ -49,7 +49,7 @@ convert_to_coordmat <- function(coordinates) {
 #' or `idaifield_resources`-list.
 #'
 #' @return The geometry of the resource in a more usable format that can
-#' be processed with tools like [sp::SpatialPoints()] etc. to work with
+#' be processed with tools like `sp`'s `SpatialPoints()` etc. to work with
 #' spatial data. The geometry is returned as a a matrix in a list.
 #'
 #' @seealso

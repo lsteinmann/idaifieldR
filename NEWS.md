@@ -1,7 +1,9 @@
-# idaifieldR 0.3.4 _2023-11-24_
+# idaifieldR 0.3.4 _2023-12-17_
 * Make `get_field_index()` more efficient by utilizing vectors instead of `lapply()`. 
 * Adding *liesWithinLayer* in `get_field_index()` and `simplify_idaifield()` is now an option. This way, in `get_field_index()` the "shortDescription" can be added without the more time intensive recursive layer search that comes with the now available option `find_layers = TRUE`. For info on what this does, see documentation of `find_layer()`.
+* `simplify_idaifield()` is now slightly faster as it uses `find_layer()` differently.
 * `find_layer()` can now handle a vector of multiple ids.
+* The `project`/`projectname`-argument will be removed soon, and project needs to be specified in `connect_idaifield()`. Relevant functions currently issue a warning to that effect. 
 
 # idaifieldR 0.3.3 _2023-11-23_
 ### New features
