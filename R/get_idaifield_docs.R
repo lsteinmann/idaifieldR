@@ -28,7 +28,7 @@
 #' @param json TRUE/FALSE. Should the function return a JSON-character string?
 #' (Default is FALSE.) If TRUE output cannot be processed with the functions
 #' from this package. Can be parsed using e.g. [jsonlite::fromJSON()].
-#' @param projectname The name of the project in the Field Client that one
+#' @param projectname (deprecated) The name of the project in the Field Client that one
 #' wishes to load. Will overwrite the project set in the `connection`-object.
 #' See [idf_projects()] for all available projects.
 #'
@@ -62,8 +62,13 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   json = FALSE,
   projectname = NULL) {
 
+  warn_for_project(project = projectname)
+
+  if (is.null(connection$project)) {
+    connection$project <- projectname
+  }
+
   client <- proj_idf_client(conn = connection,
-                            project = projectname,
                             include = "all")
 
   options(digits = 20)
@@ -96,9 +101,7 @@ get_idaifield_docs <- function(connection = connect_idaifield(
     }
   }
 
-  projectname <- ifelse(is.null(projectname),
-                        connection$project,
-                        projectname)
+  projectname <- connection$project
 
   attr(idaifield_docs, "connection") <- connection
   attr(idaifield_docs, "projectname") <- projectname

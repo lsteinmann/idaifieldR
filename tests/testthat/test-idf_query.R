@@ -2,17 +2,17 @@ skip_on_cran()
 
 connection <- skip_if_no_connection()
 
-uidlist <- get_uid_list(get_idaifield_docs(connection, projectname = "rtest"))
+uidlist <- get_uid_list(get_idaifield_docs(connection))
 
 test_that("returns idaifield_docs", {
-  res <- idf_query(connection, projectname = "rtest",
+  res <- idf_query(connection,
                    field = "category", value = "Layer")
   expect_equal(class(res), "idaifield_docs")
 })
 
 
 test_that("returns appropriate entries", {
-  res <- idf_index_query(connection, projectname = "rtest",
+  res <- idf_index_query(connection,
                    field = "isRecordedIn", value = "Schnitt 1",
                    uidlist = uidlist)
   test <- check_and_unnest(res)
@@ -23,14 +23,14 @@ test_that("returns appropriate entries", {
 
 test_that("returns appropriate number of entries", {
   count <- unname(table(uidlist$liesWithin)["Befund_6"])
-  res <- idf_index_query(connection, projectname = "rtest",
+  res <- idf_index_query(connection,
                          field = "liesWithin", value = "Befund_6",
                          uidlist = uidlist)
   expect_equal(length(res), count)
 })
 
 test_that("error when field not in uidlist", {
-  expect_error(idf_index_query(connection, projectname = "rtest",
+  expect_error(idf_index_query(connection,
                          field = "storagePlace", value = "Museum",
                          uidlist = uidlist))
 })

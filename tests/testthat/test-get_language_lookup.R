@@ -29,5 +29,5 @@ skip_on_cran()
 
 connection <- skip_if_no_connection()
 
-config <- get_configuration(connection, projectname = "rtest")
+config <- get_configuration(connection)
 

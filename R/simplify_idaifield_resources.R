@@ -317,12 +317,15 @@ simplify_idaifield <- function(idaifield_docs,
     uidlist <- get_uid_list(idaifield_docs)
   }
 
-  projectname <- attr(idaifield_docs, "projectname")
+
   conn <- attr(idaifield_docs, "connection")
+  if (is.null(conn$project)) {
+    conn$project <- attr(idaifield_docs, "projectname")
+  }
 
   ping <- suppressWarnings(idf_ping(conn))
   if (ping) {
-    config <- get_configuration(conn, projectname = projectname)
+    config <- get_configuration(conn)
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
     ## Language handling / messages
     languages <- unlist(config$projectLanguages)

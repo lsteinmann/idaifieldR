@@ -10,7 +10,7 @@
 #'
 #' @param connection A connection object as returned
 #' by [connect_idaifield()]
-#' @param projectname The name of the project in the Field Client that one
+#' @param projectname (deprecated) The name of the project in the Field Client that one
 #' wishes to load. Will overwrite the project argument that was set
 #' in [connect_idaifield()].
 #'
@@ -32,10 +32,15 @@
 #' }
 get_configuration <- function(connection, projectname = NULL) {
 
+  warn_for_project(project = projectname)
+
+  if (is.null(connection$project)) {
+    connection$project <- projectname
+  }
+
   query <- '{ "selector": { "resource.identifier": "Configuration"}}'
 
   proj_client <- proj_idf_client(connection,
-                                 project = projectname,
                                  include = "query")
 
   response <- proj_client$post(body = query)
