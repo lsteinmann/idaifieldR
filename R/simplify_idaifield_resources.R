@@ -326,6 +326,8 @@ simplify_idaifield <- function(idaifield_docs,
   ping <- suppressWarnings(idf_ping(conn))
   if (ping && conn$project %in% idf_projects(conn)) {
     config <- get_configuration(conn)
+  } else {
+    config <- NA
   }
   if (!any(is.na(config))) {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
