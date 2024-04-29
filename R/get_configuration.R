@@ -47,7 +47,7 @@ get_configuration <- function(connection, projectname = NULL) {
   response <- response_to_list(response)
 
   if (length(response$docs) == 0) {
-    warning("Error in get_configuration(), returning NA: Project has no configuration!")
+    warning("get_configuration() returning NA: Project has no configuration!")
     return(NA)
   } else {
     config <- find_resource(response)

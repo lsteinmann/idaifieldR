@@ -86,7 +86,7 @@ get_idaifield_docs <- function(connection = connect_idaifield(
                              function(x)
                                x$doc$resource$id)
                       == "configuration")
-    if (!is.na(conf_ind)) {
+    if (length(conf_ind) != 0) {
       idaifield_docs[[conf_ind]] <- NULL
     }
 

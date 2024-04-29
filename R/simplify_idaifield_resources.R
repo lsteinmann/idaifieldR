@@ -197,7 +197,7 @@ simplify_single_resource <- function(resource,
   return(resource)
 }
 
-#' Simplify a List Imported from an iDAI.field / Field Desktop-Database
+#' Simplify a List Imported from an iDAI.field / Field Desktop-`1041-1`#' Simplify a List Imported from an iDAI.field / Field Desktop-Database
 #'
 #' The function will take a list as returned by
 #' [get_idaifield_docs()], [idf_query()], [idf_index_query()], or
@@ -326,6 +326,8 @@ simplify_idaifield <- function(idaifield_docs,
   ping <- suppressWarnings(idf_ping(conn))
   if (ping && conn$project %in% idf_projects(conn)) {
     config <- get_configuration(conn)
+  }
+  if (!any(is.na(config))) {
     fieldtypes <- get_field_inputtypes(config, inputType = "all")
     ## Language handling / messages
     languages <- unlist(config$projectLanguages)
@@ -355,6 +357,7 @@ simplify_idaifield <- function(idaifield_docs,
   }
 
   idaifield_simple <- lapply(idaifield_docs, function(x) {
+    #print(x$identifier)
     new_res <- simplify_single_resource(
       x,
       replace_uids = replace_uids,
@@ -388,4 +391,13 @@ simplify_idaifield <- function(idaifield_docs,
 
   return(idaifield_simple)
 }
+
+
+
+
+
+
+
+
+
 
