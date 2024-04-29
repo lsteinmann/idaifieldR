@@ -257,6 +257,11 @@ get_field_index <- function(connection,
     x$relations["liesWithin"] <- reduce_relations(x$relations["liesWithin"],
                                                   x$id,
                                                   x$identifier)
+    if (verbose) {
+      # this is not ideal but seems to work
+      x$shortDescription <- gather_languages(x["shortDescription"],
+                                             language = language)
+    }
 
     # unlist and append the relations list to top level list
     rel <- unlist(x$relations)
@@ -269,6 +274,8 @@ get_field_index <- function(connection,
     }
     # reorder the list
     x <- x[fields]
+
+    return(x)
   })
   index_df <- do.call(rbind.data.frame, index_df)
 
@@ -279,11 +286,6 @@ get_field_index <- function(connection,
   index_df$isRecordedIn <- replace_uid(index_df$isRecordedIn, index_df)
   index_df$liesWithin <- replace_uid(index_df$liesWithin, index_df)
 
-  if (verbose) {
-    # not sure if this really works, but seems okay?
-    index_df$shortDescription <- gather_languages(index_df$shortDescription,
-                                                  language = language)
-  }
   if (find_layers) {
     index_df$liesWithinLayer <- find_layer(index_df$identifier, index_df)
   }
