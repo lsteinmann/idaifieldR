@@ -12,7 +12,7 @@ if (all(is.na(check))) {
   skip(paste0("Test skipped, because of error: ", check))
 }
 
-check <- try(idf_check_for_project(connection, project = "empty-db"))
+check <- try(idf_check_for_project(connection, project = "empty-db"), silent = TRUE)
 if (!inherits(check, "try-error")) {
   test_that("message & NA on non-existing changes", {
     connection$project <- "empty-db"
@@ -110,3 +110,4 @@ test_that("error if connection settings dont have project", {
   expect_error(idf_last_changed(connection = connection, n = 5),
                "project")
 })
+

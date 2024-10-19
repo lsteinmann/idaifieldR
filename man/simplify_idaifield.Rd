@@ -2,7 +2,7 @@
 % Please edit documentation in R/simplify_idaifield_resources.R
 \name{simplify_idaifield}
 \alias{simplify_idaifield}
-\title{Simplify a List Imported from an iDAI.field / Field Desktop-Database}
+\title{Simplify a List Imported from an iDAI.field / Field Desktop-\code{1041-1}#' Simplify a List Imported from an iDAI.field / Field Desktop-Database}
 \usage{
 simplify_idaifield(
   idaifield_docs,

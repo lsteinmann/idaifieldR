@@ -238,3 +238,24 @@ warn_for_project <- function(project = NULL, fail = FALSE) {
   }
 }
 
+
+
+
+#' Reduces a (relations) list to its first element and warns accordingly.
+#'
+#' @param resource The resource to be checked
+#' @param uuid The id/UUID of the resource (for warning)
+#' @param identifier The identifier of the resource (for warning)
+#'
+#' @return The reduced relations list
+#'
+#' @keywords internal
+reduce_relations <- function(relation, uuid = NA, identifier = NA) {
+  if (!is.null(relation[[1]]) && length(relation[[1]]) > 1) {
+    warning(paste0("Resource ", identifier, " (", uuid, ") has ",
+                   length(relation[[1]]), " '", names(relation), "'-relations but only one is ",
+                   "allowed. Using first entry (", relation[[1]][1], ")."))
+    relation[[1]][2:length(relation[[1]])] <- NULL
+  }
+  return(relation)
+}

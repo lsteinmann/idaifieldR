@@ -48,13 +48,12 @@ fix_relations <- function(resource, replace_uids = TRUE, uidlist = NULL) {
   if (replace_uids == TRUE && !is.data.frame(uidlist)) {
     stop("replace_uids = TRUE but no UIDlist supplied")
   }
-  # checks if the relations field of the resource is non-empty,
-  if (length(resource$relations) > 0) {
-    # and if so, assigns it to the relationslist variable, flattened
-    # (i.e., converted to a vector) using unlist(). The function then
-    # gets the names of the elements in relationslist and removes all numeric
+  # unlist/flatten the relations list and check if the resource has relations
+  # (meaning the list is not empty)
+  relationslist <- unlist(resource$relations)
+  if (length(relationslist) > 0) {
+    # get the names of the elements in relationslist and removes all numeric
     # characters using gsub().
-    relationslist <- unlist(resource$relations)
     names <- gsub("\\d", "", names(relationslist))
     # If the replace_uids argument is TRUE, replaces the unique IDs in
     # relationslist with identifiers gathered from the uidlist.

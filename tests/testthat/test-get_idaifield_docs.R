@@ -30,8 +30,17 @@ skip_on_cran()
 connection <- skip_if_no_connection()
 
 
+test_that("works without config in project", {
+  conn <- connection
+  conn$project <- "test"
+  test_docs <- get_idaifield_docs(connection = conn)
+  check <- check_if_idaifield(test_docs)
+  expect_true(check["idaifield_docs"], TRUE)
+})
+
 test_docs_raw <- get_idaifield_docs(connection = connection,
                                     raw = TRUE)
+
 
 test_that("returns docs-lists", {
   check <- check_if_idaifield(test_docs_raw)

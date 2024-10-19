@@ -277,7 +277,8 @@ gather_languages <- function(input_list, language = "all", silent = FALSE) {
 #' }
 #'
 #' @returns A numerical value representing the year, with a negative
-#' sign indicating BCE and a positive sign indicating CE.
+#' sign indicating BCE and a positive sign indicating CE. The `warning`
+#' attribute carries over possible warnings.
 #'
 #' @keywords internal
 #'
@@ -289,9 +290,9 @@ gather_languages <- function(input_list, language = "all", silent = FALSE) {
 #' bce_ce(list)
 #' }
 bce_ce <- function(list) {
-  if (is.list(list)) {
-    year <- abs(as.numeric(list$inputYear))
+  if (is.list(list) && "inputType" %in% names(list)) {
     bce_ce <- list$inputType
+    year <- abs(as.numeric(list$inputYear))
     if (bce_ce == "bce") {
       year <- 0 - year
     } else if (bce_ce == "ce") {
@@ -299,11 +300,17 @@ bce_ce <- function(list) {
     } else if (bce_ce == "bp") {
       year <- 1950 - year # 1950 is the zero point / origin of "before present"
     } else {
-      stop("None of BCE/CE/BP given.")
+      attributes(year)$warning <- "None of BCE/CE/BP given. Dates may be incorrect."
     }
     return(year)
+  } else if (is.list(list) && "year" %in% names(list)) {
+    year <- as.numeric(list$year)
+    attributes(year)$warning <- "No inputType for Year set. (Legacy data.)"
+    return(year)
   } else {
-    return(NA)
+    year <- NA
+    attributes(year)$message <- "Could not transform dates. Not a list."
+    return(year)
   }
 }
 
@@ -354,12 +361,13 @@ fix_dating <- function(dat_list, use_exact_dates = FALSE) {
   dat_min <- lapply(dat_list, function(x) unlist(bce_ce(x$begin)))
   dat_max <- lapply(dat_list, function(x) unlist(bce_ce(x$end)))
 
-
+  warnings_min <- unlist(lapply(dat_min, function(x) attributes(x)))
+  warnings_max <- unlist(lapply(dat_max, function(x) attributes(x)))
 
   new_dat_min <- suppressWarnings(min(unlist(dat_min), na.rm = TRUE))
   new_dat_max <- suppressWarnings(max(unlist(dat_max), na.rm = TRUE))
 
-  dat_type <- unlist(lapply(dat_list, function(x) x$type))
+  dat_type <- unlist(lapply(dat_list, function(x) na_if_empty(x$type)))
 
   if (use_exact_dates) {
     ex_date <- dat_type == "exact"
@@ -387,11 +395,15 @@ fix_dating <- function(dat_list, use_exact_dates = FALSE) {
   dat_complete <- paste0("dating list ", seq(1:length(dat_complete)), ": ",
                          dat_complete, collapse = "; ")
 
-  dat_source <- unlist(lapply(dat_list, function(x) x$source))
+  dat_source <- unlist(lapply(dat_list, function(x) na_if_empty(x$source)))
 
   dat_list <- list(min = new_dat_min, max = new_dat_max,
                    type = new_dat_type, uncertain = dat_uncertain,
                    source = dat_source, complete = dat_complete)
+  if(any(c(length(warnings_min), length(warnings_max)) >= 1)) {
+    warnings <- list(warnings = paste("min:", warnings_min, "; max:", warnings_max))
+    dat_list <- append(dat_list, warnings)
+  }
 
   names(dat_list) <- paste0("dating.", names(dat_list))
   return(dat_list)
