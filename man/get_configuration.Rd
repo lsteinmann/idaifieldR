@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_configuration.R
 \name{get_configuration}
 \alias{get_configuration}
-\title{Get the Custom Project Configuration as Stored in the Project Database}
+\title{Get the Custom Project Configuration as Provided by the Field API}
 \usage{
 get_configuration(connection, projectname = NULL)
 }
@@ -21,23 +21,20 @@ could not be found or the connection failed.
 \description{
 This function retrieves the project configuration (if existent) from an
 \href{https://github.com/dainst/idai-field}{iDAI.field} project.
-The list will only contain fields and valuelists
-that have been edited in the project configuration editor in iDAI.field 3
-(Field Desktop) and does not encompass \emph{fields}, \emph{valuelists} and
-\emph{translation} added before the update to
-\href{https://github.com/dainst/idai-field}{iDAI.field} 3.
+The list will only contain the complete configuration as used in the
+project, including custom and \emph{fields}, \emph{valuelists} and
+\emph{translations}.
 }
 \examples{
 \dontrun{
 conn <- connect_idaifield(serverip = "127.0.0.1",
 user = "R", pwd = "hallo", project = "rtest")
-config <- get_configuration(connection = conn,
-projectname = "rtest")
+config <- get_configuration(connection = conn)
 }
 }
 \seealso{
 \itemize{
-\item Get the inputTypes from a Configuration: \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
-\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
+\item (Wont work currently) Get the inputTypes from a Configuration: \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
+\item (Wont work currently) This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
 }
 }

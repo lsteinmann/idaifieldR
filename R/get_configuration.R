@@ -1,12 +1,10 @@
-#' Get the Custom Project Configuration as Stored in the Project Database
+#' Get the Custom Project Configuration as Provided by the Field API
 #'
 #' This function retrieves the project configuration (if existent) from an
 #' [iDAI.field](https://github.com/dainst/idai-field) project.
-#' The list will only contain fields and valuelists
-#' that have been edited in the project configuration editor in iDAI.field 3
-#' (Field Desktop) and does not encompass *fields*, *valuelists* and
-#' *translation* added before the update to
-#' [iDAI.field](https://github.com/dainst/idai-field) 3.
+#' The list will only contain the complete configuration as used in the
+#' project, including custom and *fields*, *valuelists* and
+#' *translations*.
 #'
 #' @param connection A connection object as returned
 #' by [connect_idaifield()]
@@ -18,8 +16,8 @@
 #' could not be found or the connection failed.
 #'
 #' @seealso
-#' * Get the inputTypes from a Configuration: [get_field_inputtypes()]
-#' * This function is used by: [simplify_idaifield()].
+#' * (Wont work currently) Get the inputTypes from a Configuration: [get_field_inputtypes()]
+#' * (Wont work currently) This function is used by: [simplify_idaifield()].
 #'
 #' @export
 #'
@@ -27,8 +25,7 @@
 #' \dontrun{
 #' conn <- connect_idaifield(serverip = "127.0.0.1",
 #' user = "R", pwd = "hallo", project = "rtest")
-#' config <- get_configuration(connection = conn,
-#' projectname = "rtest")
+#' config <- get_configuration(connection = conn)
 #' }
 get_configuration <- function(connection, projectname = NULL) {
 
@@ -38,21 +35,23 @@ get_configuration <- function(connection, projectname = NULL) {
     connection$project <- projectname
   }
 
-  query <- '{ "selector": { "resource.identifier": "Configuration"}}'
+  url <- gsub("3001", "3000", connection$settings$base_url)
 
-  proj_client <- proj_idf_client(connection,
-                                 include = "query")
+  proj_conn <- crul::HttpClient$new(url = paste0(url, "/configuration/", connection$project),
+                                    opts = connection$settings$auth,
+                                    headers = connection$settings$headers)
 
-  response <- proj_client$post(body = query)
-  response <- response_to_list(response)
+  response <- response_to_list(proj_conn$get())
 
-  if (length(response$docs) == 0) {
-    warning("get_configuration() returning NA: Project has no configuration!")
+  if ("categories" %in% names(response)) {
+    config <- name_all_nested_lists(response)
+    return(config)
+  } else if ("reason" %in% names(response)) {
+    warning(paste0("get_configuration() returning NA: ", response$reason))
     return(NA)
   } else {
-    config <- find_resource(response)
-    config <- try(config[[1]], silent = TRUE)
-    return(config)
+    warning("get_configuration() returning NA: Something unexpected happened.")
+    return(NA)
   }
 
 }
