@@ -1,7 +1,7 @@
 Type: Package
 Package: idaifieldR
-Title: Importing Data from iDAI.field into R
-Version: 0.3.4
+Title: Importing Data from Field Desktop / iDAI.field into R
+Version: 0.3.5
 Authors@R: 
     person("Lisa", "Steinmann", , "lisa.steinmann@rub.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2215-1243"))
@@ -34,5 +34,5 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
