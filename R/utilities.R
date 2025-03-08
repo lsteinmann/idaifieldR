@@ -322,3 +322,34 @@ name_all_nested_lists <- function(lst) {
   }
   return(lst)
 }
+
+
+#' Return a sub-list from a nested list by name
+#'
+#'
+#' @param target_name a character value expected to be the name of one list
+#' @param nested_list a nested list
+#'
+#' @return The first sub-list that has the name passed to target_name.
+#' @export
+#'
+#' @examples
+#' list <- list(first1 = list(second1 = list(1, 2, 3), second2 = list(4, 5, 6)), first2 = list(7, 8, 9))
+#' find_named_list("second2", list)
+find_named_list <- function(target_name, nested_list) {
+  # Check if the current list contains the target name
+  if (!is.null(names(nested_list)) && target_name %in% names(nested_list)) {
+    result <- nested_list[[target_name]]
+    return(result)  # Return the matching sublist
+  }
+
+  # Search recursively in all named sublists
+  for (key in names(nested_list)) {
+    if (is.list(nested_list[[key]])) {  # Ensure it's a list before recursion
+      result <- find_named_list(target_name, nested_list[[key]])
+      if (!is.null(result)) return(result)  # Return if a match is found
+    }
+  }
+
+  return(NULL)  # Return NULL if no match found
+}
