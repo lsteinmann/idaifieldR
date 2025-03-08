@@ -1,10 +1,10 @@
 #' Get the Custom Project Configuration as Provided by the Field API
 #'
-#' This function retrieves the project configuration (if existent) from an
-#' [iDAI.field](https://github.com/dainst/idai-field) project.
-#' The list will only contain the complete configuration as used in the
-#' project, including custom and *fields*, *valuelists* and
-#' *translations*.
+#' This function retrieves the complete project configuration (if existent)
+#' from an [iDAI.field](https://github.com/dainst/idai-field) project via
+#' Field's configuration endpoint. The list will only contain the complete
+#' configuration as used in the project, including custom and *fields*,
+#' *valuelists* and *translations*.
 #'
 #' @param connection A connection object as returned
 #' by [connect_idaifield()]
