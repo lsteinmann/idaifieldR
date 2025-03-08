@@ -16,7 +16,8 @@ for the inputYear value. Must be one of "bce", "ce", or "bp".}
 }
 \value{
 A numerical value representing the year, with a negative
-sign indicating BCE and a positive sign indicating CE.
+sign indicating BCE and a positive sign indicating CE. The \code{warning}
+attribute carries over possible warnings.
 }
 \description{
 This function takes a list containing a numerical year and a type of dating

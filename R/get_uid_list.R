@@ -98,11 +98,19 @@ get_uid_list <- function(idaifield_docs,
     uidlist$isRecordedIn <- unlist(lapply(idaifield_docs,
                                           function(x) na_if_empty(x$relation.isRecordedIn)))
   }
-  uidlist$liesWithin <- unlist(lapply(idaifield_docs,
-                                      function(x) na_if_empty(x$relations$liesWithin)))
+
+  # It should not be possible to have more than one liesWithin-relation, but it apparently can occur.
+  uidlist$liesWithin <- unlist(
+    lapply(idaifield_docs,
+           function(x) {
+             x$relations["liesWithin"] <- reduce_relations(x$relations["liesWithin"],
+                                                           x$id,
+                                                           x$identifier)
+             na_if_empty(x$relations$liesWithin)
+           }))
   if (all(is.na(uidlist$liesWithin))) {
     uidlist$liesWithin <- unlist(lapply(idaifield_docs,
-                                        function(x) na_if_empty(x$relation.liesWithin)))
+                                        function(x) na_if_empty(x$relation.liesWithin)[1]))
   }
 
   if (verbose) {
@@ -236,12 +244,25 @@ get_field_index <- function(connection,
   fields <- gsub("relations.", "", fields)
   fields <- fields[!fields == "type"]
 
+
   index_df <- lapply(response, function(x) {
     # switch remaining 'type' list names to 'category'
     type_ind <- names(x) == "type"
     if (any(type_ind)) {
       names(x)[type_ind] <- "category"
     }
+
+
+    # check if liesWithin contains only one element, if not: discard and warn
+    x$relations["liesWithin"] <- reduce_relations(x$relations["liesWithin"],
+                                                  x$id,
+                                                  x$identifier)
+    if (verbose) {
+      # this is not ideal but seems to work
+      x$shortDescription <- gather_languages(x["shortDescription"],
+                                             language = language)
+    }
+
     # unlist and append the relations list to top level list
     rel <- unlist(x$relations)
     x <- append(x, rel)
@@ -253,6 +274,8 @@ get_field_index <- function(connection,
     }
     # reorder the list
     x <- x[fields]
+
+    return(x)
   })
   index_df <- do.call(rbind.data.frame, index_df)
 
@@ -263,11 +286,6 @@ get_field_index <- function(connection,
   index_df$isRecordedIn <- replace_uid(index_df$isRecordedIn, index_df)
   index_df$liesWithin <- replace_uid(index_df$liesWithin, index_df)
 
-  if (verbose) {
-    # not sure if this really works, but seems okay?
-    index_df$shortDescription <- gather_languages(index_df$shortDescription,
-                                                  language = language)
-  }
   if (find_layers) {
     index_df$liesWithinLayer <- find_layer(index_df$identifier, index_df)
   }

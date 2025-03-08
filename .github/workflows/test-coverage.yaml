@@ -3,8 +3,14 @@
 on:
   push:
     branches: [main]
+    paths:
+      - "R/**"
+      - "tests/**"
   pull_request:
     branches: [main]
+    paths:
+      - "R/**"
+      - "tests/**"
 
 name: test-coverage with db connection
 
@@ -15,7 +21,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up CouchDB (testdata will be used from this repo)
         uses: "lsteinmann/couchdb-action@master"

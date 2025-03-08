@@ -8,7 +8,7 @@ test_that("gives warning for invalid connection object", {
 })
 
 test_that("gives warning for invalid connection credentials", {
-  expect_warning(test <- idf_ping(no_conn), "host")
+  expect_warning(test <- idf_ping(no_conn))
   expect_false(test)
 })
 

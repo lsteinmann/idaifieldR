@@ -12,7 +12,7 @@ if (all(is.na(check))) {
   skip(paste0("Test skipped, because of error: ", check))
 }
 
-check <- try(idf_check_for_project(connection, project = "empty-db"))
+check <- try(idf_check_for_project(connection, project = "empty-db"), silent = TRUE)
 if (!inherits(check, "try-error")) {
   test_that("message & NA on non-existing changes", {
     connection$project <- "empty-db"
@@ -30,26 +30,19 @@ test_that("returns a character vector of length n", {
   expect_length(res, n)
 })
 
-test_that("returns a character vector of
-          length nrow(index)+1 (no config in index)
+test_that("returns a character vector longer than the index (due to
+          config and deleted docd)
           when n = 'all' or n = Inf", {
   n <- "all"
   res <- idf_last_changed(connection = connection, n = n)
   expect_equal(class(res), "character")
-  if ("configuration" %in% res) {
-    expect_length(res, nrow(index)+1)
-  } else {
-    expect_length(res, nrow(index))
-  }
+
+  expect_gt(length(res), nrow(index))
 
   n <- Inf
   res <- idf_last_changed(connection = connection, n = n)
   expect_equal(class(res), "character")
-  if ("configuration" %in% res) {
-    expect_length(res, nrow(index)+1)
-  } else {
-    expect_length(res, nrow(index))
-  }
+  expect_gt(length(res), nrow(index))
 })
 
 test_that("error if n is not numeric (and not Inf/all)", {
@@ -110,3 +103,4 @@ test_that("error if connection settings dont have project", {
   expect_error(idf_last_changed(connection = connection, n = 5),
                "project")
 })
+
