@@ -126,3 +126,63 @@ get_field_inputtypes <- function(config, inputType = "all",
   attributes(fields_mat)$duplicate_names <- attrib_dupl
   return(fields_mat)
 }
+
+
+
+
+#' Title
+#'
+#' @param nested_list
+#' @param parent_name
+#' @param category_name
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+extract_inputtypes <- function(nested_list, parent_name = NULL, category_name = NULL) {
+  results <- list()  # Store results
+
+  # Check if the current list has an "item" (i.e., a category)
+  if ("item" %in% names(nested_list)) {
+    category_name <- parent_name  # The category is the parent list
+
+    # If "groups" exists, extract its sublists
+    if ("groups" %in% names(nested_list$item)) {
+      for (group_name in names(nested_list$item$groups)) {
+        group <- nested_list$item$groups[[group_name]]
+
+        # If "fields" exists in this group, extract field names and inputType
+        if ("fields" %in% names(group)) {
+          for (field_name in names(group$fields)) {
+            input_type <- group$fields[[field_name]]$inputType
+
+            # Store the extracted row
+            results <- append(results, list(
+              list(
+                category = category_name,
+                parent = if (!is.null(parent_name)) parent_name else category_name,
+                fieldname = field_name,
+                inputType = input_type
+              )
+            ))
+          }
+        }
+      }
+    }
+  }
+
+  # Recurse into "categories" and "trees"
+  for (key in names(nested_list)) {
+    if (is.list(nested_list[[key]]) && key %in% c("categories", "trees")) {
+      for (sub_key in names(nested_list[[key]])) {
+        sub_list <- nested_list[[key]][[sub_key]]
+        results <- append(results, extract_fields(sub_list, parent_name = sub_key))
+      }
+    }
+  }
+
+  if (length(results) > 0) {
+    return(results)
+  }
+}
