@@ -1,3 +1,10 @@
+# idaifieldR 0.3.5 _2025-03-08_
+* Some minor fixes: 
+  * checks if project exists in `simplify_idaifield()`
+  * improve support for older projects
+  * fix language selection in `get_field_index()`
+  * (hopefully) fix some failing tests
+
 # idaifieldR 0.3.4 _2023-12-17_
 * Make `get_field_index()` more efficient by utilizing vectors instead of `lapply()`. 
 * Adding *liesWithinLayer* in `get_field_index()` and `simplify_idaifield()` is now an option. This way, in `get_field_index()` the "shortDescription" can be added without the more time intensive recursive layer search that comes with the now available option `find_layers = TRUE`. For info on what this does, see documentation of `find_layer()`.
