@@ -21,11 +21,11 @@ simplify_single_resource <- function(resource,
                                      find_layers = TRUE,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
-                                     fieldtypes = NULL,
                                      remove_config_names = TRUE,
                                      language = "all",
                                      spread_fields = TRUE,
                                      use_exact_dates = FALSE,
+                                     config = NA,
                                      silent = FALSE) {
 
   stopifnot(is.logical(keep_geometry))
@@ -188,9 +188,10 @@ simplify_single_resource <- function(resource,
   # fieldtypes as an additional argument. This converts the values in the
   # fields of resource to one-hot encoded vectors based on the
   # specified fieldtypes.
-  if (spread_fields & is.matrix(fieldtypes)) {
+  if (spread_fields & !any(is.na(config))) {
     resource <- convert_to_onehot(resource = resource,
-                                  fieldtypes = fieldtypes)
+                                  config = config)
+    # TODO
   }
 
   # Then, returns the modified resource.
@@ -330,7 +331,6 @@ simplify_idaifield <- function(idaifield_docs,
     config <- NA
   }
   if (!any(is.na(config))) {
-    fieldtypes <- get_field_inputtypes(config, inputType = "all")
     ## Language handling / messages
     languages <- unlist(config$projectLanguages)
     if (language != "all") {
@@ -349,9 +349,6 @@ simplify_idaifield <- function(idaifield_docs,
     } else {
       message("Keeping all languages for input fields.")
     }
-  } else {
-    fieldtypes <- NA
-    attributes(fieldtypes)$duplicate_names <- NA
   }
 
   if (find_layers == TRUE) {
@@ -366,11 +363,11 @@ simplify_idaifield <- function(idaifield_docs,
       find_layers = FALSE,
       uidlist = uidlist,
       keep_geometry = keep_geometry,
-      fieldtypes = fieldtypes,
       language = language,
       remove_config_names = remove_config_names,
       spread_fields = spread_fields,
       use_exact_dates = use_exact_dates,
+      config = config,
       silent = silent
     )
     if (find_layers == TRUE) {
@@ -389,7 +386,6 @@ simplify_idaifield <- function(idaifield_docs,
   attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
   attr(idaifield_simple, "projectname") <- attr(idaifield_docs, "projectname")
   attr(idaifield_simple, "language") <- language
-  attr(idaifield_simple, "duplicate_names") <- attributes(fieldtypes)$duplicate_names
 
   return(idaifield_simple)
 }
