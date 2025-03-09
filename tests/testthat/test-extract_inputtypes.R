@@ -35,7 +35,7 @@ my_list <- list(
         )
       )
     ),
-    Sample = list(
+    Project = list(
       item = list(
         name = "Project",
         label = list(de = "Projekt", en = "Project"),
@@ -58,20 +58,20 @@ expected <- list(
   list(
     category = "Trench",
     parent = "Operation",
-    field = "shortDescription",
+    fieldname = "shortDescription",
     inputType = "input"
-  ),
-  list(
-    category = "Project",
-    parent = "Project",
-    field = "description",
-    inputType = "text"
   ),
   list(
     category = "Trench",
     parent = "Operation",
-    field = "supervisor",
+    fieldname = "supervisor",
     inputType = "checkboxes"
+  ),
+  list(
+    category = "Project",
+    parent = "Project",
+    fieldname = "description",
+    inputType = "text"
   )
 )
 
@@ -81,3 +81,4 @@ test_that("format of output is as expected", {
 
   expect_setequal(result, expected)
 })
+

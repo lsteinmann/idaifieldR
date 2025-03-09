@@ -37,7 +37,8 @@ get_configuration <- function(connection, projectname = NULL) {
 
   url <- gsub("3001", "3000", connection$settings$base_url)
 
-  proj_conn <- crul::HttpClient$new(url = paste0(url, "/configuration/", connection$project),
+  proj_conn <- crul::HttpClient$new(url = paste0(url, "/configuration/",
+                                                 connection$project),
                                     opts = connection$settings$auth,
                                     headers = connection$settings$headers)
 
@@ -140,19 +141,26 @@ get_field_inputtypes <- function(config, inputType = "all",
 #' @export
 #'
 #' @examples
-extract_inputtypes <- function(nested_list, parent_name = NULL, category_name = NULL) {
+extract_inputtypes <- function(nested_list,
+                               parent_name = NULL,
+                               category_name = NULL) {
   results <- list()  # Store results
 
-  # Check if the current list has an "item" (i.e., a category)
-  if ("item" %in% names(nested_list)) {
-    category_name <- parent_name  # The category is the parent list
+  # I am terribly sorry for this mess. It is horrible. It works, but it hurts.
 
-    # If "groups" exists, extract its sublists
+  # Check if the current list has an 'item' (i.e., a category)
+  if ("item" %in% names(nested_list)) {
+    # if we got not category_name, it means that this is the first try
+    # which means our category is what was stored as "parent_name" on
+    # the first level of the config (main categories)
+    category_name <- ifelse(is.null(category_name), parent_name, category_name)
+
+    # If 'groups' exists, extract its sublists
     if ("groups" %in% names(nested_list$item)) {
       for (group_name in names(nested_list$item$groups)) {
         group <- nested_list$item$groups[[group_name]]
 
-        # If "fields" exists in this group, extract field names and inputType
+        # If 'fields' exists in this group, extract field names and inputType
         if ("fields" %in% names(group)) {
           for (field_name in names(group$fields)) {
             input_type <- group$fields[[field_name]]$inputType
@@ -161,7 +169,7 @@ extract_inputtypes <- function(nested_list, parent_name = NULL, category_name = 
             results <- append(results, list(
               list(
                 category = category_name,
-                parent = if (!is.null(parent_name)) parent_name else category_name,
+                parent = ifelse(is.null(parent_name), category_name, parent_name),
                 fieldname = field_name,
                 inputType = input_type
               )
@@ -172,12 +180,29 @@ extract_inputtypes <- function(nested_list, parent_name = NULL, category_name = 
     }
   }
 
-  # Recurse into "categories" and "trees"
+  # No item or groups or fields in names(nested_list)
+  # Recurse into "categories" and "trees"'
   for (key in names(nested_list)) {
     if (is.list(nested_list[[key]]) && key %in% c("categories", "trees")) {
       for (sub_key in names(nested_list[[key]])) {
         sub_list <- nested_list[[key]][[sub_key]]
-        results <- append(results, extract_fields(sub_list, parent_name = sub_key))
+        # if we did not get a parent_name yet, it means we are on the
+        # first level of the config with the main categories, thus we set the
+        # parent name:
+        if (is.null(parent_name)) {
+          results <- append(results,
+                            extract_inputtypes(sub_list,
+                                               parent_name = sub_key))
+        } else {
+          # otherwise it means we are now at the second
+          # level (i.e. sub-categories); so we pass the previous parent_name
+          # whill will be the main category, but also pass this
+          # categories name, which is the sub_key now:
+          results <- append(results,
+                            extract_inputtypes(sub_list,
+                                               parent_name = parent_name,
+                                               category_name = sub_key))
+        }
       }
     }
   }
