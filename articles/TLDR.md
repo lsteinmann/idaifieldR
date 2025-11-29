@@ -1,0 +1,73 @@
+# TLDR: Essential Workflow
+
+This vignette only highlights the most basic functions and shows a way
+to get to your data quickly.
+
+## Connection: Example
+
+``` r
+conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+db <- get_idaifield_docs(connection = conn)
+index <- get_uid_list(db)
+```
+
+## Selection and Simplify: Example
+
+Using the following few lines and all default arguments while selecting
+from the whole database:
+
+``` r
+library(dplyr)
+pottery <- db %>%
+  idf_select_by(by = "category", value = "Pottery") %>%
+  # Note: simplify_idaifield() needs the index of the complete project database 
+  # as a lookup-table to replace all UUIDs with their identifiers
+  simplify_idaifield(uidlist = index) %>%
+  idaifield_as_matrix() %>%
+  as.data.frame()
+```
+
+## Query and Simplify: Example
+
+Or using the following few lines with direct queries to the database:
+
+``` r
+pottery <- idf_query(connection = conn,
+                     field = "type", 
+                     value = "Pottery") %>%
+  simplify_idaifield(uidlist = index) %>%
+  idaifield_as_matrix() %>%
+  as.data.frame()
+```
+
+See also:
+[`?idf_index_query`](https://lsteinmann.github.io/idaifieldR/reference/idf_index_query.md),
+[`?idf_query`](https://lsteinmann.github.io/idaifieldR/reference/idf_query.md)
+and
+[`?idf_json_query`](https://lsteinmann.github.io/idaifieldR/reference/idf_json_query.md).
+
+## Language Lookup: Example
+
+Downloading translations and converting them into a lookup table:
+
+``` r
+core_lang_list <- download_language_list(project = "core", language = "de")
+pergamon_lang_list <- download_language_list(project = "Pergamon", language = "de")
+config_lang_list <- get_configuration(attr(db, "connection"))
+config_lang_list <- config_lang_list$languages
+
+lookup <- get_language_lookup(core_lang_list, language = "de")
+lookup <- rbind(lookup, get_language_lookup(pergamon_lang_list, language = "de"))
+lookup <- rbind(lookup, get_language_lookup(config_lang_list, language = "de"))
+
+head(lookup)
+```
+
+``` r
+colnames(pottery)
+
+translated <- colnames(pottery)
+names(translated) <- lookup$label[match(translated, lookup$var)]
+
+translated
+```
