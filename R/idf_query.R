@@ -186,7 +186,9 @@ idf_json_query <- function(connection, query, projectname = NULL) {
                                  project = projectname,
                                  include = "query")
 
-
+  if (!grepl('\"limit\":', query, fixed = TRUE)) {
+    query <- add_limit_to_query(query = query, conn = connection)
+  }
   response <- proj_client$post(body = query)
   response <- response_to_list(response)
 

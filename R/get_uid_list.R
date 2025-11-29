@@ -232,9 +232,8 @@ get_field_index <- function(connection,
   query <- paste0(
     '{ "selector": { "$not": { "resource.id": "" } },
    "fields": [', paste0('"', q_fields, '"', collapse = ", "), '] }')
-  if(!jsonlite::validate(query)) {
-    stop("Something went wrong. Could not validate query.")
-  }
+
+  query <- add_limit_to_query(query = query, conn = connection)
 
   # db query here
   client <- proj_idf_client(connection, include = "query")

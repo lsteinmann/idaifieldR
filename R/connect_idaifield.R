@@ -104,7 +104,8 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
 
   settings <- list(headers = headers,
                    base_url = base_url,
-                   auth = auth)
+                   auth = auth,
+                   limit = NA)
 
   status <- NA
   conn <- list(status = status, project = project, settings = settings)
@@ -114,6 +115,11 @@ connect_idaifield <- function(serverip    = "127.0.0.1",
     conn$status <- idf_ping(conn)
     if (conn$status && !is.null(project)) {
       idf_check_for_project(conn)
+      client <- crul::HttpClient$new(url = paste0(conn$settings$base_url, "/", conn$project),
+                                     opts = conn$settings$auth,
+                                     headers = conn$settings$headers)
+      response <- response_to_list(client$get())
+      conn$settings$limit <- response$doc_count
     }
   }
 
@@ -313,4 +319,46 @@ idf_ping <- function(conn) {
   }
 }
 
+
+#' Add limit to JSON query
+#'
+#' This function adds a limit of the max db docs to a query.
+#'
+#' @param conn A connection object returned by [connect_idaifield()].
+#' @param query A MongoDB JSON-query as used in this package.
+#'
+#' @returns A query with limit added for PouchDB
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' conn <- connect_idaifield(project = "test", pwd = "hallo")
+#' fields <- c("resource.category", "resource.identifier")
+#' query <- paste0('{ "selector": { "$not": { "resource.id": "" } },
+#'    "fields": [', paste0('"', fields, '"', collapse = ", "), '] }')
+#' add_limit_to_query(query, conn)
+#' }
+add_limit_to_query <- function(query, conn) {
+  if(!jsonlite::validate(query)) {
+    stop("Something went wrong. Could not validate JSON structure of query.")
+  }
+  conn$settings$limit <- NA
+  if (is.na(conn$settings$limit) && suppressMessages(idf_ping(conn))) {
+    suppressMessages(conn <- connect_idaifield(
+      serverip = gsub("https://|http://|:3001", "", conn$settings$base_url),
+      project = conn$project,
+      user = strsplit(conn$settings$auth$userpwd, ":")[[1]][1],
+      pwd = strsplit(conn$settings$auth$userpwd, ":")[[1]][2],
+      version = ifelse(grepl("3001", conn$settings$base_url), 3, 2),
+      ping = TRUE))
+  }
+
+  limit <- paste0(', "limit": ', conn$settings$limit, ' }')
+  new_query <- gsub("}$", limit, query)
+
+  if(!jsonlite::validate(query)) {
+    stop("Something went wrong. Could not validate JSON structure of query.")
+  }
+  return(new_query)
+}
 
