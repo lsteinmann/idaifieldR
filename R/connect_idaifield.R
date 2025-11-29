@@ -322,7 +322,8 @@ idf_ping <- function(conn) {
 
 #' Add limit to JSON query
 #'
-#' This function adds a limit of the max db docs to a query.
+#' This is a helper function that adds a limit of the max db docs to a query.
+#' It is not great.
 #'
 #' @param conn A connection object returned by [connect_idaifield()].
 #' @param query A MongoDB JSON-query as used in this package.
@@ -340,7 +341,7 @@ idf_ping <- function(conn) {
 #' }
 add_limit_to_query <- function(query, conn) {
   if(!jsonlite::validate(query)) {
-    stop("Something went wrong. Could not validate JSON structure of query.")
+    stop("Something went wrong. Could not validate JSON structure of query before adding limit.")
   }
   conn$settings$limit <- NA
   if (is.na(conn$settings$limit) && suppressMessages(idf_ping(conn))) {
@@ -357,7 +358,7 @@ add_limit_to_query <- function(query, conn) {
   new_query <- gsub("}$", limit, query)
 
   if(!jsonlite::validate(query)) {
-    stop("Something went wrong. Could not validate JSON structure of query.")
+    stop("Something went wrong. Could not validate JSON structure of query after adding limit.")
   }
   return(new_query)
 }
