@@ -1,3 +1,6 @@
+# idaifieldR 0.3.6 _2025-11-29_
+* Quick and dirty fix to get around the default limit of 25 for the `_find` enpoint of PouchDB since Field Desktop v3.6.0
+
 # idaifieldR 0.3.5 _2025-03-08_
 * Some minor fixes: 
   * checks if project exists in `simplify_idaifield()`

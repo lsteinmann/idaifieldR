@@ -15,7 +15,8 @@ add_limit_to_query(query, conn)
 A query with limit added for PouchDB
 }
 \description{
-This function adds a limit of the max db docs to a query.
+This is a helper function that adds a limit of the max db docs to a query.
+It is not great.
 }
 \examples{
 \dontrun{
