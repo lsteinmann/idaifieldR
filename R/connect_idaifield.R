@@ -231,12 +231,16 @@ proj_idf_client <- function(conn, include = "all") {
 #' }
 idf_ping <- function(conn) {
   if (inherits(conn, "idf_connection_settings")) {
-    conn <- crul::HttpClient$new(url = conn$settings$base_url,
-                                 opts = conn$settings$auth,
-                                 headers = conn$settings$headers)
+    client <- crul::HttpClient$new(url = conn$settings$base_url,
+                                   opts = conn$settings$auth,
+                                   headers = conn$settings$headers)
+  } else {
+    # return FALSE if passed object was not a connection
+    warning("Supply an 'idf_connection_settings'-object as returned by `connect_idaifield()`.")
+    return(FALSE)
   }
-  if (inherits(conn, "HttpClient")) {
-    ping <- try(conn$get()$parse("UTF-8"), silent = TRUE)
+  if (inherits(client, "HttpClient")) {
+    ping <- try(client$get()$parse("UTF-8"), silent = TRUE)
     if(inherits(ping, "try-error")) {
       # throw error when curl "Could not resolve host"
       if (grepl("refused", ping[1]) | grepl("Couldn't connect", ping[1])) {
@@ -256,10 +260,6 @@ idf_ping <- function(conn) {
       warning(ping)
       return(FALSE)
     }
-  } else {
-    # return FALSE if passed object was not a connection
-    warning("Supply an 'idf_connection_settings'-object as returned by `connect_idaifield()` or a crul 'HttpClient'.)")
-    return(FALSE)
   }
 }
 
