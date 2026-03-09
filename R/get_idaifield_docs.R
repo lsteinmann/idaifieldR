@@ -13,12 +13,6 @@
 #' Setting `raw = FALSE` will only return a list of the actual data.
 #' You can do this at a later time using [check_and_unnest()]
 #' from this package.
-#' NOTE: If you are planning on using the coordinates stored in the database,
-#' I strongly suggest you consider changing your R digits-setting to a higher
-#' value than the default. Depending on the projection used, coordinates may
-#' be represented by rather long numbers which R might automatically round on
-#' import. `options(digits = 20)` should more than do the trick. (That applies
-#' to other fields containing long numbers as well.)
 #'
 #'
 #' @param connection A connection object as returned
@@ -62,6 +56,14 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   json = FALSE,
   projectname = NULL) {
 
+  # In preparation for getting the coordinates via JSON-API, we need to set
+  # the digits option high enough to return a meaningful amount of digits for
+  # each coordinate. I experienced problems with this before, which is why this
+  # option is set here. on.exit() restores the old settings after the function
+  # finished.
+  old <- options(digits = 20)
+  on.exit(options(old))
+
   warn_for_project(project = projectname)
 
   if (is.null(connection$project)) {
@@ -71,7 +73,6 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   client <- proj_idf_client(conn = connection,
                             include = "all")
 
-  options(digits = 20)
 
   idaifield_docs <- client$get(query = list(include_docs = "true"))
   idaifield_docs <- idaifield_docs$parse("UTF-8")
