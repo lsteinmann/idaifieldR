@@ -70,27 +70,30 @@ connect_idaifield <- function(serverip    = "localhost",
 
   settings <- list(headers = headers,
                    base_url = base_url,
-                   auth = auth,
-                   limit = NA)
+                   auth = auth)
+
+  params <- list(
+    serverip    = serverip,
+    project     = project,
+    pwd         = pwd,
+    ping        = ping
+  )
 
   status <- NA
-  conn <- list(status = status, project = project, settings = settings)
+  conn <- list(status = status, project = project, settings = settings, params = params)
   conn <- structure(conn, class = "idf_connection_settings")
 
   if (ping) {
     conn$status <- idf_ping(conn)
     if (conn$status) {
       idf_check_for_project(conn)
-      client <- crul::HttpClient$new(url = paste0(conn$settings$base_url, "/", conn$project),
-                                     opts = conn$settings$auth,
-                                     headers = conn$settings$headers)
-      response <- response_to_list(client$get())
-      conn$settings$limit <- response$doc_count
     }
   }
 
   return(conn)
 }
+
+
 
 #' Check for the Existence of a Project in a Field Database (internal)
 #'
@@ -256,7 +259,6 @@ idf_ping <- function(conn) {
     } else if (grepl("Welcome", ping)) {
       # return true if connection works
       ping <- jsonlite::fromJSON(ping)
-      message(paste(ping[[1]], "- Connection to Field Database can be established."))
       return(TRUE)
     } else {
       # return FALSE if connection does not work for expected reasons
@@ -293,23 +295,28 @@ idf_ping <- function(conn) {
 #' add_limit_to_query(query, conn)
 #' }
 add_limit_to_query <- function(query, conn) {
+  if (!inherits(conn, "idf_connection_settings")) {
+    stop("'conn' is not an 'idf_connection_settings'.")
+  }
   if(!jsonlite::validate(query)) {
-    stop("Something went wrong. Could not validate JSON structure of query before adding limit.")
+    stop("Could not validate JSON structure of query before adding limit.")
   }
   conn$settings$limit <- NA
-  if (is.na(conn$settings$limit) && suppressMessages(idf_ping(conn))) {
-    suppressMessages(conn <- connect_idaifield(
-      serverip = gsub("https://|http://|:3001", "", conn$settings$base_url),
-      project = conn$project,
-      pwd = strsplit(conn$settings$auth$userpwd, ":")[[1]][2],
-      ping = TRUE))
+  if (idf_ping(conn)) {
+    client <- crul::HttpClient$new(url = paste0(conn$settings$base_url, "/", conn$project),
+                                   opts = conn$settings$auth,
+                                   headers = conn$settings$headers)
+    response <- response_to_list(client$get())
+    limit <- response$doc_count
+  } else {
+    stop()
   }
 
-  limit <- paste0(', "limit": ', conn$settings$limit, ' }')
+  limit <- paste0(', "limit": ', limit, ' }')
   new_query <- gsub("}$", limit, query)
 
   if(!jsonlite::validate(new_query)) {
-    stop("Something went wrong. Could not validate JSON structure of query after adding limit.")
+    stop("Could not validate JSON structure of query after adding limit.")
   }
   return(new_query)
 }

@@ -67,3 +67,14 @@ test_that("error, no connection", {
 })
 
 
+test_that("adds correct limit to the query (needs updating when test data changes)", {
+  conn <- connect_idaifield(pwd = "hallo", project = "rtest", ping = TRUE)
+  query <- '{ "selector": { "resource.processor": ["Anna Allgemeinperson"] } }'
+  new_query <- add_limit_to_query(query, conn)
+  expect_true(grepl("75", new_query))
+})
+
+test_that("adds correct limit to the query (needs updating when test data changes)", {
+  query <- '{ "selector": { "resource.processor": ["Anna Allgemeinperson"] } }'
+  expect_error(add_limit_to_query(query, list(hello = "123")), "idf_connection_settings")
+})
