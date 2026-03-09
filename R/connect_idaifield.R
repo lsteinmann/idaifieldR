@@ -75,8 +75,7 @@ connect_idaifield <- function(serverip    = "localhost",
   params <- list(
     serverip    = serverip,
     project     = project,
-    pwd         = pwd,
-    ping        = ping
+    pwd         = pwd
   )
 
   status <- NA
@@ -160,8 +159,6 @@ proj_idf_client <- function(conn, include = "all") {
   include <- match.arg(include, c("all", "query", "changes"), several.ok = FALSE)
 
   if (is.na(conn$status) || !conn$status) {
-    message(paste0("Status set to '", conn$status,
-                   "'. Attempting to reach database..."))
     conn$status <- idf_ping(conn)
   }
 
@@ -175,6 +172,8 @@ proj_idf_client <- function(conn, include = "all") {
                                       headers = conn$settings$headers)
 
     message <- response_to_list(proj_conn$get())
+
+    # Move this somewhere else, internal function needs not be so verbose.
     message <- paste0("Connected to project '", message$db_name,
                       "' containing ", message$doc_count, " docs.")
 
