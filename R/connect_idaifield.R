@@ -357,7 +357,7 @@ add_limit_to_query <- function(query, conn) {
   limit <- paste0(', "limit": ', conn$settings$limit, ' }')
   new_query <- gsub("}$", limit, query)
 
-  if(!jsonlite::validate(query)) {
+  if(!jsonlite::validate(new_query)) {
     stop("Something went wrong. Could not validate JSON structure of query after adding limit.")
   }
   return(new_query)
