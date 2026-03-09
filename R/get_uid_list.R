@@ -198,8 +198,6 @@ get_uid_list <- function(idaifield_docs,
 #' containing layer-resource recursively.
 #'
 #'
-#'
-#'
 #' @examples
 #' \dontrun{
 #' connection <- connect_idaifield(pwd = "hallo", project = "rtest")

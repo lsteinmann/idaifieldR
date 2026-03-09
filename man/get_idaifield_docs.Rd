@@ -4,12 +4,7 @@
 \alias{get_idaifield_docs}
 \title{Import all \emph{docs} from an iDAI.field / Field Desktop project}
 \usage{
-get_idaifield_docs(
-  connection = connect_idaifield(serverip = "localhost", project = "rtest", pwd =
-    "hallo"),
-  raw = TRUE,
-  json = FALSE
-)
+get_idaifield_docs(connection, raw = TRUE, json = FALSE)
 }
 \arguments{
 \item{connection}{A connection object as returned
