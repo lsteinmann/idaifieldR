@@ -28,10 +28,7 @@
 #' config <- get_configuration(connection = conn)
 #' }
 get_configuration <- function(connection) {
-
-  if (is.null(connection$project)) {
-    stop("Please supply a project to `connect_idaifield()`.")
-  }
+  stop_if_not_idf_connection_settings(connection)
 
   query <- '{ "selector": { "resource.identifier": "Configuration"}}'
 

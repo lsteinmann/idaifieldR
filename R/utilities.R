@@ -234,3 +234,16 @@ reduce_relations <- function(relation, uuid = NA, identifier = NA) {
   }
   return(relation)
 }
+
+#' Check if object is a "idf_connection_settings" and stop if not.
+#'
+#' @param x an object
+#'
+#' @return nothing
+#'
+#' @keywords internal
+stop_if_not_idf_connection_settings <- function(x) {
+  if (!inherits(x, "idf_connection_settings")) {
+    stop(paste0("'", deparse(substitute(x)), "' is not an 'idf_connection_settings'-object as returned by `connect_idaifield()`."))
+  }
+}

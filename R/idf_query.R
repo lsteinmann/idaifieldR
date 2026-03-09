@@ -28,9 +28,7 @@ idf_query <- function(connection,
                       field = "category",
                       value = "Pottery") {
 
-  if (is.null(connection$project)) {
-    stop("Please supply a project to `connect_idaifield()`.")
-  }
+  stop_if_not_idf_connection_settings(connection)
 
 
   if (field == "type" | field == "category") {
@@ -87,16 +85,13 @@ idf_index_query <- function(connection,
                             value = "Brick",
                             uidlist = NULL) {
 
+  stop_if_not_idf_connection_settings(connection)
   if (is.null(uidlist)) {
     stop("idf_index_query() needs an index of the database supplied to 'uidlist'. See `get_field_index()`")
   }
 
   if (!field %in% colnames(uidlist)) {
     stop("Supply a field that corresponds to the columns in the UID-List.")
-  }
-
-  if (is.null(connection$project)) {
-    stop("Please supply a project to `connect_idaifield()`.")
   }
 
   doc_ids <- uidlist$UID[which(uidlist[, field] == value)]
@@ -158,12 +153,11 @@ idf_index_query <- function(connection,
 #'
 #' }
 idf_json_query <- function(connection, query) {
+
+  stop_if_not_idf_connection_settings(connection)
+
   if (!jsonlite::validate(query)) {
     stop("Could not validate JSON structure of query.")
-  }
-
-  if (is.null(connection$project)) {
-    stop("No project set (set it with `connect_idaifield()`).")
   }
 
   proj_client <- proj_idf_client(connection,

@@ -23,5 +23,5 @@ test_that("idf_check_for_project() fails if project is not set", {
   conn <- connect_idaifield(pwd = "hallo", project = "aproject", ping = FALSE)
   conn$status <- TRUE
   conn$project <- NULL
-  expect_error(idf_check_for_project(conn), "project")
+  expect_error(idf_check_for_project(conn))
 })

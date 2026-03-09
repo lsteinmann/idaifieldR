@@ -320,9 +320,7 @@ simplify_idaifield <- function(idaifield_docs,
 
 
   conn <- attr(idaifield_docs, "connection")
-  if (is.null(conn$project)) {
-    conn$project <- attr(idaifield_docs, "projectname")
-  }
+  stop_if_not_idf_connection_settings(conn)
 
   ping <- suppressWarnings(idf_ping(conn))
   if (ping && conn$project %in% idf_projects(conn)) {

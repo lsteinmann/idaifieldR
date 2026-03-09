@@ -113,12 +113,7 @@ connect_idaifield <- function(serverip    = "localhost",
 #' check_for_project(conn) # Will not return anything
 #' }
 idf_check_for_project <- function(conn) {
-  if (!inherits(conn, "idf_connection_settings")) {
-    stop("Not an 'idf_connection_settings'.")
-  }
-  if (is.null(conn$project)) {
-    stop("No project set.")
-  }
+  stop_if_not_idf_connection_settings(conn)
   choices <- suppressMessages(idf_projects(conn))
   if (!conn$project %in% choices) {
     stop(paste0("The requested project '", conn$project, "' does not exist.\n",
@@ -158,15 +153,9 @@ idf_check_for_project <- function(conn) {
 #'   client <- proj_idf_client(conn = connection)
 #' }
 proj_idf_client <- function(conn, include = "all") {
-  if (!inherits(conn, "idf_connection_settings")) {
-    stop("Need an 'idf_connection_settings'-object as returned by `connect_idaifield()`.")
-  }
+  stop_if_not_idf_connection_settings(conn)
 
-  if (is.null(conn$project)) {
-    stop("No project set (set it with `connect_idaifield()`).")
-  } else {
-    url <- paste0(conn$settings$base_url, "/", conn$project)
-  }
+  url <- paste0(conn$settings$base_url, "/", conn$project)
 
   include <- match.arg(include, c("all", "query", "changes"), several.ok = FALSE)
 
@@ -295,9 +284,7 @@ idf_ping <- function(conn) {
 #' add_limit_to_query(query, conn)
 #' }
 add_limit_to_query <- function(query, conn) {
-  if (!inherits(conn, "idf_connection_settings")) {
-    stop("'conn' is not an 'idf_connection_settings'.")
-  }
+  stop_if_not_idf_connection_settings(conn)
   if(!jsonlite::validate(query)) {
     stop("Could not validate JSON structure of query before adding limit.")
   }

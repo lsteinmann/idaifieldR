@@ -46,10 +46,9 @@
 #' idaifield_docs <- get_idaifield_docs(connection = conn)
 #' }
 #'
-get_idaifield_docs <- function(connection = connect_idaifield(
-  serverip = "localhost", project = "rtest", pwd = "hallo"),
-  raw = TRUE,
-  json = FALSE) {
+get_idaifield_docs <- function(connection, raw = TRUE, json = FALSE) {
+
+  stop_if_not_idf_connection_settings(connection)
 
   # In preparation for getting the coordinates via JSON-API, we need to set
   # the digits option high enough to return a meaningful amount of digits for
@@ -59,9 +58,6 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   old <- options(digits = 20)
   on.exit(options(old))
 
-  if (is.null(connection$project)) {
-    stop("Please supply a project to `connect_idaifield()`.")
-  }
 
   client <- proj_idf_client(conn = connection,
                             include = "all")

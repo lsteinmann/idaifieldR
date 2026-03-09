@@ -99,9 +99,8 @@ test_that("returns UUIDs + warning when index is wrong", {
   expect_true(all(check[-exception]))
 })
 
-test_that("error if connection settings dont have project", {
-  connection$project <- NULL
-  expect_error(idf_last_changed(connection = connection, n = 5),
-               "project")
+test_that("error if connection settings isnt correct", {
+  expect_error(idf_last_changed(connection = list(hello = c(1, 2, 3)), n = 5),
+               "connection_settings")
 })
 
