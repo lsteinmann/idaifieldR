@@ -20,10 +20,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = connection,
-#' projectname = "rtest")
+#' connection <- connect_idaifield(
+#'   serverip = "localhost",
+#'   project = "rtest",
+#'   pwd = "hallo"
+#' )
+#' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
 #' idaifield_resources <- unnest_docs(idaifield_docs)
 #' }

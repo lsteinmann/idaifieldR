@@ -41,7 +41,7 @@ translations being used.
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1",
+conn <- connect_idaifield(serverip = "localhost",
                           project = "rtest",
                           pwd = "hallo")
 config <- get_configuration(connection = conn)

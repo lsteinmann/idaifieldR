@@ -22,8 +22,7 @@ iDAI.field 2 / Field Desktop database the list was imported from.
 }
 \examples{
 \dontrun{
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R",
+connection <- connect_idaifield(serverip = "localhost",
                                 pwd = "hallo",
                                 project = "rtest")
 

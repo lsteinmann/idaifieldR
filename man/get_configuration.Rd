@@ -4,15 +4,11 @@
 \alias{get_configuration}
 \title{Get the Custom Project Configuration as Stored in the Project Database}
 \usage{
-get_configuration(connection, projectname = NULL)
+get_configuration(connection)
 }
 \arguments{
 \item{connection}{A connection object as returned
 by \code{\link[=connect_idaifield]{connect_idaifield()}}}
-
-\item{projectname}{(deprecated) The name of the project in the Field Client that one
-wishes to load. Will overwrite the project argument that was set
-in \code{\link[=connect_idaifield]{connect_idaifield()}}.}
 }
 \value{
 A list containing the project configuration; \code{NA} if the configuration
@@ -29,10 +25,10 @@ that have been edited in the project configuration editor in iDAI.field 3
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo", project = "rtest")
-config <- get_configuration(connection = conn,
-projectname = "rtest")
+conn <- connect_idaifield(
+  serverip = "localhost", pwd = "hallo", project = "rtest"
+)
+config <- get_configuration(connection = conn)
 }
 }
 \seealso{

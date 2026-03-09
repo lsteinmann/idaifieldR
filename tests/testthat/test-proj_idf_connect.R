@@ -36,10 +36,7 @@ if(!ping) { skip("Tests skipped, no DB-connection") }
 
 test_that("does not work without project being set", {
   connection$project <- NULL
-  expect_error(expect_warning(proj_idf_client(conn = connection),
-                              "project"))
-  expect_warning(proj_idf_client(conn = connection, project = "rtest"),
-                 "project")
+  expect_error(proj_idf_client(conn = connection), "project")
 })
 
 conn <- suppressWarnings(connect_idaifield(serverip = "127.0.0.1",

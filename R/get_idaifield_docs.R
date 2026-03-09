@@ -22,9 +22,6 @@
 #' @param json TRUE/FALSE. Should the function return a JSON-character string?
 #' (Default is FALSE.) If TRUE output cannot be processed with the functions
 #' from this package. Can be parsed using e.g. [jsonlite::fromJSON()].
-#' @param projectname (deprecated) The name of the project in the Field Client that one
-#' wishes to load. Will overwrite the project set in the `connection`-object.
-#' See [idf_projects()] for all available projects.
 #'
 #' @returns an object (list) of class `idaifield_docs` if `raw = TRUE` and
 #' `idaifield_resources` if `raw = FALSE` that contains all *docs*/*resources*
@@ -50,11 +47,9 @@
 #' }
 #'
 get_idaifield_docs <- function(connection = connect_idaifield(
-  serverip = "127.0.0.1", project = "rtest",
-  user = "R", pwd = "hallo"),
+  serverip = "localhost", project = "rtest", pwd = "hallo"),
   raw = TRUE,
-  json = FALSE,
-  projectname = NULL) {
+  json = FALSE) {
 
   # In preparation for getting the coordinates via JSON-API, we need to set
   # the digits option high enough to return a meaningful amount of digits for
@@ -64,10 +59,8 @@ get_idaifield_docs <- function(connection = connect_idaifield(
   old <- options(digits = 20)
   on.exit(options(old))
 
-  warn_for_project(project = projectname)
-
   if (is.null(connection$project)) {
-    connection$project <- projectname
+    stop("Please supply a project to `connect_idaifield()`.")
   }
 
   client <- proj_idf_client(conn = connection,
@@ -102,10 +95,8 @@ get_idaifield_docs <- function(connection = connect_idaifield(
     }
   }
 
-  projectname <- connection$project
-
   attr(idaifield_docs, "connection") <- connection
-  attr(idaifield_docs, "projectname") <- projectname
+  attr(idaifield_docs, "projectname") <- connection$project
 
   return(idaifield_docs)
 }

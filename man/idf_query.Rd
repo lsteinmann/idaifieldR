@@ -4,12 +4,7 @@
 \alias{idf_query}
 \title{Query \emph{docs} from an iDAI.field Database Directly}
 \usage{
-idf_query(
-  connection,
-  field = "category",
-  value = "Pottery",
-  projectname = NULL
-)
+idf_query(connection, field = "category", value = "Pottery")
 }
 \arguments{
 \item{connection}{A connection settings object as
@@ -20,9 +15,6 @@ returned by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
 \item{value}{character. The value to be selected for in the specified
 field (i.e. "\emph{Brick}" when looking for resources of category \emph{Brick}).}
-
-\item{projectname}{(deprecated) The name of the project to be queried (overrides
-the one listed in the connection-object).}
 }
 \value{
 An \code{idaifield_docs} list containing all \emph{docs} that fit the query parameters.
