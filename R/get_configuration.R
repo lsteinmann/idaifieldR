@@ -53,7 +53,6 @@ get_configuration <- function(connection) {
 
 }
 
-
 #' Produce a Matrix of Field *inputTypes* from the Custom Project Configuration
 #'
 #' This function retrieves a matrix containing the *inputTypes* of all
@@ -76,10 +75,6 @@ get_configuration <- function(connection) {
 #' @seealso
 #' * [get_configuration()], [convert_to_onehot()]
 #' * This function is used by: [simplify_idaifield()].
-#'
-#'
-#'
-#'
 #'
 #' @export
 #'
@@ -123,8 +118,6 @@ get_field_inputtypes <- function(config, inputType = "all",
   attributes(fields_mat)$duplicate_names <- attrib_dupl
   return(fields_mat)
 }
-
-
 
 
 #' Title

@@ -1,4 +1,8 @@
 # idaifieldR 0.3.7 _2026-03-XX_
+## New Field Desktop API
+* idaifieldR now gets the configuration of a project from Field Desktop directly via the `/config/` enpoint instead of the database document. That means that the complete configuration is now accessible.
+
+
 ## Maintenance:
 * reworked `connect_idaifield()` (and affected): 
   * 'project' parameter is now required. 
