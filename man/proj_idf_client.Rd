@@ -4,12 +4,10 @@
 \alias{proj_idf_client}
 \title{Create a Connection Client to a Field database (internal)}
 \usage{
-proj_idf_client(conn, project = NULL, include = "all")
+proj_idf_client(conn, include = "all")
 }
 \arguments{
 \item{conn}{A connection object returned by \code{\link[=connect_idaifield]{connect_idaifield()}}.}
-
-\item{project}{(deprecated) character. Name of the project-database that should be loaded.}
 
 \item{include}{Arguments: "all", "query", "changes" . Should the client
 use "\emph{_all_docs}", "\emph{_find}" or "\emph{_changes}" as paths.
@@ -17,6 +15,8 @@ use "\emph{_all_docs}", "\emph{_find}" or "\emph{_changes}" as paths.
 \item \href{https://cran.r-project.org/package=crul}{crul on CRAN}
 \item \href{https://docs.couchdb.org/en/stable/api/database/}{CouchDB API}
 }}
+
+\item{project}{(deprecated) character. Name of the project-database that should be loaded.}
 }
 \value{
 A \code{\link[crul:HttpClient]{crul::HttpClient()}} object.

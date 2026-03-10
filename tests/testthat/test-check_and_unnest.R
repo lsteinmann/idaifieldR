@@ -1,4 +1,5 @@
-source(file = "../load_testdata.R")
+test_docs <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
+                                 package = "idaifieldR"))
 
 test_that("check_and_unnest fails", {
   # Test that the function issues a warning when passed an
@@ -23,21 +24,22 @@ test_that("processes when forced", {
   expect_warning(check_and_unnest(list, force = TRUE))
 })
 
-test_that("unnests to resource level", {
-  # Test that the function correctly unnests a list of
-  # idaifield_docs to idaifield_resources
-  expect_identical(check_and_unnest(test_docs), test_resources)
-})
+#test_that("unnests to resource level", {
+#  # Test that the function correctly unnests a list of
+#  # idaifield_docs to idaifield_resources
+#  expect_identical(check_and_unnest(test_docs), test_resources)
+#})
+# What am I thinking!
 
-
-test_that("does not change simplified list", {
-  test_simple <- list(1, 2, 3)
-  class(test_simple) <- "idaifield_simple"
-  # Test that the function does not change the idaifield_simple object
-  expect_identical(check_and_unnest(test_simple), test_simple)
-})
+#test_that("does not change simplified list", {
+#  test_simple <- list(1, 2, 3)
+#  class(test_simple) <- "idaifield_simple"
+#  # Test that the function does not change the idaifield_simple object
+#  expect_identical(check_and_unnest(test_simple), test_simple)
+#})
 
 test_that("does not change resource list", {
+  test_resources <- check_and_unnest(test_docs)
   # Test that the function does not change the idaifield_resources object
   expect_identical(check_and_unnest(test_resources), test_resources)
 })

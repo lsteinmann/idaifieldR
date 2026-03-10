@@ -20,10 +20,13 @@ returned by the core function get_idaifield_docs(...).
 }
 \examples{
 \dontrun{
-idaifield_docs <- get_idaifield_docs(projectname = "rtest",
-connection = connect_idaifield(serverip = "127.0.0.1",
-user = "R",
-pwd = "password"))
+idaifield_docs <- get_idaifield_docs(
+  connection = connect_idaifield(
+    serverip = "localhost",
+    project = "rtest",
+    pwd = "password"
+  )
+)
 
 check_if_idaifield(idaifield_docs)
 }

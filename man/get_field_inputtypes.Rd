@@ -35,7 +35,7 @@ custom fields from a project configuration of an
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1",
+conn <- connect_idaifield(serverip = "localhost",
                           pwd = "hallo",
                           project = "rtest")
 config <- get_configuration(connection = conn)

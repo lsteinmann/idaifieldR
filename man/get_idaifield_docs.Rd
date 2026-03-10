@@ -4,13 +4,7 @@
 \alias{get_idaifield_docs}
 \title{Import all \emph{docs} from an iDAI.field / Field Desktop project}
 \usage{
-get_idaifield_docs(
-  connection = connect_idaifield(serverip = "127.0.0.1", project = "rtest", user = "R",
-    pwd = "hallo"),
-  raw = TRUE,
-  json = FALSE,
-  projectname = NULL
-)
+get_idaifield_docs(connection, raw = TRUE, json = FALSE)
 }
 \arguments{
 \item{connection}{A connection object as returned
@@ -22,10 +16,6 @@ resource level using \code{\link[=check_and_unnest]{check_and_unnest()}}? (Defau
 \item{json}{TRUE/FALSE. Should the function return a JSON-character string?
 (Default is FALSE.) If TRUE output cannot be processed with the functions
 from this package. Can be parsed using e.g. \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}}.}
-
-\item{projectname}{(deprecated) The name of the project in the Field Client that one
-wishes to load. Will overwrite the project set in the \code{connection}-object.
-See \code{\link[=idf_projects]{idf_projects()}} for all available projects.}
 }
 \value{
 an object (list) of class \code{idaifield_docs} if \code{raw = TRUE} and
@@ -49,12 +39,6 @@ something in the resource at what time and who created it.
 Setting \code{raw = FALSE} will only return a list of the actual data.
 You can do this at a later time using \code{\link[=check_and_unnest]{check_and_unnest()}}
 from this package.
-NOTE: If you are planning on using the coordinates stored in the database,
-I strongly suggest you consider changing your R digits-setting to a higher
-value than the default. Depending on the projection used, coordinates may
-be represented by rather long numbers which R might automatically round on
-import. \code{options(digits = 20)} should more than do the trick. (That applies
-to other fields containing long numbers as well.)
 }
 \examples{
 \dontrun{

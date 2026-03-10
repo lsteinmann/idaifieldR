@@ -13,12 +13,6 @@
 #' Setting `raw = FALSE` will only return a list of the actual data.
 #' You can do this at a later time using [check_and_unnest()]
 #' from this package.
-#' NOTE: If you are planning on using the coordinates stored in the database,
-#' I strongly suggest you consider changing your R digits-setting to a higher
-#' value than the default. Depending on the projection used, coordinates may
-#' be represented by rather long numbers which R might automatically round on
-#' import. `options(digits = 20)` should more than do the trick. (That applies
-#' to other fields containing long numbers as well.)
 #'
 #'
 #' @param connection A connection object as returned
@@ -28,9 +22,6 @@
 #' @param json TRUE/FALSE. Should the function return a JSON-character string?
 #' (Default is FALSE.) If TRUE output cannot be processed with the functions
 #' from this package. Can be parsed using e.g. [jsonlite::fromJSON()].
-#' @param projectname (deprecated) The name of the project in the Field Client that one
-#' wishes to load. Will overwrite the project set in the `connection`-object.
-#' See [idf_projects()] for all available projects.
 #'
 #' @returns an object (list) of class `idaifield_docs` if `raw = TRUE` and
 #' `idaifield_resources` if `raw = FALSE` that contains all *docs*/*resources*
@@ -55,23 +46,22 @@
 #' idaifield_docs <- get_idaifield_docs(connection = conn)
 #' }
 #'
-get_idaifield_docs <- function(connection = connect_idaifield(
-  serverip = "127.0.0.1", project = "rtest",
-  user = "R", pwd = "hallo"),
-  raw = TRUE,
-  json = FALSE,
-  projectname = NULL) {
+get_idaifield_docs <- function(connection, raw = TRUE, json = FALSE) {
 
-  warn_for_project(project = projectname)
+  stop_if_not_idf_connection_settings(connection)
 
-  if (is.null(connection$project)) {
-    connection$project <- projectname
-  }
+  # In preparation for getting the coordinates via JSON-API, we need to set
+  # the digits option high enough to return a meaningful amount of digits for
+  # each coordinate. I experienced problems with this before, which is why this
+  # option is set here. on.exit() restores the old settings after the function
+  # finished.
+  old <- options(digits = 20)
+  on.exit(options(old))
+
 
   client <- proj_idf_client(conn = connection,
                             include = "all")
 
-  options(digits = 20)
 
   idaifield_docs <- client$get(query = list(include_docs = "true"))
   idaifield_docs <- idaifield_docs$parse("UTF-8")
@@ -101,10 +91,8 @@ get_idaifield_docs <- function(connection = connect_idaifield(
     }
   }
 
-  projectname <- connection$project
-
   attr(idaifield_docs, "connection") <- connection
-  attr(idaifield_docs, "projectname") <- projectname
+  attr(idaifield_docs, "projectname") <- connection$project
 
   return(idaifield_docs)
 }

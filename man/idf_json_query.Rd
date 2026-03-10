@@ -4,7 +4,7 @@
 \alias{idf_json_query}
 \title{Query \emph{docs} from an iDAI.field Database Based on a JSON-Query}
 \usage{
-idf_json_query(connection, query, projectname = NULL)
+idf_json_query(connection, query)
 }
 \arguments{
 \item{connection}{A connection object as returned
@@ -13,9 +13,6 @@ by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 \item{query}{A valid JSON-query as detailed in the relevant section of the
 \href{https://docs.couchdb.org/en/stable/api/database/find.html}{CouchDB-API}
 documentation.}
-
-\item{projectname}{(deprecated) The name of the project to be queried (overrides
-the one listed in the connection-object).}
 }
 \value{
 An \code{idaifield_docs} list

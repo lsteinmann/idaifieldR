@@ -8,8 +8,7 @@ idf_index_query(
   connection,
   field = "category",
   value = "Brick",
-  uidlist = NULL,
-  projectname = NULL
+  uidlist = NULL
 )
 }
 \arguments{
@@ -23,9 +22,6 @@ by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
 \item{uidlist}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}}
 (or \code{\link[=get_uid_list]{get_uid_list()}}).}
-
-\item{projectname}{(deprecated) The name of the project to be queried (overrides
-the one listed in the connection-object).}
 }
 \value{
 An \code{idaifield_docs} list

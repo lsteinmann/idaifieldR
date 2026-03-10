@@ -12,11 +12,12 @@ if (all(is.na(check))) {
   skip(paste0("Test skipped, because of error: ", check))
 }
 
-check <- try(idf_check_for_project(connection, project = "empty-db"), silent = TRUE)
+empty_con <- connection
+empty_con$project <- "empty-db"
+check <- try(idf_check_for_project(empty_con), silent = TRUE)
 if (!inherits(check, "try-error")) {
   test_that("message & NA on non-existing changes", {
-    connection$project <- "empty-db"
-    expect_message(res <- idf_last_changed(connection = connection), "_changes")
+    expect_message(res <- idf_last_changed(connection = empty_con), "_changes")
     expect_true(is.na(res))
   })
 }
@@ -98,9 +99,8 @@ test_that("returns UUIDs + warning when index is wrong", {
   expect_true(all(check[-exception]))
 })
 
-test_that("error if connection settings dont have project", {
-  connection$project <- NULL
-  expect_error(idf_last_changed(connection = connection, n = 5),
-               "project")
+test_that("error if connection settings isnt correct", {
+  expect_error(idf_last_changed(connection = list(hello = c(1, 2, 3)), n = 5),
+               "connection_settings")
 })
 

@@ -277,10 +277,11 @@ simplify_single_resource <- function(resource,
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
+#' connection <- connect_idaifield(
+#'     serverip = "localhost",
 #'     project = "rtest",
-#'     user = "R",
-#'     pwd = "hallo")
+#'     pwd = "hallo"
+#' )
 #' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
 #' simpler_idaifield <- simplify_idaifield(idaifield_docs)
@@ -320,9 +321,7 @@ simplify_idaifield <- function(idaifield_docs,
 
 
   conn <- attr(idaifield_docs, "connection")
-  if (is.null(conn$project)) {
-    conn$project <- attr(idaifield_docs, "projectname")
-  }
+  stop_if_not_idf_connection_settings(conn)
 
   ping <- suppressWarnings(idf_ping(conn))
   if (ping && conn$project %in% idf_projects(conn)) {

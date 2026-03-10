@@ -10,12 +10,8 @@
 #' (i.e. "category" for the category of resource (*Pottery*, *Brick*, *Layer*)).
 #' @param value character. The value to be selected for in the specified
 #' field (i.e. "*Brick*" when looking for resources of category *Brick*).
-#' @param projectname (deprecated) The name of the project to be queried (overrides
-#' the one listed in the connection-object).
 #'
 #' @returns An `idaifield_docs` list containing all *docs* that fit the query parameters.
-#'
-#'
 #'
 #' @seealso
 #' * Alternative functions: [idf_index_query()], [idf_json_query()]
@@ -30,14 +26,9 @@
 #' }
 idf_query <- function(connection,
                       field = "category",
-                      value = "Pottery",
-                      projectname = NULL) {
+                      value = "Pottery") {
 
-  warn_for_project(project = projectname)
-
-  if (is.null(connection$project)) {
-    connection$project <- projectname
-  }
+  stop_if_not_idf_connection_settings(connection)
 
 
   if (field == "type" | field == "category") {
@@ -69,8 +60,6 @@ idf_query <- function(connection,
 #' @param value character. The value to be selected for in the specified field.
 #' @param uidlist A data.frame as returned by [get_field_index()]
 #' (or [get_uid_list()]).
-#' @param projectname (deprecated) The name of the project to be queried (overrides
-#' the one listed in the connection-object).
 #'
 #' @returns An `idaifield_docs` list
 #'
@@ -94,21 +83,15 @@ idf_query <- function(connection,
 idf_index_query <- function(connection,
                             field = "category",
                             value = "Brick",
-                            uidlist = NULL,
-                            projectname = NULL) {
+                            uidlist = NULL) {
 
+  stop_if_not_idf_connection_settings(connection)
   if (is.null(uidlist)) {
     stop("idf_index_query() needs an index of the database supplied to 'uidlist'. See `get_field_index()`")
   }
 
   if (!field %in% colnames(uidlist)) {
     stop("Supply a field that corresponds to the columns in the UID-List.")
-  }
-
-  warn_for_project(project = projectname)
-
-  if (is.null(connection$project)) {
-    connection$project <- projectname
   }
 
   doc_ids <- uidlist$UID[which(uidlist[, field] == value)]
@@ -118,7 +101,7 @@ idf_index_query <- function(connection,
   query <- paste('{ "selector": { "_id": { "$in": [', doc_ids, '] } }}',
                  sep = "")
 
-  result <- idf_json_query(connection, query, projectname)
+  result <- idf_json_query(connection, query)
 
   return(result)
 }
@@ -139,8 +122,6 @@ idf_index_query <- function(connection,
 #' @param query A valid JSON-query as detailed in the relevant section of the
 #' [CouchDB-API](https://docs.couchdb.org/en/stable/api/database/find.html)
 #' documentation.
-#' @param projectname (deprecated) The name of the project to be queried (overrides
-#' the one listed in the connection-object).
 #'
 #' @seealso
 #' * Learn how to build the selector-query with the
@@ -171,22 +152,20 @@ idf_index_query <- function(connection,
 #' result <- idf_json_query(conn, query = query)
 #'
 #' }
-idf_json_query <- function(connection, query, projectname = NULL) {
+idf_json_query <- function(connection, query) {
+
+  stop_if_not_idf_connection_settings(connection)
+
   if (!jsonlite::validate(query)) {
     stop("Could not validate JSON structure of query.")
   }
 
-  warn_for_project(project = projectname)
-
-  if (is.null(connection$project)) {
-    connection$project <- projectname
-  }
-
   proj_client <- proj_idf_client(connection,
-                                 project = projectname,
                                  include = "query")
 
-
+  if (!grepl('\"limit\":', query, fixed = TRUE)) {
+    query <- add_limit_to_query(query = query, conn = connection)
+  }
   response <- proj_client$post(body = query)
   response <- response_to_list(response)
 
@@ -198,12 +177,9 @@ idf_json_query <- function(connection, query, projectname = NULL) {
   result <- name_docs_list(result)
   result <- type_to_category(result)
 
-  projectname <- ifelse(is.null(projectname),
-                        connection$project,
-                        projectname)
 
   attr(result, "connection") <- connection
-  attr(result, "projectname") <- projectname
+  attr(result, "projectname") <- connection$project
 
   result <- structure(result, class = "idaifield_docs")
 

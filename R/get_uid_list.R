@@ -36,10 +36,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#'                                 user = "R", pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = connection,
-#'                                      projectname = "rtest")
+#' connection <- connect_idaifield(serverip = "localhost",
+#'                                 project = "rtest", pwd = "hallo")
+#' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
 #' uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
 #' }
@@ -199,8 +198,6 @@ get_uid_list <- function(idaifield_docs,
 #' containing layer-resource recursively.
 #'
 #'
-#'
-#'
 #' @examples
 #' \dontrun{
 #' connection <- connect_idaifield(pwd = "hallo", project = "rtest")
@@ -232,9 +229,8 @@ get_field_index <- function(connection,
   query <- paste0(
     '{ "selector": { "$not": { "resource.id": "" } },
    "fields": [', paste0('"', q_fields, '"', collapse = ", "), '] }')
-  if(!jsonlite::validate(query)) {
-    stop("Something went wrong. Could not validate query.")
-  }
+
+  query <- add_limit_to_query(query = query, conn = connection)
 
   # db query here
   client <- proj_idf_client(connection, include = "query")

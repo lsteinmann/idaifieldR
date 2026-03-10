@@ -202,7 +202,7 @@ lookup <- rbind(lookup, get_language_lookup(milet_lang_list, language = "en"))
 ```
 
 To get the translations from the Project configuration, you can get it using `get_configuration()`. Please note that you need to be able to connect to the database in order to do that. This will also give you an impression of how the lookup-table is set up:
-```{r echo = FALSE, message=FALSE,warning=FALSE}
+```{r echo = FALSE, message = FALSE, warning = FALSE}
 config <- readRDS(system.file("testdata", "idaifield_test_config.RDS",
                               package = "idaifieldR"))
 lookup_conf <- get_language_lookup(config$languages, language = "en")

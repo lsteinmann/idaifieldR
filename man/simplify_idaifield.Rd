@@ -103,10 +103,11 @@ will be returned.
 }
 \examples{
 \dontrun{
-connection <- connect_idaifield(serverip = "127.0.0.1",
+connection <- connect_idaifield(
+    serverip = "localhost",
     project = "rtest",
-    user = "R",
-    pwd = "hallo")
+    pwd = "hallo"
+)
 idaifield_docs <- get_idaifield_docs(connection = connection)
 
 simpler_idaifield <- simplify_idaifield(idaifield_docs)

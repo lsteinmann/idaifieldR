@@ -19,16 +19,15 @@
 #' * [simplify_idaifield()]
 #'
 #'
-#' 
-#' 
+#'
+#'
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#'                                 user = "R",
+#' connection <- connect_idaifield(serverip = "localhost",
+#'                                 project = "rtest",
 #'                                 pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = connection,
-#'                                      projectname = "rtest")
+#' idaifield_docs <- get_idaifield_docs(connection = connection)
 #' pottery <- select_by(idaifield_docs, by = "category", value = "Pottery")
 #' pottery <- simplify_idaifield(pottery,
 #'                               uidlist = get_uid_list(idaifield_docs))

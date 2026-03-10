@@ -33,15 +33,6 @@ test_that("error for non connection-settings-object", {
 skip_on_cran()
 if(!ping) { skip("Tests skipped, no DB-connection") }
 
-
-test_that("does not work without project being set", {
-  connection$project <- NULL
-  expect_error(expect_warning(proj_idf_client(conn = connection),
-                              "project"))
-  expect_warning(proj_idf_client(conn = connection, project = "rtest"),
-                 "project")
-})
-
 conn <- suppressWarnings(connect_idaifield(serverip = "127.0.0.1",
                                            pwd = "hallo",
                                            project = "rtest",

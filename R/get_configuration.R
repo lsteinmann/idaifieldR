@@ -8,9 +8,6 @@
 #'
 #' @param connection A connection object as returned
 #' by [connect_idaifield()]
-#' @param projectname (deprecated) The name of the project in the Field Client that one
-#' wishes to load. Will overwrite the project argument that was set
-#' in [connect_idaifield()].
 #'
 #' @returns A list containing the project configuration; `NA` if the configuration
 #' could not be found or the connection failed.
@@ -23,17 +20,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo", project = "rtest")
+#' conn <- connect_idaifield(
+#'   serverip = "localhost", pwd = "hallo", project = "rtest"
+#' )
 #' config <- get_configuration(connection = conn)
 #' }
-get_configuration <- function(connection, projectname = NULL) {
-
-  warn_for_project(project = projectname)
-
-  if (is.null(connection$project)) {
-    connection$project <- projectname
-  }
+get_configuration <- function(connection) {
+  stop_if_not_idf_connection_settings(connection)
 
   url <- gsub("3001", "3000", connection$settings$base_url)
 
@@ -89,7 +82,7 @@ get_configuration <- function(connection, projectname = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#' conn <- connect_idaifield(serverip = "127.0.0.1",
+#' conn <- connect_idaifield(serverip = "localhost",
 #'                           pwd = "hallo",
 #'                           project = "rtest")
 #' config <- get_configuration(connection = conn)

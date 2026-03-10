@@ -30,9 +30,7 @@ idf_last_changed <- function(connection,
                              index = NULL,
                              n = 100) {
 
-  if (is.null(connection$project)) {
-    stop("Please supply a project to `connect_idaifield()`.")
-  }
+  stop_if_not_idf_connection_settings(connection)
 
   client <- proj_idf_client(connection,
                             include = "changes")
@@ -106,6 +104,7 @@ idf_last_changed <- function(connection,
 #' changes_df <- idf_get_changes(connection, ids = last_changed)
 #' }
 idf_get_changes <- function(connection, ids) {
+  stop_if_not_idf_connection_settings(connection)
 
   uuid_check <- check_if_uid(ids)
 
@@ -131,11 +130,6 @@ idf_get_changes <- function(connection, ids) {
 
   query <- paste('{ "selector": ', selector, ',
    "fields": [', paste0('"', fields, '"', collapse = ", "), '] }')
-
-
-  if (is.null(connection$project)) {
-    stop("Please supply a project to `connect_idaifield()`.")
-  }
 
   result <- idf_json_query(connection, query)
 
