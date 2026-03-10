@@ -1,7 +1,7 @@
 library(idaifieldR)
 test_docs <- readRDS(system.file("testdata", "idaifield_test_docs.RDS",
                                  package = "idaifieldR"))
-test_resources <- check_and_unnest(test_docs)
+test_resources <- maybe_unnest_docs(test_docs)
 
 test_simple <- simplify_idaifield(test_resources)
 

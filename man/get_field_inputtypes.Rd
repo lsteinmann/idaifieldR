@@ -7,7 +7,7 @@
 get_field_inputtypes(
   config,
   inputType = "all",
-  remove_config_names = TRUE,
+  remove_config_names = FALSE,
   silent = FALSE
 )
 }

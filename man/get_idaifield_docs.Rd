@@ -11,7 +11,7 @@ get_idaifield_docs(connection, raw = TRUE, json = FALSE)
 by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
 \item{raw}{TRUE/FALSE. Should the result already be unnested to
-resource level using \code{\link[=check_and_unnest]{check_and_unnest()}}? (Default is FALSE.)}
+resource level using \code{\link[=maybe_unnest_docs]{maybe_unnest_docs()}}? (Default is FALSE.)}
 
 \item{json}{TRUE/FALSE. Should the function return a JSON-character string?
 (Default is FALSE.) If TRUE output cannot be processed with the functions
@@ -37,7 +37,7 @@ When using \code{raw = TRUE} (the default) this function will allow
 you to get the change log for each resource, i.e. which user changed
 something in the resource at what time and who created it.
 Setting \code{raw = FALSE} will only return a list of the actual data.
-You can do this at a later time using \code{\link[=check_and_unnest]{check_and_unnest()}}
+You can do this at a later time using \code{\link[=maybe_unnest_docs]{maybe_unnest_docs()}}
 from this package.
 }
 \examples{
@@ -51,6 +51,6 @@ idaifield_docs <- get_idaifield_docs(connection = conn)
 \itemize{
 \item For querying the database: \code{\link[=idf_query]{idf_query()}},\code{\link[=idf_index_query]{idf_index_query()}}, \code{\link[=idf_json_query]{idf_json_query()}}
 \item For filtering / selecting an \code{idaifield_docs}- or \code{idaifield_resources}-list: \code{\link[=idf_select_by]{idf_select_by()}}
-\item For processing the list: \code{\link[=check_and_unnest]{check_and_unnest()}}, \code{\link[=simplify_idaifield]{simplify_idaifield()}}
+\item For processing the list: \code{\link[=maybe_unnest_docs]{maybe_unnest_docs()}}, \code{\link[=simplify_idaifield]{simplify_idaifield()}}
 }
 }

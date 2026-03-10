@@ -11,14 +11,14 @@
 #' you to get the change log for each resource, i.e. which user changed
 #' something in the resource at what time and who created it.
 #' Setting `raw = FALSE` will only return a list of the actual data.
-#' You can do this at a later time using [check_and_unnest()]
+#' You can do this at a later time using [maybe_unnest_docs()]
 #' from this package.
 #'
 #'
 #' @param connection A connection object as returned
 #' by [connect_idaifield()]
 #' @param raw TRUE/FALSE. Should the result already be unnested to
-#' resource level using [check_and_unnest()]? (Default is FALSE.)
+#' resource level using [maybe_unnest_docs()]? (Default is FALSE.)
 #' @param json TRUE/FALSE. Should the function return a JSON-character string?
 #' (Default is FALSE.) If TRUE output cannot be processed with the functions
 #' from this package. Can be parsed using e.g. [jsonlite::fromJSON()].
@@ -32,7 +32,7 @@
 #' @seealso
 #' * For querying the database: [idf_query()],[idf_index_query()], [idf_json_query()]
 #' * For filtering / selecting an `idaifield_docs`- or `idaifield_resources`-list: [idf_select_by()]
-#' * For processing the list: [check_and_unnest()], [simplify_idaifield()]
+#' * For processing the list: [maybe_unnest_docs()], [simplify_idaifield()]
 #'
 #'
 #'
@@ -85,14 +85,14 @@ get_idaifield_docs <- function(connection, raw = TRUE, json = FALSE) {
 
 
     idaifield_docs <- structure(idaifield_docs, class = "idaifield_docs")
+    attr(idaifield_docs, "connection") <- connection
+    attr(idaifield_docs, "projectname") <- connection$project
 
     if (!raw) {
-      idaifield_docs <- check_and_unnest(idaifield_docs)
+      idaifield_docs <- maybe_unnest_docs(idaifield_docs)
     }
   }
 
-  attr(idaifield_docs, "connection") <- connection
-  attr(idaifield_docs, "projectname") <- connection$project
 
   return(idaifield_docs)
 }

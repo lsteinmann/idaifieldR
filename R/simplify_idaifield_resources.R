@@ -307,12 +307,14 @@ simplify_idaifield <- function(idaifield_docs,
   stopifnot(is.logical(silent))
 
 
-  check <- check_if_idaifield(idaifield_docs)
-  if (check["idaifield_simple"] == TRUE) {
+  if (inherits(idaifield_docs, "idaifield_simple")) {
     message("Already of class 'idaifield_simple', did nothing.")
     return(idaifield_docs)
   }
-  idaifield_docs <- check_and_unnest(idaifield_docs)
+  idaifield_docs <- maybe_unnest_docs(idaifield_docs)
+  if (!inherits(idaifield_docs, "idaifield_resources")) {
+    stop("Not an 'idaifield_resources'.")
+  }
 
   if (is.null(uidlist)) {
     message("No UID-List supplied, generating from this list.")

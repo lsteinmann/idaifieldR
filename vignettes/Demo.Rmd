@@ -72,13 +72,13 @@ After loading the dataset, you can take a look at its contents using the `View()
 
 The `doc$resource` sub-list contains the actual entry for each resource, while the other sub-lists contain information about the changes made to each resource along with its basic data, such as the **UUID** that Field Desktop uses internally as the unique name of each resource. You can use this list to visualize changes made to database entries on a time axis sorted by users, etc., but we will continue to utilize `idaifieldR`'s functions to work with the actual data.
 
-The `check_and_unnest()` function from `idaifieldR` can be used to reduce the `idaifield_test_docs` list to the resource level. Although this step is not necessary for further processing, it can make the data easier to work with. You can use the following code to apply `check_and_unnest()` to the `idaifield_test_docs` list:
+The `maybe_unnest_docs()` function from `idaifieldR` can be used to reduce the `idaifield_test_docs` list to the resource level. Although this step is not necessary for further processing, it can make the data easier to work with. You can use the following code to apply `maybe_unnest_docs()` to the `idaifield_test_docs` list:
 
 ```{r check and unnest}
-idaifield_test_resources <- check_and_unnest(idaifield_test_docs)
+idaifield_test_resources <- maybe_unnest_docs(idaifield_test_docs)
 ```
 
-For more information on `check_and_unnest()` and its arguments, you can check out the documentation using `?check_and_unnest`. The unnested list contains only the actual data you entered in Field Desktop, and it takes up less memory than the original nested list. You can browse this object using `View(idaifield_test_resources)` in RStudio, or by accessing its elements such as `idaifield_test_resources$Befund_6_KER_18` to see the difference. This step is done automatically by idaifieldR functions internally, so you don't have to worry about it.
+For more information on `maybe_unnest_docs()` and its arguments, you can check out the documentation using `?maybe_unnest_docs`. The unnested list contains only the actual data you entered in Field Desktop, and it takes up less memory than the original nested list. You can browse this object using `View(idaifield_test_resources)` in RStudio, or by accessing its elements such as `idaifield_test_resources$Befund_6_KER_18` to see the difference. This step is done automatically by idaifieldR functions internally, so you don't have to worry about it.
 
 To give you a quick overview of our data, we can generate an index of the database by querying it using the `get_field_index()` function with the connection object `conn` and the argument `language = "en"` to set the language of the returned index to English. This index contains only the most basic information about each object, such as its *UUID*, its *identifier*, and its category:
 

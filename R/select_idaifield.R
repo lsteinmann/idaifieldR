@@ -28,7 +28,7 @@
 #'
 #' @export
 idf_show_categories <- function(idaifield_docs) {
-  resources <- check_and_unnest(idaifield_docs)
+  resources <- maybe_unnest_docs(idaifield_docs)
   cats <- lapply(resources, function(x) x$category)
   cats <- unlist(cats, use.names = FALSE)
   cats <- unique(cats)
@@ -144,7 +144,7 @@ idf_select_by <- function(idaifield_docs,
     stop("Argument `value` cannot be empty.")
   }
 
-  resources <- check_and_unnest(idaifield_docs)
+  resources <- maybe_unnest_docs(idaifield_docs)
 
   result <- Filter(function(x) {
     unlist(x[[by]]) %in% value

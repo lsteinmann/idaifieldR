@@ -41,7 +41,7 @@ test_that("works with a simple list without languages", {
 })
 
 data(idaifieldr_demodata)
-data <- check_and_unnest(idaifieldr_demodata)
+data <- maybe_unnest_docs(idaifieldr_demodata)
 input_list <- lapply(data, function(x) x$shortDescription)
 test_that("works for demo data with more than one language", {
   out <- gather_languages(input_list, language = "en")
