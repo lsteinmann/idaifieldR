@@ -1,11 +1,18 @@
 # idaifieldR 0.3.7 _2026-03-XX_
+## Maintenance:
 * reworked `connect_idaifield()` (and affected): 
   * 'project' parameter is now required. 
   * 'version' and 'user' parameter removed. 
   * 'localhost' new default for server.
   * And the deprecated 'project' / 'projectname' parameter in many other functions is now finally removed.
   * Substituted check for project parameter with structure check on connection parameter. If `connect_idaifield()` produced if, we just assume it's correct.
+* Removed `check_if_idaifield()`
+* Reworked `check_and_unnest()` into `maybe_unnest_docs()`.
+
+## Improvements:
 * Improvement: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.
+
+## Bug fixes:
 * Bug: `add_limit_to_query()` now validates the updates query again. Unlike before.
 
 

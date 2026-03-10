@@ -8,7 +8,7 @@ idaifield_as_matrix(idaifield)
 }
 \arguments{
 \item{idaifield}{An object as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}},
-\code{\link[=check_and_unnest]{check_and_unnest()}} or \code{\link[=simplify_idaifield]{simplify_idaifield()}}}
+\code{\link[=maybe_unnest_docs]{maybe_unnest_docs()}} or \code{\link[=simplify_idaifield]{simplify_idaifield()}}}
 }
 \value{
 a matrix (depending on selection and project database

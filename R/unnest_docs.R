@@ -41,7 +41,7 @@ unnest_docs <- function(docs) {
     attr(resources, "config") <- attr(docs, "config")
     return(resources)
   } else {
-    stop("No resource-list present in the object.")
+    stop("No resource-list found.")
   }
 }
 

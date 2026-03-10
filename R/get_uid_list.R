@@ -56,7 +56,7 @@ get_uid_list <- function(idaifield_docs,
   stopifnot(is.logical(remove_config_names))
   stopifnot(is.logical(find_layers))
 
-  idaifield_docs <- check_and_unnest(idaifield_docs)
+  idaifield_docs <- maybe_unnest_docs(idaifield_docs)
 
   ncol <- 5
   colnames <- c("category", "UID", "identifier", "isRecordedIn", "liesWithin")

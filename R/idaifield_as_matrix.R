@@ -9,7 +9,7 @@
 #' package to reduce the amount of columns returned. See example.
 #'
 #' @param idaifield An object as returned by [get_idaifield_docs()],
-#' [check_and_unnest()] or [simplify_idaifield()]
+#' [maybe_unnest_docs()] or [simplify_idaifield()]
 #'
 #' @returns a matrix (depending on selection and project database
 #' it can be very large)
@@ -35,7 +35,7 @@
 #' }
 idaifield_as_matrix <- function(idaifield) {
 
-  resource_list <- suppressWarnings(check_and_unnest(idaifield))
+  resource_list <- suppressWarnings(maybe_unnest_docs(idaifield))
 
   names_list <- lapply(resource_list, names)
 

@@ -15,7 +15,7 @@ test_that("returns appropriate entries", {
   res <- idf_index_query(connection,
                    field = "isRecordedIn", value = "Schnitt 1",
                    uidlist = uidlist)
-  test <- check_and_unnest(res)
+  test <- maybe_unnest_docs(res)
   test <- lapply(res, function(x) x$relation.isRecordedIn)
   test <- unlist(test) == "Schnitt 1"
   expect_true(all(test))

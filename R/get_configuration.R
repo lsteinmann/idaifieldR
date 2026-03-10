@@ -88,7 +88,7 @@ get_configuration <- function(connection) {
 #' checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
 #' }
 get_field_inputtypes <- function(config, inputType = "all",
-                                 remove_config_names = TRUE,
+                                 remove_config_names = FALSE,
                                  silent = FALSE) {
   fields <- lapply(config$forms, FUN = function(x) (unlist(x$fields)))
   fields <- unlist(fields)

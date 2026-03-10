@@ -1,3 +1,5 @@
+source("../load_testdata.R")
+
 connection <- suppressMessages(connect_idaifield(serverip = "127.0.0.1",
                                                  pwd = "hallo",
                                                  project = "rtest",
@@ -78,3 +80,4 @@ test_that("adds correct limit to the query (needs updating when test data change
   query <- '{ "selector": { "resource.processor": ["Anna Allgemeinperson"] } }'
   expect_error(add_limit_to_query(query, list(hello = "123")), "idf_connection_settings")
 })
+

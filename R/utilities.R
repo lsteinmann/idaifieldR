@@ -27,64 +27,6 @@ na_if_empty <- function(item) {
   }
 }
 
-#' Check for `idaifield_...` classes
-#'
-#' For internal use... checks if an object can actually processed by
-#' the functions in this package which need the specific format that is
-#' returned by the core function get_idaifield_docs(...).
-#'
-#' @param testobject An object that should be evaluated.
-#'
-#' @returns a matrix that allows other functions to determine which type of
-#' list the object is
-#'
-#' @keywords internal
-#'
-#' @examples
-#' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(
-#'   connection = connect_idaifield(
-#'     serverip = "localhost",
-#'     project = "rtest",
-#'     pwd = "password"
-#'   )
-#' )
-#'
-#' check_if_idaifield(idaifield_docs)
-#' }
-check_if_idaifield <- function(testobject) {
-
-  result <- rep(NA, 4)
-  names(result) <- c("idaifield_docs", "idaifield_resources",
-                     "idaifield_simple", "list")
-
-  if (inherits(testobject, "idaifield_docs")) {
-    result["idaifield_docs"] <- TRUE
-  } else {
-    result["idaifield_docs"] <- FALSE
-  }
-
-  if (inherits(testobject, "idaifield_resources")) {
-    result["idaifield_resources"] <- TRUE
-  } else {
-    result["idaifield_resources"] <- FALSE
-  }
-
-  if (inherits(testobject, "idaifield_simple")) {
-    result["idaifield_simple"] <- TRUE
-  } else {
-    result["idaifield_simple"] <- FALSE
-  }
-
-  if (inherits(testobject, "list")) {
-    result["list"] <- TRUE
-  } else {
-    result["list"] <- FALSE
-  }
-
-  return(result)
-}
-
 #' Checks if a list has sub-lists and returns TRUE if so
 #'
 #'
