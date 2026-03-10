@@ -21,7 +21,7 @@ simplify_single_resource <- function(resource,
                                      find_layers = TRUE,
                                      uidlist = NULL,
                                      keep_geometry = TRUE,
-                                     remove_config_names = TRUE,
+                                     remove_config_names = NULL,
                                      language = "all",
                                      spread_fields = TRUE,
                                      use_exact_dates = FALSE,
@@ -31,11 +31,13 @@ simplify_single_resource <- function(resource,
   stopifnot(is.logical(keep_geometry))
   stopifnot(is.logical(replace_uids))
   stopifnot(is.logical(find_layers))
-  stopifnot(is.logical(remove_config_names))
   stopifnot(is.logical(spread_fields))
   stopifnot(is.logical(use_exact_dates))
   stopifnot(is.logical(silent))
 
+  if (!is.null(remove_config_names)) {
+    warning("'remove_config_names' argument is deprecated. do not use it anymore.")
+  }
 
   id <- resource$identifier
   if (is.null(id)) {
@@ -117,28 +119,6 @@ simplify_single_resource <- function(resource,
     resource <- append(resource, dating)
   }
 
-  # The function then gets the names of all the fields in the resource,
-  # and checks if any of them contain a colon (:). If so, the
-  # remove_config_names() function is applied to the list of field names
-  # to remove the portion before the colon. The resulting list of field names
-  # is then assigned back to the resource. If the category field of the resource
-  # contains a colon, the remove_config_names() function is also applied to
-  # this field to remove the portion before the colon.
-  # The notification about duplicates is only displayed for the field names,
-  # since that is the only place where it could be relevant for further
-  # processing of the data (i.e. multiple columns with the same name in a
-  # table / data.frame.)
-  list_names <- names(resource)
-
-  if (remove_config_names && any(grepl(":", list_names))) {
-    list_names <- remove_config_names(list_names, silent = silent)
-    names(resource) <- list_names
-  }
-
-  if (remove_config_names && any(grepl(":", resource$category))) {
-    resource$category <- remove_config_names(resource$category, silent = silent)
-  }
-
 
   # Next, the function gets all the field names in the resource that contain
   # the string "dimension", and assigns them to the dim_names variable.
@@ -151,11 +131,14 @@ simplify_single_resource <- function(resource,
   # (i.e., all sub-lists are removed) and the fields in resource with names
   # from dim_names are removed. The new_dims list is then appended
   # to the resource.
+  list_names <- names(resource)
   dim_names <- list_names[grep("dimension", list_names)]
 
   if (length(dim_names) >= 1) {
     new_dims <- as.list(1)
     for (dim in dim_names) {
+      # We are doing this silently always, why would we do this to users,
+      # we cant just calculate the mean and say its cool.
       new_dims <- append(new_dims, idf_sepdim(resource[[dim]], dim))
     }
     new_dims <- as.list(unlist(new_dims[-1]))
@@ -188,9 +171,11 @@ simplify_single_resource <- function(resource,
   # fieldtypes as an additional argument. This converts the values in the
   # fields of resource to one-hot encoded vectors based on the
   # specified fieldtypes.
+  # Have to retire this completely.
   if (spread_fields & !any(is.na(config))) {
-    resource <- convert_to_onehot(resource = resource,
-                                  config = config)
+    #warning("fields can currently not be converted to one hot; waiting on rework of simplify_idaifield")
+    #resource <- convert_to_onehot(resource = resource,
+    #                              config = config)
     # TODO
   }
 
@@ -255,13 +240,7 @@ simplify_single_resource <- function(resource,
 #' @returns An `idaifield_simple`-list containing the same resources in
 #' a different format depending on the parameters used.
 #'
-#'
-#'
 #' @export
-#'
-#'
-#'
-#'
 #'
 #'
 #' @seealso
@@ -331,23 +310,19 @@ simplify_idaifield <- function(idaifield_docs,
   } else {
     config <- NA
   }
-  if (!any(is.na(config))) {
-    ## Language handling / messages
-    languages <- unlist(config$projectLanguages)
-    if (language != "all") {
-      if (language %in% languages) {
-        message(paste("Keeping input values of selected language ('",
-                      language, "') where possible.",
-                      sep = ""))
-      } else {
-        new_language <- sort(languages[grepl("^[a-z]{2}$", languages)])
-        new_language <- ifelse(is.null(new_language), "all", new_language[1])
-        message(paste("Selected language ('",
-                      language, "') not available. Trying '", new_language,
-                      "' instead.", sep = ""))
-        language <- new_language
-      }
+  if (inherits(config, "idaifield_config")) {
+    # Many input fields can have multiple languages. We need to select one
+    # here to be able to filter later.
+    if (language %in% config$projectLanguages) {
+      message(paste0("Keeping input fields in language: ", language))
+    } else if (length(config$projectLanguages) > 0) {
+      new_language <- config$projectLanguages[[1]]
+      message(paste("Selected language ('",
+                    language, "') not available. Using '", new_language,
+                    "' instead.", sep = ""))
+      language <- new_language
     } else {
+      language <- "all"
       message("Keeping all languages for input fields.")
     }
   }
