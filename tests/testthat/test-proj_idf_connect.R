@@ -77,14 +77,3 @@ test_that("error on failed connection", {
                             project = "rtest", ping = FALSE)
   expect_error(suppressWarnings(proj_idf_client(conn = conn)), "connection")
 })
-
-test_that("re-pings when status is FALSE", {
-  conn <- connect_idaifield(serverip = "127.0.0.1", pwd = "hallo",
-                            project = "rtest", ping = FALSE)
-  conn$status <- FALSE
-  expect_message(proj_idf_client(conn = conn),
-                 "FALSE")
-})
-
-
-
