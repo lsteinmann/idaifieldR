@@ -39,6 +39,9 @@ get_configuration <- function(connection) {
 
   if ("categories" %in% names(response)) {
     config <- name_all_nested_lists(response)
+    config <- structure(config, class = "idaifield_config")
+    attr(config, "connection") <- connection
+    attr(config, "projectname") <- connection$project
     return(config)
   } else if ("reason" %in% names(response)) {
     warning(paste0("get_configuration() returning NA: ", response$reason))

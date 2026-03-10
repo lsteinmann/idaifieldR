@@ -1,16 +1,16 @@
 source("../load_testdata.R")
 
 test_that("returns list", {
-  expect_true(is.list(config))
+  expect_true(inherits(config, "idaifield_config"))
 })
 
 test_that("error when supplying wrong object", {
-  expect_error(test <- get_configuration(NA, projectname = NULL))
+  expect_error(test <- get_configuration(NA))
 })
 
 
 skip_on_cran()
-
+skip_if_no_field_desktop()
 connection <- skip_if_no_connection()
 
 test_that("returns NA if project does not exist", {
@@ -19,15 +19,14 @@ test_that("returns NA if project does not exist", {
   expect_equal(config, NA)
 })
 
-
-test_that("error for missing config not working, returns NA", {
-  connection$project <- "test"
-  expect_warning(test <- get_configuration(connection),
-                 "no configuration")
-  expect_identical(test, NA)
-})
-
-test_that("returns a list that is actually the configuration", {
+test_that("returns a list with the expected names at toplevel", {
   config <- get_configuration(connection)
-  expect_true(config$identifier == "Configuration")
+  toplevel <- list(projectLanguages = list(), categories = list())
+  expect_identical(names(config), names(toplevel))
 })
+
+test_that("returns a list with names category lists", {
+  config <- get_configuration(connection)
+  expect_true("Project" %in% names(config$categories))
+})
+

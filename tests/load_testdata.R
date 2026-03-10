@@ -24,3 +24,16 @@ skip_if_no_connection <- function() {
     skip("Test skipped, needs DB-connection")
   }
 }
+
+skip_if_no_field_desktop <- function(pwd = "hallo") {
+  headers <- list(`Content-Type` = "application/json",
+                  Accept = "application/json")
+  client <- crul::HttpClient$new(url = "http://localhost:3000/info",
+                                 opts = crul::auth(user = "R", pwd = pwd),
+                                 headers = headers)
+  response <- client$get()
+  if (!response$success()) {
+    skip("Test skipped, Field Desktop not available on localhost.")
+  }
+}
+
