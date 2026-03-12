@@ -4,9 +4,15 @@
 * Better structure of tests with less specialized cases?
 * Update the couch-db action a bit? See problems with _changes etc., and different configurations and contents.
 * Remove the project(name) argument/option everywhere except in `connect_idaifield()` (because it doesn't really make that much sense.)
+* rename uidlist to index everywhere because that is what it is. 
 * Fix everything about `find_layer()` and simplify...
 * Completely rewrite simplify & its utilities...
+    * just produce methods for all inputtype, get the config via the new configuration endpoint and then reformat each column according to the specifications for the corresponding inputtype. you can get everything easily via the new endpoint! 
 
+* What you need to do for simplify: Build from scratch, this wont work the way 
+  it does now. Make one resource that actually has all the possible fields a resource
+  can have, and then work through processing all of them in a more r-readable format. 
+  The current state is a mess. 
 
 ## for v0.3.4
 * check all documentation and arguments
@@ -15,7 +21,7 @@
 * Handling geometry does not work very well and should be reconsidered. Maybe 
 by importing some package like sf and storing the geometry as sf-objects, 
 though this seems overkill. Or keep original JSON-string somehow to be useable
-GeoJSON...?
+GeoJSON...? -> may be best approach?
 * `remove_config_names()` may or may not overwrite data with the information
 from unused fields, and I have to check & fix that, though I have not yet noticed 
 any problem.
