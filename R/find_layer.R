@@ -7,18 +7,12 @@
 #' @param ids Either the UUIDs or the identifiers resources from an
 #' `idaifield_...`-list as returned by [get_idaifield_docs()], [idf_query()],
 #' [idf_index_query()] or [idf_json_query()].
-#' @param uidlist A data.frame as returned by [get_field_index()] or
+#' @param index A data.frame as returned by [get_field_index()] or
 #' [get_uid_list()].
 #' @param layer_categories A vector of *categories* that are classified as
-#' *Layer*s. (Encompasses *SurveyUnit*.) See or change the default:
-#' `getOption("idaifield_categories")$layers`
+#' *Layer*s.
 #' @param max_depth numeric. Maximum number of recursive
 #' iterations / maximum depth a resource may be nested below its layer.
-#' @param silent TRUE/FALSE, default: FALSE. Should messages be suppressed?
-#' @param id_type DEPRECATED.
-#' @param id DEPRECATED. Either the UUID or the identifier of a resource from an
-#' `idaifield_...`-list as returned by [get_idaifield_docs()], [idf_query()],
-#' [idf_index_query()] or [idf_json_query()].
 #'
 #' @returns The identifier or UUID of the first "Layer"-category resource the
 #' given id/identifier lies within.
@@ -43,30 +37,21 @@
 #' find_layer(index$identifier, index)
 #' }
 find_layer <- function(ids,
-                       uidlist = NULL,
+                       index = NULL,
                        layer_categories = NULL,
-                       max_depth = 20,
-                       silent = FALSE,
-                       id = NULL,
-                       id_type = NULL) {
+                       max_depth = 20) {
 
   stopifnot(is.numeric(max_depth))
-
-  if (!is.null(id_type)) {
-    warning("Argument id_type is no longer needed. Type of ids is assigned automatically since v0.3.4.")
-  }
-  if (!is.null(id)) {
-    warning("Argument 'id' is now 'ids', since multiple ids can be processed as of v0.3.4.")
-    ids <- id
-  }
-
 
   if (is.null(ids)) {
     stop("Need either an identifier or a UUID as 'id = '.")
   }
-  if (is.null(uidlist)) {
-    warning("`find_layer()` called but no uidlist supplied.")
+  if (is.null(index)) {
+    warning("`find_layer()` called but no index supplied.")
     return(rep(NA, length(ids)))
+  }
+  if (is.null(layer_categories)) {
+    stop("No 'layer_categories'.")
   }
 
   proj_conf_ind <- which(ids %in% c("project", "configuration"))
@@ -83,20 +68,11 @@ find_layer <- function(ids,
 
   id_type <- match.arg(id_type, c("identifier", "UID", "UUID", "id"),
                        several.ok = FALSE)
-  id_type <- which(colnames(uidlist) == id_type)
+  id_type <- which(colnames(index) == id_type)
 
-  if (is.null(layer_categories)) {
-    layer_categories <- getOption("idaifield_categories")$layers
-    if(silent == FALSE) {
-      message('In `find_layer()`: categories considered *Layers* are: \n  ',
-              paste(layer_categories, collapse = '; '), '\n',
-              '  Supply `layer_categories` argument or change the options-list: ',
-              'getOption("idaifield_categories")')
-    }
-  }
 
-  parents <- find_parents(ids, uidlist, id_type)
-  parents_cats <- find_categories(parents, uidlist, id_type)
+  parents <- find_parents(ids, index, id_type)
+  parents_cats <- find_categories(parents, index, id_type)
 
   parent_list <- list(
     solved = list(identifier = character(length = 0),
@@ -107,7 +83,7 @@ find_layer <- function(ids,
                     parents_of_sf_cat = parents_cats)
   )
 
-  res_list <- find_parent_layer(parent_list, uidlist,
+  res_list <- find_parent_layer(parent_list, index,
                            id_type, layer_categories,
                            max_depth = max_depth)
 

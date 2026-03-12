@@ -151,8 +151,6 @@ simplify_single_resource <- function(resource,
 
   if (language != "all") {
     resource <- lapply(resource, function(x) {
-      # if there actually are different languages in the resource,
-      # try to process them
       pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
       names <- names(x)
       names <- grepl(paste0(pat, collapse = "|"), names)
@@ -265,98 +263,91 @@ simplify_single_resource <- function(resource,
 #'
 #' simpler_idaifield <- simplify_idaifield(idaifield_docs)
 #' }
-simplify_idaifield <- function(idaifield_docs,
-                               keep_geometry = FALSE,
-                               replace_uids = TRUE,
-                               find_layers = TRUE,
-                               uidlist = NULL,
-                               language = "all",
-                               remove_config_names = TRUE,
-                               spread_fields = TRUE,
-                               use_exact_dates = FALSE,
-                               silent = FALSE) {
+simplify_idaifield <- function(resources,
+                               index = NULL,
+                               config = NULL
+                               #keep_geometry = FALSE,
+                               #uidlist = NULL,
+                               #language = "all",
+                               #remove_config_names = TRUE,
+                               #spread_fields = TRUE,
+                               #use_exact_dates = FALSE,
+                               #silent = FALSE
+                               ) {
 
 
-  stopifnot(is.logical(keep_geometry))
-  stopifnot(is.logical(replace_uids))
-  stopifnot(is.logical(find_layers))
-  stopifnot(is.logical(remove_config_names))
-  stopifnot(is.logical(spread_fields))
-  stopifnot(is.logical(use_exact_dates))
-  stopifnot(is.logical(silent))
+  # TODO:
+  # sensible parameter / argument checks, sensible defaults
 
 
-  if (inherits(idaifield_docs, "idaifield_simple")) {
-    message("Already of class 'idaifield_simple', did nothing.")
-    return(idaifield_docs)
+  #### ---------- Check if the declared structure is as expected
+  if (inherits(resources, "idaifield_simple")) {
+    message("'resources' is already an 'idaifield_simple', did nothing.")
+    return(resources)
   }
-  idaifield_docs <- maybe_unnest_docs(idaifield_docs)
-  if (!inherits(idaifield_docs, "idaifield_resources")) {
-    stop("Not an 'idaifield_resources'.")
+  resources <- maybe_unnest_docs(resources)
+  if (!inherits(resources, "idaifield_resources")) {
+    stop("'resources' is not an 'idaifield_resources'.")
   }
 
-  if (is.null(uidlist)) {
-    message("No UID-List supplied, generating from this list.")
-    uidlist <- get_uid_list(idaifield_docs)
+  # We need the index for UUID replacement.
+  if (is.null(index)) {
+    # TODO
+    # Consider removing this.
+    message("No 'index' supplied, generating from this list.")
+    index <- get_uid_list(resources)
   }
-
-
-  conn <- attr(idaifield_docs, "connection")
-  stop_if_not_idf_connection_settings(conn)
-
-  ping <- suppressWarnings(idf_ping(conn))
-  if (ping && conn$project %in% idf_projects(conn)) {
+  # We need the config for handling inputTypes.
+  if (is.null(config)) {
+    conn <- attr(resources, "connection")
     config <- get_configuration(conn)
-  } else {
-    config <- NA
-  }
-  if (inherits(config, "idaifield_config")) {
-    # Many input fields can have multiple languages. We need to select one
-    # here to be able to filter later.
-    if (language %in% config$projectLanguages) {
-      message(paste0("Keeping input fields in language: ", language))
-    } else if (length(config$projectLanguages) > 0) {
-      new_language <- config$projectLanguages[[1]]
-      message(paste("Selected language ('",
-                    language, "') not available. Using '", new_language,
-                    "' instead.", sep = ""))
-      language <- new_language
-    } else {
-      language <- "all"
-      message("Keeping all languages for input fields.")
-    }
+  } else if (!inherits(config, "idaifield_config")) {
+    # Change if you decide we not NEED the config after all.
+    stop("'config' is not an 'idaifield_config'")
   }
 
-  if (find_layers == TRUE) {
-    liesWithinLayer <- find_layer(names(idaifield_docs), uidlist, silent = silent)
-  }
+  # Workflow in this pipe-function:
+  # A) check for structure - DONE
+  # B) replace UUIDs, don't make that an argument. you want it simple, you get it simple.
+  # It would be a lot faster though if I'd replace UUIDs after I did the whole relations thing.
+  # C) think about languages: every list should be traversed to check if it has a language list,
+  # and from that language list, a language needs to be selected. Selecting "all" can stay possible,
+  # and in that case, the language list just isnt touched. Users problem.
+  # D) spread the relations list, so that each relation has either its own list,
+  # or just the value?
+  # E) Select only things that can be easily tabulated: anything that is not a list.
+  # F) I actually still like the idea of attaching a place (though we can have that in the index... not needed, actually.)
+  # G) handle_geometry: put the JSON geometry in an R-readable format?
 
-  idaifield_simple <- lapply(idaifield_docs, function(x) {
-    #print(x$identifier)
+
+  # the find_layer() function is nicer and faster if we use the vectorized way.
+  layer_categories <- c("Feature", names(config$categories$Feature$trees))
+  liesWithinLayer <- find_layer(
+    names(resources),
+    index,
+    layer_categories = layer_categories
+  )
+
+
+
+  # Workflow on a single resource:
+  idaifield_simple <- lapply(resources, function(x) {
     new_res <- simplify_single_resource(
       x,
-      replace_uids = replace_uids,
-      find_layers = FALSE,
-      uidlist = uidlist,
-      keep_geometry = keep_geometry,
-      language = language,
-      remove_config_names = remove_config_names,
-      spread_fields = spread_fields,
-      use_exact_dates = use_exact_dates,
+      index = index,
       config = config,
-      silent = silent
+      language = language,
+      silent = silent,
+      find_layers = FALSE
     )
-    if (find_layers == TRUE) {
-      lwl <- which(names(liesWithinLayer) == x$identifier)
-      lwl <- liesWithinLayer[lwl]
-      if (length(lwl) > 0) {
-        names(lwl) <- "relation.liesWithinLayer"
-        new_res <- append(new_res, lwl)
-      }
+    lwl <- which(names(liesWithinLayer) == x$identifier)
+    lwl <- liesWithinLayer[lwl]
+    if (length(lwl) > 0) {
+      names(lwl) <- "relation.liesWithinLayer"
+      new_res <- append(new_res, lwl)
     }
     return(new_res)
-  }
-  )
+  })
 
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
   attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
