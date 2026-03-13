@@ -287,7 +287,7 @@ add_limit_to_query <- function(query, conn) {
   if(!jsonlite::validate(query)) {
     stop("Could not validate JSON structure of query before adding limit.")
   }
-  conn$settings$limit <- NA
+
   if (idf_ping(conn)) {
     client <- crul::HttpClient$new(url = paste0(conn$settings$base_url, "/", conn$project),
                                    opts = conn$settings$auth,
