@@ -17,7 +17,7 @@ but the top-level with meta-information has been removed to make the actual
 resource data more accessible)
 }
 \description{
-This function unnests the lists provided by iDAI.field 2 / Field Desktop.
+This function unnests the lists provided by iDAI.field / Field Desktop.
 The actual data of a resource is usually stored in a sub-list
 behind $doc$resource, which contains the data one would mostly
 want to work with in R. The top level data contains information
