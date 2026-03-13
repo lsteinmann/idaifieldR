@@ -46,8 +46,7 @@ usually have "001" as the value in "liesWithin". With find_layers, there will
 be another column called "liesWithinLayer" which contains "Layer1" for both
 sample "A" and Find "001".}
 
-\item{keep_geometry}{TRUE/FALSE: Should the geographical
-information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
+\item{keep_geometry}{Should the geometry of each resource be kept?}
 
 \item{language}{The short name (e.g. "en", "de", "fr") of the language
 that is preferred for the fields. Special value "all" (the default) can be

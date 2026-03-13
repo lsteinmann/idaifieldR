@@ -9,7 +9,8 @@ simplify_idaifield(
   index = NULL,
   config = NULL,
   silent = FALSE,
-  language = "all"
+  language = "all",
+  keep_geometry = FALSE
 )
 }
 \arguments{
@@ -84,10 +85,6 @@ simpler_idaifield <- simplify_idaifield(idaifield_docs)
 \itemize{
 \item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}}
 \item When find_layers = TRUE: \code{\link[=find_layer]{find_layer()}}, this only works when the function can get an index/uidlist!
-\item \code{\link[=fix_dating]{fix_dating()}} with the outcome depending on the \code{use_exact_dates}-argument.
-\item When selecting a language: \code{\link[=gather_languages]{gather_languages()}}
-\item Depending on the \code{spread_fields}-argument: \code{\link[=convert_to_onehot]{convert_to_onehot()}}
-\item Depending on the \code{keep_geometry}-argument: \code{\link[=reformat_geometry]{reformat_geometry()}}
 \item Depending on the \code{replace_uids}-argument: \code{\link[=fix_relations]{fix_relations()}} with \code{\link[=replace_uid]{replace_uid()}}
 \item If \code{uidlist = NULL}: \code{\link[=get_uid_list]{get_uid_list()}}
 }

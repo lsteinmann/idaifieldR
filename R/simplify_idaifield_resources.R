@@ -5,8 +5,7 @@
 #' @param resource One resource (element) from an `idaifield_resources`-list.
 #' @inheritParams simplify_idaifield
 #' @inheritParams get_field_index
-#' @param keep_geometry TRUE/FALSE: Should the geographical
-#' information be kept or removed? Defaults is FALSE. Uses: [reformat_geometry()]
+#' @param keep_geometry Should the geometry of each resource be kept?
 #' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
 #' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with
 #' [replace_uid()], and also: [find_layer()]
@@ -262,10 +261,6 @@ simplify_single_resource <- function(resource,
 #' @seealso
 #' * This function uses: [idf_sepdim()], [remove_config_names()]
 #' * When find_layers = TRUE: [find_layer()], this only works when the function can get an index/uidlist!
-#' * [fix_dating()] with the outcome depending on the `use_exact_dates`-argument.
-#' * When selecting a language: [gather_languages()]
-#' * Depending on the `spread_fields`-argument: [convert_to_onehot()]
-#' * Depending on the `keep_geometry`-argument: [reformat_geometry()]
 #' * Depending on the `replace_uids`-argument: [fix_relations()] with [replace_uid()]
 #' * If `uidlist = NULL`: [get_uid_list()]
 #'

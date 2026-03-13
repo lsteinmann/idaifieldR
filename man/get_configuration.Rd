@@ -7,8 +7,7 @@
 get_configuration(connection)
 }
 \arguments{
-\item{connection}{A connection object as returned
-by \code{\link[=connect_idaifield]{connect_idaifield()}}}
+\item{connection}{A connection object as returned by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 }
 \value{
 A list containing the project configuration; \code{NA} if the configuration
