@@ -167,8 +167,7 @@ get_uid_list <- function(idaifield_docs,
 #' (Useful for grouping the finds of several trenches, but will only work if the
 #' project database is organized accordingly.)
 #' @param find_layers TRUE/FALSE. Default is FALSE. If TRUE, adds another column
-#' with the 'Layer' (see `getOption("idaifield_categories")$layers`, can be
-#' modified) in which a resource is contained  recursively. That means that
+#' with the 'Layer' in which a resource is contained  recursively. That means that
 #' even if it does not immediately lie within this layer, but is
 #' contained by one or several other resources in said layer, a new column
 #' ("liesWithinLayer") will still show the layer.
