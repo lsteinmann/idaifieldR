@@ -59,23 +59,16 @@ get_configuration <- function(connection) {
 #' [iDAI.field](https://github.com/dainst/idai-field) project.
 #'
 #'
-#' @param config A configuration list as returned
+#' @param nested_list A configuration list as returned
 #' by [get_configuration()]
-#' @param inputType If specified, matrix is filtered to return only the
-#' specified type.
-#' @param remove_config_names TRUE/FALSE: Should the name of the project be
-#' removed from field names of the configuration? (Default is TRUE.)
-#' (Should e.g.: *test:amount* be renamed to *amount*,
-#' see [remove_config_names()].)
-#' @param silent TRUE/FALSE, default: FALSE. Should messages be suppressed?
-#'
-#' @returns A matrix of fields (with the given *inputType*).
+#' @param parent_name Used for recursive behaviour
+#' @param category_name Used for recursive behaviour
+#' @returns A list of fields (with the given *inputType*).
 #'
 #' @seealso
 #' * [get_configuration()], [convert_to_onehot()]
-#' * This function is used by: [simplify_idaifield()].
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -83,52 +76,8 @@ get_configuration <- function(connection) {
 #'                           pwd = "hallo",
 #'                           project = "rtest")
 #' config <- get_configuration(connection = conn)
-#' checkboxes <- get_field_inputtypes(config, inputType = "checkboxes")
+#' input_types <- extract_inputtypes(config)
 #' }
-get_field_inputtypes <- function(config, inputType = "all",
-                                 remove_config_names = FALSE,
-                                 silent = FALSE) {
-  fields <- lapply(config$forms, FUN = function(x) (unlist(x$fields)))
-  fields <- unlist(fields)
-  if (is.null(fields)) {
-    warning("No custom fields found in configuration!")
-  } else {
-    names(fields) <- gsub(".inputType", "", names(fields))
-    names(fields) <- gsub(":default", "", names(fields))
-    if (inputType %in% unique(fields)) {
-      fields <- fields[fields == inputType]
-    }
-  }
-  fields_mat <- matrix(nrow = length(fields), ncol = 3)
-  colnames(fields_mat) <- c("category", "field", "inputType")
-  fields_mat[, 1] <- gsub("\\..*", "", names(fields))
-  fields_mat[, 2] <- gsub(".*\\.", "", names(fields))
-  if (remove_config_names == TRUE) {
-    tmp <- remove_config_names(fields_mat[, 1], silent = silent)
-    attrib_dupl <- attributes(tmp)$duplicate_names
-    fields_mat[, 1] <- tmp
-    tmp <- remove_config_names(fields_mat[, 2], silent = silent)
-    attrib_dupl <- list(categories = attrib_dupl, fields  = attributes(tmp)$duplicate_names)
-    fields_mat[, 2] <- tmp
-  } else {
-    attrib_dupl <- NA
-  }
-  fields_mat[, 3] <- unname(fields)
-  attributes(fields_mat)$duplicate_names <- attrib_dupl
-  return(fields_mat)
-}
-
-
-#' Title
-#'
-#' @param nested_list
-#' @param parent_name
-#' @param category_name
-#'
-#' @returns
-#' @export
-#'
-#' @examples
 extract_inputtypes <- function(nested_list,
                                parent_name = NULL,
                                category_name = NULL) {

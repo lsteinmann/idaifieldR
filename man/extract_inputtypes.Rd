@@ -2,13 +2,38 @@
 % Please edit documentation in R/get_configuration.R
 \name{extract_inputtypes}
 \alias{extract_inputtypes}
-\title{Title}
+\title{Produce a Matrix of Field \emph{inputTypes} from the Custom Project Configuration}
 \usage{
 extract_inputtypes(nested_list, parent_name = NULL, category_name = NULL)
 }
 \arguments{
-\item{category_name}{}
+\item{nested_list}{A configuration list as returned
+by \code{\link[=get_configuration]{get_configuration()}}}
+
+\item{parent_name}{Used for recursive behaviour}
+
+\item{category_name}{Used for recursive behaviour}
+}
+\value{
+A list of fields (with the given \emph{inputType}).
 }
 \description{
-Title
+This function retrieves a matrix containing the \emph{inputTypes} of all
+custom fields from a project configuration of an
+\href{https://github.com/dainst/idai-field}{iDAI.field} project.
 }
+\examples{
+\dontrun{
+conn <- connect_idaifield(serverip = "localhost",
+                          pwd = "hallo",
+                          project = "rtest")
+config <- get_configuration(connection = conn)
+input_types <- extract_inputtypes(config)
+}
+}
+\seealso{
+\itemize{
+\item \code{\link[=get_configuration]{get_configuration()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}
+}
+}
+\keyword{internal}
