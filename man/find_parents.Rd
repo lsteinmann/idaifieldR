@@ -4,10 +4,10 @@
 \alias{find_parents}
 \title{returns the UUID/identifier of the resources the 'ids' are contained in}
 \usage{
-find_parents(ids, uidlist, id_type)
+find_parents(ids, index, id_type)
 }
 \arguments{
-\item{uidlist}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}} or
+\item{index}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}} or
 \code{\link[=get_uid_list]{get_uid_list()}}.}
 
 \item{id_type}{One of "identifier" or "UID" - Should the function use

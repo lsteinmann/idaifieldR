@@ -112,8 +112,8 @@ find_layer <- function(ids,
 #' @keywords internal
 #'
 #' @return a vector of resources in which each id is located
-find_parents <- function(ids, uidlist, id_type) {
-  parents <- uidlist$liesWithin[match(ids, uidlist[, id_type])]
+find_parents <- function(ids, index, id_type) {
+  parents <- index$liesWithin[match(ids, index[, id_type])]
   return(parents)
 }
 
@@ -127,8 +127,8 @@ find_parents <- function(ids, uidlist, id_type) {
 #' @keywords internal
 #'
 #' @return a vector of categories for each resource
-find_categories <- function(ids, uidlist, id_type) {
-  cats <- uidlist$category[match(ids, uidlist[, id_type])]
+find_categories <- function(ids, index, id_type) {
+  cats <- index$category[match(ids, index[, id_type])]
   return(cats)
 }
 
@@ -148,7 +148,7 @@ find_categories <- function(ids, uidlist, id_type) {
 #' @keywords internal
 #'
 #' @return a list with solved and unsolved resources
-find_parent_layer <- function(parent_list, uidlist, id_type, layer_categories,
+find_parent_layer <- function(parent_list, index, id_type, layer_categories,
                               max_depth = 20) {
   ids <- parent_list$unsolved$search_for
   identifier <- parent_list$unsolved$identifier
@@ -172,14 +172,14 @@ find_parent_layer <- function(parent_list, uidlist, id_type, layer_categories,
   }
 
   unsolved_parents <- ids_parents[!parent_is_layer]
-  parents_of_sf <- find_parents(unsolved_parents, uidlist, id_type)
+  parents_of_sf <- find_parents(unsolved_parents, index, id_type)
   parent_list <- list(
     solved = list(identifier = c(parent_list$solved$identifier, solved),
                   liesWithinLayer = c(parent_list$solved$liesWithinLayer, solved_parents)),
     unsolved = list(identifier = unsolved,
                     search_for = unsolved_parents,
                     parents_of_sf = parents_of_sf,
-                    parents_of_sf_cat = find_categories(parents_of_sf, uidlist, id_type))
+                    parents_of_sf_cat = find_categories(parents_of_sf, index, id_type))
   )
   # or return when all search_for is NA, failsafe or it is time to give up
   len_remaining <- length(parent_list$unsolved$search_for)
@@ -187,7 +187,7 @@ find_parent_layer <- function(parent_list, uidlist, id_type, layer_categories,
   if (len_remaining == 0 | remaining_all_na == TRUE | max_depth < 1) {
     return(parent_list)
   } else {
-    find_parent_layer(parent_list, uidlist,
+    find_parent_layer(parent_list, index,
                       id_type, layer_categories,
                       max_depth = max_depth - 1)
   }
