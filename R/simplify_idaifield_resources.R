@@ -15,9 +15,6 @@
 #' added as `relation.liesWithinLayer`? Default is TRUE.
 #' @param keep_geometry logical. Should geometry be kept as a GeoJSON string?
 #' Default is TRUE.
-#' @param language character. Language code to select from multilingual fields
-#' (e.g. `"de"`, `"en"`), or `"all"` to keep all languages. Default is
-#' `"all"`. Note: language selection is not yet implemented.
 #' @param silent logical. Should messages be suppressed? Default is FALSE.
 #'
 #' @returns A single resource with relations flattened, geometry handled,
@@ -43,7 +40,6 @@ simplify_single_resource <- function(resource,
                                      replace_uids = TRUE,
                                      find_layers = TRUE,
                                      keep_geometry = TRUE,
-                                     language = "all",
                                      silent = FALSE) {
 
   stopifnot(is.logical(keep_geometry))
@@ -95,6 +91,11 @@ simplify_single_resource <- function(resource,
   # Multilingual fields are lists with named elements like list(de = "...", en = "...").
   # Selecting a single language requires distinguishing these from other list fields.
   # Not yet implemented — all languages are kept for now.
+  # ----- Select the specified language
+  #resource <- lapply(resource, function(input) {
+  #  fix_language(input, language = language)
+  #})
+
 
   # ----- Unlist simple fields to vectors
   # Fields that do not contain nested lists are unlisted for easier handling
@@ -155,8 +156,9 @@ simplify_single_resource <- function(resource,
 simplify_idaifield <- function(resources,
                                index = NULL,
                                config = NULL,
-                               keep_geometry = FALSE,
                                language = "all",
+                               keep_geometry = FALSE,
+                               find_layers = FALSE,
                                silent = FALSE,
                                ...) {
 
@@ -215,7 +217,6 @@ simplify_idaifield <- function(resources,
       replace_uids = TRUE,
       find_layers = FALSE,
       keep_geometry = keep_geometry,
-      language = language,
       silent = silent
     )
     lwl <- liesWithinLayer[names(liesWithinLayer) == x$identifier]
@@ -229,7 +230,6 @@ simplify_idaifield <- function(resources,
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
   attr(idaifield_simple, "connection")   <- attr(resources, "connection")
   attr(idaifield_simple, "projectname")  <- attr(resources, "projectname")
-  attr(idaifield_simple, "language")     <- language
 
   return(idaifield_simple)
 }
