@@ -2,31 +2,27 @@
 % Please edit documentation in R/fix_relations.R
 \name{fix_relations}
 \alias{fix_relations}
-\title{Unnest the Relations in a Resource and Replace the UUIDs with \emph{identifiers}}
+\title{Flatten Relations and Optionally Replace UUIDs}
 \usage{
-fix_relations(resource, replace_uids = TRUE, uidlist = NULL)
+fix_relations(resource, replace_uids = TRUE, index = NULL, uidlist = NULL)
 }
 \arguments{
-\item{resource}{One element from a list of class \code{idaifield_resources}.}
+\item{resource}{One element from an \code{idaifield_resources} list.}
 
-\item{replace_uids}{TRUE/FALSE. If TRUE, replaces the UUIDs in each relation
-with the corresponding identifiers. If FALSE, just flattens the list.
-Default is TRUE.}
+\item{replace_uids}{logical. Should UUIDs be replaced with identifiers
+from \code{index}? Default is TRUE.}
 
-\item{uidlist}{Only needs to be provided if \code{replace_uids = TRUE}.
-A data.frame as returned by \code{\link[=get_uid_list]{get_uid_list()}} or
-\code{\link[=get_field_index]{get_field_index()}}.}
+\item{index}{A data.frame as returned by \code{\link[=get_uid_list]{get_uid_list()}} or
+\code{\link[=get_field_index]{get_field_index()}}. Required if \code{replace_uids = TRUE}.}
 }
 \value{
-The same resource with its relations unnested (and replaced with
-\emph{identifier}s if \code{replace_uids} is set to \code{TRUE}).
+The resource with its \code{relations} list removed and replaced by
+flat named vectors, one per relation type.
 }
 \description{
-The function will flatten the relations list to more non-nested lists with
-with \emph{relation.}-prefix and replace the UUIDs in the lists values with
-the corresponding \emph{identifier}s from the uidlist/index
-(see \code{\link[=get_field_index]{get_field_index()}} or \code{\link[=get_uid_list]{get_uid_list()}}) using
-\code{\link[=replace_uid]{replace_uid()}} to make the result more readable.
+Flattens the nested \code{relations} list of a resource into individual named
+vectors with a \code{relation.}-prefix (e.g. \code{relation.isAbove}), and
+optionally replaces UUIDs with human-readable identifiers from the index.
 }
 \examples{
 \dontrun{
@@ -34,23 +30,18 @@ index <- data.frame(
   identifier = c("name1", "name2"),
   UID = c("15754929-dd98-acfa-bfc2-016b4d5582fe",
           "bf06c7b0-dba0-dcfa-6d8e-3b3509fee5b6")
- )
-resource <- list(relations = list(
+)
+resource <- list(
+  identifier = "res_1",
+  relations = list(
     isRecordedIn = list("15754929-dd98-acfa-bfc2-016b4d5582fe"),
     liesWithin = list("bf06c7b0-dba0-dcfa-6d8e-3b3509fee5b6")
-  ),
-  identifier = "res_1"
+  )
 )
-
-new_relations_list <- fix_relations(resource, replace_uids = TRUE, uidlist = index)
-new_relations_list
-
-new_relations_list <- fix_relations(resource, replace_uids = FALSE)
-new_relations_list
+fix_relations(resource, replace_uids = TRUE, index = index)
+fix_relations(resource, replace_uids = FALSE)
 }
 }
 \seealso{
-\itemize{
-\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
-}
+\code{\link[=replace_uid]{replace_uid()}}, \code{\link[=simplify_idaifield]{simplify_idaifield()}}
 }

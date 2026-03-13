@@ -66,6 +66,16 @@ simplify_single_resource <- function(resource,
     resource$type <- NULL
   }
 
+
+  # ----- Spread relations into specific vectors for each relation
+  # such as e.g. relation.liesWithin = c("Befund 1")
+  resource <- fix_relations(resource, replace_uids = replace_uids, index = index)
+
+
+
+
+
+
   #resource <- fix_relations(resource,
   #                          replace_uids = replace_uids,
   #                          uidlist = uidlist)
