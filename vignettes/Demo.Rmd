@@ -45,11 +45,15 @@ located at
 [`inst/testdata/rtest.jsonl`](https://github.com/lsteinmann/idaifieldR/blob/main/inst/testdata/rtest.jsonl)
 on GitHub.
 
-Create a connection object with `connect_idaifield()`. This pings the database
-and checks that the project exists:
 
+Create a connection object with `connect_idaifield()`:
 ```{r eval = FALSE}
 conn <- connect_idaifield(pwd = "hallo", project = "rtest")
+```
+
+You can also ping the database to see if the connection succeeds:
+```{r eval = FALSE}
+idf_ping(conn)
 ```
 
 If Field Desktop is running on the same computer, the `serverip` argument can
@@ -74,28 +78,27 @@ The index maps UUIDs to human-readable identifiers and is used by
 `get_field_index()`:
 
 ```{r eval = FALSE}
-index <- get_field_index(conn, verbose = TRUE)
+index <- get_field_index(conn, verbose = TRUE, gather_trenches = TRUE)
 ```
 
 ```{r echo = FALSE}
-index <- get_uid_list(idaifield_test_docs, verbose = TRUE)
+index <- get_uid_list(idaifield_test_docs, verbose = TRUE, gather_trenches = TRUE)
 ```
 
-With `verbose = TRUE` the index also includes the `shortDescription` and
-`liesWithin` fields. Use `head(index)` to inspect it, or plot a quick
-overview of the dataset:
+With `verbose = TRUE` the index also includes the `shortDescription`. With `gather_trenches = TRUE` the `Place` column is added, which contains the nearest *Place*-category resource (if any). Use `head(index)` to inspect it, or plot a quick overview of the dataset:
 
 ```{r indexPlot}
 index |>
-  ggplot(aes(y = liesWithin, fill = category)) +
+  ggplot(aes(y = Place, fill = category)) +
   geom_bar() +
-  labs(title = "Resources by context and category", y = "Context", x = "Count")
+  labs(title = "Resources by context and category", y = "Place", x = "Count")
 ```
 
 ## Unnesting (Optional)
 
 `get_idaifield_docs()` returns the raw nested structure as it comes from the
-API. You can reduce it to the resource level with `maybe_unnest_docs()`:
+API, containing the complete revision history for each resource. You can reduce 
+it to the resource level with `maybe_unnest_docs()`:
 
 ```{r}
 idaifield_test_resources <- maybe_unnest_docs(idaifield_test_docs)
@@ -114,6 +117,7 @@ R-friendly:
   (e.g. `relation.liesWithin`)
 - UUIDs in relations are replaced with human-readable identifiers
 - Geometry is kept as a GeoJSON string if `keep_geometry = TRUE`
+- Single level lists are flattened to vectore, but more complex fields are preserved as-is.
 
 You need to supply the `index` of the **complete** project database here, even
 if you are working with a subset — it is used as a lookup table for UUID
@@ -128,7 +132,7 @@ idaifield_test_simple <- simplify_idaifield(
   idaifield_test_resources,
   index        = index,
   config       = config,
-  keep_geometry = FALSE
+  keep_geometry = TRUE
 )
 ```
 
@@ -153,7 +157,7 @@ This is useful for large projects where you only need a small subset:
 pottery_docs <- idf_query(conn, field = "category", value = "Pottery")
 
 # Always supply the index of the complete database when simplifying a subset
-pottery_simple <- simplify_idaifield(pottery_docs, index = index, config = config)
+pottery_simple <- simplify_idaifield(pottery_docs, index = index, config = config, keep_geometry = TRUE)
 ```
 
 See also `?idf_index_query` and `?idf_json_query` for more targeted queries.
@@ -195,8 +199,11 @@ Geometry is kept as a GeoJSON string when `keep_geometry = TRUE` in
 
 ```{r eval = FALSE}
 library(sf)
-geom <- sf::st_read(resource$geometry)
+geom <- sf::st_read(pottery_simple$Befund_6_KER_4$geometry)
+plot(geom)
 ```
+
+Please note that you will need to set the CRS manually.
 
 ## Working with the Raw List
 
