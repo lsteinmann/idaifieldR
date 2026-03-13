@@ -17,26 +17,38 @@
 #' keep_geometry = FALSE)
 #' }
 simplify_single_resource <- function(resource,
+                                     index = NULL,
+                                     config = NULL,
                                      replace_uids = TRUE,
                                      find_layers = TRUE,
-                                     uidlist = NULL,
                                      keep_geometry = TRUE,
-                                     remove_config_names = NULL,
                                      language = "all",
-                                     spread_fields = TRUE,
-                                     use_exact_dates = FALSE,
-                                     config = NA,
-                                     silent = FALSE) {
+                                     silent = FALSE,
+                                     # DEPRECATED --------
+                                     uidlist = NULL,
+                                     remove_config_names = NULL,
+                                     spread_fields = NULL,
+                                     use_exact_dates = NULL) {
 
   stopifnot(is.logical(keep_geometry))
   stopifnot(is.logical(replace_uids))
   stopifnot(is.logical(find_layers))
-  stopifnot(is.logical(spread_fields))
-  stopifnot(is.logical(use_exact_dates))
   stopifnot(is.logical(silent))
 
   if (!is.null(remove_config_names)) {
     warning("'remove_config_names' argument is deprecated. do not use it anymore.")
+  }
+  if (!is.null(use_exact_dates)) {
+    warning("'use_exact_dates' argument is deprecated. do not use it anymore.")
+  }
+  if (!is.null(spread_fields)) {
+    warning("'spread_fields' argument is deprecated. do not use it anymore.")
+  }
+  if (!is.null(uidlist)) {
+    warning("'uidlist' argument has been renamed to 'index'. do not use it anymore.")
+    if (is.null(index)) {
+      index <- uidlist
+    }
   }
 
   id <- resource$identifier
@@ -49,135 +61,135 @@ simplify_single_resource <- function(resource,
     resource$type <- NULL
   }
 
-  resource <- fix_relations(resource,
-                            replace_uids = replace_uids,
-                            uidlist = uidlist)
-
-  # checks the value of the replace_uids argument, if it is TRUE,
-  # calls the find_layer() function on the resource with resource, uidlist,
-  # and NULL as arguments. The resulting value is assigned to the
-  # liesWithinLayer variable and appended to the resource as a new field
-  # called relation.liesWithinLayer.
-  if (find_layers) {
-    liesWithinLayer <- find_layer(ids = resource$id,
-                                  uidlist = uidlist,
-                                  silent = TRUE)
-    if (replace_uids) {
-      liesWithinLayer <- replace_uid(liesWithinLayer, uidlist)
-    }
-    resource <- append(resource,
-                       list(relation.liesWithinLayer = liesWithinLayer))
-  }
-
-  # checks the value of the keep_geometry argument, which determines whether
-  # to keep the geometry field in the resource or not. If keep_geometry is
-  # FALSE, the function checks if the resource has a field called geometry and,
-  # if so, removes it. If keep_geometry is TRUE, the reformat_geometry()-
-  # function is called on the resource's geometry field and the resulting value
-  # is assigned back to the geometry field of the resource.
-  if (!keep_geometry) {
-    names <- names(resource)
-    has_geom <- any(grepl("geometry", names))
-    if (has_geom) {
-      resource$geometry <- NULL
-    }
-  } else {
-    resource$geometry <- reformat_geometry(resource$geometry)
-  }
-
-  # Next, the function checks if the resource has a field called period, and
-  # if so, assigns it to the period variable. If period is not NULL,
-  # the function creates a new fixed_periods variable with two elements,
-  # named period.start and period.end. If period has only one element,
-  # both elements of fixed_periods are set to this value. If period has two
-  # elements, the elements of fixed_periods are set to these values.
-  # If period has more than two elements, a message is printed saying
-  # "I did not see that coming." and the values of fixed_periods are not
-  # modified. The fixed_periods variable is then appended to the resource.
-  period <- resource$period
-  if (!is.null(period)) {
-    fixed_periods <- c(NA, NA)
-    names(fixed_periods) <- c("period.start", "period.end")
-    if (length(period) == 1) {
-      fixed_periods[1:2] <- rep(unlist(period), 2)
-    } else if (length(period) == 2) {
-      fixed_periods[1:2] <- unlist(period)
-    } else {
-      # this actually never ever happens ;)
-      message(paste("Somehow, resource", id,
-                    "has more than two values for field 'period'.",
-                    "Using first two."))
-      fixed_periods[1:2] <- unlist(period)[1:2]
-    }
-    resource <- append(resource, fixed_periods)
-  }
-
-  dating <- resource[["dating", exact = TRUE]]
-  if (!is.null(dating)) {
-    dating <- fix_dating(dating, use_exact_dates = use_exact_dates)
-    resource$dating <- NULL
-    resource <- append(resource, dating)
-  }
-
-
-  # Next, the function gets all the field names in the resource that contain
-  # the string "dimension", and assigns them to the dim_names variable.
-  # If dim_names has at least one element, the function creates a new new_dims
-  # list with a single element (1), and then iterates over each element of
-  # dim_names. For each dim in dim_names, the idf_sepdim() function is called,
-  # passing dim (the name of the field in question) as an additional argument.
-  # The result is appended to the new_dims list. Once all elements of dim_names
-  # have been processed, the new_dims list is converted to a flat list
-  # (i.e., all sub-lists are removed) and the fields in resource with names
-  # from dim_names are removed. The new_dims list is then appended
-  # to the resource.
-  list_names <- names(resource)
-  dim_names <- list_names[grep("dimension", list_names)]
-
-  if (length(dim_names) >= 1) {
-    new_dims <- as.list(1)
-    for (dim in dim_names) {
-      # We are doing this silently always, why would we do this to users,
-      # we cant just calculate the mean and say its cool.
-      new_dims <- append(new_dims, idf_sepdim(resource[[dim]], dim))
-    }
-    new_dims <- as.list(unlist(new_dims[-1]))
-
-
-    resource[dim_names] <- NULL
-
-    resource <- append(resource, new_dims)
-  }
-
-  if (language != "all") {
-    resource <- lapply(resource, function(x) {
-      pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
-      names <- names(x)
-      names <- grepl(paste0(pat, collapse = "|"), names)
-      if (all(names)) {
-        gather_languages(list(x), language = language, silent = TRUE)
-      } else {
-        x
-      }
-    })
-  }
-
-
-
-  # Finally, the function checks if the fieldtypes argument is a matrix,
-  # and if so, calls the convert_to_onehot() function on the resource with
-  # fieldtypes as an additional argument. This converts the values in the
-  # fields of resource to one-hot encoded vectors based on the
-  # specified fieldtypes.
-  # Have to retire this completely.
-  if (spread_fields & !any(is.na(config))) {
-    #warning("fields can currently not be converted to one hot; waiting on rework of simplify_idaifield")
-    #resource <- convert_to_onehot(resource = resource,
-    #                              config = config)
-    # TODO
-  }
-
-  # Then, returns the modified resource.
+  #resource <- fix_relations(resource,
+  #                          replace_uids = replace_uids,
+  #                          uidlist = uidlist)
+#
+  ## checks the value of the replace_uids argument, if it is TRUE,
+  ## calls the find_layer() function on the resource with resource, uidlist,
+  ## and NULL as arguments. The resulting value is assigned to the
+  ## liesWithinLayer variable and appended to the resource as a new field
+  ## called relation.liesWithinLayer.
+  #if (find_layers) {
+  #  liesWithinLayer <- find_layer(ids = resource$id,
+  #                                uidlist = uidlist,
+  #                                silent = TRUE)
+  #  if (replace_uids) {
+  #    liesWithinLayer <- replace_uid(liesWithinLayer, uidlist)
+  #  }
+  #  resource <- append(resource,
+  #                     list(relation.liesWithinLayer = liesWithinLayer))
+  #}
+#
+  ## checks the value of the keep_geometry argument, which determines whether
+  ## to keep the geometry field in the resource or not. If keep_geometry is
+  ## FALSE, the function checks if the resource has a field called geometry and,
+  ## if so, removes it. If keep_geometry is TRUE, the reformat_geometry()-
+  ## function is called on the resource's geometry field and the resulting value
+  ## is assigned back to the geometry field of the resource.
+  #if (!keep_geometry) {
+  #  names <- names(resource)
+  #  has_geom <- any(grepl("geometry", names))
+  #  if (has_geom) {
+  #    resource$geometry <- NULL
+  #  }
+  #} else {
+  #  resource$geometry <- reformat_geometry(resource$geometry)
+  #}
+#
+  ## Next, the function checks if the resource has a field called period, and
+  ## if so, assigns it to the period variable. If period is not NULL,
+  ## the function creates a new fixed_periods variable with two elements,
+  ## named period.start and period.end. If period has only one element,
+  ## both elements of fixed_periods are set to this value. If period has two
+  ## elements, the elements of fixed_periods are set to these values.
+  ## If period has more than two elements, a message is printed saying
+  ## "I did not see that coming." and the values of fixed_periods are not
+  ## modified. The fixed_periods variable is then appended to the resource.
+  #period <- resource$period
+  #if (!is.null(period)) {
+  #  fixed_periods <- c(NA, NA)
+  #  names(fixed_periods) <- c("period.start", "period.end")
+  #  if (length(period) == 1) {
+  #    fixed_periods[1:2] <- rep(unlist(period), 2)
+  #  } else if (length(period) == 2) {
+  #    fixed_periods[1:2] <- unlist(period)
+  #  } else {
+  #    # this actually never ever happens ;)
+  #    message(paste("Somehow, resource", id,
+  #                  "has more than two values for field 'period'.",
+  #                  "Using first two."))
+  #    fixed_periods[1:2] <- unlist(period)[1:2]
+  #  }
+  #  resource <- append(resource, fixed_periods)
+  #}
+#
+  #dating <- resource[["dating", exact = TRUE]]
+  #if (!is.null(dating)) {
+  #  dating <- fix_dating(dating, use_exact_dates = use_exact_dates)
+  #  resource$dating <- NULL
+  #  resource <- append(resource, dating)
+  #}
+#
+#
+  ## Next, the function gets all the field names in the resource that contain
+  ## the string "dimension", and assigns them to the dim_names variable.
+  ## If dim_names has at least one element, the function creates a new new_dims
+  ## list with a single element (1), and then iterates over each element of
+  ## dim_names. For each dim in dim_names, the idf_sepdim() function is called,
+  ## passing dim (the name of the field in question) as an additional argument.
+  ## The result is appended to the new_dims list. Once all elements of dim_names
+  ## have been processed, the new_dims list is converted to a flat list
+  ## (i.e., all sub-lists are removed) and the fields in resource with names
+  ## from dim_names are removed. The new_dims list is then appended
+  ## to the resource.
+  #list_names <- names(resource)
+  #dim_names <- list_names[grep("dimension", list_names)]
+#
+  #if (length(dim_names) >= 1) {
+  #  new_dims <- as.list(1)
+  #  for (dim in dim_names) {
+  #    # We are doing this silently always, why would we do this to users,
+  #    # we cant just calculate the mean and say its cool.
+  #    new_dims <- append(new_dims, idf_sepdim(resource[[dim]], dim))
+  #  }
+  #  new_dims <- as.list(unlist(new_dims[-1]))
+#
+#
+  #  resource[dim_names] <- NULL
+#
+  #  resource <- append(resource, new_dims)
+  #}
+#
+  #if (language != "all") {
+  #  resource <- lapply(resource, function(x) {
+  #    pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
+  #    names <- names(x)
+  #    names <- grepl(paste0(pat, collapse = "|"), names)
+  #    if (all(names)) {
+  #      gather_languages(list(x), language = language, silent = TRUE)
+  #    } else {
+  #      x
+  #    }
+  #  })
+  #}
+#
+#
+#
+  ## Finally, the function checks if the fieldtypes argument is a matrix,
+  ## and if so, calls the convert_to_onehot() function on the resource with
+  ## fieldtypes as an additional argument. This converts the values in the
+  ## fields of resource to one-hot encoded vectors based on the
+  ## specified fieldtypes.
+  ## Have to retire this completely.
+  #if (spread_fields & !any(is.na(config))) {
+  #  #warning("fields can currently not be converted to one hot; waiting on rework of simplify_idaifield")
+  #  #resource <- convert_to_onehot(resource = resource,
+  #  #                              config = config)
+  #  # TODO
+  #}
+#
+  ## Then, returns the modified resource.
   return(resource)
 }
 
@@ -265,14 +277,15 @@ simplify_single_resource <- function(resource,
 #' }
 simplify_idaifield <- function(resources,
                                index = NULL,
-                               config = NULL
+                               config = NULL,
+                               silent = FALSE,
+                               language = "all"
                                #keep_geometry = FALSE,
                                #uidlist = NULL,
                                #language = "all",
                                #remove_config_names = TRUE,
                                #spread_fields = TRUE,
-                               #use_exact_dates = FALSE,
-                               #silent = FALSE
+                               #use_exact_dates = FALSE
                                ) {
 
 
@@ -350,8 +363,8 @@ simplify_idaifield <- function(resources,
   })
 
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
-  attr(idaifield_simple, "connection") <- attr(idaifield_docs, "connection")
-  attr(idaifield_simple, "projectname") <- attr(idaifield_docs, "projectname")
+  attr(idaifield_simple, "connection") <- attr(resources, "connection")
+  attr(idaifield_simple, "projectname") <- attr(resources, "projectname")
   attr(idaifield_simple, "language") <- language
 
   return(idaifield_simple)
