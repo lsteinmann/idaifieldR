@@ -1,6 +1,6 @@
 source(file = "../load_testdata.R")
 
-uidlist <- get_uid_list(test_docs)
+index <- get_uid_list(test_docs)
 
 items <- sample(seq_along(test_docs), size = 10)
 
@@ -9,7 +9,7 @@ for (item in items) {
   if (length(test_resources[[item]]$relations) > 0) {
     resource <- fix_relations(test_resources[[item]],
                               replace_uids = TRUE,
-                              uidlist = uidlist)
+                              index = index)
     test_that("names are working", {
       greps <- grepl("relation.", names(resource))
       expect_true(any(greps))
@@ -34,10 +34,10 @@ for (item in items) {
   }
 
 
-  test_that("fails without uidlist", {
+  test_that("fails without index", {
     expect_error(fix_relations(test_resources[[item]],
                                replace_uids = TRUE),
-                 "*.UID.*")
+                 "index")
   })
 
 }

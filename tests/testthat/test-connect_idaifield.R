@@ -73,7 +73,7 @@ test_that("adds correct limit to the query (needs updating when test data change
   conn <- connect_idaifield(pwd = "hallo", project = "rtest", ping = TRUE)
   query <- '{ "selector": { "resource.processor": ["Anna Allgemeinperson"] } }'
   new_query <- add_limit_to_query(query, conn)
-  expect_true(grepl("77", new_query))
+  expect_true(grepl("79", new_query))
 })
 
 test_that("adds correct limit to the query (needs updating when test data changes)", {
