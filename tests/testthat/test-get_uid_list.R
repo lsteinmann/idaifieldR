@@ -60,7 +60,7 @@ for (sample in samples) {
   })
 
   test_that("uidlist has 7 cols when verbose", {
-    expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 7)
+    expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 6)
   })
 }
 

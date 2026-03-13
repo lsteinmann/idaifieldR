@@ -46,7 +46,6 @@ get_uid_list <- function(idaifield_docs,
                          verbose = FALSE,
                          gather_trenches = FALSE,
                          remove_config_names = TRUE,
-                         find_layers = FALSE,
                          language = "all") {
   #.Deprecated("get_field_index()", package = "idaifieldR", #msg,
   #            old = "get_uid_list()")
@@ -54,7 +53,6 @@ get_uid_list <- function(idaifield_docs,
   stopifnot(is.logical(verbose))
   stopifnot(is.logical(gather_trenches))
   stopifnot(is.logical(remove_config_names))
-  stopifnot(is.logical(find_layers))
 
   idaifield_docs <- maybe_unnest_docs(idaifield_docs)
 
@@ -62,8 +60,8 @@ get_uid_list <- function(idaifield_docs,
   colnames <- c("category", "UID", "identifier", "isRecordedIn", "liesWithin")
 
   if (verbose) {
-    ncol <- 7
-    colnames <- c(colnames, "shortDescription", "liesWithinLayer")
+    ncol <- 6
+    colnames <- c(colnames, "shortDescription")
   }
 
   uidlist <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
@@ -124,11 +122,6 @@ get_uid_list <- function(idaifield_docs,
     } else {
       uidlist$shortDescription <- gather_languages(desc, language = language)
     }
-  }
-
-  if (find_layers) {
-    lwl <- find_layer(uidlist$UID, uidlist)
-    uidlist$liesWithinLayer <- replace_uid(lwl, uidlist)
   }
 
   uidlist$isRecordedIn <- replace_uid(uidlist$isRecordedIn, uidlist)
