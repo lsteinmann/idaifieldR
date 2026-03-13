@@ -8,8 +8,9 @@ simplify_idaifield(
   resources,
   index = NULL,
   config = NULL,
-  keep_geometry = FALSE,
   language = "all",
+  keep_geometry = FALSE,
+  find_layers = FALSE,
   silent = FALSE,
   ...
 )
@@ -28,9 +29,8 @@ or \code{\link[=idf_json_query]{idf_json_query()}}.}
 \item{keep_geometry}{logical. Should geometry be kept as a GeoJSON string?
 Default is TRUE.}
 
-\item{language}{character. Language code to select from multilingual fields
-(e.g. \code{"de"}, \code{"en"}), or \code{"all"} to keep all languages. Default is
-\code{"all"}. Note: language selection is not yet implemented.}
+\item{find_layers}{logical. Should the containing layer be detected and
+added as \code{relation.liesWithinLayer}? Default is TRUE.}
 
 \item{silent}{logical. Should messages be suppressed? Default is FALSE.}
 }

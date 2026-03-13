@@ -26,14 +26,8 @@ records the Place each corresponding Trench and its sub-resources lie within.
 (Useful for grouping the finds of several trenches, but will only work if the
 project database is organized accordingly.)}
 
-\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
-removed from field names of the configuration? (Default is TRUE.)
-(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
-see \code{\link[=remove_config_names]{remove_config_names()}}.)}
-
 \item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
-with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
-modified) in which a resource is contained  recursively. That means that
+with the 'Layer' in which a resource is contained  recursively. That means that
 even if it does not immediately lie within this layer, but is
 contained by one or several other resources in said layer, a new column
 ("liesWithinLayer") will still show the layer.

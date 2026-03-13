@@ -11,7 +11,6 @@ simplify_single_resource(
   replace_uids = TRUE,
   find_layers = TRUE,
   keep_geometry = TRUE,
-  language = "all",
   silent = FALSE
 )
 }
@@ -32,10 +31,6 @@ added as \code{relation.liesWithinLayer}? Default is TRUE.}
 
 \item{keep_geometry}{logical. Should geometry be kept as a GeoJSON string?
 Default is TRUE.}
-
-\item{language}{character. Language code to select from multilingual fields
-(e.g. \code{"de"}, \code{"en"}), or \code{"all"} to keep all languages. Default is
-\code{"all"}. Note: language selection is not yet implemented.}
 
 \item{silent}{logical. Should messages be suppressed? Default is FALSE.}
 }

@@ -9,7 +9,6 @@ get_uid_list(
   verbose = FALSE,
   gather_trenches = FALSE,
   remove_config_names = TRUE,
-  find_layers = FALSE,
   language = "all"
 )
 }
@@ -25,22 +24,6 @@ which is sufficient for internal use.}
 records the Place each corresponding Trench and its sub-resources lie within.
 (Useful for grouping the finds of several trenches, but will only work if the
 project database is organized accordingly.)}
-
-\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
-removed from field names of the configuration? (Default is TRUE.)
-(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
-see \code{\link[=remove_config_names]{remove_config_names()}}.)}
-
-\item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
-with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
-modified) in which a resource is contained  recursively. That means that
-even if it does not immediately lie within this layer, but is
-contained by one or several other resources in said layer, a new column
-("liesWithinLayer") will still show the layer.
-Example: A sample "A" in Find "001" from layer "Layer1" will
-usually have "001" as the value in "liesWithin". With find_layers, there will
-be another column called "liesWithinLayer" which contains "Layer1" for both
-sample "A" and Find "001".}
 
 \item{language}{The short name (e.g. "en", "de", "fr") of the language
 that is preferred for the fields. Special value "all" (the default) can be
