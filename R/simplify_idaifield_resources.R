@@ -1,26 +1,41 @@
-#' Simplifies a single resource from the iDAI.field 2 / Field Desktop Database
+#' Simplify a Single Resource from an iDAI.field / Field Desktop Database
 #'
-#' This function is a helper to `simplify_idaifield()`.
+#' Helper function to [simplify_idaifield()]. Transforms a single resource
+#' from an `idaifield_resources` list into a flatter, more R-friendly
+#' structure.
 #'
-#' @param resource One resource (element) from an `idaifield_resources`-list.
-#' @inheritParams simplify_idaifield
-#' @inheritParams get_field_index
-#' @param keep_geometry Should the geometry of each resource be kept?
-#' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
-#' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with
-#' [replace_uid()], and also: [find_layer()]
+#' @param resource One element from an `idaifield_resources` list.
+#' @param index A data.frame as returned by [get_uid_list()] or
+#' [get_field_index()]. Required for UUID replacement and layer detection.
+#' @param config An `idaifield_config` object as returned by
+#' [get_configuration()]. Required when `find_layers = TRUE`.
+#' @param replace_uids logical. Should UUIDs in relations be replaced with
+#' human-readable identifiers from `index`? Default is TRUE.
+#' @param find_layers logical. Should the containing layer be detected and
+#' added as `relation.liesWithinLayer`? Default is TRUE.
+#' @param keep_geometry logical. Should geometry be kept as a GeoJSON string?
+#' Default is TRUE.
+#' @param language character. Language code to select from multilingual fields
+#' (e.g. `"de"`, `"en"`), or `"all"` to keep all languages. Default is
+#' `"all"`. Note: language selection is not yet implemented.
+#' @param silent logical. Should messages be suppressed? Default is FALSE.
 #'
-#'
-#' @returns A single resource (element) for an `idaifield_resources`-list.
+#' @returns A single resource with relations flattened, geometry handled,
+#' and simple fields unlisted to vectors.
 #'
 #' @keywords internal
 #'
+#' @seealso [simplify_idaifield()], [fix_relations()], [find_layer()]
+#'
 #' @examples
 #' \dontrun{
-#' simpler_resource <- simplify_single_resource(resource,
-#' replace_uids = TRUE,
-#' uidlist = uidlist,
-#' keep_geometry = FALSE)
+#' index <- get_uid_list(docs)
+#' config <- get_configuration(conn)
+#' simpler <- simplify_single_resource(docs[[1]],
+#'   index = index,
+#'   config = config,
+#'   keep_geometry = FALSE
+#' )
 #' }
 simplify_single_resource <- function(resource,
                                      index = NULL,
@@ -38,38 +53,27 @@ simplify_single_resource <- function(resource,
 
   id <- resource$identifier
   if (is.null(id)) {
-    stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
-  }
-  # We need the config for handling inputTypes.
-  if (find_layers && !inherits(config, "idaifield_config")) {
-    # Change if you decide we not NEED the config after all.
-    stop("'config' is not an 'idaifield_config'")
+    stop("Not in valid format, please supply a single element from an 'idaifield_resources' list.")
   }
 
-  # ----- Legacy data fixes
-  # In a previous version of iDAI.field, "type" was used to store the (then)
-  # "type" of resource. This was renamed to "category" after the TypeCatalog
-  # feature was implemented. Since not every resource in the DB has been
-  # updated to fit the new scheme, we need to do this retroactively:
+  if (find_layers && !inherits(config, "idaifield_config")) {
+    stop("'find_layers = TRUE' requires a valid 'idaifield_config' object as 'config'.")
+  }
+
+  # ----- Legacy data fix
+  # In older versions of iDAI.field, the category field was called "type".
+  # Rename retroactively so downstream code only needs to handle "category".
   if (is.null(resource$category)) {
     resource$category <- resource$type
     resource$type <- NULL
   }
-  # TODO Question: Should this maybe be a function that can be used elsewhere?
-  # It is a little like "migrating" the data model to the current state and will
-  # be relevant. However - not doing that now.
-  # TODO: handling of legacy "date" fields which are now more complex.
 
-
-
-
-  # ----- Spread relations into specific vectors for each relation
-  # such as e.g. relation.liesWithin = c("Befund 1")
+  # ----- Flatten relations into named vectors with "relation." prefix
+  # e.g. relations$liesWithin -> relation.liesWithin = c("Befund 1")
   resource <- fix_relations(resource, replace_uids = replace_uids, index = index)
 
-  # ----- Find the next containing resource considered a "layer"
-  # A layer here would be Feature or a sub-category of feature as evident
-  # from the project configuration.
+  # ----- Find the nearest containing resource considered a "layer"
+  # A layer is a Feature or any subcategory of Feature as defined in the config.
   if (find_layers) {
     resource$relation.liesWithinLayer <- unname(find_layer(
       resource$identifier,
@@ -78,32 +82,23 @@ simplify_single_resource <- function(resource,
     ))
   }
 
-  # ----- Handle the geometry appropriately
+  # ----- Handle geometry
+  # Geometry is kept as a GeoJSON string for maximum compatibility.
+  # To convert to an sf object: sf::st_read(resource$geometry)
   if (keep_geometry && !is.null(resource$geometry)) {
     resource$geometry <- maybe_to_json(resource$geometry)
   } else {
     resource$geometry <- NULL
   }
 
+  # TODO: language selection
+  # Multilingual fields are lists with named elements like list(de = "...", en = "...").
+  # Selecting a single language requires distinguishing these from other list fields.
+  # Not yet implemented — all languages are kept for now.
 
-
-  # TODO
-  # Since the rework, I do not have a way of selecting languages anymore.
-  # But we need to do this still. So this needs a fix...
-  #if (language != "all") {
-  #  resource <- lapply(resource, function(x) {
-  #    pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
-  #    names <- names(x)
-  #    names <- grepl(paste0(pat, collapse = "|"), names)
-  #    if (all(names)) {
-  #      gather_languages(list(x), language = language, silent = TRUE)
-  #    } else {
-  #      x
-  #    }
-  #  })
-  #}
-
-  # ----- Unlist fields that do not have sub-lists to vectors:
+  # ----- Unlist simple fields to vectors
+  # Fields that do not contain nested lists are unlisted for easier handling
+  # in data frames. Fields with sub-lists (e.g. composite fields) are left as-is.
   resource <- lapply(resource, function(x) {
     if (!check_for_sublist(x)) {
       unlist(x)
@@ -115,131 +110,95 @@ simplify_single_resource <- function(resource,
   return(resource)
 }
 
-#' Simplify a List Imported from an iDAI.field / Field Desktop-`1041-1`#' Simplify a List Imported from an iDAI.field / Field Desktop-Database
+
+#' Simplify a List Imported from an iDAI.field / Field Desktop Database
 #'
-#' The function will take a list as returned by
-#' [get_idaifield_docs()], [idf_query()], [idf_index_query()], or
-#' [idf_json_query()] and process it to make the list more usable.
-#' It will unnest a few lists, including the dimension-lists and the
-#' period-list to provide single values for later processing with
-#' [idaifield_as_matrix()].
-#' If a connection to the database can be established, the function will
-#' get the relevant project configuration and convert custom checkboxes-fields
-#' to multiple lists, each for every value from the respective valuelist,
-#' to make them more accessible during the conversion with
-#' [idaifield_as_matrix()].
-#' It will also remove the custom configuration field names that are in use
-#' since iDAI.field 3 / Field Desktop and consist of "projectname:fieldName".
-#' Only the "projectname:"-part will be removed.
+#' Takes a list as returned by [get_idaifield_docs()], [idf_query()],
+#' [idf_index_query()], or [idf_json_query()] and transforms it into a
+#' flatter, more R-friendly structure.
 #'
-#' Please note: The function will need an Index (i.e. uidlist as provided
-#' by [get_uid_list()]) of the complete project database to correctly replace
-#' the UUIDs with their corresponding identifiers! Especially if a selected
-#' list is passed to [simplify_idaifield()], you need to supply the uidlist
-#' of the complete project database as well.
+#' Relations are flattened into named vectors with a `relation.`-prefix
+#' (e.g. `relation.liesWithin`). UUIDs in relations are replaced with
+#' human-readable identifiers. Geometry is kept as a GeoJSON string if
+#' `keep_geometry = TRUE`.
 #'
-#' Formatting of various lists: Dimension measurements as well as dating are
-#' reformatted and might produce unexpected results.
-#' For the dating, all begin and end values are evaluated and for each resource,
-#' the minimum value from "begin" and maximum value from "end" is selected.
-#' For the dimension-fields, if a ranged measurement was selected, a mean
-#' will be returned.
+#' Note: If you are working with a subset of resources (e.g. from
+#' [idf_query()]), you should supply the `index` of the *complete* project
+#' database, not just the subset — otherwise UUID replacement will be
+#' incomplete.
 #'
-#' @param idaifield_docs An `idaifield_docs` or `idaifield_resources`-list as
-#' returned by [get_idaifield_docs()] or [idf_query()],
-#' [idf_index_query()], and [idf_json_query()].
-#' @inheritParams get_field_index
-#' @param index If NULL (default) the list of UUIDs and identifiers is
-#' automatically generated within this function using [get_uid_list()]. This only makes sense if
-#' the list handed to [simplify_idaifield()] had not been selected yet. If it
-#' has been, you should supply a data.frame as returned
-#' by [get_field_index()].
-#' @param silent TRUE/FALSE, default: FALSE. Should messages be suppressed?
-#' @inheritParams gather_languages
-#' @inheritParams get_field_inputtypes
+#' @param resources An `idaifield_docs` or `idaifield_resources` list as
+#' returned by [get_idaifield_docs()], [idf_query()], [idf_index_query()],
+#' or [idf_json_query()].
+#' @inheritParams simplify_single_resource
 #'
-#' @returns An `idaifield_simple`-list containing the same resources in
-#' a different format depending on the parameters used.
+#' @returns An `idaifield_simple` list with the same resources in a flatter
+#' format, with `connection`, `projectname`, and `language` stored as
+#' attributes.
 #'
 #' @export
 #'
-#'
 #' @seealso
-#' * This function uses: [idf_sepdim()], [remove_config_names()]
-#' * When find_layers = TRUE: [find_layer()], this only works when the function can get an index/uidlist!
-#' * Depending on the `replace_uids`-argument: [fix_relations()] with [replace_uid()]
-#' * If `uidlist = NULL`: [get_uid_list()]
-#'
+#' * [get_idaifield_docs()] to import resources from the database
+#' * [get_uid_list()] and [get_field_index()] for building an index
+#' * [get_configuration()] for the project configuration
+#' * [fix_relations()] for relation flattening
+#' * [find_layer()] for layer detection
+#' * [idaifield_as_matrix()] for converting the result to a matrix
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(
-#'     serverip = "localhost",
-#'     project = "rtest",
-#'     pwd = "hallo"
-#' )
-#' idaifield_docs <- get_idaifield_docs(connection = connection)
-#'
-#' simpler_idaifield <- simplify_idaifield(idaifield_docs)
+#' conn <- connect_idaifield(serverip = "localhost", project = "rtest", pwd = "hallo")
+#' docs <- get_idaifield_docs(connection = conn)
+#' simple <- simplify_idaifield(docs)
 #' }
 simplify_idaifield <- function(resources,
                                index = NULL,
                                config = NULL,
-                               silent = FALSE,
-                               language = "all",
                                keep_geometry = FALSE,
-                               ...
-                               # DEPRECATED --------
-                               #uidlist = NULL,
-                               #remove_config_names = NULL,
-                               #spread_fields = NULL,
-                               #use_exact_dates = NULL
-                               ) {
+                               language = "all",
+                               silent = FALSE,
+                               ...) {
 
-  # Warn for deprecated parameters:
-  if (exists("remove_config_names")) {
-    warning("'remove_config_names' argument is deprecated. do not use it anymore.")
-  }
-  if (exists("use_exact_dates")) {
-    warning("'use_exact_dates' argument is deprecated. do not use it anymore.")
-  }
-  if (exists("spread_fields")) {
-    warning("'spread_fields' argument is deprecated. do not use it anymore.")
-  }
-  if (exists("uidlist")) {
-    warning("'uidlist' argument has been renamed to 'index'. do not use it anymore.")
+  # ----- Handle deprecated parameters passed via ...
+  deprecated <- list(...)
+  if ("uidlist" %in% names(deprecated)) {
+    warning("'uidlist' has been renamed to 'index'. Please update your code.")
     if (is.null(index)) {
-      index <- uidlist
+      index <- deprecated[["uidlist"]]
+    }
+  }
+  for (param in c("remove_config_names", "use_exact_dates", "spread_fields", "replace_uids", "find_layers")) {
+    if (param %in% names(deprecated)) {
+      warning(paste0("'", param, "' is deprecated and has no effect. Please update your code."))
     }
   }
 
-  #### ---------- Check if the declared structure is as expected
+  # ----- Check input structure
   if (inherits(resources, "idaifield_simple")) {
     message("'resources' is already an 'idaifield_simple', did nothing.")
     return(resources)
   }
   resources <- maybe_unnest_docs(resources)
   if (!inherits(resources, "idaifield_resources")) {
-    stop("'resources' is not an 'idaifield_resources'.")
+    stop("'resources' is not an 'idaifield_resources' list as returned by get_idaifield_docs().")
   }
 
-  # We need the index for UUID replacement.
+  # ----- Build index if not supplied
   if (is.null(index)) {
-    # TODO
-    # Consider removing this.
-    message("No 'index' supplied, generating from this list.")
+    if (!silent) message("No 'index' supplied, generating from this list.")
     index <- get_uid_list(resources)
   }
-  # We need the config for handling inputTypes.
+
+  # ----- Get config if not supplied
   if (is.null(config)) {
     conn <- attr(resources, "connection")
     config <- get_configuration(conn)
   } else if (!inherits(config, "idaifield_config")) {
-    # Change if you decide we not NEED the config after all.
-    stop("'config' is not an 'idaifield_config'")
+    stop("'config' must be an 'idaifield_config' object as returned by get_configuration().")
   }
 
-  # the find_layer() function is nicer and faster if we use the vectorized way.
+  # ----- Find layers vectorized across all resources (faster than per-resource)
   layer_categories <- c("Feature", names(config$categories$Feature$trees))
   liesWithinLayer <- find_layer(
     names(resources),
@@ -247,20 +206,19 @@ simplify_idaifield <- function(resources,
     layer_categories = layer_categories
   )
 
-  # Workflow on a single resource:
+  # ----- Apply per-resource simplification
   idaifield_simple <- lapply(resources, function(x) {
     new_res <- simplify_single_resource(
       x,
       index = index,
       config = config,
-      language = language,
-      silent = silent,
-      find_layers = FALSE,
       replace_uids = TRUE,
-      keep_geometry = keep_geometry
+      find_layers = FALSE,
+      keep_geometry = keep_geometry,
+      language = language,
+      silent = silent
     )
-    lwl <- which(names(liesWithinLayer) == x$identifier)
-    lwl <- liesWithinLayer[lwl]
+    lwl <- liesWithinLayer[names(liesWithinLayer) == x$identifier]
     if (length(lwl) > 0) {
       names(lwl) <- "relation.liesWithinLayer"
       new_res <- append(new_res, lwl)
@@ -269,19 +227,9 @@ simplify_idaifield <- function(resources,
   })
 
   idaifield_simple <- structure(idaifield_simple, class = "idaifield_simple")
-  attr(idaifield_simple, "connection") <- attr(resources, "connection")
-  attr(idaifield_simple, "projectname") <- attr(resources, "projectname")
-  attr(idaifield_simple, "language") <- language
+  attr(idaifield_simple, "connection")   <- attr(resources, "connection")
+  attr(idaifield_simple, "projectname")  <- attr(resources, "projectname")
+  attr(idaifield_simple, "language")     <- language
 
   return(idaifield_simple)
 }
-
-
-
-
-
-
-
-
-
-
