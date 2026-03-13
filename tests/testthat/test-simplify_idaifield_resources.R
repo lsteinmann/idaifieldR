@@ -13,6 +13,26 @@ minimal_resource <- list(
   )
 )
 
+example_resource <- list(
+  identifier = "TestObject-001",
+  category = "Find",
+  dating = list(
+    list(
+      type  = "range",
+      begin = list(inputType = "bce", inputYear = 400, year = -400),
+      end   = list(inputType = "ce",  inputYear = 100, year =  100),
+      isImprecise = FALSE,
+      isUncertain = FALSE
+    )
+  ),
+  processor = list("Person_1", "Person_2"),
+  clayColorOutsideMunsell = list(en = "5YR 6/4", de = "5YR 6/4"),
+  relations = list(
+    isRecordedIn = list("aaaaaaaa-0000-0000-0000-000000000001"),
+    liesWithin   = list("aaaaaaaa-0000-0000-0000-000000000002")
+  )
+)
+
 minimal_index <- data.frame(
   identifier = c("Trench-01", "Layer-01"),
   UID        = c("aaaaaaaa-0000-0000-0000-000000000001",
@@ -101,6 +121,17 @@ test_that("stops when replace_uids = TRUE but no index supplied", {
       find_layers  = FALSE
     )
   )
+})
+
+test_that("lists are flattened to vectors, but lists with sub-lists are preserved", {
+  result <- simplify_single_resource(
+    example_resource,
+    index        = minimal_index,
+    replace_uids = FALSE,
+    find_layers  = FALSE
+  )
+  expect_false(is.list(result$processor))
+  expect_true(is.list(result$dating))
 })
 
 test_that("geometry is removed when keep_geometry = FALSE", {
