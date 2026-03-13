@@ -14,6 +14,7 @@
   * Substituted check for project parameter with structure check on connection parameter. If `connect_idaifield()` produced if, we just assume it's correct.
 * Removed `check_if_idaifield()`
 * Removed `download_language_list()`
+* Removed `reformat_geometry()`: Instead, I recommend (and do) re-json-ify the Geometry and advise to use `sf::st_read(json_string, quiet = TRUE)` on each geometry elsewhere.
 * Reworked `check_and_unnest()` into `maybe_unnest_docs()`.
 * Reworked `find_layers()` to require a vector of categories to search for as layer_categories instead of a global option. 
 

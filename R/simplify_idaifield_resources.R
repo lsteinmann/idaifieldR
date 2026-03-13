@@ -106,23 +106,14 @@ simplify_single_resource <- function(resource,
     ))
   }
 
+  # ----- Handle the geometry appropriately
+  if (keep_geometry && !is.null(resource$geometry)) {
+    resource$geometry <- maybe_to_json(resource$geometry)
+  } else {
+    resource$geometry <- NULL
+  }
 
-  ## checks the value of the keep_geometry argument, which determines whether
-  ## to keep the geometry field in the resource or not. If keep_geometry is
-  ## FALSE, the function checks if the resource has a field called geometry and,
-  ## if so, removes it. If keep_geometry is TRUE, the reformat_geometry()-
-  ## function is called on the resource's geometry field and the resulting value
-  ## is assigned back to the geometry field of the resource.
-  #if (!keep_geometry) {
-  #  names <- names(resource)
-  #  has_geom <- any(grepl("geometry", names))
-  #  if (has_geom) {
-  #    resource$geometry <- NULL
-  #  }
-  #} else {
-  #  resource$geometry <- reformat_geometry(resource$geometry)
-  #}
-#
+
   ## Next, the function checks if the resource has a field called period, and
   ## if so, assigns it to the period variable. If period is not NULL,
   ## the function creates a new fixed_periods variable with two elements,
