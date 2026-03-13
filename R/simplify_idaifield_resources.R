@@ -100,23 +100,16 @@ simplify_single_resource <- function(resource,
   #    }
   #  })
   #}
-#
-#
-#
-  ## Finally, the function checks if the fieldtypes argument is a matrix,
-  ## and if so, calls the convert_to_onehot() function on the resource with
-  ## fieldtypes as an additional argument. This converts the values in the
-  ## fields of resource to one-hot encoded vectors based on the
-  ## specified fieldtypes.
-  ## Have to retire this completely.
-  #if (spread_fields & !any(is.na(config))) {
-  #  #warning("fields can currently not be converted to one hot; waiting on rework of simplify_idaifield")
-  #  #resource <- convert_to_onehot(resource = resource,
-  #  #                              config = config)
-  #  # TODO
-  #}
-#
-  ## Then, returns the modified resource.
+
+  # ----- Unlist fields that do not have sub-lists to vectors:
+  resource <- lapply(resource, function(x) {
+    if (!check_for_sublist(x)) {
+      unlist(x)
+    } else {
+      x
+    }
+  })
+
   return(resource)
 }
 
