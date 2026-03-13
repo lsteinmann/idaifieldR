@@ -13,6 +13,12 @@ simplify_idaifield(
 )
 }
 \arguments{
+\item{index}{If NULL (default) the list of UUIDs and identifiers is
+automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
+the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
+has been, you should supply a data.frame as returned
+by \code{\link[=get_field_index]{get_field_index()}}.}
+
 \item{config}{A configuration list as returned
 by \code{\link[=get_configuration]{get_configuration()}}}
 
@@ -27,27 +33,6 @@ in alphabetical order if the selected language is not available.}
 \item{idaifield_docs}{An \code{idaifield_docs} or \code{idaifield_resources}-list as
 returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}},
 \code{\link[=idf_index_query]{idf_index_query()}}, and \code{\link[=idf_json_query]{idf_json_query()}}.}
-
-\item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
-corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
-\code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
-
-\item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
-automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
-the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
-has been, you should supply a data.frame as returned
-by \code{\link[=get_field_index]{get_field_index()}}.}
-
-\item{keep_geometry}{TRUE/FALSE: Should the geographical
-information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
-
-\item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
-spread across multiple lists to facilitate boolean-columns for each value
-of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_configuration()}},
-\code{\link[=get_field_inputtypes]{get_field_inputtypes()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}}
-
-\item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
-dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
 }
 \value{
 An \code{idaifield_simple}-list containing the same resources in

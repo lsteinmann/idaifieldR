@@ -4,6 +4,19 @@
 #'
 #' @param resource One resource (element) from an `idaifield_resources`-list.
 #' @inheritParams simplify_idaifield
+#' @inheritParams get_field_index
+#' @param keep_geometry TRUE/FALSE: Should the geographical
+#' information be kept or removed? Defaults is FALSE. Uses: [reformat_geometry()]
+#' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
+#' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with
+#' [replace_uid()], and also: [find_layer()]
+#'
+#' @param spread_fields TRUE/FALSE: Should checkbox-fields be
+#' spread across multiple lists to facilitate boolean-columns for each value
+#' of a checkbox-field? Default is TRUE. Uses: [get_configuration()],
+#' [get_field_inputtypes()], [convert_to_onehot()]
+#' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
+#' dates be used in case there are any? Default is FALSE. Changes outcome of [fix_dating()].
 #'
 #' @returns A single resource (element) for an `idaifield_resources`-list.
 #'
@@ -65,6 +78,12 @@ simplify_single_resource <- function(resource,
     resource$category <- resource$type
     resource$type <- NULL
   }
+  # TODO Question: Should this maybe be a function that can be used elsewhere?
+  # It is a little like "migrating" the data model to the current state and will
+  # be relevant. However - not doing that now.
+  # TODO: handling of legacy "date" fields which are now more complex.
+
+
 
 
   # ----- Spread relations into specific vectors for each relation
@@ -241,24 +260,13 @@ simplify_single_resource <- function(resource,
 #' @param idaifield_docs An `idaifield_docs` or `idaifield_resources`-list as
 #' returned by [get_idaifield_docs()] or [idf_query()],
 #' [idf_index_query()], and [idf_json_query()].
-#' @param replace_uids TRUE/FALSE: Should UUIDs be automatically replaced with the
-#' corresponding identifiers? Defaults is TRUE. Uses: [fix_relations()] with
-#' [replace_uid()], and also: [find_layer()]
 #' @inheritParams get_field_index
-#' @param uidlist If NULL (default) the list of UUIDs and identifiers is
+#' @param index If NULL (default) the list of UUIDs and identifiers is
 #' automatically generated within this function using [get_uid_list()]. This only makes sense if
 #' the list handed to [simplify_idaifield()] had not been selected yet. If it
 #' has been, you should supply a data.frame as returned
 #' by [get_field_index()].
-#' @param keep_geometry TRUE/FALSE: Should the geographical
-#' information be kept or removed? Defaults is FALSE. Uses: [reformat_geometry()]
-#' @param spread_fields TRUE/FALSE: Should checkbox-fields be
-#' spread across multiple lists to facilitate boolean-columns for each value
-#' of a checkbox-field? Default is TRUE. Uses: [get_configuration()],
-#' [get_field_inputtypes()], [convert_to_onehot()]
 #' @param silent TRUE/FALSE, default: FALSE. Should messages be suppressed?
-#' @param use_exact_dates TRUE/FALSE: Should the values from any "exact"
-#' dates be used in case there are any? Default is FALSE. Changes outcome of [fix_dating()].
 #' @inheritParams gather_languages
 #' @inheritParams get_field_inputtypes
 #'
@@ -366,7 +374,8 @@ simplify_idaifield <- function(resources,
       config = config,
       language = language,
       silent = silent,
-      find_layers = FALSE
+      find_layers = FALSE,
+      replace_uids = TRUE
     )
     lwl <- which(names(liesWithinLayer) == x$identifier)
     lwl <- liesWithinLayer[lwl]

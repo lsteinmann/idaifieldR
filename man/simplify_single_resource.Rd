@@ -22,12 +22,29 @@ simplify_single_resource(
 \arguments{
 \item{resource}{One resource (element) from an \code{idaifield_resources}-list.}
 
+\item{index}{If NULL (default) the list of UUIDs and identifiers is
+automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
+the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
+has been, you should supply a data.frame as returned
+by \code{\link[=get_field_index]{get_field_index()}}.}
+
 \item{config}{A configuration list as returned
 by \code{\link[=get_configuration]{get_configuration()}}}
 
 \item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
 corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
 \code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
+
+\item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
+with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
+modified) in which a resource is contained  recursively. That means that
+even if it does not immediately lie within this layer, but is
+contained by one or several other resources in said layer, a new column
+("liesWithinLayer") will still show the layer.
+Example: A sample "A" in Find "001" from layer "Layer1" will
+usually have "001" as the value in "liesWithin". With find_layers, there will
+be another column called "liesWithinLayer" which contains "Layer1" for both
+sample "A" and Find "001".}
 
 \item{keep_geometry}{TRUE/FALSE: Should the geographical
 information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
@@ -40,11 +57,10 @@ in alphabetical order if the selected language is not available.}
 
 \item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
 
-\item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
-automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
-the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
-has been, you should supply a data.frame as returned
-by \code{\link[=get_field_index]{get_field_index()}}.}
+\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
+removed from field names of the configuration? (Default is TRUE.)
+(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
+see \code{\link[=remove_config_names]{remove_config_names()}}.)}
 
 \item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value
