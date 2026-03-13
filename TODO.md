@@ -3,36 +3,65 @@
 ## In general
 * Better structure of tests with less specialized cases?
 * Update the couch-db action a bit? See problems with _changes etc., and different configurations and contents.
-* Remove the project(name) argument/option everywhere except in `connect_idaifield()` (because it doesn't really make that much sense.)
 * rename uidlist to index everywhere because that is what it is. 
-* Fix everything about `find_layer()` and simplify...
 * Completely rewrite simplify & its utilities...
     * just produce methods for all inputtype, get the config via the new configuration endpoint and then reformat each column according to the specifications for the corresponding inputtype. you can get everything easily via the new endpoint! 
-
-* What you need to do for simplify: Build from scratch, this wont work the way 
-  it does now. Make one resource that actually has all the possible fields a resource
-  can have, and then work through processing all of them in a more r-readable format. 
-  The current state is a mess. 
-
-## for v0.3.4
-* check all documentation and arguments
-
-## for v0.4.0 ?
-* Handling geometry does not work very well and should be reconsidered. Maybe 
-by importing some package like sf and storing the geometry as sf-objects, 
-though this seems overkill. Or keep original JSON-string somehow to be useable
-GeoJSON...? -> may be best approach?
-* `remove_config_names()` may or may not overwrite data with the information
-from unused fields, and I have to check & fix that, though I have not yet noticed 
-any problem.
-* Completely rewrite simplify and its functions to make it possible to use a series
-of lapplys based on the arguments of which functions should be used as that 
-would save a lot of time.
-* Some possibility to only update resources that have been changed since the last
-synch since loading everything is excessive for large projects.
-
-## for 1.0.0
-* Getting CRAN-ready: Better structured tests that do not depend on DB-connections.
-* Reduced messaging behaviour. 
+* `remove_config_names()` should not really exist.
 * Reduced functions, make it easier to maintain somehow. 
 * Clean up old code.
+
+## Maybes
+* Some possibility to only update resources that have been changed since the last
+synch since loading everything is excessive for large projects.
+* Getting CRAN-ready: Better structured tests that do not depend on DB-connections.
+* Reduced messaging behaviour. 
+
+# March Madness Cleanup TODOs according to Claude
+
+## 💀 Dead Code (Not Called Anywhere in the Pipeline)
+
+**`convert_to_onehot()`** — Exported, has a test, has docs. But `simplify_idaifield()` never calls it. It was part of the old `spread_fields` behaviour, which was deprecated. It's just sitting there.
+
+**`fix_dating()` and `bce_ce()`** — Same story. `simplify_single_resource()` doesn't call either. They're exported, tested, documented — but completely orphaned from the actual simplification pipeline. The dating fields just fall through to the generic `unlist()` at the bottom.
+
+**`idf_sepdim()`** — You called this "VERY VERY BAD" yourself. It's exported, never called internally. Dead.
+
+---
+
+## 🔨 Broken (Documented as Such)
+
+**`extract_inputtypes()`** — The replacement for `get_field_inputtypes()`, apparently. Has `#' Title` as its roxygen title. Has no `@param` docs. Has `"I am terribly sorry for this mess."` in the body. It's exported. It calls itself recursively and works, but it's not called from anywhere else in the package — not from `simplify_idaifield()`, not from `get_configuration()`. So it's also orphaned.
+
+---
+
+## 🤔 Questionable Exports
+
+**`gather_languages()`** — Exported, has tests, but the language selection in `simplify_single_resource()` is entirely commented out. So it's a public function with no path through the package to reach it. Power users could call it directly, but is that the intent?
+
+**`find_named_list()`** — Exported, has a test. Never called internally. Appears to be a utility for users to dig into the config list. Fine if intentional — but is it?
+
+**`select_by()`** — A deprecated wrapper for `idf_select_by()`. Fine for backward compat, but it lives in `select_idaifield.R` instead of `deprecated.R` where it belongs.
+
+---
+
+## 🧹 Minor Mess
+
+**`proj_idf_client()` is still chatty.** Still prints "Connected to project 'X' containing N docs." on every internal call. Every query, every `get_field_index()`, everything goes through this and yells at the user.
+
+**`idaifield_as_matrix()` example still uses `select_by()` (deprecated).** Should be `idf_select_by()`.
+
+
+---
+
+## Summary Table
+
+| Item | Status | Action |
+|---|---|---|
+| `add_limit_to_query()` — `limit <- NA` line | 🐛 Bug | Delete the line |
+| `convert_to_onehot()` | 💀 Dead | Remove or document as standalone tool |
+| `fix_dating()` + `bce_ce()` | 💀 Dead | Same question |
+| `idf_sepdim()` | 💀 Dead | Rewrite or remove |
+| `extract_inputtypes()` | 🔨 Undocumented + orphaned | Fix docs + wire in or remove |
+| `deprecated.R` stubs | 🧹 Wrong signal | `stop()` not `message()` |
+| `proj_idf_client()` chattiness | 🧹 Annoying | Move message out |
+| `idaifield_as_matrix()` example | 🧹 Stale | Update to `idf_select_by()` |
