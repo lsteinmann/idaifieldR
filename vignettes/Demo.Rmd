@@ -187,14 +187,7 @@ pottery %>%
 
 ## Languages
 
-There are currently two functions that will make it easier to replace the internal names of variables with their translations in different languages:
-
-```{r download, eval = FALSE}
-core_lang_list <- download_language_list(project = "core", language = "en")
-milet_lang_list <- download_language_list(project = "Milet", language = "en")
-```
-
-Since these functions download the Language configuration from [github.com/dainst/idai-field](https://github.com/dainst/idai-field/tree/master/core/config), I would advise you to safe the result in a local RDS-file after you prepared everything. You can prepare a lookup-table like this:
+You can prepare a lookup-table like this:
 
 ```{r lookup, eval = FALSE}
 lookup <- get_language_lookup(core_lang_list, language = "en")

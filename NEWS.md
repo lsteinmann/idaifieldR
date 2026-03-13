@@ -2,6 +2,8 @@
 ## New Field Desktop API
 * idaifieldR now gets the configuration of a project from Field Desktop directly via the `/config/` enpoint instead of the database document. That means that the complete configuration is now accessible.
 
+## Renewed `simplify_idaifield()`
+`simplify_idaifield()` has been drastically changed. Some functionality which would have created data issues for users was removed (e.g. dimension-recalculation), which results in a less "simple" return list, but will keep the data intact. The function is now less verbose.
 
 ## Maintenance:
 * reworked `connect_idaifield()` (and affected): 
@@ -11,13 +13,16 @@
   * And the deprecated 'project' / 'projectname' parameter in many other functions is now finally removed.
   * Substituted check for project parameter with structure check on connection parameter. If `connect_idaifield()` produced if, we just assume it's correct.
 * Removed `check_if_idaifield()`
+* Removed `download_language_list()`
 * Reworked `check_and_unnest()` into `maybe_unnest_docs()`.
+* Reworked `find_layers()` to require a vector of categories to search for as layer_categories instead of a global option. 
 
 ## Improvements:
 * Improvement: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.
 
 ## Bug fixes:
-* Bug: `add_limit_to_query()` now validates the updates query again. Unlike before.
+* `add_limit_to_query()` now validates the updates query again. Unlike before.
+* `fix_relations()` now works with user-defined relations which contain a number in the name.
 
 
 # idaifieldR 0.3.6 _2025-11-29_

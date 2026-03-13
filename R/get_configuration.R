@@ -6,8 +6,7 @@
 #' configuration as used in the project, including custom and *fields*,
 #' *valuelists* and *translations*.
 #'
-#' @param connection A connection object as returned
-#' by [connect_idaifield()]
+#' @param connection A connection object as returned by [connect_idaifield()]
 #'
 #' @returns A list containing the project configuration; `NA` if the configuration
 #' could not be found or the connection failed.

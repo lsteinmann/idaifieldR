@@ -26,12 +26,7 @@ name in the "var" column, and the selected language in the "label" column.
 }
 \description{
 The function compiles a table of background values and their translations
-in the language selected from the configuration supplied to it. Current
-Configuration resources from the database obtained by
-\code{\link[=get_configuration]{get_configuration()}} only contain canges made after the
-addition of the project configuration editor in iDAI.field 3.
-You can obtain older language configurations with
-\code{\link[=download_language_list]{download_language_list()}} from the iDAI.field GitHub repository.
+in the language selected from the configuration supplied to it.
 }
 \details{
 Be aware: if two things have the same name
@@ -50,7 +45,6 @@ lookup <- get_language_lookup(config$languages, language = "en")
 }
 \seealso{
 \itemize{
-\item Get the necessary configuration: \code{\link[=get_configuration]{get_configuration()}} or the
-default configurations available online: \code{\link[=download_language_list]{download_language_list()}}
+\item Get the necessary configuration: \code{\link[=get_configuration]{get_configuration()}}
 }
 }
