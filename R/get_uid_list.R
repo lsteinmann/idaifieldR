@@ -274,7 +274,13 @@ get_field_index <- function(connection,
   index_df$liesWithin <- replace_uid(index_df$liesWithin, index_df)
 
   if (find_layers) {
-    index_df$liesWithinLayer <- find_layer(index_df$identifier, index_df)
+    config <- get_configuration(connection)
+    layer_categories <- c("Feature", names(config$categories$Feature$trees))
+    index_df$liesWithinLayer <- find_layer(
+      ids = index_df$identifier,
+      index = index_df,
+      layer_categories = layer_categories
+    )
   }
 
   if (gather_trenches) {
