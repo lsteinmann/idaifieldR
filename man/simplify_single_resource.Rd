@@ -12,11 +12,7 @@ simplify_single_resource(
   find_layers = TRUE,
   keep_geometry = TRUE,
   language = "all",
-  silent = FALSE,
-  uidlist = NULL,
-  remove_config_names = NULL,
-  spread_fields = NULL,
-  use_exact_dates = NULL
+  silent = FALSE
 )
 }
 \arguments{
@@ -55,19 +51,6 @@ used to return a concatenated string of all available languages.
 in alphabetical order if the selected language is not available.}
 
 \item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
-
-\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
-removed from field names of the configuration? (Default is TRUE.)
-(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
-see \code{\link[=remove_config_names]{remove_config_names()}}.)}
-
-\item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
-spread across multiple lists to facilitate boolean-columns for each value
-of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_configuration()}},
-\code{\link[=get_field_inputtypes]{get_field_inputtypes()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}}
-
-\item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
-dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
 }
 \value{
 A single resource (element) for an \code{idaifield_resources}-list.

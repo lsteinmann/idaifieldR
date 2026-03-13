@@ -87,7 +87,9 @@ simplify_single_resource <- function(resource,
 
 
 
-#
+  # TODO
+  # Since the rework, I do not have a way of selecting languages anymore.
+  # But we need to do this still. So this needs a fix...
   #if (language != "all") {
   #  resource <- lapply(resource, function(x) {
   #    pat <- c("^[a-z]{2}$", "unspecifiedLanguage")
@@ -186,31 +188,30 @@ simplify_idaifield <- function(resources,
                                silent = FALSE,
                                language = "all",
                                keep_geometry = FALSE,
+                               ...
                                # DEPRECATED --------
-                               uidlist = NULL,
-                               remove_config_names = NULL,
-                               spread_fields = NULL,
-                               use_exact_dates = NULL
+                               #uidlist = NULL,
+                               #remove_config_names = NULL,
+                               #spread_fields = NULL,
+                               #use_exact_dates = NULL
                                ) {
 
-
   # Warn for deprecated parameters:
-  if (!is.null(remove_config_names)) {
+  if (exists("remove_config_names")) {
     warning("'remove_config_names' argument is deprecated. do not use it anymore.")
   }
-  if (!is.null(use_exact_dates)) {
+  if (exists("use_exact_dates")) {
     warning("'use_exact_dates' argument is deprecated. do not use it anymore.")
   }
-  if (!is.null(spread_fields)) {
+  if (exists("spread_fields")) {
     warning("'spread_fields' argument is deprecated. do not use it anymore.")
   }
-  if (!is.null(uidlist)) {
+  if (exists("uidlist")) {
     warning("'uidlist' argument has been renamed to 'index'. do not use it anymore.")
     if (is.null(index)) {
       index <- uidlist
     }
   }
-
 
   #### ---------- Check if the declared structure is as expected
   if (inherits(resources, "idaifield_simple")) {
@@ -238,20 +239,6 @@ simplify_idaifield <- function(resources,
     stop("'config' is not an 'idaifield_config'")
   }
 
-  # Workflow in this pipe-function:
-  # A) check for structure - DONE
-  # B) replace UUIDs, don't make that an argument. you want it simple, you get it simple.
-  # It would be a lot faster though if I'd replace UUIDs after I did the whole relations thing.
-  # C) think about languages: every list should be traversed to check if it has a language list,
-  # and from that language list, a language needs to be selected. Selecting "all" can stay possible,
-  # and in that case, the language list just isnt touched. Users problem.
-  # D) spread the relations list, so that each relation has either its own list,
-  # or just the value?
-  # E) Select only things that can be easily tabulated: anything that is not a list.
-  # F) I actually still like the idea of attaching a place (though we can have that in the index... not needed, actually.)
-  # G) handle_geometry: put the JSON geometry in an R-readable format?
-
-
   # the find_layer() function is nicer and faster if we use the vectorized way.
   layer_categories <- c("Feature", names(config$categories$Feature$trees))
   liesWithinLayer <- find_layer(
@@ -259,8 +246,6 @@ simplify_idaifield <- function(resources,
     index,
     layer_categories = layer_categories
   )
-
-
 
   # Workflow on a single resource:
   idaifield_simple <- lapply(resources, function(x) {

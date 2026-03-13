@@ -10,7 +10,8 @@ simplify_idaifield(
   config = NULL,
   silent = FALSE,
   language = "all",
-  keep_geometry = FALSE
+  keep_geometry = FALSE,
+  ...
 )
 }
 \arguments{
