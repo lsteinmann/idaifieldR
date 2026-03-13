@@ -7,12 +7,12 @@
 [![Package documentation](https://img.shields.io/badge/Documentation-lsteinmann.github.io%2FidaifieldR-green)](https://lsteinmann.github.io/idaifieldR/)
 <!-- badges: end -->
 
-The R-package **idaifieldR** imports data from the [iDAI.field 2 / Field Desktop database](https://github.com/dainst/idai-field) into R without the hassle of CSV-exports. This package uses the [CouchDB-API](https://docs.couchdb.org/en/stable/api/database/index.html) to connect to your running Field Desktop client and store the entire database (or just a subset) in a list right in R's memory. With idaifieldR, you can update your data on-the-fly and flexibly re-run any R-script. 
+The R-package **idaifieldR** imports data from the [iDAI.field / Field Desktop database](https://github.com/dainst/idai-field) into R without the hassle of CSV-exports. This package uses the [CouchDB-API](https://docs.couchdb.org/en/stable/api/database/index.html) to connect to your running Field Desktop client and store the entire database (or just a subset) in a list right in R's memory. With idaifieldR, you can update your data on-the-fly and flexibly re-run any R-script. 
 
-In addition to importing data, idaifieldR also offers some formatting to enhance processing in R. The relevant functions replace UUIDs with the corresponding identifiers, unnest lists, and reformat the geometry to be compatible with, e.g., the [sp](https://cran.r-project.org/web/packages/sp/index.html)-package. For more information, check out the Demo-Vignette. It's worth noting that processing all resources from larger databases can be time-consuming and memory-intensive, so I recommend only processing the subsets actually needed for your analyses.
+In addition to importing data, idaifieldR also offers some formatting to enhance processing in R. The relevant functions replace UUIDs with the corresponding identifiers and unnest some lists. For more information, check out the Demo-Vignette. It's worth noting that processing all resources from larger databases can be time-consuming and memory-intensive, so I recommend only processing the subsets actually needed for your analyses.
 
 # Key Features
-* Import from a running iDAI.field 2 or 3 (Field Desktop) client into R
+* Import from a running iDAI.field (Field Desktop) client into R
 * Query it, or get the complete project database into R
 * Automatically format the data for easier processing
 * Get metadata such as creation and modification dates by user
@@ -22,13 +22,12 @@ In addition to importing data, idaifieldR also offers some formatting to enhance
 idaifieldR needs a syncing [iDAI.field/Field Desktop-Client](https://github.com/dainst/idai-field) on the same computer or in the same network to work. Other than that, the package depends on [crul](https://cran.r-project.org/web/packages/crul/index.html) and [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html), both available on CRAN and automatically installed as dependencies. 
 
 # Installation
-You can install the current version of idaifieldR from GitHub using `devtools` or `remotes`:
+You can install the current version of idaifieldR from GitHub using `remotes`:
 
 ``` r
-devtools::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
-# OR
 remotes::install_github("lsteinmann/idaifieldR", build_vignettes = TRUE)
 ```
+
 # Basic Workflow Example
 
 A demonstration of the package and some of its uses is included in the paper ["R wie in: Reproduzierbar. Auswertung von Daten aus Field Desktop mit idaifieldR"](https://doi.org/10.34780/068b-q6c7) published in the [Forum for Digital Archaeology and Infrastructure](https://publications.dainst.org/journals/FdAI/index) (2023, DOI: 10.34780/068b-q6c7) and the corresponding [supplement](https://repo.dainst.org/dataset/digitales-supplement-zu-r-wie-in-reproduzierbar). Alternatively, you can check out the [Demo.Rmd-vignette](https://lsteinmann.github.io/idaifieldR/articles/Demo.html) (`browseVignettes("idaifieldR")`) or the [TLDR.Rmd-vignette](https://lsteinmann.github.io/idaifieldR/articles/TLDR.html) for a shorter overview.
@@ -62,5 +61,7 @@ View(pottery_mat)
 ```
 
 # Contribution
-As I constantly use it for my own work, I am improving this package and trying to stay up-to-date with everything as I go. A special thanks goes to ChatGPT for helping me a lot with the documentation. Much of the code is rather old and reflects my learning process much more than good practice. However, I would be happy about any feedback -- be it in the form of issues or feature requests -- and would be even happier if anyone would like to collaborate on this project. If you are interested in contributing to idaifieldR, feel free to get in touch with me -- or don't, and just fork it! ;)
+Much of the code is rather old and reflects my learning process much more than good practice. However, I would be happy about any feedback -- be it in the form of issues or feature requests -- and would be even happier if anyone would like to collaborate on this project. If you are interested in contributing to idaifieldR, feel free!
 
+# Generative AI usage
+Some of the older documentation has been produced by ChatGPT (and revised). The more recent changes have been made with advice from Claude.ai, but automated code generation is generally not used for the functions. Some of the tests, documentation or even vignettes are generated by Claude.ai, though. I try to make this transparent in commit messages. 
