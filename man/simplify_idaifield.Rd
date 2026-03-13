@@ -5,46 +5,18 @@
 \title{Simplify a List Imported from an iDAI.field / Field Desktop-\code{1041-1}#' Simplify a List Imported from an iDAI.field / Field Desktop-Database}
 \usage{
 simplify_idaifield(
-  idaifield_docs,
-  keep_geometry = FALSE,
-  replace_uids = TRUE,
-  find_layers = TRUE,
-  uidlist = NULL,
-  language = "all",
-  remove_config_names = TRUE,
-  spread_fields = TRUE,
-  use_exact_dates = FALSE,
-  silent = FALSE
+  resources,
+  index = NULL,
+  config = NULL,
+  silent = FALSE,
+  language = "all"
 )
 }
 \arguments{
-\item{idaifield_docs}{An \code{idaifield_docs} or \code{idaifield_resources}-list as
-returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}},
-\code{\link[=idf_index_query]{idf_index_query()}}, and \code{\link[=idf_json_query]{idf_json_query()}}.}
+\item{config}{A configuration list as returned
+by \code{\link[=get_configuration]{get_configuration()}}}
 
-\item{keep_geometry}{TRUE/FALSE: Should the geographical
-information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
-
-\item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
-corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
-\code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
-
-\item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
-with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
-modified) in which a resource is contained  recursively. That means that
-even if it does not immediately lie within this layer, but is
-contained by one or several other resources in said layer, a new column
-("liesWithinLayer") will still show the layer.
-Example: A sample "A" in Find "001" from layer "Layer1" will
-usually have "001" as the value in "liesWithin". With find_layers, there will
-be another column called "liesWithinLayer" which contains "Layer1" for both
-sample "A" and Find "001".}
-
-\item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
-automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
-the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
-has been, you should supply a data.frame as returned
-by \code{\link[=get_field_index]{get_field_index()}}.}
+\item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
 
 \item{language}{The short name (e.g. "en", "de", "fr") of the language
 that is preferred for the fields. Special value "all" (the default) can be
@@ -52,10 +24,22 @@ used to return a concatenated string of all available languages.
 \code{\link[=gather_languages]{gather_languages()}} will select other available languages
 in alphabetical order if the selected language is not available.}
 
-\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
-removed from field names of the configuration? (Default is TRUE.)
-(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
-see \code{\link[=remove_config_names]{remove_config_names()}}.)}
+\item{idaifield_docs}{An \code{idaifield_docs} or \code{idaifield_resources}-list as
+returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}},
+\code{\link[=idf_index_query]{idf_index_query()}}, and \code{\link[=idf_json_query]{idf_json_query()}}.}
+
+\item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
+corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
+\code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
+
+\item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
+automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
+the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
+has been, you should supply a data.frame as returned
+by \code{\link[=get_field_index]{get_field_index()}}.}
+
+\item{keep_geometry}{TRUE/FALSE: Should the geographical
+information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
 
 \item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
 spread across multiple lists to facilitate boolean-columns for each value
@@ -64,8 +48,6 @@ of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_
 
 \item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
 dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
-
-\item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
 }
 \value{
 An \code{idaifield_simple}-list containing the same resources in

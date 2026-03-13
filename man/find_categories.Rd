@@ -7,9 +7,6 @@
 find_categories(ids, uidlist, id_type)
 }
 \arguments{
-\item{uidlist}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}} or
-\code{\link[=get_uid_list]{get_uid_list()}}.}
-
 \item{id_type}{One of "identifier" or "UID" - Should the function use
 \emph{identifier}s or \emph{UUID}s to find the layer?}
 }

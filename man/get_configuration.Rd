@@ -15,11 +15,11 @@ A list containing the project configuration; \code{NA} if the configuration
 could not be found or the connection failed.
 }
 \description{
-This function retrieves the project configuration (if existent) from an
-\href{https://github.com/dainst/idai-field}{iDAI.field} project.
-The list will only contain the complete configuration as used in the
-project, including custom and \emph{fields}, \emph{valuelists} and
-\emph{translations}.
+This function retrieves the complete project configuration (if existent)
+from an \href{https://github.com/dainst/idai-field}{iDAI.field} project via
+Field's configuration endpoint. The list will only contain the complete
+configuration as used in the project, including custom and \emph{fields},
+\emph{valuelists} and \emph{translations}.
 }
 \examples{
 \dontrun{

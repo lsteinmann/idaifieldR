@@ -56,6 +56,11 @@ simplify_single_resource <- function(resource,
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
   }
 
+  # ----- Legacy data fixes
+  # In a previous version of iDAI.field, "type" was used to store the (then)
+  # "type" of resource. This was renamed to "category" after the TypeCatalog
+  # feature was implemented. Since not every resource in the DB has been
+  # updated to fit the new scheme, we need to do this retroactively:
   if (is.null(resource$category)) {
     resource$category <- resource$type
     resource$type <- NULL
