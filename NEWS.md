@@ -5,6 +5,9 @@
 ## Renewed `simplify_idaifield()`
 `simplify_idaifield()` has been drastically changed. Some functionality which would have created data issues for users was removed (e.g. dimension-recalculation), which results in a less "simple" return list, but will keep the data intact. The function is now less verbose. All lists like `campaign` or `processor` or any checkbox-fields that can contain multiple values are returned as vectors instead of lists. Geometry will be parsed to JSON if kept. UUIDs are replaced during processing.  
 
+## Improvements:
+* Improvement: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.
+
 ## Maintenance:
 * reworked `connect_idaifield()` (and affected): 
   * 'project' parameter is now required. 
@@ -15,11 +18,11 @@
 * Removed `check_if_idaifield()`
 * Removed `download_language_list()`
 * Removed `reformat_geometry()`: Instead, I recommend (and do) re-json-ify the Geometry and advise to use `sf::st_read(json_string, quiet = TRUE)` on each geometry elsewhere.
+* Removed `get_language_lookup()` and removed language support from `simplify_idaifield()` - it's just too much.
+* Removed `extract_field_names()`
+* Replaced `get_field_inputtypes()` with (experimental) `extract_inputtypes()`.
 * Reworked `check_and_unnest()` into `maybe_unnest_docs()`.
 * Reworked `find_layers()` to require a vector of categories to search for as layer_categories instead of a global option. 
-
-## Improvements:
-* Improvement: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.
 
 ## Bug fixes:
 * `add_limit_to_query()` now validates the updates query again. Unlike before.
