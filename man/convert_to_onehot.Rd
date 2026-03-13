@@ -10,7 +10,7 @@ convert_to_onehot(resource, fieldtypes)
 \item{resource}{The resource to process (from an \code{idaifield_resources}-list).}
 
 \item{fieldtypes}{A matrix of fields with the given inputType as
-returned by \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}}
+returned by \code{\link[=extract_inputtypes]{extract_inputtypes()}}}
 }
 \value{
 The resource object with the values of checkboxes
@@ -30,6 +30,6 @@ the list to onehot-coded values.
 \seealso{
 \itemize{
 \item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}
-\item Needs output of: \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
+\item Needs output of: \code{\link[=extract_inputtypes]{extract_inputtypes()}} (Currently not working, though!)
 }
 }

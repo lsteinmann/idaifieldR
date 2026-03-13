@@ -30,7 +30,7 @@ config <- get_configuration(connection = conn)
 }
 \seealso{
 \itemize{
-\item (Wont work currently) Get the inputTypes from a Configuration: \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
-\item (Wont work currently) This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
+\item Get the inputTypes from a Configuration: \code{\link[=extract_inputtypes]{extract_inputtypes()}}
+\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
 }
 }

@@ -176,9 +176,8 @@ get_uid_list <- function(idaifield_docs,
 #' be another column called "liesWithinLayer" which contains "Layer1" for both
 #' sample "A" and Find "001".
 #' @inheritParams gather_languages
-#' @inheritParams get_field_inputtypes
 #'
-#' @returns a data.frame with identifiers and corresponding UUIDs along with
+#' @returns a data.frame with identifiers and corresponing UUIDs along with
 #' the category (former: type), basic relations and depending on settings place
 #' and shortDescription of each element
 #' @export

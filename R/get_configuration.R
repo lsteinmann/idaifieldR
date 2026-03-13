@@ -12,8 +12,8 @@
 #' could not be found or the connection failed.
 #'
 #' @seealso
-#' * (Wont work currently) Get the inputTypes from a Configuration: [get_field_inputtypes()]
-#' * (Wont work currently) This function is used by: [simplify_idaifield()].
+#' * Get the inputTypes from a Configuration: [extract_inputtypes()]
+#' * This function is used by: [simplify_idaifield()].
 #'
 #' @export
 #'

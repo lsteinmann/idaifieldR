@@ -43,7 +43,7 @@ used to return a concatenated string of all available languages.
 in alphabetical order if the selected language is not available.}
 }
 \value{
-a data.frame with identifiers and corresponding UUIDs along with
+a data.frame with identifiers and corresponing UUIDs along with
 the category (former: type), basic relations and depending on settings place
 and shortDescription of each element
 }

@@ -7,7 +7,7 @@
 #'
 #' @param resource The resource to process (from an `idaifield_resources`-list).
 #' @param fieldtypes A matrix of fields with the given inputType as
-#' returned by [get_field_inputtypes()]
+#' returned by [extract_inputtypes()]
 #'
 #' @returns The resource object with the values of checkboxes
 #' separated into one-hot-coded versions.
@@ -15,7 +15,7 @@
 #'
 #' @seealso
 #' * This function is used by: [simplify_idaifield()]
-#' * Needs output of: [get_field_inputtypes()]
+#' * Needs output of: [extract_inputtypes()] (Currently not working, though!)
 #'
 #' @export
 #'
