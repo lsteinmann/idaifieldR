@@ -68,6 +68,11 @@ simplify_single_resource <- function(resource,
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from a 'idaifield_resources'-list.")
   }
+  # We need the config for handling inputTypes.
+  if (find_layers && !inherits(config, "idaifield_config")) {
+    # Change if you decide we not NEED the config after all.
+    stop("'config' is not an 'idaifield_config'")
+  }
 
   # ----- Legacy data fixes
   # In a previous version of iDAI.field, "type" was used to store the (then)
@@ -90,31 +95,18 @@ simplify_single_resource <- function(resource,
   # such as e.g. relation.liesWithin = c("Befund 1")
   resource <- fix_relations(resource, replace_uids = replace_uids, index = index)
 
+  # ----- Find the next containing resource considered a "layer"
+  # A layer here would be Feature or a sub-category of feature as evident
+  # from the project configuration.
+  if (find_layers) {
+    resource$relation.liesWithinLayer <- unname(find_layer(
+      resource$identifier,
+      index,
+      layer_categories = c("Feature", names(config$categories$Feature$trees))
+    ))
+  }
 
 
-
-
-
-  #resource <- fix_relations(resource,
-  #                          replace_uids = replace_uids,
-  #                          uidlist = uidlist)
-#
-  ## checks the value of the replace_uids argument, if it is TRUE,
-  ## calls the find_layer() function on the resource with resource, uidlist,
-  ## and NULL as arguments. The resulting value is assigned to the
-  ## liesWithinLayer variable and appended to the resource as a new field
-  ## called relation.liesWithinLayer.
-  #if (find_layers) {
-  #  liesWithinLayer <- find_layer(ids = resource$id,
-  #                                uidlist = uidlist,
-  #                                silent = TRUE)
-  #  if (replace_uids) {
-  #    liesWithinLayer <- replace_uid(liesWithinLayer, uidlist)
-  #  }
-  #  resource <- append(resource,
-  #                     list(relation.liesWithinLayer = liesWithinLayer))
-  #}
-#
   ## checks the value of the keep_geometry argument, which determines whether
   ## to keep the geometry field in the resource or not. If keep_geometry is
   ## FALSE, the function checks if the resource has a field called geometry and,
