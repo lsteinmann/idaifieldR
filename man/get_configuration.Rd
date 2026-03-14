@@ -32,7 +32,7 @@ config <- get_configuration(connection = conn)
 }
 \seealso{
 \itemize{
-\item Get the inputTypes from a Configuration: \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
+\item Get the inputTypes from a Configuration: \code{\link[=parse_field_inputtypes]{parse_field_inputtypes()}}
 \item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
 \item \href{https://field.idai.world/manual}{iDAI.field Manual: 12. API}
 }

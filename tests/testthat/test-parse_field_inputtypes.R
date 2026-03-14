@@ -1,4 +1,4 @@
-# Tests for get_field_inputtypes() and extract_inputtypes().
+# Tests for parse_field_inputtypes() and extract_inputtypes().
 #
 # get_configuration() is not tested here — it requires a live Field Desktop
 # connection and cannot be mocked without a running server.
@@ -213,57 +213,57 @@ test_that("bundled config contains a composite field entry", {
 })
 
 
-# ---- get_field_inputtypes() ---------------------------------------------------
+# ---- parse_field_inputtypes() ---------------------------------------------------
 
 test_that("stops if config is not an idaifield_config object", {
-  expect_error(get_field_inputtypes(list()),
+  expect_error(parse_field_inputtypes(list()),
                regexp = "idaifield_config")
 })
 
 test_that("stops if config is NULL or NA", {
-  expect_error(get_field_inputtypes(NULL))
-  expect_error(get_field_inputtypes(NA))
+  expect_error(parse_field_inputtypes(NULL))
+  expect_error(parse_field_inputtypes(NA))
 })
 
 test_that("stops if no fields are found in the config", {
-  expect_error(get_field_inputtypes(empty_config),
+  expect_error(parse_field_inputtypes(empty_config),
                regexp = "failed")
 })
 
 test_that("returns a data.frame", {
-  result <- get_field_inputtypes(mock_config)
+  result <- parse_field_inputtypes(mock_config)
   expect_s3_class(result, "data.frame")
 })
 
 test_that("has exactly four columns", {
-  result <- get_field_inputtypes(mock_config)
+  result <- parse_field_inputtypes(mock_config)
   expect_equal(ncol(result), 4)
 })
 
 test_that("has correct column names", {
-  result <- get_field_inputtypes(mock_config)
+  result <- parse_field_inputtypes(mock_config)
   expect_named(result, c("category", "parent", "fieldname", "inputType"))
 })
 
 test_that("all columns are character type", {
-  result <- get_field_inputtypes(mock_config)
+  result <- parse_field_inputtypes(mock_config)
   expect_true(all(sapply(result, is.character)))
 })
 
 test_that("correct number of rows", {
-  result <- get_field_inputtypes(mock_config)
+  result <- parse_field_inputtypes(mock_config)
   expect_equal(nrow(result), 6)
 })
 
 test_that("composite field appears in result with inputType 'composite'", {
-  result <- get_field_inputtypes(mock_config)
+  result <- parse_field_inputtypes(mock_config)
   composite_row <- result[result$fieldname == "rtest:compositeInput", ]
   expect_equal(nrow(composite_row), 1)
   expect_equal(composite_row$inputType, "composite")
 })
 
 test_that("works on the bundled test config", {
-  result <- get_field_inputtypes(config)
+  result <- parse_field_inputtypes(config)
   expect_s3_class(result, "data.frame")
   expect_named(result, c("category", "parent", "fieldname", "inputType"))
   expect_gt(nrow(result), 0)

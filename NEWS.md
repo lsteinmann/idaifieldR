@@ -1,7 +1,7 @@
 # idaifieldR 0.3.7 _2026-03-XX_
 ## New Field Desktop API
 * idaifieldR now gets the configuration of a project from Field Desktop directly via the `/config/` enpoint instead of the database document. That means that the complete configuration is now accessible.
-  * `get_field_inputtypes()` produces a data.frame of Categories, Parent Categories, input field identifiers and the corresponding `inputType` in the given Project Configuration.
+  * `parse_field_inputtypes()` produces a data.frame of Categories, Parent Categories, input field identifiers and the corresponding `inputType` in the given Project Configuration.
   * NOTE: Subfields of composite fields are simply ignored.
 
 ## Renewed `simplify_idaifield()`
@@ -22,6 +22,7 @@
 * Removed `reformat_geometry()`: Instead, I recommend (and do) re-json-ify the Geometry and advise to use `sf::st_read(json_string, quiet = TRUE)` on each geometry elsewhere.
 * Removed `get_language_lookup()` and removed language support from `simplify_idaifield()` - it's just too much.
 * Removed `extract_field_names()`
+* Removed `get_field_inputtypes()`
 * Reworked `check_and_unnest()` into `maybe_unnest_docs()`.
 * Reworked `find_layers()` to require a vector of categories to search for as layer_categories instead of a global option. 
 

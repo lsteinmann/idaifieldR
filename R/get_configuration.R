@@ -14,7 +14,7 @@
 #' the connection failed.
 #'
 #' @seealso
-#' * Get the inputTypes from a Configuration: [get_field_inputtypes()]
+#' * Get the inputTypes from a Configuration: [parse_field_inputtypes()]
 #' * This function is used by: [simplify_idaifield()].
 #' * [iDAI.field Manual: 12. API](https://field.idai.world/manual)
 #'
@@ -90,9 +90,9 @@ get_configuration <- function(connection) {
 #' conn <- connect_idaifield(pwd = "hallo",
 #'                           project = "rtest")
 #' config <- get_configuration(connection = conn)
-#' input_type_df <- get_field_inputtypes(config = config)
+#' input_type_df <- parse_field_inputtypes(config = config)
 #' }
-get_field_inputtypes <- function(config = NULL) {
+parse_field_inputtypes <- function(config = NULL) {
   if (!inherits(config, "idaifield_config")) {
     stop("'config' must be an 'idaifield_config' object as returned by get_configuration().")
   }
@@ -113,7 +113,7 @@ get_field_inputtypes <- function(config = NULL) {
 
 #' Extract a List of inputTypes from the Project Configuration
 #'
-#' Internal recursive helper to [get_field_inputtypes()]. Traverses the nested
+#' Internal recursive helper to [parse_field_inputtypes()]. Traverses the nested
 #' `categories` / `trees` structure of an `idaifield_config` and collects one
 #' entry per field, recording its category, parent supercategory, field name,
 #' and inputType.
@@ -138,7 +138,7 @@ get_field_inputtypes <- function(config = NULL) {
 #'
 #' @keywords internal
 #'
-#' @seealso [get_field_inputtypes()]
+#' @seealso [parse_field_inputtypes()]
 #'
 #' @examples
 #' \dontrun{

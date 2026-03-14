@@ -22,7 +22,7 @@ A list of named lists, each with elements \code{category}, \code{parent},
 if no fields are found.
 }
 \description{
-Internal recursive helper to \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}. Traverses the nested
+Internal recursive helper to \code{\link[=parse_field_inputtypes]{parse_field_inputtypes()}}. Traverses the nested
 \code{categories} / \code{trees} structure of an \code{idaifield_config} and collects one
 entry per field, recording its category, parent supercategory, field name,
 and inputType.
@@ -47,6 +47,6 @@ input_types <- extract_inputtypes(config)
 }
 }
 \seealso{
-\code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
+\code{\link[=parse_field_inputtypes]{parse_field_inputtypes()}}
 }
 \keyword{internal}

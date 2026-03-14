@@ -17,3 +17,7 @@ extract_field_names <- function(...) {
 get_language_lookup <- function(...) {
   stop("`get_language_lookup()` has been removed.")
 }
+
+get_field_inputtypes <- function(...) {
+  stop("`get_field_inputtypes()` has been removed. Use `parse_field_inputtypes()`.")
+}
