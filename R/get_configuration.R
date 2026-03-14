@@ -59,16 +59,47 @@ get_configuration <- function(connection) {
 #' [iDAI.field](https://github.com/dainst/idai-field) project.
 #'
 #'
-#' @param nested_list A configuration list as returned
-#' by [get_configuration()]
-#' @param parent_name Used for recursive behaviour
-#' @param category_name Used for recursive behaviour
-#' @returns A list of fields (with the given *inputType*).
+#' @param config An `idaifield_config` as returned by [get_configuration()]
+#'
+#' @returns A data.frame with four columns: category: each category, its parent
+#' (or itself if it is a supercategory),
 #'
 #' @seealso
 #' * [get_configuration()], [convert_to_onehot()]
 #'
 #' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' conn <- connect_idaifield(pwd = "hallo",
+#'                           project = "rtest")
+#' config <- get_configuration(connection = conn)
+#' input_type_df <- get_field_inputtypes(config = config)
+#' }
+get_field_inputtypes <- function(config = NULL) {
+  if (!inherits(config, "idaifield_config")) {
+    stop("")
+  }
+  extracted_list <- extract_inputtypes(config)
+  mat <- do.call(rbind, extracted_list)
+  mat <- apply(mat, 2, as.character)
+
+  return(as.data.frame(mat))
+}
+
+
+#' Extracts a List of Input Types from the Project Configuration
+#'
+#' Internal helper to [get_field_inputtypes()]
+#'
+#' @param nested_list A configuration list as returned
+#' by [get_configuration()]
+#' @param parent_name Used for recursive behaviour
+#' @param category_name Used for recursive behaviour
+#'
+#' @keywords internal
+#'
+#' @returns A list
 #'
 #' @examples
 #' \dontrun{
@@ -148,3 +179,4 @@ extract_inputtypes <- function(nested_list,
     return(results)
   }
 }
+

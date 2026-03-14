@@ -10,14 +10,10 @@ download_language_list <- function(...) {
   stop("`download_language_list()` has been removed.")
 }
 
-get_field_inputtypes <- function(...) {
-  stop("`get_field_inputtypes()` has been removed.")
-}
-
 extract_field_names <- function(...) {
-  stop("`get_field_inputtypes()` has been removed.")
+  stop("`extract_field_names()` has been removed.")
 }
 
 get_language_lookup <- function(...) {
-  stop("`get_field_inputtypes()` has been removed.")
+  stop("`get_language_lookup()` has been removed.")
 }

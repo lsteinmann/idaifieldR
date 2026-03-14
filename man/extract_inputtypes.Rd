@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_configuration.R
 \name{extract_inputtypes}
 \alias{extract_inputtypes}
-\title{Produce a Matrix of Field \emph{inputTypes} from the Custom Project Configuration}
+\title{Extracts a List of Input Types from the Project Configuration}
 \usage{
 extract_inputtypes(nested_list, parent_name = NULL, category_name = NULL)
 }
@@ -15,12 +15,10 @@ by \code{\link[=get_configuration]{get_configuration()}}}
 \item{category_name}{Used for recursive behaviour}
 }
 \value{
-A list of fields (with the given \emph{inputType}).
+A list
 }
 \description{
-This function retrieves a matrix containing the \emph{inputTypes} of all
-custom fields from a project configuration of an
-\href{https://github.com/dainst/idai-field}{iDAI.field} project.
+Internal helper to \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
 }
 \examples{
 \dontrun{
@@ -29,11 +27,6 @@ conn <- connect_idaifield(serverip = "localhost",
                           project = "rtest")
 config <- get_configuration(connection = conn)
 input_types <- extract_inputtypes(config)
-}
-}
-\seealso{
-\itemize{
-\item \code{\link[=get_configuration]{get_configuration()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}
 }
 }
 \keyword{internal}
