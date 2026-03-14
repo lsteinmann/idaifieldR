@@ -64,6 +64,7 @@ get_configuration <- function(connection) {
 #' returns them as a data.frame. Both supercategory and subcategory fields
 #' are included. Fields inherited from parent categories without an explicit
 #' `inputType` will appear as `"NULL"` in the `inputType` column.
+#' Subfields of composite fields are currently not recorded here.
 #'
 #' @param config An `idaifield_config` object as returned by
 #' [get_configuration()].

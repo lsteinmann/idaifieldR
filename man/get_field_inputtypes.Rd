@@ -27,6 +27,7 @@ of an \href{https://github.com/dainst/idai-field}{iDAI.field} project and
 returns them as a data.frame. Both supercategory and subcategory fields
 are included. Fields inherited from parent categories without an explicit
 \code{inputType} will appear as \code{"NULL"} in the \code{inputType} column.
+Subfields of composite fields are currently not recorded here.
 }
 \examples{
 \dontrun{

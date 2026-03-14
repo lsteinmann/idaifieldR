@@ -2,6 +2,7 @@
 ## New Field Desktop API
 * idaifieldR now gets the configuration of a project from Field Desktop directly via the `/config/` enpoint instead of the database document. That means that the complete configuration is now accessible.
   * `get_field_inputtypes()` produces a data.frame of Categories, Parent Categories, input field identifiers and the corresponding `inputType` in the given Project Configuration.
+  * NOTE: Subfields of composite fields are simply ignored.
 
 ## Renewed `simplify_idaifield()`
 `simplify_idaifield()` has been drastically changed. Some functionality which would have created data issues for users was removed (e.g. dimension-recalculation), which results in a less "simple" return list, but will keep the data intact. The function is now less verbose. All lists like `campaign` or `processor` or any checkbox-fields that can contain multiple values are returned as vectors instead of lists. Geometry will be parsed to JSON if kept. UUIDs are replaced during processing.  
