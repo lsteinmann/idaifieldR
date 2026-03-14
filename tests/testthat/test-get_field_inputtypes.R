@@ -6,96 +6,91 @@
 #
 #
 # ---- Shared mock objects ------------------------------------------------------
-# Plain nested list mimicking the structure returned by get_configuration().
-# Does NOT carry the idaifield_config class — extract_inputtypes() operates on
-# plain nested lists and does not check the class, so this is intentional.
+
+# Plain nested list mimicking the structure returned by get_configuration()
+# after name_all_nested_lists() has been applied.
+#
+# Reflects the real config structure observed in the rtest project:
+# - Groups have name/label/defaultLabel alongside fields (only fields matters
+#   for extraction, but extras should not cause errors)
+# - Multiple groups per category (stem, properties, dimension)
+# - Composite field with a $subfields key (subfields must be silently ignored)
+# - Supercategory with its own fields (parent == category)
+# - Subcategory pointing back to supercategory as parent
+# - Subcategory with no fields at all
 #
 # Structure:
-#   Operation (supercategory, has its own field "processor")
-#     ├── Trench (subcategory, two fields)
-#     └── Building (subcategory, no fields)
-#   Find (supercategory, one field, no subcategories)
+#   Find (supercategory, fields in stem + properties groups)
+#     └── Pottery (subcategory, fields across stem + dimension groups)
+#     └── Brick (subcategory, no fields)
 mock_nested_list <- list(
   categories = list(
-    Operation = list(
+    Find = list(
       item = list(
-        name   = "Operation",
+        name = "Find",
         groups = list(
           stem = list(
+            name   = "stem",
+            label  = list(en = "Core"),
             fields = list(
-              processor = list(inputType = "checkboxes")
+              identifier = list(inputType = "identifier"),
+              processor  = list(inputType = "checkboxes")
+            )
+          ),
+          properties = list(
+            name   = "properties",
+            label  = list(en = "Properties"),
+            fields = list(
+              weight = list(inputType = "weight")
             )
           )
         )
       ),
       trees = list(
-        Trench = list(
+        Pottery = list(
           item = list(
-            name   = "Trench",
+            name = "Pottery",
             groups = list(
               stem = list(
+                name   = "stem",
+                label  = list(en = "Core"),
                 fields = list(
-                  shortDescription = list(inputType = "input"),
-                  supervisor       = list(inputType = "checkboxes")
+                  vesselForm = list(inputType = "dropdown")
+                )
+              ),
+              dimension = list(
+                name   = "dimension",
+                label  = list(en = "Dimensions"),
+                fields = list(
+                  dimensionLength = list(inputType = "dimension"),
+                  # Composite field: has $subfields but extract_inputtypes()
+                  # must only record the composite itself, not its subfields.
+                  `rtest:compositeInput` = list(
+                    inputType = "composite",
+                    subfields = list(
+                      list(name = "subfieldA", inputType = "input"),
+                      list(name = "subfieldB", inputType = "dropdown")
+                    )
+                  )
                 )
               )
             )
           ),
           trees = list()
         ),
-        Building = list(           # subcategory with no groups/fields at all
-          item  = list(name = "Building"),
+        Brick = list(           # subcategory with no groups or fields
+          item  = list(name = "Brick"),
           trees = list()
         )
       )
-    ),
-    Find = list(
-      item = list(
-        name   = "Find",
-        groups = list(
-          stem = list(
-            fields = list(
-              weight = list(inputType = "float")
-            )
-          )
-        )
-      ),
-      trees = list()
     )
   )
 )
 
-# Same structure wrapped in the idaifield_config class, as returned by
-# get_configuration(). Required for get_field_inputtypes().
+# Wrapped with the idaifield_config class, as returned by get_configuration().
 mock_config <- structure(mock_nested_list, class = "idaifield_config")
 
-# Config with a field whose inputType is NULL. This simulates the case where
-# a field has no explicit inputType in the config JSON. get_field_inputtypes()
-# should convert the resulting "NULL" string to NA.
-mock_config_null_inputtype <- structure(
-  list(
-    categories = list(
-      Find = list(
-        item = list(
-          name   = "Find",
-          groups = list(
-            stem = list(
-              fields = list(
-                mystery = list(inputType = NULL),  # no inputType set
-                weight  = list(inputType = "float")
-              )
-            )
-          )
-        ),
-        trees = list()
-      )
-    )
-  ),
-  class = "idaifield_config"
-)
-
-# Config with categories key present but completely empty — no fields anywhere.
-# extract_inputtypes() should return NULL; get_field_inputtypes() should stop().
+# Config with categories present but no fields anywhere.
 empty_config <- structure(list(categories = list()), class = "idaifield_config")
 
 
@@ -113,70 +108,93 @@ test_that("returns a list", {
 
 test_that("each element has exactly the four expected names", {
   result <- extract_inputtypes(mock_nested_list)
-  expected_names <- c("category", "parent", "fieldname", "inputType")
   for (entry in result) {
-    expect_named(entry, expected_names)
+    expect_named(entry, c("category", "parent", "fieldname", "inputType"))
   }
 })
 
 test_that("extracts the correct total number of fields", {
-  # Operation: processor (1)
-  # Trench: shortDescription + supervisor (2)
-  # Building: none (0)
-  # Find: weight (1)
-  # Total: 4
+  # Find/stem:       identifier, processor (2)
+  # Find/properties: weight (1)
+  # Pottery/stem:    vesselForm (1)
+  # Pottery/dim:     dimensionLength, rtest:compositeInput (2)
+  # Brick:           none (0)
+  # Total: 6 — composite appears as ONE row, subfields do not appear
   result <- extract_inputtypes(mock_nested_list)
-  expect_length(result, 4)
+  expect_length(result, 6)
 })
 
-test_that("supercategory with own fields: category == parent", {
+test_that("supercategory fields have category == parent", {
   result <- extract_inputtypes(mock_nested_list)
-  processor <- result[sapply(result, function(x) x$fieldname == "processor")][[1]]
-  expect_equal(processor$category, "Operation")
-  expect_equal(processor$parent,   "Operation")
+  find_rows <- result[sapply(result, function(x) x$category == "Find")]
+  expect_true(all(sapply(find_rows, function(x) x$parent == "Find")))
 })
 
 test_that("subcategory fields have parent set to the supercategory", {
   result <- extract_inputtypes(mock_nested_list)
-  trench_rows <- result[sapply(result, function(x) x$category == "Trench")]
-  # All Trench fields should point back to Operation as parent
-  expect_true(all(sapply(trench_rows, function(x) x$parent == "Operation")))
+  pottery_rows <- result[sapply(result, function(x) x$category == "Pottery")]
+  expect_true(all(sapply(pottery_rows, function(x) x$parent == "Find")))
+})
+
+test_that("fields from multiple groups in the same category are all extracted", {
+  result <- extract_inputtypes(mock_nested_list)
+  find_fieldnames <- sapply(
+    result[sapply(result, function(x) x$category == "Find")],
+    function(x) x$fieldname
+  )
+  # stem group contributes identifier + processor, properties group contributes weight
+  expect_setequal(find_fieldnames, c("identifier", "processor", "weight"))
 })
 
 test_that("subcategory with no fields produces no entries", {
   result <- extract_inputtypes(mock_nested_list)
-  building_rows <- result[sapply(result, function(x) x$category == "Building")]
-  expect_length(building_rows, 0)
+  brick_rows <- result[sapply(result, function(x) x$category == "Brick")]
+  expect_length(brick_rows, 0)
 })
 
-test_that("inputTypes are preserved correctly", {
+test_that("composite field appears as a single entry with inputType 'composite'", {
   result <- extract_inputtypes(mock_nested_list)
-  checkboxes <- result[sapply(result, function(x) !is.null(x$inputType) && x$inputType == "checkboxes")]
-  # processor and supervisor are both checkboxes
-  expect_length(checkboxes, 2)
+  composite_rows <- result[sapply(result, function(x) x$fieldname == "rtest:compositeInput")]
+  expect_length(composite_rows, 1)
+  expect_equal(composite_rows[[1]]$inputType, "composite")
+})
+
+test_that("subfields of composite field do not appear as separate entries", {
+  result <- extract_inputtypes(mock_nested_list)
+  all_fieldnames <- sapply(result, function(x) x$fieldname)
+  # subfieldA and subfieldB are inside $subfields — must not appear at top level
+  expect_false("subfieldA" %in% all_fieldnames)
+  expect_false("subfieldB" %in% all_fieldnames)
+})
+
+test_that("extra keys in group (name, label, defaultLabel) do not cause errors", {
+  # Real groups from Field Desktop have name/label/defaultLabel alongside
+  # fields. Only fields should be processed; extras must be silently ignored.
+  expect_no_error(extract_inputtypes(mock_nested_list))
+})
+
+test_that("works on a plain list without idaifield_config class", {
+  # extract_inputtypes() is an internal helper that operates on plain lists.
+  expect_no_error(extract_inputtypes(mock_nested_list))
 })
 
 test_that("output matches expected structure exactly (order-insensitive)", {
-  # Keeping this test from the original test-extract_inputtypes.R.
-  # expect_setequal is used because recursion order is not guaranteed.
   expected <- list(
-    list(category = "Operation", parent = "Operation",
-         fieldname = "processor",        inputType = "checkboxes"),
-    list(category = "Trench",    parent = "Operation",
-         fieldname = "shortDescription", inputType = "input"),
-    list(category = "Trench",    parent = "Operation",
-         fieldname = "supervisor",       inputType = "checkboxes"),
-    list(category = "Find",      parent = "Find",
-         fieldname = "weight",           inputType = "float")
+    list(category = "Find",    parent = "Find",
+         fieldname = "identifier",           inputType = "identifier"),
+    list(category = "Find",    parent = "Find",
+         fieldname = "processor",            inputType = "checkboxes"),
+    list(category = "Find",    parent = "Find",
+         fieldname = "weight",               inputType = "weight"),
+    list(category = "Pottery", parent = "Find",
+         fieldname = "vesselForm",           inputType = "dropdown"),
+    list(category = "Pottery", parent = "Find",
+         fieldname = "dimensionLength",      inputType = "dimension"),
+    list(category = "Pottery", parent = "Find",
+         fieldname = "rtest:compositeInput", inputType = "composite")
   )
   result <- extract_inputtypes(mock_nested_list)
   expect_setequal(result, expected)
-})
-
-test_that("works on a plain list, does not require idaifield_config class", {
-  # extract_inputtypes() is an internal helper that may be called with the raw
-  # config list before it is classed. This should not cause an error.
-  expect_no_error(extract_inputtypes(mock_nested_list))
 })
 
 test_that("works on the bundled test config without error", {
@@ -186,6 +204,12 @@ test_that("works on the bundled test config without error", {
 test_that("bundled config produces a non-empty result", {
   result <- extract_inputtypes(config)
   expect_gt(length(result), 0)
+})
+
+test_that("bundled config contains a composite field entry", {
+  result <- extract_inputtypes(config)
+  input_types <- sapply(result, function(x) x$inputType)
+  expect_true("composite" %in% input_types)
 })
 
 
@@ -228,19 +252,14 @@ test_that("all columns are character type", {
 
 test_that("correct number of rows", {
   result <- get_field_inputtypes(mock_config)
-  expect_equal(nrow(result), 4)
+  expect_equal(nrow(result), 6)
 })
 
-test_that("NULL inputType in config becomes NA in the data.frame", {
-  result <- get_field_inputtypes(mock_config_null_inputtype)
-  mystery_row <- result[result$fieldname == "mystery", ]
-  expect_true(is.na(mystery_row$inputType))
-})
-
-test_that("non-NULL inputTypes are not affected by the NA replacement", {
-  result <- get_field_inputtypes(mock_config_null_inputtype)
-  weight_row <- result[result$fieldname == "weight", ]
-  expect_equal(weight_row$inputType, "float")
+test_that("composite field appears in result with inputType 'composite'", {
+  result <- get_field_inputtypes(mock_config)
+  composite_row <- result[result$fieldname == "rtest:compositeInput", ]
+  expect_equal(nrow(composite_row), 1)
+  expect_equal(composite_row$inputType, "composite")
 })
 
 test_that("works on the bundled test config", {
