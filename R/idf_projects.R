@@ -12,16 +12,13 @@
 #' @export
 #'
 #'
-#' 
-#' 
-#'
 #' @examples
 #' \dontrun{
 #'  connection <- connect_idaifield(pwd = "hallo")
 #'  idf_project_list(connection)
 #' }
 idf_projects <- function(connection) {
-  if (connection$status) {
+  if (idf_ping(connection)) {
     url <- paste0(connection$settings$base_url, "/_all_dbs")
     client <- crul::HttpClient$new(url = url,
                                    opts = connection$settings$auth,

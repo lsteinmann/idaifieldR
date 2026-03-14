@@ -18,8 +18,8 @@ test_that("removes '_replicator' ", {
   expect_false("_replicator" %in% idf_projects(conn))
 })
 
-test_that("error when status = false", {
-  conn$status <- FALSE
-  expect_error(idf_projects(conn))
+test_that("error when ping will give false", {
+  conn$settings$auth$userpwd <- "no:failing"
+  expect_error(suppressWarnings(idf_projects(conn)))
 })
 
