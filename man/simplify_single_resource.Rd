@@ -7,7 +7,7 @@
 simplify_single_resource(
   resource,
   index = NULL,
-  config = NULL,
+  inputtypes = NULL,
   replace_uids = TRUE,
   keep_geometry = TRUE,
   silent = FALSE
@@ -19,9 +19,6 @@ simplify_single_resource(
 \item{index}{A data.frame as returned by \code{\link[=make_index]{make_index()}} or
 \code{\link[=get_field_index]{get_field_index()}}. Required for UUID replacement and layer detection.}
 
-\item{config}{An \code{idaifield_config} object as returned by
-\code{\link[=get_configuration]{get_configuration()}}. Required when \code{find_layers = TRUE}.}
-
 \item{replace_uids}{logical. Should UUIDs in relations be replaced with
 human-readable identifiers from \code{index}? Default is TRUE.}
 
@@ -29,6 +26,12 @@ human-readable identifiers from \code{index}? Default is TRUE.}
 Default is TRUE.}
 
 \item{silent}{logical. Should messages be suppressed? Default is FALSE.}
+
+\item{config}{An \code{idaifield_config} object as returned by
+\code{\link[=get_configuration]{get_configuration()}}. Required when \code{find_layers = TRUE}.}
+
+\item{find_layers}{logical. Should the containing layer be detected and
+added as \code{relation.liesWithinLayer}? Default is TRUE.}
 }
 \value{
 A single resource with relations flattened, geometry handled,

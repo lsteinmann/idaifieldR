@@ -8,7 +8,7 @@
   * NOTE: Subfields of composite fields are simply ignored.
 
 ## Renewed `simplify_idaifield()`
-`simplify_idaifield()` has been drastically changed. Some functionality which would have created data issues for users was removed (e.g. dimension-recalculation), which results in a less "simple" return list, but will keep the data intact. The function is now less verbose. All lists like `campaign` or `processor` or any checkbox-fields that can contain multiple values are returned as vectors instead of lists. Geometry will be parsed to JSON if kept. UUIDs are replaced during processing.  
+`simplify_idaifield()` has been drastically changed. Some functionality which would have created data issues for users was removed (e.g. dimension-recalculation), which results in a less "simple" return list, but will keep the data intact. The function is now less verbose. All lists like `campaign` or `processor` or any checkbox-fields that can contain multiple values are returned as vectors instead of lists. Geometry will be parsed to JSON if kept. UUIDs are replaced during processing. Date fields are transformed to two values per date field: date.start and date.end (regardless of the project configuration; see new function `handle_date_input()`). 
 
 ## Improvements:
 * Options: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.

@@ -36,7 +36,7 @@
 #' }
 simplify_single_resource <- function(resource,
                                      index = NULL,
-                                     config = NULL,
+                                     inputtypes = NULL,
                                      replace_uids = TRUE,
                                      keep_geometry = TRUE,
                                      silent = FALSE) {
@@ -53,9 +53,29 @@ simplify_single_resource <- function(resource,
   # ----- Legacy data fix
   # In older versions of iDAI.field, the category field was called "type".
   # Rename retroactively so downstream code only needs to handle "category".
+  # This actually should be useless by now, since I use type_to_category
+  # everywhere I am getting docs lists from the database.
   if (is.null(resource$category)) {
+    message("This should not have happened: 'type' still present in resource!")
     resource$category <- resource$type
     resource$type <- NULL
+  }
+  # In older versions of iDAI.field, "date" was recorded in the default
+  # configuration for some resources as beginningDate and endDate, which is
+  # migrated by Field Desktop when a resource is saved. Since not everything
+  # is expected to be in the "new" dateInput format, we need to handle these
+  # if they exist at all:
+  resource <- handle_legacy_date_range_fields(resource)
+
+  # ----- Flatten date fields
+  # into two names vectors with fieldName.start/.end as prefix
+  dateInputs <- inputtypes$fieldname[which(inputtypes$inputType == "date")]
+  for (dateInput in dateInputs) {
+    if (dateInput %in% names(resource)) {
+      new_dates <- handle_date_input(resource[[dateInput]], dateInput)
+      resource[[dateInput]] <- NULL
+      resource <- append(resource, new_dates)
+    }
   }
 
   # ----- Flatten relations into named vectors with "relation." prefix
@@ -192,12 +212,14 @@ simplify_idaifield <- function(resources,
     layer_categories = layer_categories
   )
 
+  inputtypes <- parse_field_inputtypes(config)
+
   # ----- Apply per-resource simplification
   idaifield_simple <- lapply(resources, function(x) {
     new_res <- simplify_single_resource(
       x,
       index = index,
-      config = config,
+      inputtypes = inputtypes[which(inputtypes$category == x$category),],
       replace_uids = TRUE,
       keep_geometry = keep_geometry,
       silent = silent

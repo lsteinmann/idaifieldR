@@ -410,3 +410,151 @@ fix_dating <- function(dat_list, use_exact_dates = FALSE) {
   names(dat_list) <- paste0("dating.", names(dat_list))
   return(dat_list)
 }
+
+#' Handle a `date` Input Field from an iDAI.field Resource
+#'
+#' Flattens a single `date`-type field value from an iDAI.field resource into
+#' a named list with two elements: `<name>.start` and `<name>.end`. Handles
+#' both the legacy format (a plain character string) and the current format
+#' (a list with `value`, optional `endValue`, and `isRange`).
+#'
+#' Date strings are returned exactly as stored in the database — no parsing,
+#' type conversion, or format normalisation is applied. Possible formats
+#' include `"DD.MM.YYYY"`, `"DD.MM.YYYY HH:MM"`, `"MM.YYYY"`, and `"YYYY"`.
+#'
+#' For the legacy two-field format (`beginningDate` / `endDate` as separate
+#' top-level keys in the resource), use [handle_legacy_date_range_fields()] on
+#' the whole resource before per-field dispatch.
+#'
+#' @param value The value of a single `date`-type field from a resource, i.e.
+#' `resource$date` or `resource$restorationDate`. Either a character string
+#' (legacy single-field format) or a list with at minimum a `value` element
+#' and an `isRange` logical (current format).
+#' @param name Character. The name of the field being processed (e.g.
+#' `"date"`, `"restorationDate"`). Used to name the output elements as
+#' `<name>.start` and `<name>.end`.
+#'
+#' @returns A named list with two elements:
+#' \describe{
+#'   \item{<name>.start}{The start date as a character string.}
+#'   \item{<name>.end}{The end date as a character string, or `NA` if the
+#'   field is not a range.}
+#' }
+#'
+#' @export
+#'
+#' @seealso
+#' * [handle_legacy_date_range_fields()] for the legacy two-field format.
+#' * [simplify_single_resource()] which dispatches to this function.
+#'
+#' @examples
+#' \dontrun{
+#' # Current format, single date
+#' handle_date_input(list(value = "12.03.2026", isRange = FALSE), "date")
+#'
+#' # Current format, date range with time
+#' handle_date_input(
+#'   list(value = "19.08.2017 17:25", endValue = "20.08.2017 11:09", isRange = TRUE),
+#'   "date"
+#' )
+#'
+#' # Legacy plain string
+#' handle_date_input("12.03.2026", "date")
+#'
+#' # Named after a custom date field
+#' handle_date_input(list(value = "2025", isRange = FALSE), "restorationDate")
+#' }
+handle_date_input <- function(dateInput, name) {
+  start_key <- paste0(name, ".start")
+  end_key   <- paste0(name, ".end")
+
+  # Legacy format: plain character string, no range possible.
+  if (is.character(dateInput)) {
+    result <- list(dateInput, NA)
+    names(result) <- c(start_key, end_key)
+    return(result)
+  }
+
+  if (is.list(dateInput)) {
+    if ("value" %in% names(dateInput)) {
+      start_date <- dateInput$value
+    } else {
+      # A dateInput with a range can have an end without a beginning.
+      start_date <- NA
+    }
+    result <- list(
+      start_date,
+      if (isTRUE(dateInput$isRange)) dateInput$endValue else NA
+    )
+    names(result) <- c(start_key, end_key)
+    return(result)
+  }
+
+  warning("handle_date_input(): unexpected input format, returning NA.")
+  result        <- list(NA, NA)
+  names(result) <- c(start_key, end_key)
+  return(result)
+}
+
+
+#' Update Legacy Two-Field Date Format in an iDAI.field Resource
+#'
+#' Some older iDAI.field resources store date ranges as two separate top-level
+#' fields — `beginningDate` and `endDate` — rather than a single `date` list.
+#' Resources in Field Desktop are only updated to the new format when they are
+#' actively worked on and saved. This function detects those fields and
+#' brings them into the expected, current format, removing the originals.
+#'
+#' Resources without both `beginningDate` and `endDate` are returned unchanged.
+#' If only one of the two fields is present, the other is set to `NA`.
+#'
+#'
+#' @param resource A single resource (one element from an
+#' `idaifield_resources` list).
+#'
+#' @returns The resource with `beginningDate` and `endDate` removed and
+#' replaced by a `date`-list to be handled by [handle_date_input()].
+#' Returned unchanged if neither field is present.
+#'
+#' @export
+#'
+#' @seealso
+#' * [handle_date_input()] for the current and legacy single-field formats.
+#' * [simplify_single_resource()] which calls this as a pre-processing step.
+#'
+#' @examples
+#' \dontrun{
+#' resource <- list(
+#'   identifier    = "legacyResource",
+#'   category      = "Feature",
+#'   beginningDate = "12.03.2026",
+#'   endDate       = "13.03.2026"
+#' )
+#' handle_legacy_date_fields(resource)
+#' }
+handle_legacy_date_range_fields <- function(resource) {
+  has_begin <- "beginningDate" %in% names(resource)
+  has_end   <- "endDate"       %in% names(resource)
+
+  if (!has_begin && !has_end) {
+    return(resource)
+  }
+
+  new_date <- list(
+    value = if (has_begin) resource$beginningDate else NA,
+    isRange = has_end
+  )
+  if (has_end) {
+    new_date <- append(
+      new_date,
+      list(endValue = resource$endDate)
+    )
+  }
+
+  # Remove legacy fields and append normalised ones.
+  resource$beginningDate <- NULL
+  resource$endDate       <- NULL
+  resource$date          <- new_date
+
+  return(resource)
+}
