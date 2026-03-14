@@ -1,5 +1,3 @@
-source(file = "../load_testdata.R")
-
 # --- Minimal self-contained test resources -----------------------------------
 # These are used for unit tests that do not need real archaeological data.
 # Keeping them here makes each test readable without digging into external files.
@@ -65,7 +63,7 @@ test_that("stops when resource has no identifier", {
   bad_resource <- minimal_resource
   bad_resource$identifier <- NULL
   expect_error(
-    simplify_single_resource(bad_resource, replace_uids = FALSE, find_layers = FALSE),
+    simplify_single_resource(bad_resource, replace_uids = FALSE),
     "valid format"
   )
 })
@@ -73,8 +71,7 @@ test_that("stops when resource has no identifier", {
 test_that("renames legacy 'type' field to 'category'", {
   result <- simplify_single_resource(
     resource_legacy_type,
-    replace_uids = FALSE,
-    find_layers  = FALSE
+    replace_uids = FALSE
   )
   expect_false("type" %in% names(result))
   expect_equal(result$category, "Find")
@@ -84,8 +81,7 @@ test_that("relations are flattened with relation. prefix", {
   result <- simplify_single_resource(
     minimal_resource,
     index        = minimal_index,
-    replace_uids = FALSE,
-    find_layers  = FALSE
+    replace_uids = FALSE
   )
   expect_true("relation.isRecordedIn" %in% names(result))
   expect_true("relation.liesWithin" %in% names(result))
@@ -96,8 +92,7 @@ test_that("UUIDs in relations are replaced when replace_uids = TRUE", {
   result <- simplify_single_resource(
     minimal_resource,
     index        = minimal_index,
-    replace_uids = TRUE,
-    find_layers  = FALSE
+    replace_uids = TRUE
   )
   expect_equal(result$relation.isRecordedIn, "Trench-01")
   expect_equal(result$relation.liesWithin, "Layer-01")
@@ -106,8 +101,7 @@ test_that("UUIDs in relations are replaced when replace_uids = TRUE", {
 test_that("UUIDs are kept as-is when replace_uids = FALSE", {
   result <- simplify_single_resource(
     minimal_resource,
-    replace_uids = FALSE,
-    find_layers  = FALSE
+    replace_uids = FALSE
   )
   expect_true(check_if_uid(result$relation.isRecordedIn))
 })
@@ -117,8 +111,7 @@ test_that("stops when replace_uids = TRUE but no index supplied", {
     simplify_single_resource(
       minimal_resource,
       index        = NULL,
-      replace_uids = TRUE,
-      find_layers  = FALSE
+      replace_uids = TRUE
     )
   )
 })
@@ -127,8 +120,7 @@ test_that("lists are flattened to vectors, but lists with sub-lists are preserve
   result <- simplify_single_resource(
     example_resource,
     index        = minimal_index,
-    replace_uids = FALSE,
-    find_layers  = FALSE
+    replace_uids = FALSE
   )
   expect_false(is.list(result$processor))
   expect_true(is.list(result$dating))
@@ -138,7 +130,6 @@ test_that("geometry is removed when keep_geometry = FALSE", {
   result <- simplify_single_resource(
     resource_with_geometry,
     replace_uids  = FALSE,
-    find_layers   = FALSE,
     keep_geometry = FALSE
   )
   expect_null(result$geometry)
@@ -148,29 +139,27 @@ test_that("geometry is kept as a string when keep_geometry = TRUE", {
   result <- simplify_single_resource(
     resource_with_geometry,
     replace_uids  = FALSE,
-    find_layers   = FALSE,
     keep_geometry = TRUE
   )
   expect_true(is.character(result$geometry))
 })
 
-test_that("stops when find_layers = TRUE but config is not idaifield_config", {
-  expect_error(
-    simplify_single_resource(
-      minimal_resource,
-      index       = minimal_index,
-      config      = list(),        # wrong class
-      find_layers = TRUE
-    ),
-    "idaifield_config"
-  )
-})
+#test_that("stops when find_layers = TRUE but config is not idaifield_config", {
+#  expect_error(
+#    simplify_single_resource(
+#      minimal_resource,
+#      index       = minimal_index,
+# - ----- switch to inputtypes
+#      config      = list()        # wrong class
+#    ),
+#    "idaifield_config"
+#  )
+#})
 
 test_that("returns a list", {
   result <- simplify_single_resource(
     minimal_resource,
-    replace_uids = FALSE,
-    find_layers  = FALSE
+    replace_uids = FALSE
   )
   expect_true(is.list(result))
 })

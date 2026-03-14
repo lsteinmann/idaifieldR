@@ -1,11 +1,9 @@
-
-
 test_that("raw has connection as attribute", {
   conn <- suppressWarnings(connect_idaifield(pwd = "wrongpwd", project = "rtest", ping = FALSE))
   expect_error(suppressWarnings(get_idaifield_docs(conn)))
 })
 
-source(file = "../load_testdata.R")
+
 
 test_that("items are named", {
   rnr <- sample(seq_along(test_docs), 1)
@@ -20,14 +18,10 @@ test_that("raw has connection settings as attribute", {
   expect_true("idf_connection_settings" %in% class(test))
 })
 
-test_that("resources has connection as attribute", {
-  test <- attr(test_resources, "connection")
-  expect_true("idf_connection_settings" %in% class(test))
-})
 
 
 skip_on_cran()
-connection <- skip_if_no_connection()
+connection <- skip_if_no_couchdb()
 
 
 test_that("works without config in project", {

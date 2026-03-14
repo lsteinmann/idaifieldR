@@ -27,7 +27,7 @@ test_that("warning when language inexistent", {
                  "No language")
 })
 
-input_list <- lapply(test_resources, function(x) x$shortDescription)
+input_list <- lapply(test_docs, function(x) x$doc$resource$shortDescription)
 test_that("works for single language test_resources", {
   expect_identical(length(input_list),
                    length(gather_languages(input_list)))
@@ -56,4 +56,3 @@ test_that("also warning if language not available", {
 test_that("pastes languages when language = 'all'", {
   expect_match(gather_languages(input_list, language = "all"), ":")
 })
-

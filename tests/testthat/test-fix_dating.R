@@ -1,5 +1,3 @@
-
-
 dat_list <- list(type = "range",
                  begin = list(inputYear = -2000, inputType = "bce"),
                  end = list(inputYear = -2000, inputType = "ce"))

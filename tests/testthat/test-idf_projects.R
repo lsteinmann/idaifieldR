@@ -3,7 +3,7 @@ test_that("fails", {
 })
 
 skip_on_cran()
-conn <- skip_if_no_connection()
+conn <- skip_if_no_couchdb()
 
 
 test_that("returns character vector", {

@@ -1,6 +1,6 @@
 skip_on_cran()
 
-connection <- skip_if_no_connection()
+connection <- skip_if_no_couchdb()
 
 uidlist <- make_index(get_idaifield_docs(connection))
 
@@ -36,7 +36,7 @@ test_that("error when field not in uidlist", {
 })
 
 test_that("returns appropriate number of entries", {
-  count <- unlist(lapply(test_resources, function(x) x$storagePlace))
+  count <- unlist(lapply(test_docs, function(x) x$doc$resource$storagePlace))
   count <- sum(count == "Museum")
   res <- idf_query(connection, field = "storagePlace", value = "Museum")
   expect_equal(length(res), count)

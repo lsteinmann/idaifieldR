@@ -3,7 +3,7 @@ skip_on_cran()
 skip_on_ci()
 
 
-connection <- skip_if_no_connection()
+connection <- skip_if_no_couchdb()
 
 check <- try(idf_last_changed(connection = connection, n = 5))
 if (all(is.na(check))) {

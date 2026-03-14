@@ -1,5 +1,3 @@
-source("../load_testdata.R")
-
 test_that("returns list", {
   expect_true(inherits(config, "idaifield_config"))
 })
@@ -11,7 +9,7 @@ test_that("error when supplying wrong object", {
 
 skip_on_cran()
 skip_if_no_field_desktop()
-connection <- skip_if_no_connection()
+connection <- skip_if_no_couchdb()
 
 test_that("returns NA if project does not exist", {
   connection$project <- "testasdasd"

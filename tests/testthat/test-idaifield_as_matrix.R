@@ -1,5 +1,3 @@
-source(file = "../load_testdata.R")
-
 test_matrix <- idaifield_as_matrix(test_docs)
 
 test_that("returns a matrix", {

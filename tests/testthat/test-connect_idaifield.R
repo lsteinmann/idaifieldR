@@ -1,5 +1,3 @@
-source("../load_testdata.R")
-
 connection <- suppressMessages(connect_idaifield(serverip = "127.0.0.1",
                                                  pwd = "hallo",
                                                  project = "rtest",
@@ -57,7 +55,7 @@ test_that("application/json in header", {
 })
 
 skip_on_cran()
-conn <- skip_if_no_connection()
+conn <- skip_if_no_couchdb()
 
 test_that("error, project does not exist", {
   expect_error(connect_idaifield(pwd = "hallo", project = "rtsdsaest",

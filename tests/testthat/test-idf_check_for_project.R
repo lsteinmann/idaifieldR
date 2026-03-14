@@ -1,7 +1,5 @@
-
-
 skip_on_cran()
-skip_if_no_connection()
+skip_if_no_couchdb()
 
 # Test that a valid project name does not throw an error
 test_that("idf_check_for_project() handles valid project name", {

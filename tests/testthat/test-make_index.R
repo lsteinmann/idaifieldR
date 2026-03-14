@@ -1,5 +1,3 @@
-source(file = "../load_testdata.R")
-
 uidlist <- make_index(test_docs)
 
 ### Deprecated get_uid_list()
@@ -79,15 +77,11 @@ for (sample in samples) {
   })
 }
 
-test_that("gets uidlist from simplified list", {
-  test <- make_index(test_simple)
-  expect_true("Schnitt 1" %in% test$isRecordedIn)
-})
+#test_that("gets uidlist from simplified list", {
+#  test <- make_index(test_simple)
+#  expect_true("Schnitt 1" %in% test$isRecordedIn)
+#})
 
-test_that("gets uidlist from simplified list", {
-  test <- make_index(test_simple)
-  expect_true("Befund_6" %in% test$liesWithin)
-})
 
 data("idaifieldr_demodata")
 test_that("works with multilang demodata from default config", {

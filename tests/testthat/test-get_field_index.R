@@ -1,6 +1,4 @@
-source(file = "../load_testdata.R")
-
-conn <- skip_if_no_connection()
+conn <- skip_if_no_couchdb()
 
 test_that("gets df from connection", {
   expect_true(is.data.frame(get_field_index(conn)))

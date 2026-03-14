@@ -1,5 +1,3 @@
-source(file = "../load_testdata.R")
-
 index <- make_index(test_docs)
 proj_id <- index$identifier[index$category == "Project"]
 layer_categories = c("Feature", names(config$categories$Feature$trees))

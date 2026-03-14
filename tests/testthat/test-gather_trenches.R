@@ -1,5 +1,3 @@
-source(file = "../load_testdata.R")
-
 uidlist <- make_index(test_docs)
 
 test_that("returns same amount of elements", {

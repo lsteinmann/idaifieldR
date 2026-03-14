@@ -1,5 +1,3 @@
-source(file = "../load_testdata.R")
-
 test_that("Old function returns warning", {
   expect_warning(select_by(test_docs,
                            by = "category",
@@ -45,29 +43,29 @@ test_that("selection is true", {
 })
 
 test_that("warning when more than one value in by", {
-  expect_warning(idf_select_by(test_resources,
+  expect_warning(idf_select_by(test_docs,
                                by = c("category", "isRecordedIn"),
                                value = "Pottery"))
 })
 
 test_that("fails without value", {
-  expect_error(idf_select_by(test_resources,
+  expect_error(idf_select_by(test_docs,
                              by = "category"))
 })
 
 test_that("fails without by", {
-  expect_error(idf_select_by(test_resources,
+  expect_error(idf_select_by(test_docs,
                              value = "zonk"))
 })
 
 test_that("works for lists", {
   value <- 2021
-  check <- lapply(test_resources, function(x) {
-    cmp <- unlist(x[["campaign"]])
+  check <- lapply(test_docs, function(x) {
+    cmp <- unlist(x$doc$resource[["campaign"]])
     value %in% cmp
   })
   check <- unlist(check)
-  test <- idf_select_by(test_resources,
+  test <- idf_select_by(test_docs,
                         by = "campaign",
                         value = value)
   expect_equal(sum(check), length(test))
@@ -75,12 +73,12 @@ test_that("works for lists", {
 
 test_that("works for lists", {
   value <- "Anna Allgemeinperson"
-  check <- lapply(test_resources, function(x) {
-    proc <- unlist(x$processor)
+  check <- lapply(test_docs, function(x) {
+    proc <- unlist(x$doc$resource$processor)
     value %in% proc
     })
   check <- unlist(check)
-  test <- idf_select_by(test_resources,
+  test <- idf_select_by(test_docs,
                         by = "processor",
                         value = value)
   expect_equal(sum(check), length(test))

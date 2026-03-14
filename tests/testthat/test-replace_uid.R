@@ -1,5 +1,3 @@
-source(file = "../load_testdata.R")
-
 uidlist <- make_index(test_docs)
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 
