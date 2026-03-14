@@ -2,21 +2,31 @@
 % Please edit documentation in R/get_configuration.R
 \name{get_field_inputtypes}
 \alias{get_field_inputtypes}
-\title{Produce a Matrix of Field \emph{inputTypes} from the Custom Project Configuration}
+\title{Get a Data Frame of Field \emph{inputTypes} from the Project Configuration}
 \usage{
 get_field_inputtypes(config = NULL)
 }
 \arguments{
-\item{config}{An \code{idaifield_config} as returned by \code{\link[=get_configuration]{get_configuration()}}}
+\item{config}{An \code{idaifield_config} object as returned by
+\code{\link[=get_configuration]{get_configuration()}}.}
 }
 \value{
-A data.frame with four columns: category: each category, its parent
-(or itself if it is a supercategory),
+A data.frame with four columns:
+\describe{
+\item{category}{The (sub)category the field belongs to.}
+\item{parent}{The supercategory, or the category itself if it is a
+supercategory.}
+\item{fieldname}{The internal field name.}
+\item{inputType}{The inputType string (e.g. \code{"text"}, \code{"checkboxes"},
+\code{"dimension"}).}
+}
 }
 \description{
-This function retrieves a matrix containing the \emph{inputTypes} of all
-custom fields from a project configuration of an
-\href{https://github.com/dainst/idai-field}{iDAI.field} project.
+Extracts the \emph{inputTypes} of all fields defined in a project configuration
+of an \href{https://github.com/dainst/idai-field}{iDAI.field} project and
+returns them as a data.frame. Both supercategory and subcategory fields
+are included. Fields inherited from parent categories without an explicit
+\code{inputType} will appear as \code{"NULL"} in the \code{inputType} column.
 }
 \examples{
 \dontrun{
@@ -28,7 +38,7 @@ input_type_df <- get_field_inputtypes(config = config)
 }
 \seealso{
 \itemize{
-\item \code{\link[=get_configuration]{get_configuration()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}
+\item \code{\link[=get_configuration]{get_configuration()}} to retrieve the configuration object.
+\item \code{\link[=extract_inputtypes]{extract_inputtypes()}} for the underlying extraction logic.
 }
 }
-\keyword{internal}
