@@ -27,10 +27,12 @@
 get_configuration <- function(connection) {
   stop_if_not_idf_connection_settings(connection)
 
-  url <- gsub("3001", "3000", connection$settings$base_url)
+  url <- paste0("http://",
+                connection$params$serverip,
+                ":3000/configuration/",
+                connection$project)
 
-  proj_conn <- crul::HttpClient$new(url = paste0(url, "/configuration/",
-                                                 connection$project),
+  proj_conn <- crul::HttpClient$new(url = url,
                                     opts = connection$settings$auth,
                                     headers = connection$settings$headers)
 
@@ -78,13 +80,20 @@ get_configuration <- function(connection) {
 #' }
 get_field_inputtypes <- function(config = NULL) {
   if (!inherits(config, "idaifield_config")) {
-    stop("")
+    stop("'config' must be an 'idaifield_config' object as returned by get_configuration().")
   }
-  extracted_list <- extract_inputtypes(config)
-  mat <- do.call(rbind, extracted_list)
-  mat <- apply(mat, 2, as.character)
 
-  return(as.data.frame(mat))
+  extracted_list <- extract_inputtypes(config)
+
+  if (is.null(extracted_list) || length(extracted_list) == 0) {
+    stop("Extraction of 'inputType's failed.")
+  }
+
+  result <- do.call(rbind, extracted_list)
+  result <- apply(result, 2, as.character)
+  result[result == "NULL"] <- NA
+
+  return(as.data.frame(result))
 }
 
 
@@ -112,32 +121,31 @@ get_field_inputtypes <- function(config = NULL) {
 extract_inputtypes <- function(nested_list,
                                parent_name = NULL,
                                category_name = NULL) {
-  results <- list()  # Store results
+  results <- list()
 
-  # I am terribly sorry for this mess. It is horrible. It works, but it hurts.
+  # This is a hard to maintain and understand mess. I currently have no idea
+  # how to do this better without e.g. importing `purrr`, and I wanted to
+  # keep imports as minimal as possible.
 
-  # Check if the current list has an 'item' (i.e., a category)
+  # Check if the current list has an 'item' (i.e., we are inside a category).
   if ("item" %in% names(nested_list)) {
-    # if we got not category_name, it means that this is the first try
-    # which means our category is what was stored as "parent_name" on
-    # the first level of the config (main categories)
-    category_name <- ifelse(is.null(category_name), parent_name, category_name)
+    # If we have no category_name yet, this is the first level (supercategory),
+    # so the category is whatever parent_name was set to by the caller.
+    category_name <- if (is.null(category_name)) parent_name else category_name
 
-    # If 'groups' exists, extract its sublists
+    # If 'groups' exists, extract its sublists and collect fields.
     if ("groups" %in% names(nested_list$item)) {
       for (group_name in names(nested_list$item$groups)) {
         group <- nested_list$item$groups[[group_name]]
 
-        # If 'fields' exists in this group, extract field names and inputType
         if ("fields" %in% names(group)) {
           for (field_name in names(group$fields)) {
             input_type <- group$fields[[field_name]]$inputType
 
-            # Store the extracted row
             results <- append(results, list(
               list(
-                category = category_name,
-                parent = ifelse(is.null(parent_name), category_name, parent_name),
+                category  = category_name,
+                parent    = if (is.null(parent_name)) category_name else parent_name,
                 fieldname = field_name,
                 inputType = input_type
               )
@@ -148,27 +156,23 @@ extract_inputtypes <- function(nested_list,
     }
   }
 
-  # No item or groups or fields in names(nested_list)
-  # Recurse into "categories" and "trees"'
+  # Recurse into "categories" (top level) and "trees" (subcategory level).
   for (key in names(nested_list)) {
     if (is.list(nested_list[[key]]) && key %in% c("categories", "trees")) {
       for (sub_key in names(nested_list[[key]])) {
         sub_list <- nested_list[[key]][[sub_key]]
-        # if we did not get a parent_name yet, it means we are on the
-        # first level of the config with the main categories, thus we set the
-        # parent name:
+
         if (is.null(parent_name)) {
+          # First level: sub_key is a supercategory name, becomes parent_name.
           results <- append(results,
                             extract_inputtypes(sub_list,
                                                parent_name = sub_key))
         } else {
-          # otherwise it means we are now at the second
-          # level (i.e. sub-categories); so we pass the previous parent_name
-          # whill will be the main category, but also pass this
-          # categories name, which is the sub_key now:
+          # Second level: parent_name is already the supercategory; sub_key is
+          # the subcategory name, becomes category_name.
           results <- append(results,
                             extract_inputtypes(sub_list,
-                                               parent_name = parent_name,
+                                               parent_name   = parent_name,
                                                category_name = sub_key))
         }
       }
@@ -178,5 +182,6 @@ extract_inputtypes <- function(nested_list,
   if (length(results) > 0) {
     return(results)
   }
-}
 
+  return(NULL)
+}
