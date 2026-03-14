@@ -1,4 +1,7 @@
-# idaifieldR 0.3.7 _2026-03-XX_
+# idaifieldR 0.4.0 _2026-03-XX_
+> [!WARNING]
+> This version introduces breaking changes. I tried, but I do not guarantee that the package will notify you of every change. Proceed with appropriate caution. 
+
 ## New Field Desktop API
 * idaifieldR now gets the configuration of a project from Field Desktop directly via the `/config/` enpoint instead of the database document. That means that the complete configuration is now accessible.
   * `parse_field_inputtypes()` produces a data.frame of Categories, Parent Categories, input field identifiers and the corresponding `inputType` in the given Project Configuration.
