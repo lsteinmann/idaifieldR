@@ -12,7 +12,7 @@ fix_relations(resource, replace_uids = TRUE, index = NULL, uidlist = NULL)
 \item{replace_uids}{logical. Should UUIDs be replaced with identifiers
 from \code{index}? Default is TRUE.}
 
-\item{index}{A data.frame as returned by \code{\link[=get_uid_list]{get_uid_list()}} or
+\item{index}{A data.frame as returned by \code{\link[=make_index]{make_index()}} or
 \code{\link[=get_field_index]{get_field_index()}}. Required if \code{replace_uids = TRUE}.}
 }
 \value{

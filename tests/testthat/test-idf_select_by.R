@@ -24,7 +24,7 @@ test_that("returns correct amount of elements", {
   selection <- "Pottery"
   expect_equal(length(idf_select_by(test_docs, by = "category",
                                 value = selection)),
-               length(which(get_uid_list(test_docs)$category == selection)))
+               length(which(make_index(test_docs)$category == selection)))
 })
 
 test_that("works with multiple values", {

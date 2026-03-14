@@ -82,7 +82,7 @@ index <- get_field_index(conn, verbose = TRUE, gather_trenches = TRUE)
 ```
 
 ```{r echo = FALSE}
-index <- get_uid_list(idaifield_test_docs, verbose = TRUE, gather_trenches = TRUE)
+index <- make_index(idaifield_test_docs, verbose = TRUE, gather_trenches = TRUE)
 ```
 
 With `verbose = TRUE` the index also includes the `shortDescription`. With `gather_trenches = TRUE` the `Place` column is added, which contains the nearest *Place*-category resource (if any). Use `head(index)` to inspect it, or plot a quick overview of the dataset:

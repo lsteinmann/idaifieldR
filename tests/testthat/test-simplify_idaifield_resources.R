@@ -242,7 +242,7 @@ test_that("message is shown when no index is supplied", {
 })
 
 test_that("no message when index is supplied", {
-  index <- get_uid_list(test_docs)
+  index <- make_index(test_docs)
   expect_no_message(
     simplify_idaifield(test_docs, index = index, config = config)
   )
@@ -251,7 +251,7 @@ test_that("no message when index is supplied", {
 # --- Deprecated parameter warnings -------------------------------------------
 
 test_that("warns when deprecated 'uidlist' is passed", {
-  index <- get_uid_list(test_docs)
+  index <- make_index(test_docs)
   expect_warning(
     suppressMessages(simplify_idaifield(test_docs, uidlist = index)),
     "uidlist"

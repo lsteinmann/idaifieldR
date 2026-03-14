@@ -7,7 +7,7 @@
 #' @param resource One element from an `idaifield_resources` list.
 #' @param replace_uids logical. Should UUIDs be replaced with identifiers
 #' from `index`? Default is TRUE.
-#' @param index A data.frame as returned by [get_uid_list()] or
+#' @param index A data.frame as returned by [make_index()] or
 #' [get_field_index()]. Required if `replace_uids = TRUE`.
 #'
 #' @returns The resource with its `relations` list removed and replaced by

@@ -17,7 +17,7 @@ simplify_single_resource(
 \arguments{
 \item{resource}{One element from an \code{idaifield_resources} list.}
 
-\item{index}{A data.frame as returned by \code{\link[=get_uid_list]{get_uid_list()}} or
+\item{index}{A data.frame as returned by \code{\link[=make_index]{make_index()}} or
 \code{\link[=get_field_index]{get_field_index()}}. Required for UUID replacement and layer detection.}
 
 \item{config}{An \code{idaifield_config} object as returned by
@@ -45,7 +45,7 @@ structure.
 }
 \examples{
 \dontrun{
-index <- get_uid_list(docs)
+index <- make_index(docs)
 config <- get_configuration(conn)
 simpler <- simplify_single_resource(docs[[1]],
   index = index,

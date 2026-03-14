@@ -9,7 +9,7 @@
 #'
 #' @param uidvector a vector of UUIDs to be replaced with their *identifier*s
 #' @param uidlist a uidlist resp. index of as returned by
-#' [get_uid_list()] and [get_field_index()]
+#' [make_index()] and [get_field_index()]
 #'
 #' @returns The corresponding *identifier*(s) (a character string/vector)
 #'

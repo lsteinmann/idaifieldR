@@ -20,7 +20,7 @@ simplify_idaifield(
 returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_index_query]{idf_index_query()}},
 or \code{\link[=idf_json_query]{idf_json_query()}}.}
 
-\item{index}{A data.frame as returned by \code{\link[=get_uid_list]{get_uid_list()}} or
+\item{index}{A data.frame as returned by \code{\link[=make_index]{make_index()}} or
 \code{\link[=get_field_index]{get_field_index()}}. Required for UUID replacement and layer detection.}
 
 \item{config}{An \code{idaifield_config} object as returned by
@@ -65,7 +65,7 @@ simple <- simplify_idaifield(docs)
 \seealso{
 \itemize{
 \item \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} to import resources from the database
-\item \code{\link[=get_uid_list]{get_uid_list()}} and \code{\link[=get_field_index]{get_field_index()}} for building an index
+\item \code{\link[=make_index]{make_index()}} and \code{\link[=get_field_index]{get_field_index()}} for building an index
 \item \code{\link[=get_configuration]{get_configuration()}} for the project configuration
 \item \code{\link[=fix_relations]{fix_relations()}} for relation flattening
 \item \code{\link[=find_layer]{find_layer()}} for layer detection

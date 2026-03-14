@@ -2,7 +2,7 @@ skip_on_cran()
 
 connection <- skip_if_no_connection()
 
-uidlist <- get_uid_list(get_idaifield_docs(connection))
+uidlist <- make_index(get_idaifield_docs(connection))
 
 test_that("returns idaifield_docs", {
   res <- idf_query(connection,

@@ -34,6 +34,6 @@ remove_config_names(nameslist, silent = FALSE)
 \seealso{
 \itemize{
 \item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=get_field_index]{get_field_index()}}
-and \code{\link[=get_uid_list]{get_uid_list()}}
+and \code{\link[=make_index]{make_index()}}
 }
 }

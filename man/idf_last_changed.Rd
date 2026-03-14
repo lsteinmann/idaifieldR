@@ -11,7 +11,7 @@ idf_last_changed(connection, index = NULL, n = 100)
 by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 
 \item{index}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}}
-(or \code{\link[=get_uid_list]{get_uid_list()}}).}
+(or \code{\link[=make_index]{make_index()}}).}
 
 \item{n}{numeric. Maximum number of last changed resources to get.}
 }
@@ -22,7 +22,7 @@ recently changed \code{n} resources.
 \description{
 Retrieves the names/identifiers or UUIDs of the most recently changed
 resources in the database. If an index as returned by \code{\link[=get_field_index]{get_field_index()}}
-or \code{\link[=get_uid_list]{get_uid_list()}} is returned, the UUIDs are replaced by identifiers.
+or \code{\link[=make_index]{make_index()}} is returned, the UUIDs are replaced by identifiers.
 If not, the UUIDs are returned directly and can be used for querying e.g.
 with
 }

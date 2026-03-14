@@ -8,7 +8,7 @@
 #' `idaifield_...`-list as returned by [get_idaifield_docs()], [idf_query()],
 #' [idf_index_query()] or [idf_json_query()].
 #' @param index A data.frame as returned by [get_field_index()] or
-#' [get_uid_list()].
+#' [make_index()].
 #' @param layer_categories A vector of *categories* that are classified as
 #' *Layer*s.
 #' @param max_depth numeric. Maximum number of recursive
@@ -20,7 +20,7 @@
 #'
 #' @seealso
 #' * This function is used by: [simplify_idaifield()], [get_field_index()],
-#' [get_uid_list()].
+#' [make_index()].
 #'
 #' @export
 #'

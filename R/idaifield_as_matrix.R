@@ -30,7 +30,7 @@
 #' idaifield_docs <- get_idaifield_docs(connection = connection)
 #' pottery <- select_by(idaifield_docs, by = "category", value = "Pottery")
 #' pottery <- simplify_idaifield(pottery,
-#'                               uidlist = get_uid_list(idaifield_docs))
+#'                               uidlist = make_index(idaifield_docs))
 #' pottery <- idaifield_as_matrix(pottery)
 #' }
 idaifield_as_matrix <- function(idaifield) {

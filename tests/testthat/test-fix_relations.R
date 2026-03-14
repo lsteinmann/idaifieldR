@@ -1,6 +1,6 @@
 source(file = "../load_testdata.R")
 
-index <- get_uid_list(test_docs)
+index <- make_index(test_docs)
 
 items <- sample(seq_along(test_docs), size = 10)
 

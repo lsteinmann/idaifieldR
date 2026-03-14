@@ -2,14 +2,14 @@
 #'
 #' Retrieves the names/identifiers or UUIDs of the most recently changed
 #' resources in the database. If an index as returned by [get_field_index()]
-#' or [get_uid_list()] is returned, the UUIDs are replaced by identifiers.
+#' or [make_index()] is returned, the UUIDs are replaced by identifiers.
 #' If not, the UUIDs are returned directly and can be used for querying e.g.
 #' with
 #'
 #' @param connection A connection object as returned
 #' by [connect_idaifield()]
 #' @param index A data.frame as returned by [get_field_index()]
-#' (or [get_uid_list()]).
+#' (or [make_index()]).
 #' @param n numeric. Maximum number of last changed resources to get.
 #'
 #' @return A vector of `UUID`s or `identifier`s of the most
@@ -62,7 +62,7 @@ idf_last_changed <- function(connection,
       response <- replace_uid(response, index)
     } else {
       warning(paste0("`index` is not a data.frame as returned by ",
-                     "`get_field_index()` or `get_uid_list()`. ",
+                     "`get_field_index()` or `make_index()`. ",
                      "UUIDs have not been replaced."))
     }
   }

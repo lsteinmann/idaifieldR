@@ -40,15 +40,15 @@
 #'                                 project = "rtest", pwd = "hallo")
 #' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
-#' uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
+#' uidlist <- make_index(idaifield_docs, verbose = TRUE)
 #' }
-get_uid_list <- function(idaifield_docs,
+make_index <- function(idaifield_docs,
                          verbose = FALSE,
                          gather_trenches = FALSE,
                          remove_config_names = TRUE,
                          language = "all") {
   #.Deprecated("get_field_index()", package = "idaifieldR", #msg,
-  #            old = "get_uid_list()")
+  #            old = "make_index()")
 
   stopifnot(is.logical(verbose))
   stopifnot(is.logical(gather_trenches))
@@ -183,7 +183,7 @@ get_uid_list <- function(idaifield_docs,
 #' @export
 #'
 #' @seealso
-#' * [get_uid_list()] returns the same data.frame from an `idaifield_docs` or
+#' * [make_index()] returns the same data.frame from an `idaifield_docs` or
 #' `idaifield_resources`-list without querying the database.
 #' * [find_layer()] is used when `find_layers = TRUE` to search for the
 #' containing layer-resource recursively.
@@ -301,7 +301,7 @@ get_field_index <- function(connection,
 
 #' Get a vector of *Place*-resources each element from the index is located in
 #'
-#' @param uidlist as returned by [get_uid_list()]
+#' @param uidlist as returned by [make_index()]
 #' and [get_field_index()]
 #'
 #' @returns a vector containing the Place each resource is located in

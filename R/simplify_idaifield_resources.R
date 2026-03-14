@@ -5,7 +5,7 @@
 #' structure.
 #'
 #' @param resource One element from an `idaifield_resources` list.
-#' @param index A data.frame as returned by [get_uid_list()] or
+#' @param index A data.frame as returned by [make_index()] or
 #' [get_field_index()]. Required for UUID replacement and layer detection.
 #' @param config An `idaifield_config` object as returned by
 #' [get_configuration()]. Required when `find_layers = TRUE`.
@@ -26,7 +26,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' index <- get_uid_list(docs)
+#' index <- make_index(docs)
 #' config <- get_configuration(conn)
 #' simpler <- simplify_single_resource(docs[[1]],
 #'   index = index,
@@ -141,7 +141,7 @@ simplify_single_resource <- function(resource,
 #'
 #' @seealso
 #' * [get_idaifield_docs()] to import resources from the database
-#' * [get_uid_list()] and [get_field_index()] for building an index
+#' * [make_index()] and [get_field_index()] for building an index
 #' * [get_configuration()] for the project configuration
 #' * [fix_relations()] for relation flattening
 #' * [find_layer()] for layer detection
@@ -189,7 +189,7 @@ simplify_idaifield <- function(resources,
   # ----- Build index if not supplied
   if (is.null(index)) {
     if (!silent) message("No 'index' supplied, generating from this list.")
-    index <- get_uid_list(resources)
+    index <- make_index(resources)
   }
 
   # ----- Get config if not supplied

@@ -17,7 +17,7 @@ find_parent_layer(
 \item{parent_list}{a list with solved and unsolved resources}
 
 \item{index}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}} or
-\code{\link[=get_uid_list]{get_uid_list()}}.}
+\code{\link[=make_index]{make_index()}}.}
 
 \item{id_type}{One of "identifier" or "UID" - Should the function use
 \emph{identifier}s or \emph{UUID}s to find the layer?}

@@ -21,3 +21,8 @@ get_language_lookup <- function(...) {
 get_field_inputtypes <- function(...) {
   stop("`get_field_inputtypes()` has been removed. Use `parse_field_inputtypes()`.")
 }
+
+get_uid_list <- function(...) {
+  .Deprecated("make_index()", package = "idaifieldR", old = "get_uid_list()")
+  make_index(...)
+}

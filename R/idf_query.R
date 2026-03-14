@@ -50,7 +50,7 @@ idf_query <- function(connection,
 #' @description
 #' This function can be used to gather *docs* from an iDAI.field / Field
 #' Desktop Database according to the values of listed in an index as returned
-#' by [get_field_index()] or [get_uid_list()].
+#' by [get_field_index()] or [make_index()].
 #'
 #'
 #' @param connection A connection object as returned
@@ -59,7 +59,7 @@ idf_query <- function(connection,
 #' (options are limited to the column names of the uidlist).
 #' @param value character. The value to be selected for in the specified field.
 #' @param uidlist A data.frame as returned by [get_field_index()]
-#' (or [get_uid_list()]).
+#' (or [make_index()]).
 #'
 #' @returns An `idaifield_docs` list
 #'

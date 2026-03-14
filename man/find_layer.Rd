@@ -12,7 +12,7 @@ find_layer(ids, index = NULL, layer_categories = NULL, max_depth = 20)
 \code{\link[=idf_index_query]{idf_index_query()}} or \code{\link[=idf_json_query]{idf_json_query()}}.}
 
 \item{index}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}} or
-\code{\link[=get_uid_list]{get_uid_list()}}.}
+\code{\link[=make_index]{make_index()}}.}
 
 \item{layer_categories}{A vector of \emph{categories} that are classified as
 \emph{Layer}s.}
@@ -44,6 +44,6 @@ find_layer(index$identifier, index)
 \seealso{
 \itemize{
 \item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=get_field_index]{get_field_index()}},
-\code{\link[=get_uid_list]{get_uid_list()}}.
+\code{\link[=make_index]{make_index()}}.
 }
 }

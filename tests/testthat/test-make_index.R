@@ -1,8 +1,17 @@
 source(file = "../load_testdata.R")
 
-uidlist <- get_uid_list(test_docs)
+uidlist <- make_index(test_docs)
 
+### Deprecated get_uid_list()
+test_that("get_uid_list() warns and moves on", {
+  expect_warning(
+    res <- get_uid_list(test_docs),
+    "deprecated"
+  )
+  expect_identical(res, make_index(test_docs))
+})
 
+### Actual tests
 test_that("project exists", {
   expect_true("project" %in% uidlist$UID)
 })
@@ -33,13 +42,13 @@ for (sample in samples) {
     expect_true(check_if_uid(uidlist[sample, 2]))
   })
 
-  colnames <- colnames(get_uid_list(test_docs, verbose = TRUE))
+  colnames <- colnames(make_index(test_docs, verbose = TRUE))
 
   test_that("uidlist has the short description when verbose", {
     expect_true(any(grepl("shortDescription", colnames)))
   })
 
-  colnames <- colnames(get_uid_list(test_docs,
+  colnames <- colnames(make_index(test_docs,
                                     verbose = TRUE,
                                     gather_trenches = TRUE))
 
@@ -56,37 +65,37 @@ for (sample in samples) {
   })
 
   test_that("uidlist has 5 cols by default", {
-    expect_equal(ncol(get_uid_list(test_docs)), 5)
+    expect_equal(ncol(make_index(test_docs)), 5)
   })
 
   test_that("uidlist has 7 cols when verbose", {
-    expect_equal(ncol(get_uid_list(test_docs, verbose = TRUE)), 6)
+    expect_equal(ncol(make_index(test_docs, verbose = TRUE)), 6)
   })
 }
 
 test_that("gets uidlist from simplified list", {
-  test <- get_uid_list(test_simple)
+  test <- make_index(test_simple)
   expect_true("Schnitt 1" %in% test$isRecordedIn)
 })
 
 test_that("gets uidlist from simplified list", {
-  test <- get_uid_list(test_simple)
+  test <- make_index(test_simple)
   expect_true("Befund_6" %in% test$liesWithin)
 })
 
 data("idaifieldr_demodata")
 test_that("works with multilang demodata from default config", {
-  test <- get_uid_list(idaifieldr_demodata)
+  test <- make_index(idaifieldr_demodata)
   expect_true("LAYER_1" %in% test$liesWithin)
 })
 
 test_that("works with multilang demodata from default config when verbose", {
-  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE, language = "en")
+  test <- make_index(idaifieldr_demodata, verbose = TRUE, language = "en")
   expect_true("Another Trench" %in% test$shortDescription)
 })
 
 test_that("works with multilang demodata from default config when verbose", {
-  test <- get_uid_list(idaifieldr_demodata, verbose = TRUE, language = "de")
+  test <- make_index(idaifieldr_demodata, verbose = TRUE, language = "de")
   expect_true("Ein Erdbefund" %in% test$shortDescription)
 })
 
@@ -97,9 +106,9 @@ test_that("works with multilang demodata from default config when verbose", {
 conn <- skip_if_no_connection()
 
 
-test_that("get_uid_list() and get_field_index() return the same thing", {
+test_that("make_index() and get_field_index() return the same thing", {
   test_docs <- get_idaifield_docs(conn)
-  uidlist <- get_uid_list(test_docs)
+  uidlist <- make_index(test_docs)
   field_index <- get_field_index(attributes(test_docs)$connection)
   expect_identical(colnames(uidlist), colnames(field_index))
   expect_identical(uidlist$identifier, field_index$identifier)

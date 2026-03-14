@@ -152,7 +152,7 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 #'
 #' @seealso
 #' * This function is used by: [simplify_idaifield()], [get_field_index()]
-#' and [get_uid_list()]
+#' and [make_index()]
 #'
 #' @export
 #'

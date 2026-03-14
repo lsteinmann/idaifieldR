@@ -10,7 +10,7 @@ replace_uid(uidvector, uidlist)
 \item{uidvector}{a vector of UUIDs to be replaced with their \emph{identifier}s}
 
 \item{uidlist}{a uidlist resp. index of as returned by
-\code{\link[=get_uid_list]{get_uid_list()}} and \code{\link[=get_field_index]{get_field_index()}}}
+\code{\link[=make_index]{make_index()}} and \code{\link[=get_field_index]{get_field_index()}}}
 }
 \value{
 The corresponding \emph{identifier}(s) (a character string/vector)

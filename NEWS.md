@@ -17,6 +17,7 @@
   * 'localhost' new default for server.
   * And the deprecated 'project' / 'projectname' parameter in many other functions is now finally removed.
   * Substituted check for project parameter with structure check on connection parameter. If `connect_idaifield()` produced if, we just assume it's correct.
+* Renamed `get_uid_list()` to `make_index()` (with notice, will still work for now).
 * Removed `check_if_idaifield()`
 * Removed `download_language_list()`
 * Removed `reformat_geometry()`: Instead, I recommend (and do) re-json-ify the Geometry and advise to use `sf::st_read(json_string, quiet = TRUE)` on each geometry elsewhere.
