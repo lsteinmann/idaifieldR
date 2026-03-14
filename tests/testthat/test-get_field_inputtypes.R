@@ -196,8 +196,9 @@ test_that("stops if config is not an idaifield_config object", {
                regexp = "idaifield_config")
 })
 
-test_that("stops if config is NULL", {
+test_that("stops if config is NULL or NA", {
   expect_error(get_field_inputtypes(NULL))
+  expect_error(get_field_inputtypes(NA))
 })
 
 test_that("stops if no fields are found in the config", {
