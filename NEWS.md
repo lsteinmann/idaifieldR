@@ -30,10 +30,15 @@
 * Removed `get_field_inputtypes()`
 * Reworked `check_and_unnest()` into `maybe_unnest_docs()`.
 * Reworked `find_layers()` to require a vector of categories to search for as layer_categories instead of a global option. 
+* Reorganized and reworked *a lot* of tests (thanks, Claude.ai).
 
 ## Bug fixes:
 * `add_limit_to_query()` now validates the updates query again. Unlike before.
 * `fix_relations()` now works with user-defined relations which contain a number in the name.
+
+
+## Note
+Many of the updates in this version have been developed using Claude.ai - though no pure "vibe-coding" was involved.
 
 
 # idaifieldR 0.3.6 _2025-11-29_
