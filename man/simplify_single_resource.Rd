@@ -9,7 +9,6 @@ simplify_single_resource(
   index = NULL,
   config = NULL,
   replace_uids = TRUE,
-  find_layers = TRUE,
   keep_geometry = TRUE,
   silent = FALSE
 )
@@ -25,9 +24,6 @@ simplify_single_resource(
 
 \item{replace_uids}{logical. Should UUIDs in relations be replaced with
 human-readable identifiers from \code{index}? Default is TRUE.}
-
-\item{find_layers}{logical. Should the containing layer be detected and
-added as \code{relation.liesWithinLayer}? Default is TRUE.}
 
 \item{keep_geometry}{logical. Should geometry be kept as a GeoJSON string?
 Default is TRUE.}

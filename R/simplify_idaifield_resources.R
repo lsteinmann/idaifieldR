@@ -38,22 +38,16 @@ simplify_single_resource <- function(resource,
                                      index = NULL,
                                      config = NULL,
                                      replace_uids = TRUE,
-                                     find_layers = TRUE,
                                      keep_geometry = TRUE,
                                      silent = FALSE) {
 
   stopifnot(is.logical(keep_geometry))
   stopifnot(is.logical(replace_uids))
-  stopifnot(is.logical(find_layers))
   stopifnot(is.logical(silent))
 
   id <- resource$identifier
   if (is.null(id)) {
     stop("Not in valid format, please supply a single element from an 'idaifield_resources' list.")
-  }
-
-  if (find_layers && !inherits(config, "idaifield_config")) {
-    stop("'find_layers = TRUE' requires a valid 'idaifield_config' object as 'config'.")
   }
 
   # ----- Legacy data fix
@@ -67,16 +61,6 @@ simplify_single_resource <- function(resource,
   # ----- Flatten relations into named vectors with "relation." prefix
   # e.g. relations$liesWithin -> relation.liesWithin = c("Befund 1")
   resource <- fix_relations(resource, replace_uids = replace_uids, index = index)
-
-  # ----- Find the nearest containing resource considered a "layer"
-  # A layer is a Feature or any subcategory of Feature as defined in the config.
-  if (find_layers) {
-    resource$relation.liesWithinLayer <- unname(find_layer(
-      resource$identifier,
-      index,
-      layer_categories = c("Feature", names(config$categories$Feature$trees))
-    ))
-  }
 
   # ----- Handle geometry
   # Geometry is kept as a GeoJSON string for maximum compatibility.
@@ -215,7 +199,6 @@ simplify_idaifield <- function(resources,
       index = index,
       config = config,
       replace_uids = TRUE,
-      find_layers = FALSE,
       keep_geometry = keep_geometry,
       silent = silent
     )
