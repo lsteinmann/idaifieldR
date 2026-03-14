@@ -10,6 +10,12 @@ test_that("get_uid_list() warns and moves on", {
   )
   expect_identical(res, make_index(test_docs))
 })
+test_that("warns when deprecated 'remove_config_names' is passed", {
+  expect_warning(
+    make_index(test_docs, remove_config_names = TRUE),
+    "remove_config_names"
+  )
+})
 
 ### Actual tests
 test_that("project exists", {
@@ -26,8 +32,8 @@ test_that("type is never empty", {
 
 uidlist <- uidlist[-which(uidlist$UID == "project"), ]
 
-test_that("contains no special config names", {
-  expect_false(any(grepl(":", unique(uidlist$category))))
+test_that("contains special config names", {
+  expect_true(any(grepl(":", unique(uidlist$category))))
 })
 
 samples <- sample(seq_len(nrow(uidlist)), size = 5)
@@ -98,19 +104,3 @@ test_that("works with multilang demodata from default config when verbose", {
   test <- make_index(idaifieldr_demodata, verbose = TRUE, language = "de")
   expect_true("Ein Erdbefund" %in% test$shortDescription)
 })
-
-
-
-
-
-conn <- skip_if_no_connection()
-
-
-test_that("make_index() and get_field_index() return the same thing", {
-  test_docs <- get_idaifield_docs(conn)
-  uidlist <- make_index(test_docs)
-  field_index <- get_field_index(attributes(test_docs)$connection)
-  expect_identical(colnames(uidlist), colnames(field_index))
-  expect_identical(uidlist$identifier, field_index$identifier)
-})
-

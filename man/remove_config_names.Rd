@@ -20,20 +20,20 @@ The same character vector with everything before
 the first colon (including the colon) removed.
 }
 \description{
-This function removes everything before the first
-colon (including the colon) in a character vector.
-It is used as a helper function for \code{simplify_idaifield()}.
+Removes everything before the first colon (including the colon)
+in a character vector. Used for cleaning up category or field names that
+have been produced using the \emph{Project Configuration Editor} in Field Desktop.
 }
 \examples{
 \dontrun{
-nameslist <- c("relation.liesWithin", "relation.liesWithinLayer",
-"campaign.2022", "rtest:test", "pergamon:neuesFeld")
+nameslist <- c(
+  "relation.liesWithin",
+  "relation.liesWithinLayer",
+  "campaign.2022",
+  "rtest:test",
+  "pergamon:neuesFeld",
+  "neuesFeld"
+)
 remove_config_names(nameslist, silent = FALSE)
-}
-}
-\seealso{
-\itemize{
-\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}, \code{\link[=get_field_index]{get_field_index()}}
-and \code{\link[=make_index]{make_index()}}
 }
 }

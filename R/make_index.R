@@ -45,14 +45,15 @@
 make_index <- function(idaifield_docs,
                          verbose = FALSE,
                          gather_trenches = FALSE,
-                         remove_config_names = TRUE,
-                         language = "all") {
-  #.Deprecated("get_field_index()", package = "idaifieldR", #msg,
-  #            old = "make_index()")
+                         language = "all",
+                         ...) {
+  # ----- Handle deprecated parameters passed via ...
+  if ("remove_config_names" %in% names(list(...))) {
+    warning("The option to 'remove_config_names' has been removed. Please update your code.")
+  }
 
   stopifnot(is.logical(verbose))
   stopifnot(is.logical(gather_trenches))
-  stopifnot(is.logical(remove_config_names))
 
   idaifield_docs <- maybe_unnest_docs(idaifield_docs)
 
@@ -78,10 +79,6 @@ make_index <- function(idaifield_docs,
     uidlist$category <- ifelse(is.na(category), type, category)
   } else {
     uidlist$category <- category
-  }
-
-  if (remove_config_names) {
-    uidlist$category <- remove_config_names(uidlist$category, silent = TRUE)
   }
 
   uidlist$identifier <- unlist(lapply(idaifield_docs,
@@ -198,13 +195,16 @@ make_index <- function(idaifield_docs,
 get_field_index <- function(connection,
                             verbose = FALSE,
                             gather_trenches = FALSE,
-                            remove_config_names = TRUE,
                             find_layers = FALSE,
-                            language = "all") {
+                            language = "all",
+                            ...) {
+  # ----- Handle deprecated parameters passed via ...
+  if ("remove_config_names" %in% names(list(...))) {
+    warning("The option to 'remove_config_names' has been removed. Please update your code.")
+  }
 
   stopifnot(is.logical(verbose))
   stopifnot(is.logical(gather_trenches))
-  stopifnot(is.logical(remove_config_names))
   stopifnot(is.logical(find_layers))
 
 
@@ -265,9 +265,6 @@ get_field_index <- function(connection,
     return(x)
   })
   index_df <- do.call(rbind.data.frame, index_df)
-
-  # get rid of confignames
-  index_df$category <- remove_config_names(index_df$category, silent = TRUE)
 
   # get rid of UUIDs
   index_df$isRecordedIn <- replace_uid(index_df$isRecordedIn, index_df)

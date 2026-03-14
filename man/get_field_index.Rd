@@ -8,9 +8,9 @@ get_field_index(
   connection,
   verbose = FALSE,
   gather_trenches = FALSE,
-  remove_config_names = TRUE,
   find_layers = FALSE,
-  language = "all"
+  language = "all",
+  ...
 )
 }
 \arguments{

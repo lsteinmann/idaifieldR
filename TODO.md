@@ -6,7 +6,6 @@
 * rename uidlist to index everywhere because that is what it is. 
 * Completely rewrite simplify & its utilities...
     * just produce methods for all inputtype, get the config via the new configuration endpoint and then reformat each column according to the specifications for the corresponding inputtype. you can get everything easily via the new endpoint! 
-* `remove_config_names()` should not really exist.
 * Reduced functions, make it easier to maintain somehow. 
 * Clean up old code.
 
@@ -30,7 +29,7 @@ synch since loading everything is excessive for large projects.
 
 ## 🔨 Broken (Documented as Such)
 
-**`extract_inputtypes()`** — The replacement for `get_field_inputtypes()`, apparently. Has `#' Title` as its roxygen title. Has no `@param` docs. Has `"I am terribly sorry for this mess."` in the body. It's exported. It calls itself recursively and works, but it's not called from anywhere else in the package — not from `simplify_idaifield()`, not from `get_configuration()`. So it's also orphaned.
+:)
 
 ---
 
@@ -57,11 +56,8 @@ synch since loading everything is excessive for large projects.
 
 | Item | Status | Action |
 |---|---|---|
-| `add_limit_to_query()` — `limit <- NA` line | 🐛 Bug | Delete the line |
 | `convert_to_onehot()` | 💀 Dead | Remove or document as standalone tool |
 | `fix_dating()` + `bce_ce()` | 💀 Dead | Same question |
 | `idf_sepdim()` | 💀 Dead | Rewrite or remove |
-| `extract_inputtypes()` | 🔨 Undocumented + orphaned | Fix docs + wire in or remove |
-| `deprecated.R` stubs | 🧹 Wrong signal | `stop()` not `message()` |
 | `proj_idf_client()` chattiness | 🧹 Annoying | Move message out |
 | `idaifield_as_matrix()` example | 🧹 Stale | Update to `idf_select_by()` |

@@ -139,9 +139,9 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 
 #' @title Remove Everything Before the Colon in a Character Vector
 #'
-#' @description This function removes everything before the first
-#' colon (including the colon) in a character vector.
-#' It is used as a helper function for `simplify_idaifield()`.
+#' @description Removes everything before the first colon (including the colon)
+#' in a character vector. Used for cleaning up category or field names that
+#' have been produced using the *Project Configuration Editor* in Field Desktop.
 #'
 #' @param conf_names A character vector.
 #' @param silent Should the message that duplicates were
@@ -150,16 +150,18 @@ idf_sepdim <- function(dimensionList, name = NULL) {
 #' @returns The same character vector with everything before
 #' the first colon (including the colon) removed.
 #'
-#' @seealso
-#' * This function is used by: [simplify_idaifield()], [get_field_index()]
-#' and [make_index()]
-#'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' nameslist <- c("relation.liesWithin", "relation.liesWithinLayer",
-#' "campaign.2022", "rtest:test", "pergamon:neuesFeld")
+#' nameslist <- c(
+#'   "relation.liesWithin",
+#'   "relation.liesWithinLayer",
+#'   "campaign.2022",
+#'   "rtest:test",
+#'   "pergamon:neuesFeld",
+#'   "neuesFeld"
+#' )
 #' remove_config_names(nameslist, silent = FALSE)
 #' }
 remove_config_names <- function(conf_names = c("identifier", "configname:test", "test"),

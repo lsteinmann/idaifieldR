@@ -20,3 +20,12 @@ test_that("returns Place when gather_trenches", {
   index <- get_field_index(conn, gather_trenches = TRUE)
   expect_true("Place" %in% colnames(index))
 })
+
+
+############## DEPRECATED STUFF
+test_that("warns when deprecated 'remove_config_names' is passed", {
+  expect_warning(
+    get_field_index(conn, remove_config_names = TRUE),
+    "remove_config_names"
+  )
+})

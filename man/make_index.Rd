@@ -8,8 +8,8 @@ make_index(
   idaifield_docs,
   verbose = FALSE,
   gather_trenches = FALSE,
-  remove_config_names = TRUE,
-  language = "all"
+  language = "all",
+  ...
 )
 }
 \arguments{

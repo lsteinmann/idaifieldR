@@ -11,7 +11,8 @@
 `simplify_idaifield()` has been drastically changed. Some functionality which would have created data issues for users was removed (e.g. dimension-recalculation), which results in a less "simple" return list, but will keep the data intact. The function is now less verbose. All lists like `campaign` or `processor` or any checkbox-fields that can contain multiple values are returned as vectors instead of lists. Geometry will be parsed to JSON if kept. UUIDs are replaced during processing.  
 
 ## Improvements:
-* Improvement: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.
+* Options: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.
+* `remove_config_names`-Parameter and Function: The project identifier in front of a category or field is not automatically removed any more in the index (`get_field_index()` or `make_index()`), neither in `simplify_idaifield()` (e.g. `test:testField` -> `testField`). The `remove_config_names()` utility functions still exists.
 
 ## Maintenance:
 * reworked `connect_idaifield()` (and affected): 
