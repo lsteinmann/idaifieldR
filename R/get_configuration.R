@@ -1,8 +1,8 @@
-#' Get the Custom Project Configuration as Provided by the Field API
+#' Get the Custom Project Configuration as Provided by the Field Desktop API
 #'
 #' This function retrieves the complete project configuration (if existent)
 #' from an [iDAI.field](https://github.com/dainst/idai-field) project via
-#' Field's configuration endpoint. The list will only contain the complete
+#' Field Desktop's configuration endpoint. The list will contain the complete
 #' configuration as used in the project, including custom *fields*,
 #' *valuelists* and *translations*.
 #'
@@ -16,6 +16,7 @@
 #' @seealso
 #' * Get the inputTypes from a Configuration: [get_field_inputtypes()]
 #' * This function is used by: [simplify_idaifield()].
+#' * [iDAI.field Manual: 12. API](https://field.idai.world/manual)
 #'
 #' @export
 #'
@@ -76,14 +77,12 @@ get_configuration <- function(connection) {
 #'   \item{inputType}{The inputType string (e.g. `"text"`, `"checkboxes"`,
 #'   `"dimension"`).}
 #' }
-#' Returns a 0-row data.frame with a warning if no fields are found (e.g. for
-#' an empty or minimal configuration).
 #'
 #' @seealso
 #' * [get_configuration()] to retrieve the configuration object.
 #' * [extract_inputtypes()] for the underlying extraction logic.
 #'
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' \dontrun{
