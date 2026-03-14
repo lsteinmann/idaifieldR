@@ -226,7 +226,7 @@ get_field_index <- function(connection,
   # db query here
   client <- proj_idf_client(connection, include = "query")
   response <- response_to_list(client$post(body = query))
-  response <- unnest_docs(response)
+  response <- unnest_docs(response$docs)
 
   fields <- gsub("relations.", "", fields)
   fields <- fields[!fields == "type"]
@@ -238,7 +238,6 @@ get_field_index <- function(connection,
     if (any(type_ind)) {
       names(x)[type_ind] <- "category"
     }
-
 
     # check if liesWithin contains only one element, if not: discard and warn
     x$relations["liesWithin"] <- reduce_relations(x$relations["liesWithin"],
