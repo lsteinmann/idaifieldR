@@ -176,7 +176,7 @@ From here, standard R and `ggplot2` workflows apply:
 
 ```{r potteryplot}
 pottery_df |>
-  ggplot(aes(x = relation.liesWithin, fill = period)) +
+  ggplot(aes(x = relation.liesWithin, fill = period.start)) +
   geom_bar() +
   labs(title = "Pottery by context and period",
        x = "Context", y = "Count") +
