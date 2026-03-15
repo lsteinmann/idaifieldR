@@ -13,6 +13,8 @@
 ## Improvements:
 * Options: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.
 * `remove_config_names`-Parameter and Function: The project identifier in front of a category or field is not automatically removed any more in the index (`get_field_index()` or `make_index()`), neither in `simplify_idaifield()` (e.g. `test:testField` -> `testField`). The `remove_config_names()` utility functions still exists.
+* `convert_to_onehot()` works again with the new inputTypes passed from `parse_field_inputtypes()`.
+* `fix_dating()` works, but is still questionable and its logic is badly documented. Use with caution.
 
 ## Maintenance:
 * reworked `connect_idaifield()` (and affected): 
