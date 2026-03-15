@@ -76,7 +76,7 @@ maybe_unnest_docs <- function(x) {
 #' }
 unnest_docs <- function(docs) {
   resources <- lapply(docs, function(doc) {
-    find_named_list("resource", doc)
+    find_named_list(nested_list = doc, target_name = "resource")
   })
   resources <- structure(resources, class = "idaifield_resources")
   attr(resources, "connection") <- attr(docs, "connection")

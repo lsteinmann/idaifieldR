@@ -37,7 +37,7 @@ synch since loading everything is excessive for large projects.
 
 **`gather_languages()`** — Exported, has tests, but the language selection in `simplify_single_resource()` is entirely commented out. So it's a public function with no path through the package to reach it. Power users could call it directly, but is that the intent?
 
-**`find_named_list()`** — Exported, has a test. Never called internally. Appears to be a utility for users to dig into the config list. Fine if intentional — but is it?
+**`find_named_list()`** — Exported, has a test. Never called internally. Appears to be a utility for users to dig into the config list. Fine if intentional — but is it? -> Is used now to find the resource list, I should keep it but make the doc more explicit on how one can use it. 
 
 **`select_by()`** — A deprecated wrapper for `idf_select_by()`. Fine for backward compat, but it lives in `select_idaifield.R` instead of `deprecated.R` where it belongs.
 

@@ -4,12 +4,12 @@
 \alias{find_named_list}
 \title{Return a sub-list from a nested list by name}
 \usage{
-find_named_list(target_name, nested_list)
+find_named_list(nested_list = NULL, target_name = NULL)
 }
 \arguments{
-\item{target_name}{a character value expected to be the name of one list}
-
 \item{nested_list}{a nested list}
+
+\item{target_name}{a character value expected to be the name of one list}
 }
 \value{
 The first sub-list that has the name passed to target_name.
@@ -18,6 +18,12 @@ The first sub-list that has the name passed to target_name.
 Return a sub-list from a nested list by name
 }
 \examples{
-list <- list(first1 = list(second1 = list(1, 2, 3), second2 = list(4, 5, 6)), first2 = list(7, 8, 9))
-find_named_list("second2", list)
+list <- list(
+  first1 = list(
+    second1 = list(1, 2, 3),
+    second2 = list(4, 5, 6)
+    ),
+  first2 = list(7, 8, 9)
+)
+find_named_list(list, "second2")
 }

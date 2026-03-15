@@ -42,7 +42,7 @@ test_that("finds the single sub-list if not nested", {
     trees = list()
   )
 
-  result <- find_named_list("Sample", my_list)
+  result <- find_named_list(nested_list = my_list, "Sample")
 
   expect_equal(result, expected)
 })
@@ -56,7 +56,7 @@ test_that("finds the single sub-list, even if nested", {
     trees = list()
   )
 
-  result <- find_named_list("Building", my_list)
+  result <- find_named_list(nested_list = my_list, "Building")
 
   expect_equal(result, expected)
 })
