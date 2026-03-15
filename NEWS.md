@@ -1,4 +1,4 @@
-# idaifieldR 0.4.0 _2026-03-XX_
+# idaifieldR 0.4.0 _2026-03-15_
 > [!WARNING]
 > This version introduces breaking changes. I tried, but I do not guarantee that the package will notify you of every change. Proceed with appropriate caution. 
 
