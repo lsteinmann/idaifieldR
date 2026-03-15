@@ -127,7 +127,7 @@ response_to_list <- function(response = NULL) {
 
 #' Replace type with category in resource list names
 #'
-#' @param idaifield_docs
+#' @param docs An `idaifield_docs`.
 #'
 #' @returns the docs with "type" renamed to "category"
 #'
@@ -160,7 +160,7 @@ name_docs_list <- function(docs) {
 
 #' Reduces a (relations) list to its first element and warns accordingly.
 #'
-#' @param resource The resource to be checked
+#' @param relation The resources relation-list to be reduced
 #' @param uuid The id/UUID of the resource (for warning)
 #' @param identifier The identifier of the resource (for warning)
 #'

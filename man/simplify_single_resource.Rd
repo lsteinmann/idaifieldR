@@ -26,12 +26,6 @@ human-readable identifiers from \code{index}? Default is TRUE.}
 Default is TRUE.}
 
 \item{silent}{logical. Should messages be suppressed? Default is FALSE.}
-
-\item{config}{An \code{idaifield_config} object as returned by
-\code{\link[=get_configuration]{get_configuration()}}. Required when \code{find_layers = TRUE}.}
-
-\item{find_layers}{logical. Should the containing layer be detected and
-added as \code{relation.liesWithinLayer}? Default is TRUE.}
 }
 \value{
 A single resource with relations flattened, geometry handled,

@@ -41,6 +41,8 @@ that is preferred for the fields. Special value "all" (the default) can be
 used to return a concatenated string of all available languages.
 \code{\link[=gather_languages]{gather_languages()}} will select other available languages
 in alphabetical order if the selected language is not available.}
+
+\item{...}{sink for deprecated params}
 }
 \value{
 a data.frame with identifiers and corresponing UUIDs along with

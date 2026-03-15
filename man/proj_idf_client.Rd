@@ -15,8 +15,6 @@ use "\emph{_all_docs}", "\emph{_find}" or "\emph{_changes}" as paths.
 \item \href{https://cran.r-project.org/package=crul}{crul on CRAN}
 \item \href{https://docs.couchdb.org/en/stable/api/database/}{CouchDB API}
 }}
-
-\item{project}{(deprecated) character. Name of the project-database that should be loaded.}
 }
 \value{
 A \code{\link[crul:HttpClient]{crul::HttpClient()}} object.

@@ -173,6 +173,7 @@ make_index <- function(idaifield_docs,
 #' be another column called "liesWithinLayer" which contains "Layer1" for both
 #' sample "A" and Find "001".
 #' @inheritParams gather_languages
+#' @param ... sink for deprecated params
 #'
 #' @returns a data.frame with identifiers and corresponing UUIDs along with
 #' the category (former: type), basic relations and depending on settings place

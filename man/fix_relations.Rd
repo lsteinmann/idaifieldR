@@ -14,6 +14,8 @@ from \code{index}? Default is TRUE.}
 
 \item{index}{A data.frame as returned by \code{\link[=make_index]{make_index()}} or
 \code{\link[=get_field_index]{get_field_index()}}. Required if \code{replace_uids = TRUE}.}
+
+\item{uidlist}{DEPRECATED}
 }
 \value{
 The resource with its \code{relations} list removed and replaced by

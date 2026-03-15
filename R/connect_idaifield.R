@@ -129,7 +129,6 @@ idf_check_for_project <- function(conn) {
 #' specific project. This function is intended for internal use only.
 #'
 #' @param conn A connection object returned by [connect_idaifield()].
-#' @param project (deprecated) character. Name of the project-database that should be loaded.
 #' @param include Arguments: "all", "query", "changes" . Should the client
 #' use "*_all_docs*", "*_find*" or "*_changes*" as paths.
 #'
