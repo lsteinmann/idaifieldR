@@ -170,13 +170,13 @@ test_that("returns a list", {
 # =============================================================================
 
 test_that("returns idaifield_simple class", {
-  result <- suppressMessages(simplify_idaifield(test_docs))
+  result <- suppressMessages(simplify_idaifield(test_docs, config = config))
   expect_s3_class(result, "idaifield_simple")
 })
 
 test_that("returns same object unchanged if already idaifield_simple", {
-  simple <- suppressMessages(simplify_idaifield(test_docs))
-  result <- suppressMessages(simplify_idaifield(simple))
+  simple <- suppressMessages(simplify_idaifield(test_docs, config = config))
+  result <- suppressMessages(simplify_idaifield(simple, config = config))
   expect_identical(simple, result)
 })
 
@@ -188,24 +188,24 @@ test_that("stops when input is neither idaifield_docs nor idaifield_resources", 
 })
 
 test_that("preserves resource names", {
-  result <- suppressMessages(simplify_idaifield(test_docs))
+  result <- suppressMessages(simplify_idaifield(test_docs, config = config))
   expect_identical(names(test_docs), names(result))
 })
 
 test_that("attaches connection and projectname attributes", {
-  result <- suppressMessages(simplify_idaifield(test_docs))
+  result <- suppressMessages(simplify_idaifield(test_docs, config = config))
   expect_false(is.null(attr(result, "connection")))
   expect_false(is.null(attr(result, "projectname")))
 })
 
 test_that("geometry is absent when keep_geometry = FALSE", {
-  result <- suppressMessages(simplify_idaifield(test_docs, keep_geometry = FALSE))
+  result <- suppressMessages(simplify_idaifield(test_docs, config = config, keep_geometry = FALSE))
   geometries <- lapply(result, function(x) x$geometry)
   expect_true(all(vapply(geometries, is.null, logical(1))))
 })
 
 test_that("geometry is a string when keep_geometry = TRUE", {
-  result <- suppressMessages(simplify_idaifield(test_docs, keep_geometry = TRUE))
+  result <- suppressMessages(simplify_idaifield(test_docs, config = config, keep_geometry = TRUE))
   geometries <- Filter(Negate(is.null), lapply(result, function(x) x$geometry))
   if (length(geometries) > 0) {
     expect_true(all(vapply(geometries, is.character, logical(1))))
@@ -215,7 +215,7 @@ test_that("geometry is a string when keep_geometry = TRUE", {
 })
 
 test_that("no raw UUIDs remain in relation fields after simplification", {
-  result <- suppressMessages(simplify_idaifield(test_docs))
+  result <- suppressMessages(simplify_idaifield(test_docs, config = config))
   relation_fields <- lapply(result, function(x) {
     x[grepl("^relation\\.", names(x))]
   })
@@ -225,7 +225,7 @@ test_that("no raw UUIDs remain in relation fields after simplification", {
 
 test_that("message is shown when no index is supplied", {
   expect_message(
-    simplify_idaifield(test_docs),
+    simplify_idaifield(test_docs, config = config),
     "index"
   )
 })
@@ -242,28 +242,28 @@ test_that("no message when index is supplied", {
 test_that("warns when deprecated 'uidlist' is passed", {
   index <- make_index(test_docs)
   expect_warning(
-    suppressMessages(simplify_idaifield(test_docs, uidlist = index)),
+    suppressMessages(simplify_idaifield(test_docs, config = config, uidlist = index)),
     "uidlist"
   )
 })
 
 test_that("warns when deprecated 'spread_fields' is passed", {
   expect_warning(
-    suppressMessages(simplify_idaifield(test_docs, spread_fields = TRUE)),
+    suppressMessages(simplify_idaifield(test_docs, config = config, spread_fields = TRUE)),
     "spread_fields"
   )
 })
 
 test_that("warns when deprecated 'use_exact_dates' is passed", {
   expect_warning(
-    suppressMessages(simplify_idaifield(test_docs, use_exact_dates = FALSE)),
+    suppressMessages(simplify_idaifield(test_docs, config = config, use_exact_dates = FALSE)),
     "use_exact_dates"
   )
 })
 
 test_that("warns when deprecated 'remove_config_names' is passed", {
   expect_warning(
-    suppressMessages(simplify_idaifield(test_docs, remove_config_names = TRUE)),
+    suppressMessages(simplify_idaifield(test_docs, config = config, remove_config_names = TRUE)),
     "remove_config_names"
   )
 })
