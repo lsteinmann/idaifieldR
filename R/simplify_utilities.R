@@ -1,21 +1,19 @@
 #' @title Break down a List from a Checkbox Field to Onehot-Coded Values
 #'
-#' @description This function is a helper function to
-#' [simplify_idaifield()] that takes a list from one of the
-#' fields marked in the config as containing checkboxes and converts
-#' the list to onehot-coded values.
+#' @description This function converts all checkboxes fields (except the ones
+#' listed in the `except`-param) into "one-hot" coded list items.
 #'
 #' @param resource The resource to process (from an `idaifield_resources`-list).
-#' @param fieldtypes A matrix of fields with the given inputType as
-#' returned by [extract_inputtypes()]
+#' @param inputtypes A matrix of fields with the given inputType as
+#' returned by [parse_field_inputtypes()]
+#' @param except A vector of fieldnames that should be ignored.
 #'
 #' @returns The resource object with the values of checkboxes
 #' separated into one-hot-coded versions.
 #'
 #'
 #' @seealso
-#' * This function is used by: [simplify_idaifield()]
-#' * Needs output of: [extract_inputtypes()] (Currently not working, though!)
+#' * Needs output of: [parse_field_inputtypes()]
 #'
 #' @export
 #'
@@ -23,41 +21,26 @@
 #' \dontrun{
 #' ...
 #' }
-convert_to_onehot <- function(resource, fieldtypes) {
+convert_to_onehot <- function(resource, inputtypes, except = NULL) {
   # get the inputType list
-  checkboxes <- fieldtypes[which(fieldtypes[, "inputType"] == "checkboxes"), ]
+  inputtypes <- inputtypes[which(inputtypes$category == resource$category), ]
+  inputtypes <- inputtypes[which(inputtypes$inputType == "checkboxes"),]
 
-  if (!is.matrix(checkboxes)) {
-    checkboxes_new <- matrix(nrow = 1, ncol = ncol(fieldtypes))
-    checkboxes_new[1,] <- checkboxes
-    colnames(checkboxes_new) <- names(checkboxes)
-    checkboxes <- checkboxes_new
+  if (!is.null(except)) {
+    inputtypes <- inputtypes[-which(inputtypes$fieldname %in% except), ]
   }
 
-  # find which fields actually belong to the resource type
-  # correct_cat <- which(checkboxes[, "category"] == resource$category)
-  # manually add Feature and Find type because of problems
-  # wtf does that even mean
-  # correct_cat <- c(correct_cat,
-  #                  which(checkboxes[, "category"] %in% c("Feature", "Find")))
-  # get the index of the resource that should be converted
-  # i actually give up. for now.
-  index_to_convert <- which(names(resource) %in% checkboxes[, "field"])
-
-  # add campaign field manually
-  index_to_convert <- c(index_to_convert, which(names(resource) == "campaign"))
-
-  # loop over the index to replace the checkbox-variable
+  # loop over the fieldnames to replace the checkbox-variable
   # with one-hot-coded versions
-  for (i in index_to_convert) {
-    var_name <- names(resource[i])
-    var <- resource[[i]]
-    new_vars <- rep(TRUE, length(var))
-    names(new_vars) <- paste(var_name, ".", var, sep = "")
-    resource <- append(resource, new_vars)
+  for (fieldname in inputtypes$fieldname) {
+    if (fieldname %in% names(resource)) {
+      new_vars <- rep(TRUE, length(resource[[fieldname]]))
+      names(new_vars) <- paste(fieldname, ".", resource[[fieldname]], sep = "")
+      resource[[fieldname]] <- NULL
+      resource <- append(resource, new_vars)
+    }
   }
   # remove the old ones
-  resource[index_to_convert] <- NULL
   return(resource)
 }
 

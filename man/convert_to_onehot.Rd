@@ -4,23 +4,23 @@
 \alias{convert_to_onehot}
 \title{Break down a List from a Checkbox Field to Onehot-Coded Values}
 \usage{
-convert_to_onehot(resource, fieldtypes)
+convert_to_onehot(resource, inputtypes, except = NULL)
 }
 \arguments{
 \item{resource}{The resource to process (from an \code{idaifield_resources}-list).}
 
-\item{fieldtypes}{A matrix of fields with the given inputType as
-returned by \code{\link[=extract_inputtypes]{extract_inputtypes()}}}
+\item{inputtypes}{A matrix of fields with the given inputType as
+returned by \code{\link[=parse_field_inputtypes]{parse_field_inputtypes()}}}
+
+\item{except}{A vector of fieldnames that should be ignored.}
 }
 \value{
 The resource object with the values of checkboxes
 separated into one-hot-coded versions.
 }
 \description{
-This function is a helper function to
-\code{\link[=simplify_idaifield]{simplify_idaifield()}} that takes a list from one of the
-fields marked in the config as containing checkboxes and converts
-the list to onehot-coded values.
+This function converts all checkboxes fields (except the ones
+listed in the \code{except}-param) into "one-hot" coded list items.
 }
 \examples{
 \dontrun{
@@ -29,7 +29,6 @@ the list to onehot-coded values.
 }
 \seealso{
 \itemize{
-\item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}
-\item Needs output of: \code{\link[=extract_inputtypes]{extract_inputtypes()}} (Currently not working, though!)
+\item Needs output of: \code{\link[=parse_field_inputtypes]{parse_field_inputtypes()}}
 }
 }
