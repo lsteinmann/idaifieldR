@@ -409,7 +409,7 @@ fix_dating <- function(dat_list, use_exact_dates = FALSE) {
 #' top-level keys in the resource), use [handle_legacy_date_range_fields()] on
 #' the whole resource before per-field dispatch.
 #'
-#' @param value The value of a single `date`-type field from a resource, i.e.
+#' @param dateInput The value of a single `date`-type field from a resource, i.e.
 #' `resource$date` or `resource$restorationDate`. Either a character string
 #' (legacy single-field format) or a list with at minimum a `value` element
 #' and an `isRange` logical (current format).

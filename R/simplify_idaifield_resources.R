@@ -7,12 +7,8 @@
 #' @param resource One element from an `idaifield_resources` list.
 #' @param index A data.frame as returned by [make_index()] or
 #' [get_field_index()]. Required for UUID replacement and layer detection.
-#' @param config An `idaifield_config` object as returned by
-#' [get_configuration()]. Required when `find_layers = TRUE`.
 #' @param replace_uids logical. Should UUIDs in relations be replaced with
 #' human-readable identifiers from `index`? Default is TRUE.
-#' @param find_layers logical. Should the containing layer be detected and
-#' added as `relation.liesWithinLayer`? Default is TRUE.
 #' @param keep_geometry logical. Should geometry be kept as a GeoJSON string?
 #' Default is TRUE.
 #' @param silent logical. Should messages be suppressed? Default is FALSE.
@@ -146,10 +142,15 @@ simplify_single_resource <- function(resource,
 #' @param resources An `idaifield_docs` or `idaifield_resources` list as
 #' returned by [get_idaifield_docs()], [idf_query()], [idf_index_query()],
 #' or [idf_json_query()].
+#' @param find_layers logical. Should the containing layer be detected and
+#' added as `relation.liesWithinLayer`? Default is TRUE.
+#' @param config An `idaifield_config` object as returned by
+#' [get_configuration()]. Required when `find_layers = TRUE`.
 #' @inheritParams simplify_single_resource
+#' @param ... sink for deprecated params
 #'
 #' @returns An `idaifield_simple` list with the same resources in a flatter
-#' format, with `connection`, `projectname`, and `language` stored as
+#' format, with `connection`, `projectname` stored as
 #' attributes.
 #'
 #' @export
@@ -171,7 +172,6 @@ simplify_single_resource <- function(resource,
 simplify_idaifield <- function(resources,
                                index = NULL,
                                config = NULL,
-                               language = "all",
                                keep_geometry = FALSE,
                                find_layers = FALSE,
                                silent = FALSE,

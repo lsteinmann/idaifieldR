@@ -52,7 +52,7 @@ maybe_unnest_docs <- function(x) {
 #' about who created and modified the resource at what time and
 #' is irrelevant for any analysis of the database contents itself.
 #'
-#' @param idaifield_docs A list as provided by [get_idaifield_docs()].
+#' @param docs A list as provided by [get_idaifield_docs()].
 #' [get_idaifield_docs()] employs this function already when
 #' setting `raw = FALSE`.
 #'

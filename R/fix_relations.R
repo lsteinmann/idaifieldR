@@ -9,6 +9,7 @@
 #' from `index`? Default is TRUE.
 #' @param index A data.frame as returned by [make_index()] or
 #' [get_field_index()]. Required if `replace_uids = TRUE`.
+#' @param uidlist DEPRECATED
 #'
 #' @returns The resource with its `relations` list removed and replaced by
 #' flat named vectors, one per relation type.

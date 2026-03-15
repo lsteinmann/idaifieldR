@@ -8,7 +8,6 @@ simplify_idaifield(
   resources,
   index = NULL,
   config = NULL,
-  language = "all",
   keep_geometry = FALSE,
   find_layers = FALSE,
   silent = FALSE,
@@ -33,10 +32,12 @@ Default is TRUE.}
 added as \code{relation.liesWithinLayer}? Default is TRUE.}
 
 \item{silent}{logical. Should messages be suppressed? Default is FALSE.}
+
+\item{...}{sink for deprecated params}
 }
 \value{
 An \code{idaifield_simple} list with the same resources in a flatter
-format, with \code{connection}, \code{projectname}, and \code{language} stored as
+format, with \code{connection}, \code{projectname} stored as
 attributes.
 }
 \description{

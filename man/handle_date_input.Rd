@@ -7,14 +7,14 @@
 handle_date_input(dateInput, name)
 }
 \arguments{
-\item{name}{Character. The name of the field being processed (e.g.
-\code{"date"}, \code{"restorationDate"}). Used to name the output elements as
-\verb{<name>.start} and \verb{<name>.end}.}
-
-\item{value}{The value of a single \code{date}-type field from a resource, i.e.
+\item{dateInput}{The value of a single \code{date}-type field from a resource, i.e.
 \code{resource$date} or \code{resource$restorationDate}. Either a character string
 (legacy single-field format) or a list with at minimum a \code{value} element
 and an \code{isRange} logical (current format).}
+
+\item{name}{Character. The name of the field being processed (e.g.
+\code{"date"}, \code{"restorationDate"}). Used to name the output elements as
+\verb{<name>.start} and \verb{<name>.end}.}
 }
 \value{
 A named list with two elements:
