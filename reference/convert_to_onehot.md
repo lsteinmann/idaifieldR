@@ -1,14 +1,12 @@
 # Break down a List from a Checkbox Field to Onehot-Coded Values
 
-This function is a helper function to
-[`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md)
-that takes a list from one of the fields marked in the config as
-containing checkboxes and converts the list to onehot-coded values.
+This function converts all checkboxes fields (except the ones listed in
+the `except`-param) into "one-hot" coded list items.
 
 ## Usage
 
 ``` r
-convert_to_onehot(resource, fieldtypes)
+convert_to_onehot(resource, inputtypes, except = NULL)
 ```
 
 ## Arguments
@@ -17,10 +15,14 @@ convert_to_onehot(resource, fieldtypes)
 
   The resource to process (from an `idaifield_resources`-list).
 
-- fieldtypes:
+- inputtypes:
 
   A matrix of fields with the given inputType as returned by
-  [`get_field_inputtypes()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_inputtypes.md)
+  [`parse_field_inputtypes()`](https://lsteinmann.github.io/idaifieldR/reference/parse_field_inputtypes.md)
+
+- except:
+
+  A vector of fieldnames that should be ignored.
 
 ## Value
 
@@ -29,11 +31,8 @@ one-hot-coded versions.
 
 ## See also
 
-- This function is used by:
-  [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md)
-
 - Needs output of:
-  [`get_field_inputtypes()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_inputtypes.md)
+  [`parse_field_inputtypes()`](https://lsteinmann.github.io/idaifieldR/reference/parse_field_inputtypes.md)
 
 ## Examples
 

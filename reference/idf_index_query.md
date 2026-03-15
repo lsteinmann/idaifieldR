@@ -5,7 +5,7 @@ Desktop Database according to the values of listed in an index as
 returned by
 [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
 or
-[`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md).
+[`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md).
 
 ## Usage
 
@@ -14,8 +14,7 @@ idf_index_query(
   connection,
   field = "category",
   value = "Brick",
-  uidlist = NULL,
-  projectname = NULL
+  uidlist = NULL
 )
 ```
 
@@ -40,12 +39,7 @@ idf_index_query(
   A data.frame as returned by
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
   (or
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)).
-
-- projectname:
-
-  (deprecated) The name of the project to be queried (overrides the one
-  listed in the connection-object).
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md)).
 
 ## Value
 

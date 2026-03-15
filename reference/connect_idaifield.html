@@ -15,7 +15,7 @@ idf_query(), idf_index_query(), or idf_json_query()."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +26,7 @@ idf_query(), idf_index_query(), or idf_json_query()."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use idaifieldR: Detailed Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -42,7 +42,7 @@ idf_query(), idf_index_query(), or idf_json_query()."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Connect to an iDAI.field / Field Desktop Client</h1>
-      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.3.6/R/connect_idaifield.R" class="external-link"><code>R/connect_idaifield.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.4.0/R/connect_idaifield.R" class="external-link"><code>R/connect_idaifield.R</code></a></small>
       <div class="d-none name"><code>connect_idaifield.Rd</code></div>
     </div>
 
@@ -57,11 +57,9 @@ other functions to access the database, such as <code><a href="get_idaifield_doc
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">connect_idaifield</span><span class="op">(</span></span>
-<span>  serverip <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span>
+<span>  serverip <span class="op">=</span> <span class="st">"localhost"</span>,</span>
 <span>  project <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  user <span class="op">=</span> <span class="st">"R"</span>,</span>
 <span>  pwd <span class="op">=</span> <span class="st">"password"</span>,</span>
-<span>  version <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  ping <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -71,9 +69,8 @@ other functions to access the database, such as <code><a href="get_idaifield_doc
 
 
 <dl><dt id="arg-serverip">serverip<a class="anchor" aria-label="anchor" href="#arg-serverip"></a></dt>
-<dd><p>The IP address of the Field Client. If you are using
-Field Desktop on the same machine, the default value (<em>127.0.0.1</em>)
-should usually work.</p></dd>
+<dd><p>The IP address of the Field Client, or "localhost". Leave
+the default if you are using Field Desktop on the same computer.</p></dd>
 
 
 <dt id="arg-project">project<a class="anchor" aria-label="anchor" href="#arg-project"></a></dt>
@@ -81,52 +78,34 @@ should usually work.</p></dd>
 For a list of available projects, see <code><a href="idf_projects.html">idf_projects()</a></code>.</p></dd>
 
 
-<dt id="arg-user">user<a class="anchor" aria-label="anchor" href="#arg-user"></a></dt>
-<dd><p>(<em>optional</em>) The username for the connection.
-This parameter is not currently needed.</p></dd>
-
-
 <dt id="arg-pwd">pwd<a class="anchor" aria-label="anchor" href="#arg-pwd"></a></dt>
 <dd><p>(<em>required</em>) The password used to authenticate with the Field
 Client (default is "password").</p></dd>
 
 
-<dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
-<dd><p>The version number of the Field Client. By default,
-the value is set to 3.</p></dd>
-
-
 <dt id="arg-ping">ping<a class="anchor" aria-label="anchor" href="#arg-ping"></a></dt>
-<dd><p>logical. Whether to test the connection on creation
-(default is TRUE). If TRUE, <code>connect_idaifield()</code> also checks if the
-project exists.</p></dd>
+<dd><p>Should the connection be pinges on creation? Defaults to TRUE.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p><code>connect_idaifield()</code> returns an <code>idf_connection_settings</code>
-object that contains the connection settings needed to connect to the
-database of your
+object that is used by other functions in this package to retrieve data
+from the
 <a href="https://github.com/dainst/idai-field" class="external-link">iDAI.field / Field Desktop Client</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>By default, if you are using Field Desktop on the same machine,
 you should not need to specify the <code>serverip</code> argument, as it defaults to
-the common localhost address. Similarly, the <code>user</code> argument
-is currently not needed for access. The <code>pwd</code> argument needs to be
-set to the password that is set in your Field Desktop Client under
-<em>Tools/Werkzeuge</em> &gt; <em>Settings/Einstellungen</em>: 'Your password'/'Eigenes Passwort'.
-If the default <code>serverip</code> argument does not work for you,
-or you want to access a client on the same network that is not running
-on the same machine as R, you can exchange it for the address listed above
-the password (without the port (':3000')). The <code>version</code> argument does
-not need to be specified if you are using the current version of
-Field Desktop (3), but will help you connect if you are using <em>iDAI.field 2</em>.
-You can set the <code>project</code> that you want to work with in this function,
-but be aware that other functions will overwrite this setting if
-you supply a project name there. <code>connect_idaifield()</code> will check if
-the project actually exists and throw an error if it does not.</p>
+"localhost". If you want to access a client on the same network that is
+not running on the same computer as R, you can supply the local IP
+(without the port (':3000')).
+The <code>pwd</code> argument needs to be set to the password that
+is set in your Field Desktop Client under <em>Tools/Werkzeuge</em> &gt;
+<em>Settings/Einstellungen</em>: 'Your password'/'Eigenes Passwort'.
+<code>project</code> has to be set to the identifier of the project database you
+will query.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -140,8 +119,7 @@ the project actually exists and throw an error if it does not.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu">connect_idaifield</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  serverip <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span></span>
-<span class="r-in"><span>  user <span class="op">=</span> <span class="st">"R"</span>,</span></span>
+<span class="r-in"><span>  serverip <span class="op">=</span> <span class="st">"localhost"</span>,</span></span>
 <span class="r-in"><span>  pwd <span class="op">=</span> <span class="st">"hallo"</span>,</span></span>
 <span class="r-in"><span>  project <span class="op">=</span> <span class="st">"rtest"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>

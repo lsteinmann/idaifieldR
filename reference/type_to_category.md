@@ -10,7 +10,9 @@ type_to_category(docs)
 
 ## Arguments
 
-- idaifield_docs:
+- docs:
+
+  An `idaifield_docs`.
 
 ## Value
 

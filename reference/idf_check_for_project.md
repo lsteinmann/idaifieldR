@@ -6,7 +6,7 @@ the project does not exist, it throws an error.
 ## Usage
 
 ``` r
-idf_check_for_project(conn, project = NULL)
+idf_check_for_project(conn)
 ```
 
 ## Arguments
@@ -15,12 +15,6 @@ idf_check_for_project(conn, project = NULL)
 
   The connection settings as returned by
   [`connect_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/connect_idaifield.md)
-
-- project:
-
-  character. Name of the project-database to check for. If not supplied,
-  the function will use the project specified in the connection
-  settings.
 
 ## Examples
 

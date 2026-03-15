@@ -51,8 +51,8 @@ and
 
 ``` r
 if (FALSE) { # \dontrun{
-connection <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo", project = "rtest")
+connection <- connect_idaifield(serverip = "localhost",
+pwd = "hallo", project = "rtest")
 idaifield_docs <- get_idaifield_docs(connection = connection)
 
 idaifield_layers <- idf_select_by(idaifield_docs,

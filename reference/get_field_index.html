@@ -39,7 +39,7 @@ configuration settings.'></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@ configuration settings.'></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use idaifieldR: Detailed Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -66,7 +66,7 @@ configuration settings.'></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Get the Index of an iDAI.field / Field Desktop Database</h1>
-      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.3.6/R/get_uid_list.R" class="external-link"><code>R/get_uid_list.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.4.0/R/make_index.R" class="external-link"><code>R/make_index.R</code></a></small>
       <div class="d-none name"><code>get_field_index.Rd</code></div>
     </div>
 
@@ -96,9 +96,9 @@ configuration settings.</p>
 <span>  <span class="va">connection</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  gather_trenches <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  remove_config_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  find_layers <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  language <span class="op">=</span> <span class="st">"all"</span></span>
+<span>  language <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -124,17 +124,9 @@ records the Place each corresponding Trench and its sub-resources lie within.
 project database is organized accordingly.)</p></dd>
 
 
-<dt id="arg-remove-config-names">remove_config_names<a class="anchor" aria-label="anchor" href="#arg-remove-config-names"></a></dt>
-<dd><p>TRUE/FALSE: Should the name of the project be
-removed from field names of the configuration? (Default is TRUE.)
-(Should e.g.: <em>test:amount</em> be renamed to <em>amount</em>,
-see <code><a href="remove_config_names.html">remove_config_names()</a></code>.)</p></dd>
-
-
 <dt id="arg-find-layers">find_layers<a class="anchor" aria-label="anchor" href="#arg-find-layers"></a></dt>
 <dd><p>TRUE/FALSE. Default is FALSE. If TRUE, adds another column
-with the 'Layer' (see <code>getOption("idaifield_categories")$layers</code>, can be
-modified) in which a resource is contained  recursively. That means that
+with the 'Layer' in which a resource is contained  recursively. That means that
 even if it does not immediately lie within this layer, but is
 contained by one or several other resources in said layer, a new column
 ("liesWithinLayer") will still show the layer.
@@ -151,17 +143,21 @@ used to return a concatenated string of all available languages.
 <code><a href="gather_languages.html">gather_languages()</a></code> will select other available languages
 in alphabetical order if the selected language is not available.</p></dd>
 
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>sink for deprecated params</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a data.frame with identifiers and corresponding UUIDs along with
+    <p>a data.frame with identifiers and corresponing UUIDs along with
 the category (former: type), basic relations and depending on settings place
 and shortDescription of each element</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
-<ul><li><p><code><a href="get_uid_list.html">get_uid_list()</a></code> returns the same data.frame from an <code>idaifield_docs</code> or
+<ul><li><p><code><a href="make_index.html">make_index()</a></code> returns the same data.frame from an <code>idaifield_docs</code> or
 <code>idaifield_resources</code>-list without querying the database.</p></li>
 <li><p><code><a href="find_layer.html">find_layer()</a></code> is used when <code>find_layers = TRUE</code> to search for the
 containing layer-resource recursively.</p></li>

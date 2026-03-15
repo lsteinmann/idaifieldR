@@ -9,7 +9,7 @@ of idf_select_by()."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +20,7 @@ of idf_select_by()."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use idaifieldR: Detailed Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -36,7 +36,7 @@ of idf_select_by()."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Deprecated function: Select/filter an <code>idaifield_resources</code>- or <code>idaifield_docs</code>-list</h1>
-      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.3.6/R/select_idaifield.R" class="external-link"><code>R/select_idaifield.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.4.0/R/select_idaifield.R" class="external-link"><code>R/select_idaifield.R</code></a></small>
       <div class="d-none name"><code>select_by.Rd</code></div>
     </div>
 
@@ -89,8 +89,8 @@ directly using <code><a href="idf_query.html">idf_query()</a></code>, <code><a h
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">connection</span> <span class="op">&lt;-</span> <span class="fu"><a href="connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>serverip <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span></span>
-<span class="r-in"><span>user <span class="op">=</span> <span class="st">"R"</span>, pwd <span class="op">=</span> <span class="st">"hallo"</span>, project <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">connection</span> <span class="op">&lt;-</span> <span class="fu"><a href="connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>serverip <span class="op">=</span> <span class="st">"localhost"</span>,</span></span>
+<span class="r-in"><span>pwd <span class="op">=</span> <span class="st">"hallo"</span>, project <span class="op">=</span> <span class="st">"rtest"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">idaifield_docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_idaifield_docs.html">get_idaifield_docs</a></span><span class="op">(</span>connection <span class="op">=</span> <span class="va">connection</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">idaifield_layers</span> <span class="op">&lt;-</span> <span class="fu"><a href="idf_select_by.html">idf_select_by</a></span><span class="op">(</span><span class="va">idaifield_docs</span>,</span></span>

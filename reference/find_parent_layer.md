@@ -8,7 +8,7 @@ solved
 ``` r
 find_parent_layer(
   parent_list,
-  uidlist,
+  index,
   id_type,
   layer_categories,
   max_depth = 20
@@ -21,12 +21,12 @@ find_parent_layer(
 
   a list with solved and unsolved resources
 
-- uidlist:
+- index:
 
   A data.frame as returned by
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
   or
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md).
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md).
 
 - id_type:
 
@@ -35,9 +35,7 @@ find_parent_layer(
 
 - layer_categories:
 
-  A vector of *categories* that are classified as *Layer*s. (Encompasses
-  *SurveyUnit*.) See or change the default:
-  `getOption("idaifield_categories")$layers`
+  A vector of *categories* that are classified as *Layer*s.
 
 - max_depth:
 

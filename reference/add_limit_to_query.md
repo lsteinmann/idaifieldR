@@ -1,6 +1,7 @@
 # Add limit to JSON query
 
-This function adds a limit of the max db docs to a query.
+This is a helper function that adds a limit of the max db docs to a
+query. It is not great.
 
 ## Usage
 

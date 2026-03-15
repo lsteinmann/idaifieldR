@@ -28,9 +28,9 @@ get_field_index(
   connection,
   verbose = FALSE,
   gather_trenches = FALSE,
-  remove_config_names = TRUE,
   find_layers = FALSE,
-  language = "all"
+  language = "all",
+  ...
 )
 ```
 
@@ -55,19 +55,11 @@ get_field_index(
   for grouping the finds of several trenches, but will only work if the
   project database is organized accordingly.)
 
-- remove_config_names:
-
-  TRUE/FALSE: Should the name of the project be removed from field names
-  of the configuration? (Default is TRUE.) (Should e.g.: *test:amount*
-  be renamed to *amount*, see
-  [`remove_config_names()`](https://lsteinmann.github.io/idaifieldR/reference/remove_config_names.md).)
-
 - find_layers:
 
   TRUE/FALSE. Default is FALSE. If TRUE, adds another column with the
-  'Layer' (see `getOption("idaifield_categories")$layers`, can be
-  modified) in which a resource is contained recursively. That means
-  that even if it does not immediately lie within this layer, but is
+  'Layer' in which a resource is contained recursively. That means that
+  even if it does not immediately lie within this layer, but is
   contained by one or several other resources in said layer, a new
   column ("liesWithinLayer") will still show the layer. Example: A
   sample "A" in Find "001" from layer "Layer1" will usually have "001"
@@ -84,15 +76,19 @@ get_field_index(
   will select other available languages in alphabetical order if the
   selected language is not available.
 
+- ...:
+
+  sink for deprecated params
+
 ## Value
 
-a data.frame with identifiers and corresponding UUIDs along with the
+a data.frame with identifiers and corresponing UUIDs along with the
 category (former: type), basic relations and depending on settings place
 and shortDescription of each element
 
 ## See also
 
-- [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)
+- [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md)
   returns the same data.frame from an `idaifield_docs` or
   `idaifield_resources`-list without querying the database.
 

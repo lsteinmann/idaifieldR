@@ -10,13 +10,7 @@ R-script.
 ## Usage
 
 ``` r
-get_idaifield_docs(
-  connection = connect_idaifield(serverip = "127.0.0.1", project = "rtest", user = "R",
-    pwd = "hallo"),
-  raw = TRUE,
-  json = FALSE,
-  projectname = NULL
-)
+get_idaifield_docs(connection, raw = TRUE, json = FALSE)
 ```
 
 ## Arguments
@@ -30,7 +24,7 @@ get_idaifield_docs(
 
   TRUE/FALSE. Should the result already be unnested to resource level
   using
-  [`check_and_unnest()`](https://lsteinmann.github.io/idaifieldR/reference/check_and_unnest.md)?
+  [`maybe_unnest_docs()`](https://lsteinmann.github.io/idaifieldR/reference/maybe_unnest_docs.md)?
   (Default is FALSE.)
 
 - json:
@@ -39,14 +33,6 @@ get_idaifield_docs(
   (Default is FALSE.) If TRUE output cannot be processed with the
   functions from this package. Can be parsed using e.g.
   [`jsonlite::fromJSON()`](https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html).
-
-- projectname:
-
-  (deprecated) The name of the project in the Field Client that one
-  wishes to load. Will overwrite the project set in the
-  `connection`-object. See
-  [`idf_projects()`](https://lsteinmann.github.io/idaifieldR/reference/idf_projects.md)
-  for all available projects.
 
 ## Value
 
@@ -64,14 +50,8 @@ get the change log for each resource, i.e. which user changed something
 in the resource at what time and who created it. Setting `raw = FALSE`
 will only return a list of the actual data. You can do this at a later
 time using
-[`check_and_unnest()`](https://lsteinmann.github.io/idaifieldR/reference/check_and_unnest.md)
-from this package. NOTE: If you are planning on using the coordinates
-stored in the database, I strongly suggest you consider changing your R
-digits-setting to a higher value than the default. Depending on the
-projection used, coordinates may be represented by rather long numbers
-which R might automatically round on import. `options(digits = 20)`
-should more than do the trick. (That applies to other fields containing
-long numbers as well.)
+[`maybe_unnest_docs()`](https://lsteinmann.github.io/idaifieldR/reference/maybe_unnest_docs.md)
+from this package.
 
 ## See also
 
@@ -84,7 +64,7 @@ long numbers as well.)
   [`idf_select_by()`](https://lsteinmann.github.io/idaifieldR/reference/idf_select_by.md)
 
 - For processing the list:
-  [`check_and_unnest()`](https://lsteinmann.github.io/idaifieldR/reference/check_and_unnest.md),
+  [`maybe_unnest_docs()`](https://lsteinmann.github.io/idaifieldR/reference/maybe_unnest_docs.md),
   [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md)
 
 ## Examples

@@ -9,7 +9,7 @@ internal use only.
 ## Usage
 
 ``` r
-proj_idf_client(conn, project = NULL, include = "all")
+proj_idf_client(conn, include = "all")
 ```
 
 ## Arguments
@@ -18,11 +18,6 @@ proj_idf_client(conn, project = NULL, include = "all")
 
   A connection object returned by
   [`connect_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/connect_idaifield.md).
-
-- project:
-
-  (deprecated) character. Name of the project-database that should be
-  loaded.
 
 - include:
 

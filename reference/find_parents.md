@@ -5,17 +5,17 @@ returns the UUID/identifier of the resources the 'ids' are contained in
 ## Usage
 
 ``` r
-find_parents(ids, uidlist, id_type)
+find_parents(ids, index, id_type)
 ```
 
 ## Arguments
 
-- uidlist:
+- index:
 
   A data.frame as returned by
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
   or
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md).
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md).
 
 - id_type:
 

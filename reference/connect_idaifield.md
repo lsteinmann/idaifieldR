@@ -15,11 +15,9 @@ or
 
 ``` r
 connect_idaifield(
-  serverip = "127.0.0.1",
+  serverip = "localhost",
   project = NULL,
-  user = "R",
   pwd = "password",
-  version = 3,
   ping = TRUE
 )
 ```
@@ -28,8 +26,8 @@ connect_idaifield(
 
 - serverip:
 
-  The IP address of the Field Client. If you are using Field Desktop on
-  the same machine, the default value (*127.0.0.1*) should usually work.
+  The IP address of the Field Client, or "localhost". Leave the default
+  if you are using Field Desktop on the same computer.
 
 - project:
 
@@ -37,51 +35,33 @@ connect_idaifield(
   of available projects, see
   [`idf_projects()`](https://lsteinmann.github.io/idaifieldR/reference/idf_projects.md).
 
-- user:
-
-  (*optional*) The username for the connection. This parameter is not
-  currently needed.
-
 - pwd:
 
   (*required*) The password used to authenticate with the Field Client
   (default is "password").
 
-- version:
-
-  The version number of the Field Client. By default, the value is set
-  to 3.
-
 - ping:
 
-  logical. Whether to test the connection on creation (default is TRUE).
-  If TRUE, `connect_idaifield()` also checks if the project exists.
+  Should the connection be pinges on creation? Defaults to TRUE.
 
 ## Value
 
 `connect_idaifield()` returns an `idf_connection_settings` object that
-contains the connection settings needed to connect to the database of
-your [iDAI.field / Field Desktop
+is used by other functions in this package to retrieve data from the
+[iDAI.field / Field Desktop
 Client](https://github.com/dainst/idai-field).
 
 ## Details
 
 By default, if you are using Field Desktop on the same machine, you
 should not need to specify the `serverip` argument, as it defaults to
-the common localhost address. Similarly, the `user` argument is
-currently not needed for access. The `pwd` argument needs to be set to
-the password that is set in your Field Desktop Client under
+"localhost". If you want to access a client on the same network that is
+not running on the same computer as R, you can supply the local IP
+(without the port (':3000')). The `pwd` argument needs to be set to the
+password that is set in your Field Desktop Client under
 *Tools/Werkzeuge* \> *Settings/Einstellungen*: 'Your password'/'Eigenes
-Passwort'. If the default `serverip` argument does not work for you, or
-you want to access a client on the same network that is not running on
-the same machine as R, you can exchange it for the address listed above
-the password (without the port (':3000')). The `version` argument does
-not need to be specified if you are using the current version of Field
-Desktop (3), but will help you connect if you are using *iDAI.field 2*.
-You can set the `project` that you want to work with in this function,
-but be aware that other functions will overwrite this setting if you
-supply a project name there. `connect_idaifield()` will check if the
-project actually exists and throw an error if it does not.
+Passwort'. `project` has to be set to the identifier of the project
+database you will query.
 
 ## See also
 
@@ -96,8 +76,7 @@ project actually exists and throw an error if it does not.
 ``` r
 if (FALSE) { # \dontrun{
 conn <- connect_idaifield(
-  serverip = "127.0.0.1",
-  user = "R",
+  serverip = "localhost",
   pwd = "hallo",
   project = "rtest"
 )

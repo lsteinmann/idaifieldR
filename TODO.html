@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +18,7 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/Demo.html">How to use this package: Detailed Workflow</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/Demo.html">How to use idaifieldR: Detailed Workflow</a></li>
     <li><a class="dropdown-item" href="articles/TLDR.html">TLDR: Essential Workflow</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -34,8 +34,9 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>TODO</h1>
-      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.3.6/TODO.md" class="external-link"><code>TODO.md</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.4.0/TODO.md" class="external-link"><code>TODO.md</code></a></small>
     </div>
+
 
 <div id="todo" class="section level1">
 
@@ -43,30 +44,70 @@
 <h2 id="in-general">In general<a class="anchor" aria-label="anchor" href="#in-general"></a></h2>
 <ul><li>Better structure of tests with less specialized cases?</li>
 <li>Update the couch-db action a bit? See problems with _changes etc., and different configurations and contents.</li>
-<li>Remove the project(name) argument/option everywhere except in <code><a href="reference/connect_idaifield.html">connect_idaifield()</a></code> (because it doesn’t really make that much sense.)</li>
-<li>Fix everything about <code><a href="reference/find_layer.html">find_layer()</a></code> and simplify…</li>
-<li>Completely rewrite simplify &amp; its utilities…</li>
+<li>rename uidlist to index everywhere because that is what it is. (Not sure I am done with that.)</li>
+<li>Rewrite of simplify: Okay. But now think about the missing tools / utilities and vignettes to advertise them?</li>
+<li>Reduced functions, make it easier to maintain somehow. (HAHAHAHAHAHAHA)</li>
+<li>Clean up old code. (Ha.. )</li>
 </ul></div>
 <div class="section level2">
-<h2 id="for-v034">for v0.3.4<a class="anchor" aria-label="anchor" href="#for-v034"></a></h2>
-<ul><li>check all documentation and arguments</li>
-</ul></div>
-<div class="section level2">
-<h2 id="for-v040-">for v0.4.0 ?<a class="anchor" aria-label="anchor" href="#for-v040-"></a></h2>
-<ul><li>Handling geometry does not work very well and should be reconsidered. Maybe by importing some package like sf and storing the geometry as sf-objects, though this seems overkill. Or keep original JSON-string somehow to be useable GeoJSON…?</li>
-<li>
-<code><a href="reference/remove_config_names.html">remove_config_names()</a></code> may or may not overwrite data with the information from unused fields, and I have to check &amp; fix that, though I have not yet noticed any problem.</li>
-<li>Completely rewrite simplify and its functions to make it possible to use a series of lapplys based on the arguments of which functions should be used as that would save a lot of time.</li>
-<li>Some possibility to only update resources that have been changed since the last synch since loading everything is excessive for large projects.</li>
-</ul></div>
-<div class="section level2">
-<h2 id="for-100">for 1.0.0<a class="anchor" aria-label="anchor" href="#for-100"></a></h2>
-<ul><li>Getting CRAN-ready: Better structured tests that do not depend on DB-connections.</li>
+<h2 id="maybes">Maybes<a class="anchor" aria-label="anchor" href="#maybes"></a></h2>
+<ul><li>Some possibility to only update resources that have been changed since the last synch since loading everything is excessive for large projects.</li>
+<li>Getting CRAN-ready: Better structured tests that do not depend on DB-connections.</li>
 <li>Reduced messaging behaviour.</li>
-<li>Reduced functions, make it easier to maintain somehow.</li>
-<li>Clean up old code.</li>
 </ul></div>
 </div>
+<div class="section level1">
+<h1 id="march-madness-cleanup-todos-according-to-claude">March Madness Cleanup TODOs according to Claude<a class="anchor" aria-label="anchor" href="#march-madness-cleanup-todos-according-to-claude"></a></h1>
+<div class="section level2">
+<h2 id="id_-dead-code-not-called-anywhere-in-the-pipeline">💀 Dead Code (Not Called Anywhere in the Pipeline)<a class="anchor" aria-label="anchor" href="#id_-dead-code-not-called-anywhere-in-the-pipeline"></a></h2>
+<p><strong><code><a href="reference/convert_to_onehot.html">convert_to_onehot()</a></code></strong> — Exported, has a test, has docs. But <code><a href="reference/simplify_idaifield.html">simplify_idaifield()</a></code> never calls it. It was part of the old <code>spread_fields</code> behaviour, which was deprecated. It’s just sitting there. It wants attention.</p>
+<p><strong><code><a href="reference/fix_dating.html">fix_dating()</a></code> and <code><a href="reference/bce_ce.html">bce_ce()</a></code></strong> — They’re exported, tested, documented — but completely orphaned from the actual simplification pipeline. The dating fields just fall through to the generic <code><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist()</a></code> at the bottom. It wants attention.</p>
+<p><strong><code><a href="reference/idf_sepdim.html">idf_sepdim()</a></code></strong> — You called this “VERY VERY BAD” yourself. It’s exported, never called internally. Dead.</p>
+<hr></div>
+<div class="section level2">
+<h2 id="id_-broken-documented-as-such">🔨 Broken (Documented as Such)<a class="anchor" aria-label="anchor" href="#id_-broken-documented-as-such"></a></h2>
+<p>:)</p>
+<hr></div>
+<div class="section level2">
+<h2 id="id_-questionable-exports">🤔 Questionable Exports<a class="anchor" aria-label="anchor" href="#id_-questionable-exports"></a></h2>
+<p><strong><code><a href="reference/gather_languages.html">gather_languages()</a></code></strong> — Exported, has tests, but the language selection in <code><a href="reference/simplify_single_resource.html">simplify_single_resource()</a></code> is entirely commented out. So it’s a public function with no path through the package to reach it. Power users could call it directly, but is that the intent? Big todo to fix this!</p>
+<p><strong><code><a href="reference/find_named_list.html">find_named_list()</a></code></strong> — Exported, has a test. Never called internally. Appears to be a utility for users to dig into the config list. Fine if intentional — but is it? -&gt; Is used now to find the resource list, I should keep it but make the doc more explicit on how one can use it.</p>
+<p><strong><code><a href="reference/select_by.html">select_by()</a></code></strong> — A deprecated wrapper for <code><a href="reference/idf_select_by.html">idf_select_by()</a></code>. Fine for backward compat, but it lives in <code>select_idaifield.R</code> instead of <code>deprecated.R</code> where it belongs.</p>
+<hr></div>
+<div class="section level2">
+<h2 id="id_-minor-mess">🧹 Minor Mess<a class="anchor" aria-label="anchor" href="#id_-minor-mess"></a></h2>
+<p><strong><code><a href="reference/proj_idf_client.html">proj_idf_client()</a></code> is still chatty.</strong> Still prints “Connected to project ‘X’ containing N docs.” on every internal call. Every query, every <code><a href="reference/get_field_index.html">get_field_index()</a></code>, everything goes through this and yells at the user.</p>
+<p><strong><code><a href="reference/idaifield_as_matrix.html">idaifield_as_matrix()</a></code> example still uses <code><a href="reference/select_by.html">select_by()</a></code> (deprecated).</strong> Should be <code><a href="reference/idf_select_by.html">idf_select_by()</a></code>.</p>
+<table style="width:6%;" class="table"><colgroup><col width="5%"></colgroup><tbody><tr class="odd"><td>## Aesthetics Find a better naming scheme for all functions and rename / deprecate accordingly.</td>
+</tr></tbody></table></div>
+<div class="section level2">
+<h2 id="summary-table">Summary Table<a class="anchor" aria-label="anchor" href="#summary-table"></a></h2>
+<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr class="header"><th>Item</th>
+<th>Status</th>
+<th>Action</th>
+</tr></thead><tbody><tr class="odd"><td><code><a href="reference/convert_to_onehot.html">convert_to_onehot()</a></code></td>
+<td>🧹 Stale</td>
+<td>Document as standalone tool and use again</td>
+</tr><tr class="even"><td>
+<code><a href="reference/fix_dating.html">fix_dating()</a></code> + <code><a href="reference/bce_ce.html">bce_ce()</a></code>
+</td>
+<td>🧹 Stale</td>
+<td>rethink into a better tool and then advertise</td>
+</tr><tr class="odd"><td><code><a href="reference/idf_sepdim.html">idf_sepdim()</a></code></td>
+<td>💀 Dead</td>
+<td>Rewrite or remove</td>
+</tr><tr class="even"><td>
+<code><a href="reference/proj_idf_client.html">proj_idf_client()</a></code> chattiness</td>
+<td>🧹 Annoying</td>
+<td>Move message out</td>
+</tr><tr class="odd"><td>
+<code><a href="reference/select_by.html">select_by()</a></code> example</td>
+<td>🧹 Stale</td>
+<td>Update to <code><a href="reference/idf_select_by.html">idf_select_by()</a></code>
+</td>
+</tr></tbody></table></div>
+</div>
+
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

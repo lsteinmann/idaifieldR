@@ -5,17 +5,17 @@ returns the category of the ids (UUID/identifier)
 ## Usage
 
 ``` r
-find_categories(ids, uidlist, id_type)
+find_categories(ids, index, id_type)
 ```
 
 ## Arguments
 
-- uidlist:
+- index:
 
   A data.frame as returned by
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
   or
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md).
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md).
 
 - id_type:
 

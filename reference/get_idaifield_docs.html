@@ -17,7 +17,7 @@ in the same network as the R-script."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,7 +28,7 @@ in the same network as the R-script."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use idaifieldR: Detailed Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -44,7 +44,7 @@ in the same network as the R-script."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Import all <em>docs</em> from an iDAI.field / Field Desktop project</h1>
-      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.3.6/R/get_idaifield_docs.R" class="external-link"><code>R/get_idaifield_docs.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.4.0/R/get_idaifield_docs.R" class="external-link"><code>R/get_idaifield_docs.R</code></a></small>
       <div class="d-none name"><code>get_idaifield_docs.Rd</code></div>
     </div>
 
@@ -59,13 +59,7 @@ in the same network as the R-script.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_idaifield_docs</span><span class="op">(</span></span>
-<span>  connection <span class="op">=</span> <span class="fu"><a href="connect_idaifield.html">connect_idaifield</a></span><span class="op">(</span>serverip <span class="op">=</span> <span class="st">"127.0.0.1"</span>, project <span class="op">=</span> <span class="st">"rtest"</span>, user <span class="op">=</span> <span class="st">"R"</span>,</span>
-<span>    pwd <span class="op">=</span> <span class="st">"hallo"</span><span class="op">)</span>,</span>
-<span>  raw <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  json <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  projectname <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_idaifield_docs</span><span class="op">(</span><span class="va">connection</span>, raw <span class="op">=</span> <span class="cn">TRUE</span>, json <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,19 +73,13 @@ by <code><a href="connect_idaifield.html">connect_idaifield()</a></code></p></dd
 
 <dt id="arg-raw">raw<a class="anchor" aria-label="anchor" href="#arg-raw"></a></dt>
 <dd><p>TRUE/FALSE. Should the result already be unnested to
-resource level using <code><a href="check_and_unnest.html">check_and_unnest()</a></code>? (Default is FALSE.)</p></dd>
+resource level using <code><a href="maybe_unnest_docs.html">maybe_unnest_docs()</a></code>? (Default is FALSE.)</p></dd>
 
 
 <dt id="arg-json">json<a class="anchor" aria-label="anchor" href="#arg-json"></a></dt>
 <dd><p>TRUE/FALSE. Should the function return a JSON-character string?
 (Default is FALSE.) If TRUE output cannot be processed with the functions
 from this package. Can be parsed using e.g. <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">jsonlite::fromJSON()</a></code>.</p></dd>
-
-
-<dt id="arg-projectname">projectname<a class="anchor" aria-label="anchor" href="#arg-projectname"></a></dt>
-<dd><p>(deprecated) The name of the project in the Field Client that one
-wishes to load. Will overwrite the project set in the <code>connection</code>-object.
-See <code><a href="idf_projects.html">idf_projects()</a></code> for all available projects.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -108,21 +96,15 @@ later use. (If <code>json = TRUE</code>, returns a character string in JSON-form
 you to get the change log for each resource, i.e. which user changed
 something in the resource at what time and who created it.
 Setting <code>raw = FALSE</code> will only return a list of the actual data.
-You can do this at a later time using <code><a href="check_and_unnest.html">check_and_unnest()</a></code>
-from this package.
-NOTE: If you are planning on using the coordinates stored in the database,
-I strongly suggest you consider changing your R digits-setting to a higher
-value than the default. Depending on the projection used, coordinates may
-be represented by rather long numbers which R might automatically round on
-import. <code>options(digits = 20)</code> should more than do the trick. (That applies
-to other fields containing long numbers as well.)</p>
+You can do this at a later time using <code><a href="maybe_unnest_docs.html">maybe_unnest_docs()</a></code>
+from this package.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
 <ul><li><p>For querying the database: <code><a href="idf_query.html">idf_query()</a></code>,<code><a href="idf_index_query.html">idf_index_query()</a></code>, <code><a href="idf_json_query.html">idf_json_query()</a></code></p></li>
 <li><p>For filtering / selecting an <code>idaifield_docs</code>- or <code>idaifield_resources</code>-list: <code><a href="idf_select_by.html">idf_select_by()</a></code></p></li>
-<li><p>For processing the list: <code><a href="check_and_unnest.html">check_and_unnest()</a></code>, <code><a href="simplify_idaifield.html">simplify_idaifield()</a></code></p></li>
+<li><p>For processing the list: <code><a href="maybe_unnest_docs.html">maybe_unnest_docs()</a></code>, <code><a href="simplify_idaifield.html">simplify_idaifield()</a></code></p></li>
 </ul></div>
     </div>
 

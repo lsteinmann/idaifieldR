@@ -20,7 +20,7 @@ replace_uid(uidvector, uidlist)
 - uidlist:
 
   a uidlist resp. index of as returned by
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md)
   and
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
 

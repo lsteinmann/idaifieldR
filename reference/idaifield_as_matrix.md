@@ -22,7 +22,7 @@ idaifield_as_matrix(idaifield)
 
   An object as returned by
   [`get_idaifield_docs()`](https://lsteinmann.github.io/idaifieldR/reference/get_idaifield_docs.md),
-  [`check_and_unnest()`](https://lsteinmann.github.io/idaifieldR/reference/check_and_unnest.md)
+  [`maybe_unnest_docs()`](https://lsteinmann.github.io/idaifieldR/reference/maybe_unnest_docs.md)
   or
   [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md)
 
@@ -39,14 +39,13 @@ large)
 
 ``` r
 if (FALSE) { # \dontrun{
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R",
+connection <- connect_idaifield(serverip = "localhost",
+                                project = "rtest",
                                 pwd = "hallo")
-idaifield_docs <- get_idaifield_docs(connection = connection,
-                                     projectname = "rtest")
+idaifield_docs <- get_idaifield_docs(connection = connection)
 pottery <- select_by(idaifield_docs, by = "category", value = "Pottery")
 pottery <- simplify_idaifield(pottery,
-                              uidlist = get_uid_list(idaifield_docs))
+                              uidlist = make_index(idaifield_docs))
 pottery <- idaifield_as_matrix(pottery)
 } # }
 ```

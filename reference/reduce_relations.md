@@ -10,6 +10,10 @@ reduce_relations(relation, uuid = NA, identifier = NA)
 
 ## Arguments
 
+- relation:
+
+  The resources relation-list to be reduced
+
 - uuid:
 
   The id/UUID of the resource (for warning)
@@ -17,10 +21,6 @@ reduce_relations(relation, uuid = NA, identifier = NA)
 - identifier:
 
   The identifier of the resource (for warning)
-
-- resource:
-
-  The resource to be checked
 
 ## Value
 

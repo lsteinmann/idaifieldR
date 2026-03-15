@@ -1,8 +1,8 @@
 # Remove Everything Before the Colon in a Character Vector
 
-This function removes everything before the first colon (including the
-colon) in a character vector. It is used as a helper function for
-[`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md).
+Removes everything before the first colon (including the colon) in a
+character vector. Used for cleaning up category or field names that have
+been produced using the *Project Configuration Editor* in Field Desktop.
 
 ## Usage
 
@@ -29,20 +29,18 @@ remove_config_names(
 The same character vector with everything before the first colon
 (including the colon) removed.
 
-## See also
-
-- This function is used by:
-  [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md),
-  [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
-  and
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)
-
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-nameslist <- c("relation.liesWithin", "relation.liesWithinLayer",
-"campaign.2022", "rtest:test", "pergamon:neuesFeld")
+nameslist <- c(
+  "relation.liesWithin",
+  "relation.liesWithinLayer",
+  "campaign.2022",
+  "rtest:test",
+  "pergamon:neuesFeld",
+  "neuesFeld"
+)
 remove_config_names(nameslist, silent = FALSE)
 } # }
 ```

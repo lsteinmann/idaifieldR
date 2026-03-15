@@ -2,11 +2,6 @@
 
 ## All functions
 
-- [`check_and_unnest()`](https://lsteinmann.github.io/idaifieldR/reference/check_and_unnest.md)
-  :
-
-  Check and Unnest an `idaifield_docs`-list
-
 - [`check_idaifieldr_version()`](https://lsteinmann.github.io/idaifieldR/reference/check_idaifieldr_version.md)
   : Check Version of idaifieldR
 
@@ -16,14 +11,14 @@
 - [`convert_to_onehot()`](https://lsteinmann.github.io/idaifieldR/reference/convert_to_onehot.md)
   : Break down a List from a Checkbox Field to Onehot-Coded Values
 
-- [`.onLoad()`](https://lsteinmann.github.io/idaifieldR/reference/dot-onLoad.md)
+- [`.onAttach()`](https://lsteinmann.github.io/idaifieldR/reference/dot-onAttach.md)
   : onLoad / onAttach
-
-- [`download_language_list()`](https://lsteinmann.github.io/idaifieldR/reference/download_language_list.md)
-  : Download a Language-List from GitHub
 
 - [`find_layer()`](https://lsteinmann.github.io/idaifieldR/reference/find_layer.md)
   : Find the Layer a Resource is Contained in
+
+- [`find_named_list()`](https://lsteinmann.github.io/idaifieldR/reference/find_named_list.md)
+  : Return a sub-list from a nested list by name
 
 - [`fix_dating()`](https://lsteinmann.github.io/idaifieldR/reference/fix_dating.md)
   :
@@ -31,39 +26,35 @@
   Reduce the Dating-list to *min*/*max*-Values
 
 - [`fix_relations()`](https://lsteinmann.github.io/idaifieldR/reference/fix_relations.md)
-  :
-
-  Unnest the Relations in a Resource and Replace the UUIDs with
-  *identifiers*
+  : Flatten Relations and Optionally Replace UUIDs
 
 - [`gather_languages()`](https://lsteinmann.github.io/idaifieldR/reference/gather_languages.md)
   : Gather Fields with Multiple Language Values
 
 - [`get_configuration()`](https://lsteinmann.github.io/idaifieldR/reference/get_configuration.md)
-  : Get the Custom Project Configuration as Stored in the Project
-  Database
+  : Get the Custom Project Configuration as Provided by the Field
+  Desktop API
 
 - [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
   : Get the Index of an iDAI.field / Field Desktop Database
-
-- [`get_field_inputtypes()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_inputtypes.md)
-  :
-
-  Produce a Matrix of Field *inputTypes* from the Custom Project
-  Configuration
 
 - [`get_idaifield_docs()`](https://lsteinmann.github.io/idaifieldR/reference/get_idaifield_docs.md)
   :
 
   Import all *docs* from an iDAI.field / Field Desktop project
 
-- [`get_language_lookup()`](https://lsteinmann.github.io/idaifieldR/reference/get_language_lookup.md)
-  : Prepare a Language List as a Lookup Table
-
-- [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)
+- [`handle_date_input()`](https://lsteinmann.github.io/idaifieldR/reference/handle_date_input.md)
   :
 
-  Get the Index of an `idaifield_docs`/`idaifield_resources`-list
+  Handle a `date` Input Field from an iDAI.field Resource
+
+- [`handle_dropdownrange_input()`](https://lsteinmann.github.io/idaifieldR/reference/handle_dropdownrange_input.md)
+  :
+
+  Handle a `dropdownRange` Input Field from an iDAI.field Resource
+
+- [`handle_legacy_date_range_fields()`](https://lsteinmann.github.io/idaifieldR/reference/handle_legacy_date_range_fields.md)
+  : Update Legacy Two-Field Date Format in an iDAI.field Resource
 
 - [`idaifield_as_matrix()`](https://lsteinmann.github.io/idaifieldR/reference/idaifield_as_matrix.md)
   :
@@ -115,9 +106,20 @@
   Show the *categories* Present in an `idaifield_docs`- or
   `idaifield_resources`-list
 
-- [`reformat_geometry()`](https://lsteinmann.github.io/idaifieldR/reference/reformat_geometry.md)
-  : Reformat the Geometry of a single iDAI.field / Field Desktop
-  resource
+- [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md)
+  :
+
+  Get the Index of an `idaifield_docs`/`idaifield_resources`-list
+
+- [`maybe_unnest_docs()`](https://lsteinmann.github.io/idaifieldR/reference/maybe_unnest_docs.md)
+  :
+
+  (Maybe) Unnests an `idaifield_docs`-list
+
+- [`parse_field_inputtypes()`](https://lsteinmann.github.io/idaifieldR/reference/parse_field_inputtypes.md)
+  :
+
+  Get a Data Frame of Field *inputTypes* from the Project Configuration
 
 - [`remove_config_names()`](https://lsteinmann.github.io/idaifieldR/reference/remove_config_names.md)
   : Remove Everything Before the Colon in a Character Vector
@@ -134,8 +136,4 @@
   `idaifield_docs`-list
 
 - [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md)
-  :
-
-  Simplify a List Imported from an iDAI.field / Field
-  Desktop-`1041-1`\#' Simplify a List Imported from an iDAI.field /
-  Field Desktop-Database
+  : Simplify a List Imported from an iDAI.field / Field Desktop Database

@@ -30,8 +30,7 @@ A character vector with the unique categories present in the iDAI.field
 
 ``` r
 if (FALSE) { # \dontrun{
-connection <- connect_idaifield(serverip = "127.0.0.1",
-                                user = "R",
+connection <- connect_idaifield(serverip = "localhost",
                                 pwd = "hallo",
                                 project = "rtest")
 

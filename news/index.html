@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +18,7 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use idaifieldR: Detailed Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -34,9 +34,79 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.3.6/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.4.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="idaifieldr-040-2026-03-15">idaifieldR 0.4.0 <em>2026-03-15</em>
+<a class="anchor" aria-label="anchor" href="#idaifieldr-040-2026-03-15"></a></h2>
+<blockquote>
+<p>[!WARNING] This version introduces breaking changes. I tried, but I do not guarantee that the package will notify you of every change. Proceed with appropriate caution.</p>
+</blockquote>
+<div class="section level3">
+<h3 id="new-field-desktop-api-0-4-0">New Field Desktop API<a class="anchor" aria-label="anchor" href="#new-field-desktop-api-0-4-0"></a></h3>
+<ul><li>idaifieldR now gets the configuration of a project from Field Desktop directly via the <code>/config/</code> enpoint instead of the database document. That means that the complete configuration is now accessible.
+<ul><li>
+<code><a href="../reference/parse_field_inputtypes.html">parse_field_inputtypes()</a></code> produces a data.frame of Categories, Parent Categories, input field identifiers and the corresponding <code>inputType</code> in the given Project Configuration.</li>
+<li>NOTE: Subfields of composite fields are simply ignored.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="renewed-simplify_idaifield-0-4-0">Renewed <code>simplify_idaifield()</code>
+<a class="anchor" aria-label="anchor" href="#renewed-simplify_idaifield-0-4-0"></a></h3>
+<p><code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> has been drastically changed. Some functionality which would have created data issues for users was removed (e.g. dimension-recalculation), which results in a less “simple” return list, but will keep the data intact. The function is now less verbose. All lists like <code>campaign</code> or <code>processor</code> or any checkbox-fields that can contain multiple values are returned as vectors instead of lists. Geometry will be parsed to JSON if kept. UUIDs are replaced during processing. Date fields and Dropdown Ranges are transformed to two values per field: <fieldname>.start and <fieldname>.end (see: <code><a href="../reference/handle_date_input.html">handle_date_input()</a></code> and <code><a href="../reference/handle_dropdownrange_input.html">handle_dropdownrange_input()</a></code>). For Dropdown Ranges, start and end are the same of only the one value was set in Field Desktop.</fieldname></fieldname></p>
+</div>
+<div class="section level3">
+<h3 id="improvements-0-4-0">Improvements:<a class="anchor" aria-label="anchor" href="#improvements-0-4-0"></a></h3>
+<ul><li>Options: <code>options(digits=20)</code> is reset to previous value after exiting <code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code>. Sorry.</li>
+<li>
+<code>remove_config_names</code>-Parameter and Function: The project identifier in front of a category or field is not automatically removed any more in the index (<code><a href="../reference/get_field_index.html">get_field_index()</a></code> or <code><a href="../reference/make_index.html">make_index()</a></code>), neither in <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> (e.g. <code>test:testField</code> -&gt; <code>testField</code>). The <code><a href="../reference/remove_config_names.html">remove_config_names()</a></code> utility functions still exists.</li>
+<li>
+<code><a href="../reference/convert_to_onehot.html">convert_to_onehot()</a></code> works again with the new inputTypes passed from <code><a href="../reference/parse_field_inputtypes.html">parse_field_inputtypes()</a></code>.</li>
+<li>
+<code><a href="../reference/fix_dating.html">fix_dating()</a></code> works, but is still questionable and its logic is badly documented. Use with caution.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="maintenance-0-4-0">Maintenance:<a class="anchor" aria-label="anchor" href="#maintenance-0-4-0"></a></h3>
+<ul><li>reworked <code><a href="../reference/connect_idaifield.html">connect_idaifield()</a></code> (and affected):
+<ul><li>‘project’ parameter is now required.</li>
+<li>‘version’ and ‘user’ parameter removed.</li>
+<li>‘localhost’ new default for server.</li>
+<li>And the deprecated ‘project’ / ‘projectname’ parameter in many other functions is now finally removed.</li>
+<li>Substituted check for project parameter with structure check on connection parameter. If <code><a href="../reference/connect_idaifield.html">connect_idaifield()</a></code> produced if, we just assume it’s correct.</li>
+</ul></li>
+<li>Renamed <code>get_uid_list()</code> to <code><a href="../reference/make_index.html">make_index()</a></code> (with notice, will still work for now).</li>
+<li>Removed <code>check_if_idaifield()</code>
+</li>
+<li>Removed <code>download_language_list()</code>
+</li>
+<li>Removed <code>reformat_geometry()</code>: Instead, I recommend (and do) re-json-ify the Geometry and advise to use <code>sf::st_read(json_string, quiet = TRUE)</code> on each geometry elsewhere.</li>
+<li>Removed <code>get_language_lookup()</code> and removed language support from <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> - it’s just too much.</li>
+<li>Removed <code>extract_field_names()</code>
+</li>
+<li>Removed <code>get_field_inputtypes()</code>
+</li>
+<li>Reworked <code>check_and_unnest()</code> into <code><a href="../reference/maybe_unnest_docs.html">maybe_unnest_docs()</a></code>.</li>
+<li>Reworked <code>find_layers()</code> to require a vector of categories to search for as layer_categories instead of a global option.</li>
+<li>Reorganized and reworked <em>a lot</em> of tests (thanks, Claude.ai).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-4-0">Bug fixes:<a class="anchor" aria-label="anchor" href="#bug-fixes-0-4-0"></a></h3>
+<ul><li>
+<code><a href="../reference/add_limit_to_query.html">add_limit_to_query()</a></code> now validates the updates query again. Unlike before.</li>
+<li>
+<code><a href="../reference/fix_relations.html">fix_relations()</a></code> now works with user-defined relations which contain a number in the name.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="note-0-4-0">Note<a class="anchor" aria-label="anchor" href="#note-0-4-0"></a></h3>
+<p>Many of the updates in this version have been developed using Claude.ai - though no pure “vibe-coding” was involved.</p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.6" id="idaifieldr-036-2025-11-29">idaifieldR 0.3.6 <em>2025-11-29</em>
+<a class="anchor" aria-label="anchor" href="#idaifieldr-036-2025-11-29"></a></h2>
+<ul><li>Quick and dirty fix to get around the default limit of 25 for the <code>_find</code> enpoint of PouchDB since Field Desktop v3.6.0</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.5" id="idaifieldr-035-2025-03-08">idaifieldR 0.3.5 <em>2025-03-08</em>
 <a class="anchor" aria-label="anchor" href="#idaifieldr-035-2025-03-08"></a></h2>
@@ -76,7 +146,7 @@
 </ul></div>
 <div class="section level4">
 <h4 id="fixes-0-3-3">Fixes<a class="anchor" aria-label="anchor" href="#fixes-0-3-3"></a></h4>
-<ul><li>Fix problem in <code><a href="../reference/reformat_geometry.html">reformat_geometry()</a></code> (MultiPolygons have to be unnested before processing). (Imported Polygons may be formatted improperly, unnest if necessary (<code><a href="../reference/reformat_geometry.html">reformat_geometry()</a></code>). Geometry is still a <em>work in progress</em>.)</li>
+<ul><li>Fix problem in <code>reformat_geometry()</code> (MultiPolygons have to be unnested before processing). (Imported Polygons may be formatted improperly, unnest if necessary (<code>reformat_geometry()</code>). Geometry is still a <em>work in progress</em>.)</li>
 <li>Fix a bug in <code><a href="../reference/get_field_index.html">get_field_index()</a></code>, where it would return an empty data.frame if there was no configuration-resource.</li>
 </ul></div>
 </div>
@@ -87,7 +157,7 @@
 <li>add <code><a href="../reference/idf_json_query.html">idf_json_query()</a></code> which lets users construct their own queries to the CouchDB-API</li>
 <li>improve and export <code><a href="../reference/find_layer.html">find_layer()</a></code>
 </li>
-<li>fix error in <code><a href="../reference/get_language_lookup.html">get_language_lookup()</a></code>
+<li>fix error in <code>get_language_lookup()</code>
 </li>
 <li>fix bug in <code><a href="../reference/idf_query.html">idf_query()</a></code>-function where it would not get values from fields with possibility of multiple entries</li>
 <li>remove config as attribute to save space</li>
@@ -118,7 +188,7 @@
 <h2 class="pkg-version" data-toc-text="0.3.0" id="idaifieldr-030-2023-04-02">idaifieldR 0.3.0 <em>2023-04-02</em>
 <a class="anchor" aria-label="anchor" href="#idaifieldr-030-2023-04-02"></a></h2>
 <ul><li>remove sofa as dependency and add custom interface with reduced functionality</li>
-<li>restructure unnesting (<code><a href="../reference/unnest_docs.html">unnest_docs()</a></code> &amp; <code><a href="../reference/find_resource.html">find_resource()</a></code>)</li>
+<li>restructure unnesting (<code><a href="../reference/unnest_docs.html">unnest_docs()</a></code> &amp; <code>find_resource()</code>)</li>
 <li>add <code><a href="../reference/get_field_index.html">get_field_index()</a></code> - getting the uidlist/index directly from the database</li>
 <li>exchange type with category everywhere (<strong>Attention</strong>: This may very well break previous scripts)</li>
 <li>speed up <code><a href="../reference/find_layer.html">find_layer()</a></code> significantly</li>
@@ -137,7 +207,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="fixes-0-2-4">fixes:<a class="anchor" aria-label="anchor" href="#fixes-0-2-4"></a></h3>
-<ul><li>get type OR <em>category</em> if <em>type</em> is empty in for <code><a href="../reference/get_uid_list.html">get_uid_list()</a></code>
+<ul><li>get type OR <em>category</em> if <em>type</em> is empty in for <code>get_uid_list()</code>
 </li>
 <li>multiple queries for <code><a href="../reference/idf_query.html">idf_query()</a></code> with <em>type</em> &amp; <em>category</em>
 </li>
@@ -148,8 +218,8 @@
 <h2 class="pkg-version" data-toc-text="0.2.3" id="idaifieldr-023-2023-03-16">idaifieldR 0.2.3 <em>2023-03-16</em>
 <a class="anchor" aria-label="anchor" href="#idaifieldr-023-2023-03-16"></a></h2>
 <ul><li>add language management for multi-language input fields when project has more than one project language</li>
-<li>add language list lookup preparation (<code><a href="../reference/get_language_lookup.html">get_language_lookup()</a></code>) for custom config fields</li>
-<li>add <code><a href="../reference/download_language_list.html">download_language_list()</a></code> to get current translations from GitHub</li>
+<li>add language list lookup preparation (<code>get_language_lookup()</code>) for custom config fields</li>
+<li>add <code>download_language_list()</code> to get current translations from GitHub</li>
 <li>add ping-checks for all database-related functions to supply custom error messages</li>
 <li>
 <code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code> will now remove the Configuration as a doc and attach it as attribute to all custom classes, thus <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code> will use the config-attribute directly and works without a connection.</li>
@@ -180,15 +250,15 @@
 <li>With the editor for the project configuration in iDAI.field 3, new fields and objects started to be named according to their configurations, e.g. “milet:temperType” etc., if the fields have been newly created. From now on those config specific names are removed from all fields, so that only the part after the double dot remains (e.g. “milet:temperType” becomes “temperType”).</li>
 <li>
 <code><a href="../reference/check_if_uid.html">check_if_uid()</a></code> now handles vectors</li>
-<li>Speed up <code><a href="../reference/get_uid_list.html">get_uid_list()</a></code>, <code><a href="../reference/replace_uid.html">replace_uid()</a></code>, <code><a href="../reference/convert_to_onehot.html">convert_to_onehot()</a></code>, and <code><a href="../reference/fix_relations.html">fix_relations()</a></code> (a lot)</li>
+<li>Speed up <code>get_uid_list()</code>, <code><a href="../reference/replace_uid.html">replace_uid()</a></code>, <code><a href="../reference/convert_to_onehot.html">convert_to_onehot()</a></code>, and <code><a href="../reference/fix_relations.html">fix_relations()</a></code> (a lot)</li>
 <li>split up import with <code><a href="../reference/get_idaifield_docs.html">get_idaifield_docs()</a></code> and processing to be more usable with <code><a href="../reference/simplify_idaifield.html">simplify_idaifield()</a></code>, with advice to use the latter only on subsets so the time is more manageable.</li>
-<li>add <code><a href="../reference/check_and_unnest.html">check_and_unnest()</a></code> to export</li>
+<li>add <code>check_and_unnest()</code> to export</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="idaifieldr-020-2022-05-15">idaifieldR 0.2.0 <em>2022-05-15</em>
 <a class="anchor" aria-label="anchor" href="#idaifieldr-020-2022-05-15"></a></h2>
 <ul><li>Version number changed to 0.2, to reflect the rather dramatic changes.</li>
-<li>Faster <code><a href="../reference/get_uid_list.html">get_uid_list()</a></code> using <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>
+<li>Faster <code>get_uid_list()</code> using <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>
 </li>
 <li>Added <code><a href="../reference/idf_query.html">idf_query()</a></code> to specifically query the db for groups without first downloading everything</li>
 <li>Added <code><a href="../reference/idf_index_query.html">idf_index_query()</a></code> to specifically query the db for things that are only available in the uidlist (needs a uidlist to do that)</li>

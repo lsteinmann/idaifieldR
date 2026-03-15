@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +18,7 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use idaifieldR: Detailed Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -48,13 +48,6 @@
 
       <dl><dt>
 
-          <code><a href="check_and_unnest.html">check_and_unnest()</a></code>
-
-        </dt>
-        <dd>Check and Unnest an <code>idaifield_docs</code>-list</dd>
-
-        <dt>
-
           <code><a href="check_idaifieldr_version.html">check_idaifieldr_version()</a></code>
 
         </dt>
@@ -76,17 +69,10 @@
 
         <dt>
 
-          <code><a href="dot-onLoad.html">.onLoad()</a></code>
+          <code><a href="dot-onAttach.html">.onAttach()</a></code>
 
         </dt>
         <dd>onLoad / onAttach</dd>
-
-        <dt>
-
-          <code><a href="download_language_list.html">download_language_list()</a></code>
-
-        </dt>
-        <dd>Download a Language-List from GitHub</dd>
 
         <dt>
 
@@ -94,6 +80,13 @@
 
         </dt>
         <dd>Find the Layer a Resource is Contained in</dd>
+
+        <dt>
+
+          <code><a href="find_named_list.html">find_named_list()</a></code>
+
+        </dt>
+        <dd>Return a sub-list from a nested list by name</dd>
 
         <dt>
 
@@ -107,7 +100,7 @@
           <code><a href="fix_relations.html">fix_relations()</a></code>
 
         </dt>
-        <dd>Unnest the Relations in a Resource and Replace the UUIDs with <em>identifiers</em></dd>
+        <dd>Flatten Relations and Optionally Replace UUIDs</dd>
 
         <dt>
 
@@ -121,7 +114,7 @@
           <code><a href="get_configuration.html">get_configuration()</a></code>
 
         </dt>
-        <dd>Get the Custom Project Configuration as Stored in the Project Database</dd>
+        <dd>Get the Custom Project Configuration as Provided by the Field Desktop API</dd>
 
         <dt>
 
@@ -132,13 +125,6 @@
 
         <dt>
 
-          <code><a href="get_field_inputtypes.html">get_field_inputtypes()</a></code>
-
-        </dt>
-        <dd>Produce a Matrix of Field <em>inputTypes</em> from the Custom Project Configuration</dd>
-
-        <dt>
-
           <code><a href="get_idaifield_docs.html">get_idaifield_docs()</a></code>
 
         </dt>
@@ -146,17 +132,24 @@
 
         <dt>
 
-          <code><a href="get_language_lookup.html">get_language_lookup()</a></code>
+          <code><a href="handle_date_input.html">handle_date_input()</a></code>
 
         </dt>
-        <dd>Prepare a Language List as a Lookup Table</dd>
+        <dd>Handle a <code>date</code> Input Field from an iDAI.field Resource</dd>
 
         <dt>
 
-          <code><a href="get_uid_list.html">get_uid_list()</a></code>
+          <code><a href="handle_dropdownrange_input.html">handle_dropdownrange_input()</a></code>
 
         </dt>
-        <dd>Get the Index of an <code>idaifield_docs</code>/<code>idaifield_resources</code>-list</dd>
+        <dd>Handle a <code>dropdownRange</code> Input Field from an iDAI.field Resource</dd>
+
+        <dt>
+
+          <code><a href="handle_legacy_date_range_fields.html">handle_legacy_date_range_fields()</a></code>
+
+        </dt>
+        <dd>Update Legacy Two-Field Date Format in an iDAI.field Resource</dd>
 
         <dt>
 
@@ -244,10 +237,24 @@
 
         <dt>
 
-          <code><a href="reformat_geometry.html">reformat_geometry()</a></code>
+          <code><a href="make_index.html">make_index()</a></code>
 
         </dt>
-        <dd>Reformat the Geometry of a single iDAI.field / Field Desktop resource</dd>
+        <dd>Get the Index of an <code>idaifield_docs</code>/<code>idaifield_resources</code>-list</dd>
+
+        <dt>
+
+          <code><a href="maybe_unnest_docs.html">maybe_unnest_docs()</a></code>
+
+        </dt>
+        <dd>(Maybe) Unnests an <code>idaifield_docs</code>-list</dd>
+
+        <dt>
+
+          <code><a href="parse_field_inputtypes.html">parse_field_inputtypes()</a></code>
+
+        </dt>
+        <dd>Get a Data Frame of Field <em>inputTypes</em> from the Project Configuration</dd>
 
         <dt>
 
@@ -275,7 +282,7 @@
           <code><a href="simplify_idaifield.html">simplify_idaifield()</a></code>
 
         </dt>
-        <dd>Simplify a List Imported from an iDAI.field / Field Desktop-<code>1041-1</code>#' Simplify a List Imported from an iDAI.field / Field Desktop-Database</dd>
+        <dd>Simplify a List Imported from an iDAI.field / Field Desktop Database</dd>
       </dl></div>
   </main></div>
 

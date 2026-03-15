@@ -7,7 +7,7 @@ Docs](https://docs.couchdb.org/en/stable/api/database/find.html).
 ## Usage
 
 ``` r
-idf_json_query(connection, query, projectname = NULL)
+idf_json_query(connection, query)
 ```
 
 ## Arguments
@@ -22,11 +22,6 @@ idf_json_query(connection, query, projectname = NULL)
   A valid JSON-query as detailed in the relevant section of the
   [CouchDB-API](https://docs.couchdb.org/en/stable/api/database/find.html)
   documentation.
-
-- projectname:
-
-  (deprecated) The name of the project to be queried (overrides the one
-  listed in the connection-object).
 
 ## Value
 

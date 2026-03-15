@@ -6,12 +6,7 @@ Desktop Database according to the values of specific fields.
 ## Usage
 
 ``` r
-idf_query(
-  connection,
-  field = "category",
-  value = "Pottery",
-  projectname = NULL
-)
+idf_query(connection, field = "category", value = "Pottery")
 ```
 
 ## Arguments
@@ -31,11 +26,6 @@ idf_query(
 
   character. The value to be selected for in the specified field (i.e.
   "*Brick*" when looking for resources of category *Brick*).
-
-- projectname:
-
-  (deprecated) The name of the project to be queried (overrides the one
-  listed in the connection-object).
 
 ## Value
 

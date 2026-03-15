@@ -4,7 +4,7 @@ Retrieves the names/identifiers or UUIDs of the most recently changed
 resources in the database. If an index as returned by
 [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
 or
-[`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)
+[`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md)
 is returned, the UUIDs are replaced by identifiers. If not, the UUIDs
 are returned directly and can be used for querying e.g. with
 
@@ -26,7 +26,7 @@ idf_last_changed(connection, index = NULL, n = 100)
   A data.frame as returned by
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
   (or
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)).
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md)).
 
 - n:
 

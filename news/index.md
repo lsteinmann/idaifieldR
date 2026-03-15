@@ -1,5 +1,114 @@
 # Changelog
 
+## idaifieldR 0.4.0 *2026-03-15*
+
+> \[!WARNING\] This version introduces breaking changes. I tried, but I
+> do not guarantee that the package will notify you of every change.
+> Proceed with appropriate caution.
+
+### New Field Desktop API
+
+- idaifieldR now gets the configuration of a project from Field Desktop
+  directly via the `/config/` enpoint instead of the database document.
+  That means that the complete configuration is now accessible.
+  - [`parse_field_inputtypes()`](https://lsteinmann.github.io/idaifieldR/reference/parse_field_inputtypes.md)
+    produces a data.frame of Categories, Parent Categories, input field
+    identifiers and the corresponding `inputType` in the given Project
+    Configuration.
+  - NOTE: Subfields of composite fields are simply ignored.
+
+### Renewed `simplify_idaifield()`
+
+[`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md)
+has been drastically changed. Some functionality which would have
+created data issues for users was removed
+(e.g. dimension-recalculation), which results in a less “simple” return
+list, but will keep the data intact. The function is now less verbose.
+All lists like `campaign` or `processor` or any checkbox-fields that can
+contain multiple values are returned as vectors instead of lists.
+Geometry will be parsed to JSON if kept. UUIDs are replaced during
+processing. Date fields and Dropdown Ranges are transformed to two
+values per field: .start and .end (see:
+[`handle_date_input()`](https://lsteinmann.github.io/idaifieldR/reference/handle_date_input.md)
+and
+[`handle_dropdownrange_input()`](https://lsteinmann.github.io/idaifieldR/reference/handle_dropdownrange_input.md)).
+For Dropdown Ranges, start and end are the same of only the one value
+was set in Field Desktop.
+
+### Improvements:
+
+- Options: `options(digits=20)` is reset to previous value after exiting
+  [`get_idaifield_docs()`](https://lsteinmann.github.io/idaifieldR/reference/get_idaifield_docs.md).
+  Sorry.
+- `remove_config_names`-Parameter and Function: The project identifier
+  in front of a category or field is not automatically removed any more
+  in the index
+  ([`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
+  or
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md)),
+  neither in
+  [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md)
+  (e.g. `test:testField` -\> `testField`). The
+  [`remove_config_names()`](https://lsteinmann.github.io/idaifieldR/reference/remove_config_names.md)
+  utility functions still exists.
+- [`convert_to_onehot()`](https://lsteinmann.github.io/idaifieldR/reference/convert_to_onehot.md)
+  works again with the new inputTypes passed from
+  [`parse_field_inputtypes()`](https://lsteinmann.github.io/idaifieldR/reference/parse_field_inputtypes.md).
+- [`fix_dating()`](https://lsteinmann.github.io/idaifieldR/reference/fix_dating.md)
+  works, but is still questionable and its logic is badly documented.
+  Use with caution.
+
+### Maintenance:
+
+- reworked
+  [`connect_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/connect_idaifield.md)
+  (and affected):
+  - ‘project’ parameter is now required.
+  - ‘version’ and ‘user’ parameter removed.
+  - ‘localhost’ new default for server.
+  - And the deprecated ‘project’ / ‘projectname’ parameter in many other
+    functions is now finally removed.
+  - Substituted check for project parameter with structure check on
+    connection parameter. If
+    [`connect_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/connect_idaifield.md)
+    produced if, we just assume it’s correct.
+- Renamed `get_uid_list()` to
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md)
+  (with notice, will still work for now).
+- Removed `check_if_idaifield()`
+- Removed `download_language_list()`
+- Removed `reformat_geometry()`: Instead, I recommend (and do)
+  re-json-ify the Geometry and advise to use
+  `sf::st_read(json_string, quiet = TRUE)` on each geometry elsewhere.
+- Removed `get_language_lookup()` and removed language support from
+  [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md) -
+  it’s just too much.
+- Removed `extract_field_names()`
+- Removed `get_field_inputtypes()`
+- Reworked `check_and_unnest()` into
+  [`maybe_unnest_docs()`](https://lsteinmann.github.io/idaifieldR/reference/maybe_unnest_docs.md).
+- Reworked `find_layers()` to require a vector of categories to search
+  for as layer_categories instead of a global option.
+- Reorganized and reworked *a lot* of tests (thanks, Claude.ai).
+
+### Bug fixes:
+
+- [`add_limit_to_query()`](https://lsteinmann.github.io/idaifieldR/reference/add_limit_to_query.md)
+  now validates the updates query again. Unlike before.
+- [`fix_relations()`](https://lsteinmann.github.io/idaifieldR/reference/fix_relations.md)
+  now works with user-defined relations which contain a number in the
+  name.
+
+### Note
+
+Many of the updates in this version have been developed using
+Claude.ai - though no pure “vibe-coding” was involved.
+
+## idaifieldR 0.3.6 *2025-11-29*
+
+- Quick and dirty fix to get around the default limit of 25 for the
+  `_find` enpoint of PouchDB since Field Desktop v3.6.0
+
 ## idaifieldR 0.3.5 *2025-03-08*
 
 - Some minor fixes:
@@ -61,12 +170,10 @@
 
 #### Fixes
 
-- Fix problem in
-  [`reformat_geometry()`](https://lsteinmann.github.io/idaifieldR/reference/reformat_geometry.md)
-  (MultiPolygons have to be unnested before processing). (Imported
-  Polygons may be formatted improperly, unnest if necessary
-  ([`reformat_geometry()`](https://lsteinmann.github.io/idaifieldR/reference/reformat_geometry.md)).
-  Geometry is still a *work in progress*.)
+- Fix problem in `reformat_geometry()` (MultiPolygons have to be
+  unnested before processing). (Imported Polygons may be formatted
+  improperly, unnest if necessary (`reformat_geometry()`). Geometry is
+  still a *work in progress*.)
 - Fix a bug in
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md),
   where it would return an empty data.frame if there was no
@@ -81,8 +188,7 @@
   which lets users construct their own queries to the CouchDB-API
 - improve and export
   [`find_layer()`](https://lsteinmann.github.io/idaifieldR/reference/find_layer.md)
-- fix error in
-  [`get_language_lookup()`](https://lsteinmann.github.io/idaifieldR/reference/get_language_lookup.md)
+- fix error in `get_language_lookup()`
 - fix bug in
   [`idf_query()`](https://lsteinmann.github.io/idaifieldR/reference/idf_query.md)-function
   where it would not get values from fields with possibility of multiple
@@ -122,8 +228,7 @@
   functionality
 - restructure unnesting
   ([`unnest_docs()`](https://lsteinmann.github.io/idaifieldR/reference/unnest_docs.md)
-  &
-  [`find_resource()`](https://lsteinmann.github.io/idaifieldR/reference/find_resource.md))
+  & `find_resource()`)
 - add
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md) -
   getting the uidlist/index directly from the database
@@ -150,8 +255,7 @@
 
 ### fixes:
 
-- get type OR *category* if *type* is empty in for
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)
+- get type OR *category* if *type* is empty in for `get_uid_list()`
 - multiple queries for
   [`idf_query()`](https://lsteinmann.github.io/idaifieldR/reference/idf_query.md)
   with *type* & *category*
@@ -165,12 +269,9 @@
 
 - add language management for multi-language input fields when project
   has more than one project language
-- add language list lookup preparation
-  ([`get_language_lookup()`](https://lsteinmann.github.io/idaifieldR/reference/get_language_lookup.md))
-  for custom config fields
-- add
-  [`download_language_list()`](https://lsteinmann.github.io/idaifieldR/reference/download_language_list.md)
-  to get current translations from GitHub
+- add language list lookup preparation (`get_language_lookup()`) for
+  custom config fields
+- add `download_language_list()` to get current translations from GitHub
 - add ping-checks for all database-related functions to supply custom
   error messages
 - [`get_idaifield_docs()`](https://lsteinmann.github.io/idaifieldR/reference/get_idaifield_docs.md)
@@ -221,8 +322,7 @@
   (e.g. “milet:temperType” becomes “temperType”).
 - [`check_if_uid()`](https://lsteinmann.github.io/idaifieldR/reference/check_if_uid.md)
   now handles vectors
-- Speed up
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md),
+- Speed up `get_uid_list()`,
   [`replace_uid()`](https://lsteinmann.github.io/idaifieldR/reference/replace_uid.md),
   [`convert_to_onehot()`](https://lsteinmann.github.io/idaifieldR/reference/convert_to_onehot.md),
   and
@@ -234,16 +334,13 @@
   [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md),
   with advice to use the latter only on subsets so the time is more
   manageable.
-- add
-  [`check_and_unnest()`](https://lsteinmann.github.io/idaifieldR/reference/check_and_unnest.md)
-  to export
+- add `check_and_unnest()` to export
 
 ## idaifieldR 0.2.0 *2022-05-15*
 
 - Version number changed to 0.2, to reflect the rather dramatic changes.
-- Faster
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md)
-  using [`lapply()`](https://rdrr.io/r/base/lapply.html)
+- Faster `get_uid_list()` using
+  [`lapply()`](https://rdrr.io/r/base/lapply.html)
 - Added
   [`idf_query()`](https://lsteinmann.github.io/idaifieldR/reference/idf_query.md)
   to specifically query the db for groups without first downloading

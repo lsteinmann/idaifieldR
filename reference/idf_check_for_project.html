@@ -9,7 +9,7 @@ If the project does not exist, it throws an error."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">idaifieldR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +20,7 @@ If the project does not exist, it throws an error."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use this package: Detailed Workflow</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Demo.html">How to use idaifieldR: Detailed Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/TLDR.html">TLDR: Essential Workflow</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -36,7 +36,7 @@ If the project does not exist, it throws an error."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Check for the Existence of a Project in a Field Database (internal)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.3.6/R/connect_idaifield.R" class="external-link"><code>R/connect_idaifield.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lsteinmann/idaifieldR/blob/v0.4.0/R/connect_idaifield.R" class="external-link"><code>R/connect_idaifield.R</code></a></small>
       <div class="d-none name"><code>idf_check_for_project.Rd</code></div>
     </div>
 
@@ -47,7 +47,7 @@ If the project does not exist, it throws an error.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">idf_check_for_project</span><span class="op">(</span><span class="va">conn</span>, project <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">idf_check_for_project</span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -57,12 +57,6 @@ If the project does not exist, it throws an error.</p>
 <dl><dt id="arg-conn">conn<a class="anchor" aria-label="anchor" href="#arg-conn"></a></dt>
 <dd><p>The connection settings as returned
 by <code><a href="connect_idaifield.html">connect_idaifield()</a></code></p></dd>
-
-
-<dt id="arg-project">project<a class="anchor" aria-label="anchor" href="#arg-project"></a></dt>
-<dd><p>character. Name of the project-database to
-check for. If not supplied, the function will use the project specified
-in the connection settings.</p></dd>
 
 </dl></div>
 

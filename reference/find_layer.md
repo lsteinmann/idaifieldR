@@ -8,15 +8,7 @@ the corresponding identifier.
 ## Usage
 
 ``` r
-find_layer(
-  ids,
-  uidlist = NULL,
-  layer_categories = NULL,
-  max_depth = 20,
-  silent = FALSE,
-  id = NULL,
-  id_type = NULL
-)
+find_layer(ids, index = NULL, layer_categories = NULL, max_depth = 20)
 ```
 
 ## Arguments
@@ -31,41 +23,21 @@ find_layer(
   or
   [`idf_json_query()`](https://lsteinmann.github.io/idaifieldR/reference/idf_json_query.md).
 
-- uidlist:
+- index:
 
   A data.frame as returned by
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md)
   or
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md).
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md).
 
 - layer_categories:
 
-  A vector of *categories* that are classified as *Layer*s. (Encompasses
-  *SurveyUnit*.) See or change the default:
-  `getOption("idaifield_categories")$layers`
+  A vector of *categories* that are classified as *Layer*s.
 
 - max_depth:
 
   numeric. Maximum number of recursive iterations / maximum depth a
   resource may be nested below its layer.
-
-- silent:
-
-  TRUE/FALSE, default: FALSE. Should messages be suppressed?
-
-- id:
-
-  DEPRECATED. Either the UUID or the identifier of a resource from an
-  `idaifield_...`-list as returned by
-  [`get_idaifield_docs()`](https://lsteinmann.github.io/idaifieldR/reference/get_idaifield_docs.md),
-  [`idf_query()`](https://lsteinmann.github.io/idaifieldR/reference/idf_query.md),
-  [`idf_index_query()`](https://lsteinmann.github.io/idaifieldR/reference/idf_index_query.md)
-  or
-  [`idf_json_query()`](https://lsteinmann.github.io/idaifieldR/reference/idf_json_query.md).
-
-- id_type:
-
-  DEPRECATED.
 
 ## Value
 
@@ -77,7 +49,7 @@ id/identifier lies within.
 - This function is used by:
   [`simplify_idaifield()`](https://lsteinmann.github.io/idaifieldR/reference/simplify_idaifield.md),
   [`get_field_index()`](https://lsteinmann.github.io/idaifieldR/reference/get_field_index.md),
-  [`get_uid_list()`](https://lsteinmann.github.io/idaifieldR/reference/get_uid_list.md).
+  [`make_index()`](https://lsteinmann.github.io/idaifieldR/reference/make_index.md).
 
 ## Examples
 
