@@ -78,6 +78,17 @@ simplify_single_resource <- function(resource,
     }
   }
 
+  # ----- Flatten Dropdown Range fields
+  # into two names vectors with fieldName.start/.end as prefix
+  dropdownRangeInputs <- inputtypes$fieldname[which(inputtypes$inputType == "dropdownRange")]
+  for (dropdownRangeInput in dropdownRangeInputs) {
+    if (dropdownRangeInput %in% names(resource)) {
+      new_ranges <- handle_dropdownrange_input(resource[[dropdownRangeInput]], dropdownRangeInput)
+      resource[[dropdownRangeInput]] <- NULL
+      resource <- append(resource, new_ranges)
+    }
+  }
+
   # ----- Flatten relations into named vectors with "relation." prefix
   # e.g. relations$liesWithin -> relation.liesWithin = c("Befund 1")
   resource <- fix_relations(resource, replace_uids = replace_uids, index = index)
@@ -205,12 +216,14 @@ simplify_idaifield <- function(resources,
   }
 
   # ----- Find layers vectorized across all resources (faster than per-resource)
-  layer_categories <- c("Feature", names(config$categories$Feature$trees))
-  liesWithinLayer <- find_layer(
-    names(resources),
-    index,
-    layer_categories = layer_categories
-  )
+  if (find_layers) {
+    layer_categories <- c("Feature", names(config$categories$Feature$trees))
+    liesWithinLayer <- find_layer(
+      names(resources),
+      index,
+      layer_categories = layer_categories
+    )
+  }
 
   inputtypes <- parse_field_inputtypes(config)
 
@@ -224,10 +237,12 @@ simplify_idaifield <- function(resources,
       keep_geometry = keep_geometry,
       silent = silent
     )
-    lwl <- liesWithinLayer[names(liesWithinLayer) == x$identifier]
-    if (length(lwl) > 0) {
-      names(lwl) <- "relation.liesWithinLayer"
-      new_res <- append(new_res, lwl)
+    if (find_layers) {
+      lwl <- liesWithinLayer[names(liesWithinLayer) == x$identifier]
+      if (length(lwl) > 0) {
+        names(lwl) <- "relation.liesWithinLayer"
+        new_res <- append(new_res, lwl)
+      }
     }
     return(new_res)
   })

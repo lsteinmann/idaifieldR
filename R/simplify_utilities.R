@@ -496,6 +496,68 @@ handle_date_input <- function(dateInput, name) {
   return(result)
 }
 
+#' Handle a `dropdownRange` Input Field from an iDAI.field Resource
+#'
+#' Flattens a single `dropdownRange`-type field value from an iDAI.field
+#' resource into a named list with two elements: `<name>.start` and
+#' `<name>.end`. If only the start value exists, both `<name>.start` and
+#' `<name>.end` are set to the start value.
+#'
+#' @param dropdownRangeInput The value of a single `dropdownRange`-type field
+#' from a resource, i.e. `period` from the default Configuration. Expects a
+#' list with at minimum a `value` element and optionally an `endValue`.
+#' @param name Character. The name of the field being processed (e.g.
+#' `"period"`). Used to name the output elements as `<name>.start` and
+#' `<name>.end`.
+#'
+#' @returns A named list with two elements:
+#' \describe{
+#'   \item{<name>.start}{The start value as a character string.}
+#'   \item{<name>.end}{The end value as a character string, or the start
+#'   value if no endValue was found.}
+#' }
+#' Unexpected input formats return `NA` for both values.
+#'
+#' @export
+#'
+#' @seealso
+#' * [simplify_idaifield()] which dispatches to this function.
+#'
+#' @examples
+#' \dontrun{
+#' handle_dropdownrange_input(list(value = "Classical"), "period")
+#'
+#' # Current format, date range with time
+#' handle_date_input(
+#'   list(value = "Classical", endValue = "Hellenistic"),
+#'   "period"
+#' )
+#' }
+handle_dropdownrange_input <- function(dropdownRangeInput, name) {
+  start_key <- paste0(name, ".start")
+  end_key   <- paste0(name, ".end")
+
+  if (is.list(dropdownRangeInput)) {
+    if ("value" %in% names(dropdownRangeInput)) {
+      start_value <- dropdownRangeInput$value
+    } else {
+      start_value <- NA
+    }
+    if ("endValue" %in% names(dropdownRangeInput)) {
+      end_value <- dropdownRangeInput$endValue
+    } else {
+      end_value <- start_value
+    }
+    result <- list(start_value, end_value)
+    names(result) <- c(start_key, end_key)
+    return(result)
+  }
+
+  warning("handle_dropdownrange_input(): unexpected input format, returning NA.")
+  result        <- list(NA, NA)
+  names(result) <- c(start_key, end_key)
+  return(result)
+}
 
 #' Update Legacy Two-Field Date Format in an iDAI.field Resource
 #'
