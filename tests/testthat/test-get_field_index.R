@@ -1,6 +1,4 @@
-source(file = "../load_testdata.R")
-
-conn <- skip_if_no_connection()
+conn <- skip_if_no_couchdb()
 
 test_that("gets df from connection", {
   expect_true(is.data.frame(get_field_index(conn)))
@@ -19,4 +17,13 @@ test_that("returns liesWithinLayer when find_layers", {
 test_that("returns Place when gather_trenches", {
   index <- get_field_index(conn, gather_trenches = TRUE)
   expect_true("Place" %in% colnames(index))
+})
+
+
+############## DEPRECATED STUFF
+test_that("warns when deprecated 'remove_config_names' is passed", {
+  expect_warning(
+    get_field_index(conn, remove_config_names = TRUE),
+    "remove_config_names"
+  )
 })

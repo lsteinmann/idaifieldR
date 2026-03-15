@@ -17,8 +17,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#'                                 user = "R",
+#' connection <- connect_idaifield(serverip = "localhost",
 #'                                 pwd = "hallo",
 #'                                 project = "rtest")
 #'
@@ -29,7 +28,7 @@
 #'
 #' @export
 idf_show_categories <- function(idaifield_docs) {
-  resources <- check_and_unnest(idaifield_docs)
+  resources <- maybe_unnest_docs(idaifield_docs)
   cats <- lapply(resources, function(x) x$category)
   cats <- unlist(cats, use.names = FALSE)
   cats <- unique(cats)
@@ -66,8 +65,8 @@ idf_show_categories <- function(idaifield_docs) {
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo", project = "rtest")
+#' connection <- connect_idaifield(serverip = "localhost",
+#' pwd = "hallo", project = "rtest")
 #' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
 #' idaifield_layers <- idf_select_by(idaifield_docs,
@@ -118,8 +117,10 @@ select_by <- function(idaifield_docs,
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#' user = "R", pwd = "hallo", project = "rtest")
+#' connection <- connect_idaifield(
+#'   serverip = "localhost",
+#'   pwd = "hallo", project = "rtest"
+#' )
 #' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
 #' idaifield_layers <- idf_select_by(idaifield_docs,
@@ -143,7 +144,7 @@ idf_select_by <- function(idaifield_docs,
     stop("Argument `value` cannot be empty.")
   }
 
-  resources <- check_and_unnest(idaifield_docs)
+  resources <- maybe_unnest_docs(idaifield_docs)
 
   result <- Filter(function(x) {
     unlist(x[[by]]) %in% value

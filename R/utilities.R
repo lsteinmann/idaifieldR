@@ -27,61 +27,6 @@ na_if_empty <- function(item) {
   }
 }
 
-#' Check for `idaifield_...` classes
-#'
-#' For internal use... checks if an object can actually processed by
-#' the functions in this package which need the specific format that is
-#' returned by the core function get_idaifield_docs(...).
-#'
-#' @param testobject An object that should be evaluated.
-#'
-#' @returns a matrix that allows other functions to determine which type of
-#' list the object is
-#'
-#' @keywords internal
-#'
-#' @examples
-#' \dontrun{
-#' idaifield_docs <- get_idaifield_docs(projectname = "rtest",
-#' connection = connect_idaifield(serverip = "127.0.0.1",
-#' user = "R",
-#' pwd = "password"))
-#'
-#' check_if_idaifield(idaifield_docs)
-#' }
-check_if_idaifield <- function(testobject) {
-
-  result <- rep(NA, 4)
-  names(result) <- c("idaifield_docs", "idaifield_resources",
-                     "idaifield_simple", "list")
-
-  if (inherits(testobject, "idaifield_docs")) {
-    result["idaifield_docs"] <- TRUE
-  } else {
-    result["idaifield_docs"] <- FALSE
-  }
-
-  if (inherits(testobject, "idaifield_resources")) {
-    result["idaifield_resources"] <- TRUE
-  } else {
-    result["idaifield_resources"] <- FALSE
-  }
-
-  if (inherits(testobject, "idaifield_simple")) {
-    result["idaifield_simple"] <- TRUE
-  } else {
-    result["idaifield_simple"] <- FALSE
-  }
-
-  if (inherits(testobject, "list")) {
-    result["list"] <- TRUE
-  } else {
-    result["list"] <- FALSE
-  }
-
-  return(result)
-}
-
 #' Checks if a list has sub-lists and returns TRUE if so
 #'
 #'
@@ -182,7 +127,7 @@ response_to_list <- function(response = NULL) {
 
 #' Replace type with category in resource list names
 #'
-#' @param idaifield_docs
+#' @param docs An `idaifield_docs`.
 #'
 #' @returns the docs with "type" renamed to "category"
 #'
@@ -213,37 +158,9 @@ name_docs_list <- function(docs) {
   return(docs)
 }
 
-
-#' TEMPORARY FUNCTION to warn about project(name)
-#'
-#' @param project connection$project
-#' @param fail should there be an error?
-#'
-#' @return TRUE/FALSE
-#'
-#' @keywords internal
-warn_for_project <- function(project = NULL, fail = FALSE) {
-  if (!is.null(project)) {
-    message <- paste("Please note: In the future, the project always",
-                     "has to be supplied to `connect_idaifield()`.",
-                     "Handing the project(name) as an argument to other",
-                     "functions will be deprecated in one of the next",
-                     "versions." )
-    warning(message)
-    if (fail) {
-      stop("Please supply a project to `connect_idaifield()`.")
-    } else {
-      return(TRUE)
-    }
-  }
-}
-
-
-
-
 #' Reduces a (relations) list to its first element and warns accordingly.
 #'
-#' @param resource The resource to be checked
+#' @param relation The resources relation-list to be reduced
 #' @param uuid The id/UUID of the resource (for warning)
 #' @param identifier The identifier of the resource (for warning)
 #'
@@ -258,4 +175,122 @@ reduce_relations <- function(relation, uuid = NA, identifier = NA) {
     relation[[1]][2:length(relation[[1]])] <- NULL
   }
   return(relation)
+}
+
+
+
+#' Recursively Assign Names to All Nested Lists Based on "name" Field
+#'
+#' This function recursively traverses a nested list structure and assigns names
+#' to unnamed sub-lists based on their `name` field or the `name` field contained
+#' within an `item` sublist. It only assigns names if the list doesn't already have names.
+#'
+#' The function looks for the following naming rules:
+#' 1. If a sublist contains an `item` sublist and that `item` sublist has a `name` field,
+#'    the parent sublist is named based on the `item$name` value.
+#' 2. If a sublist contains a `name` field directly, the parent sublist is named based on
+#'    the `name` value.
+#' 3. If neither `item$name` nor `name` exists, the sublist remains unnamed.
+#'
+#' The function continues to apply these rules recursively to all sublists, ensuring that
+#' all unnamed sublists are appropriately named based on the above criteria.
+#'
+#' @param lst A nested list structure, where sublists may contain an `item` sublist or
+#'            a `name` field.
+#'
+#' @return The same nested list structure, but with unnamed sublists assigned names
+#'         based on the `name` or `item$name` field values.
+#'
+#' @examples
+#' \dontrun{
+#' test <- list(
+#'   list(item = list(name = "1", value = "value1"), groups = list(
+#'     list(name = "1a", fields = list(list(name = "1a-1"), list(name = "1a-2"))),
+#'     list(name = "1b", fields = list(list(name = "1b-1"), list(name = "1b-2")))
+#'   )),
+#'   list(item = list(name = "2", value = "value1")),
+#'   list(item = list(name = "3", value = "value1"), groups = list(
+#'     list(name = "3a", fields = list(list(name = "3a-1"), list(name = "3a-2"))),
+#'     list(name = "3b", fields = list(list(name = "3b-1"), list(name = "3b-2")))
+#'   ))
+#' )
+#' named_list <- name_all_nested_lists(test)
+#' print(named_list)
+#' }
+#'
+#' @keywords internal
+#'
+name_all_nested_lists <- function(lst) {
+  if (is.list(lst)) {
+    if (is.null(names(lst))) {
+      new_names <- lapply(lst, function(x) {
+        if ("item" %in% names(x)) {
+          name <- x$item$name
+        } else if ("name" %in% names(x)) {
+          name <- x$name
+        } else {
+          name <- NULL
+        }
+        return(name)
+      })
+      names(lst) <- new_names
+    }
+    lst <- lapply(lst, name_all_nested_lists)
+  }
+  return(lst)
+}
+
+
+#' Return a sub-list from a nested list by name
+#'
+#'
+#' @param target_name a character value expected to be the name of one list
+#' @param nested_list a nested list
+#'
+#' @return The first sub-list that has the name passed to target_name.
+#' @export
+#'
+#' @examples
+#' list <- list(
+#'   first1 = list(
+#'     second1 = list(1, 2, 3),
+#'     second2 = list(4, 5, 6)
+#'     ),
+#'   first2 = list(7, 8, 9)
+#' )
+#' find_named_list(list, "second2")
+find_named_list <- function(nested_list = NULL, target_name = NULL) {
+  stopifnot(is.list(nested_list))
+  stopifnot(is.character(target_name))
+  # Check if the current list contains the target name
+  if (!is.null(names(nested_list)) && target_name %in% names(nested_list)) {
+    result <- nested_list[[target_name]]
+    return(result)  # Return the matching sublist
+  }
+
+  # Search recursively in all named sublists
+  for (key in names(nested_list)) {
+    if (is.list(nested_list[[key]])) {  # Ensure it's a list before recursion
+      result <- find_named_list(
+        nested_list = nested_list[[key]],
+        target_name = target_name
+      )
+      if (!is.null(result)) return(result)  # Return if a match is found
+    }
+  }
+
+  return(NULL)  # Return NULL if no match found
+}
+
+#' Check if object is a "idf_connection_settings" and stop if not.
+#'
+#' @param x an object
+#'
+#' @return nothing
+#'
+#' @keywords internal
+stop_if_not_idf_connection_settings <- function(x) {
+  if (!inherits(x, "idf_connection_settings")) {
+    stop(paste0("'", deparse(substitute(x)), "' is not an 'idf_connection_settings'-object as returned by `connect_idaifield()`."))
+  }
 }

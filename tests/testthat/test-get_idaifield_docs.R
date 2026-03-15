@@ -1,11 +1,9 @@
-
-
 test_that("raw has connection as attribute", {
   conn <- suppressWarnings(connect_idaifield(pwd = "wrongpwd", project = "rtest", ping = FALSE))
   expect_error(suppressWarnings(get_idaifield_docs(conn)))
 })
 
-source(file = "../load_testdata.R")
+
 
 test_that("items are named", {
   rnr <- sample(seq_along(test_docs), 1)
@@ -20,45 +18,33 @@ test_that("raw has connection settings as attribute", {
   expect_true("idf_connection_settings" %in% class(test))
 })
 
-test_that("resources has connection as attribute", {
-  test <- attr(test_resources, "connection")
-  expect_true("idf_connection_settings" %in% class(test))
-})
 
 
 skip_on_cran()
-connection <- skip_if_no_connection()
+connection <- skip_if_no_couchdb()
 
 
 test_that("works without config in project", {
   conn <- connection
   conn$project <- "test"
   test_docs <- get_idaifield_docs(connection = conn)
-  check <- check_if_idaifield(test_docs)
-  expect_true(check["idaifield_docs"], TRUE)
+  expect_true(inherits(test_docs, "idaifield_docs"))
 })
 
 test_docs_raw <- get_idaifield_docs(connection = connection,
                                     raw = TRUE)
 
 
-test_that("returns docs-lists", {
-  check <- check_if_idaifield(test_docs_raw)
-  expect_true(check["idaifield_docs"], TRUE)
+test_that("class is assignes", {
+  expect_true(inherits(test_docs_raw, "idaifield_docs"))
 })
 
 test_that("returns resource-lists", {
   test_resources <- get_idaifield_docs(connection = connection,
                                        raw = FALSE)
-  check <- check_if_idaifield(test_resources)
-  expect_true(check["idaifield_resources"], TRUE)
+  expect_true(inherits(test_resources, "idaifield_resources"))
 })
 
-
-test_that("returns simple-lists", {
-  check <- check_if_idaifield(test_simple)
-  expect_true(check["idaifield_simple"], TRUE)
-})
 
 test_that("returns json", {
   output <- get_idaifield_docs(connection = connection,

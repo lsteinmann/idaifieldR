@@ -4,15 +4,11 @@
 \alias{idf_check_for_project}
 \title{Check for the Existence of a Project in a Field Database (internal)}
 \usage{
-idf_check_for_project(conn, project = NULL)
+idf_check_for_project(conn)
 }
 \arguments{
 \item{conn}{The connection settings as returned
 by \code{\link[=connect_idaifield]{connect_idaifield()}}}
-
-\item{project}{character. Name of the project-database to
-check for. If not supplied, the function will use the project specified
-in the connection settings.}
 }
 \description{
 This function checks if a given project exists in the Field Database.

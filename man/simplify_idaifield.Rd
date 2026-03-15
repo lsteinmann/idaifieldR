@@ -2,125 +2,74 @@
 % Please edit documentation in R/simplify_idaifield_resources.R
 \name{simplify_idaifield}
 \alias{simplify_idaifield}
-\title{Simplify a List Imported from an iDAI.field / Field Desktop-\code{1041-1}#' Simplify a List Imported from an iDAI.field / Field Desktop-Database}
+\title{Simplify a List Imported from an iDAI.field / Field Desktop Database}
 \usage{
 simplify_idaifield(
-  idaifield_docs,
+  resources,
+  index = NULL,
+  config = NULL,
   keep_geometry = FALSE,
-  replace_uids = TRUE,
-  find_layers = TRUE,
-  uidlist = NULL,
-  language = "all",
-  remove_config_names = TRUE,
-  spread_fields = TRUE,
-  use_exact_dates = FALSE,
-  silent = FALSE
+  find_layers = FALSE,
+  silent = FALSE,
+  ...
 )
 }
 \arguments{
-\item{idaifield_docs}{An \code{idaifield_docs} or \code{idaifield_resources}-list as
-returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} or \code{\link[=idf_query]{idf_query()}},
-\code{\link[=idf_index_query]{idf_index_query()}}, and \code{\link[=idf_json_query]{idf_json_query()}}.}
+\item{resources}{An \code{idaifield_docs} or \code{idaifield_resources} list as
+returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_index_query]{idf_index_query()}},
+or \code{\link[=idf_json_query]{idf_json_query()}}.}
 
-\item{keep_geometry}{TRUE/FALSE: Should the geographical
-information be kept or removed? Defaults is FALSE. Uses: \code{\link[=reformat_geometry]{reformat_geometry()}}}
+\item{index}{A data.frame as returned by \code{\link[=make_index]{make_index()}} or
+\code{\link[=get_field_index]{get_field_index()}}. Required for UUID replacement and layer detection.}
 
-\item{replace_uids}{TRUE/FALSE: Should UUIDs be automatically replaced with the
-corresponding identifiers? Defaults is TRUE. Uses: \code{\link[=fix_relations]{fix_relations()}} with
-\code{\link[=replace_uid]{replace_uid()}}, and also: \code{\link[=find_layer]{find_layer()}}}
+\item{config}{An \code{idaifield_config} object as returned by
+\code{\link[=get_configuration]{get_configuration()}}. Required when \code{find_layers = TRUE}.}
 
-\item{find_layers}{TRUE/FALSE. Default is FALSE. If TRUE, adds another column
-with the 'Layer' (see \code{getOption("idaifield_categories")$layers}, can be
-modified) in which a resource is contained  recursively. That means that
-even if it does not immediately lie within this layer, but is
-contained by one or several other resources in said layer, a new column
-("liesWithinLayer") will still show the layer.
-Example: A sample "A" in Find "001" from layer "Layer1" will
-usually have "001" as the value in "liesWithin". With find_layers, there will
-be another column called "liesWithinLayer" which contains "Layer1" for both
-sample "A" and Find "001".}
+\item{keep_geometry}{logical. Should geometry be kept as a GeoJSON string?
+Default is TRUE.}
 
-\item{uidlist}{If NULL (default) the list of UUIDs and identifiers is
-automatically generated within this function using \code{\link[=get_uid_list]{get_uid_list()}}. This only makes sense if
-the list handed to \code{\link[=simplify_idaifield]{simplify_idaifield()}} had not been selected yet. If it
-has been, you should supply a data.frame as returned
-by \code{\link[=get_field_index]{get_field_index()}}.}
+\item{find_layers}{logical. Should the containing layer be detected and
+added as \code{relation.liesWithinLayer}? Default is TRUE.}
 
-\item{language}{The short name (e.g. "en", "de", "fr") of the language
-that is preferred for the fields. Special value "all" (the default) can be
-used to return a concatenated string of all available languages.
-\code{\link[=gather_languages]{gather_languages()}} will select other available languages
-in alphabetical order if the selected language is not available.}
+\item{silent}{logical. Should messages be suppressed? Default is FALSE.}
 
-\item{remove_config_names}{TRUE/FALSE: Should the name of the project be
-removed from field names of the configuration? (Default is TRUE.)
-(Should e.g.: \emph{test:amount} be renamed to \emph{amount},
-see \code{\link[=remove_config_names]{remove_config_names()}}.)}
-
-\item{spread_fields}{TRUE/FALSE: Should checkbox-fields be
-spread across multiple lists to facilitate boolean-columns for each value
-of a checkbox-field? Default is TRUE. Uses: \code{\link[=get_configuration]{get_configuration()}},
-\code{\link[=get_field_inputtypes]{get_field_inputtypes()}}, \code{\link[=convert_to_onehot]{convert_to_onehot()}}}
-
-\item{use_exact_dates}{TRUE/FALSE: Should the values from any "exact"
-dates be used in case there are any? Default is FALSE. Changes outcome of \code{\link[=fix_dating]{fix_dating()}}.}
-
-\item{silent}{TRUE/FALSE, default: FALSE. Should messages be suppressed?}
+\item{...}{sink for deprecated params}
 }
 \value{
-An \code{idaifield_simple}-list containing the same resources in
-a different format depending on the parameters used.
+An \code{idaifield_simple} list with the same resources in a flatter
+format, with \code{connection}, \code{projectname} stored as
+attributes.
 }
 \description{
-The function will take a list as returned by
-\code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}}, \code{\link[=idf_index_query]{idf_index_query()}}, or
-\code{\link[=idf_json_query]{idf_json_query()}} and process it to make the list more usable.
-It will unnest a few lists, including the dimension-lists and the
-period-list to provide single values for later processing with
-\code{\link[=idaifield_as_matrix]{idaifield_as_matrix()}}.
-If a connection to the database can be established, the function will
-get the relevant project configuration and convert custom checkboxes-fields
-to multiple lists, each for every value from the respective valuelist,
-to make them more accessible during the conversion with
-\code{\link[=idaifield_as_matrix]{idaifield_as_matrix()}}.
-It will also remove the custom configuration field names that are in use
-since iDAI.field 3 / Field Desktop and consist of "projectname:fieldName".
-Only the "projectname:"-part will be removed.
+Takes a list as returned by \code{\link[=get_idaifield_docs]{get_idaifield_docs()}}, \code{\link[=idf_query]{idf_query()}},
+\code{\link[=idf_index_query]{idf_index_query()}}, or \code{\link[=idf_json_query]{idf_json_query()}} and transforms it into a
+flatter, more R-friendly structure.
 }
 \details{
-Please note: The function will need an Index (i.e. uidlist as provided
-by \code{\link[=get_uid_list]{get_uid_list()}}) of the complete project database to correctly replace
-the UUIDs with their corresponding identifiers! Especially if a selected
-list is passed to \code{\link[=simplify_idaifield]{simplify_idaifield()}}, you need to supply the uidlist
-of the complete project database as well.
+Relations are flattened into named vectors with a \code{relation.}-prefix
+(e.g. \code{relation.liesWithin}). UUIDs in relations are replaced with
+human-readable identifiers. Geometry is kept as a GeoJSON string if
+\code{keep_geometry = TRUE}.
 
-Formatting of various lists: Dimension measurements as well as dating are
-reformatted and might produce unexpected results.
-For the dating, all begin and end values are evaluated and for each resource,
-the minimum value from "begin" and maximum value from "end" is selected.
-For the dimension-fields, if a ranged measurement was selected, a mean
-will be returned.
+Note: If you are working with a subset of resources (e.g. from
+\code{\link[=idf_query]{idf_query()}}), you should supply the \code{index} of the \emph{complete} project
+database, not just the subset — otherwise UUID replacement will be
+incomplete.
 }
 \examples{
 \dontrun{
-connection <- connect_idaifield(serverip = "127.0.0.1",
-    project = "rtest",
-    user = "R",
-    pwd = "hallo")
-idaifield_docs <- get_idaifield_docs(connection = connection)
-
-simpler_idaifield <- simplify_idaifield(idaifield_docs)
+conn <- connect_idaifield(serverip = "localhost", project = "rtest", pwd = "hallo")
+docs <- get_idaifield_docs(connection = conn)
+simple <- simplify_idaifield(docs)
 }
 }
 \seealso{
 \itemize{
-\item This function uses: \code{\link[=idf_sepdim]{idf_sepdim()}}, \code{\link[=remove_config_names]{remove_config_names()}}
-\item When find_layers = TRUE: \code{\link[=find_layer]{find_layer()}}, this only works when the function can get an index/uidlist!
-\item \code{\link[=fix_dating]{fix_dating()}} with the outcome depending on the \code{use_exact_dates}-argument.
-\item When selecting a language: \code{\link[=gather_languages]{gather_languages()}}
-\item Depending on the \code{spread_fields}-argument: \code{\link[=convert_to_onehot]{convert_to_onehot()}}
-\item Depending on the \code{keep_geometry}-argument: \code{\link[=reformat_geometry]{reformat_geometry()}}
-\item Depending on the \code{replace_uids}-argument: \code{\link[=fix_relations]{fix_relations()}} with \code{\link[=replace_uid]{replace_uid()}}
-\item If \code{uidlist = NULL}: \code{\link[=get_uid_list]{get_uid_list()}}
+\item \code{\link[=get_idaifield_docs]{get_idaifield_docs()}} to import resources from the database
+\item \code{\link[=make_index]{make_index()}} and \code{\link[=get_field_index]{get_field_index()}} for building an index
+\item \code{\link[=get_configuration]{get_configuration()}} for the project configuration
+\item \code{\link[=fix_relations]{fix_relations()}} for relation flattening
+\item \code{\link[=find_layer]{find_layer()}} for layer detection
+\item \code{\link[=idaifield_as_matrix]{idaifield_as_matrix()}} for converting the result to a matrix
 }
 }

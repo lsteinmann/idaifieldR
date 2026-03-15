@@ -27,7 +27,7 @@ test_that("warning when language inexistent", {
                  "No language")
 })
 
-input_list <- lapply(test_resources, function(x) x$shortDescription)
+input_list <- lapply(test_docs, function(x) x$doc$resource$shortDescription)
 test_that("works for single language test_resources", {
   expect_identical(length(input_list),
                    length(gather_languages(input_list)))
@@ -41,7 +41,7 @@ test_that("works with a simple list without languages", {
 })
 
 data(idaifieldr_demodata)
-data <- check_and_unnest(idaifieldr_demodata)
+data <- maybe_unnest_docs(idaifieldr_demodata)
 input_list <- lapply(data, function(x) x$shortDescription)
 test_that("works for demo data with more than one language", {
   out <- gather_languages(input_list, language = "en")
@@ -56,4 +56,3 @@ test_that("also warning if language not available", {
 test_that("pastes languages when language = 'all'", {
   expect_match(gather_languages(input_list, language = "all"), ":")
 })
-

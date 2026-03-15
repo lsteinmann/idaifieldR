@@ -36,35 +36,33 @@
 #'
 #' @examples
 #' \dontrun{
-#' connection <- connect_idaifield(serverip = "127.0.0.1",
-#'                                 user = "R", pwd = "hallo")
-#' idaifield_docs <- get_idaifield_docs(connection = connection,
-#'                                      projectname = "rtest")
+#' connection <- connect_idaifield(serverip = "localhost",
+#'                                 project = "rtest", pwd = "hallo")
+#' idaifield_docs <- get_idaifield_docs(connection = connection)
 #'
-#' uidlist <- get_uid_list(idaifield_docs, verbose = TRUE)
+#' uidlist <- make_index(idaifield_docs, verbose = TRUE)
 #' }
-get_uid_list <- function(idaifield_docs,
+make_index <- function(idaifield_docs,
                          verbose = FALSE,
                          gather_trenches = FALSE,
-                         remove_config_names = TRUE,
-                         find_layers = FALSE,
-                         language = "all") {
-  #.Deprecated("get_field_index()", package = "idaifieldR", #msg,
-  #            old = "get_uid_list()")
+                         language = "all",
+                         ...) {
+  # ----- Handle deprecated parameters passed via ...
+  if ("remove_config_names" %in% names(list(...))) {
+    warning("The option to 'remove_config_names' has been removed. Please update your code.")
+  }
 
   stopifnot(is.logical(verbose))
   stopifnot(is.logical(gather_trenches))
-  stopifnot(is.logical(remove_config_names))
-  stopifnot(is.logical(find_layers))
 
-  idaifield_docs <- check_and_unnest(idaifield_docs)
+  idaifield_docs <- maybe_unnest_docs(idaifield_docs)
 
   ncol <- 5
   colnames <- c("category", "UID", "identifier", "isRecordedIn", "liesWithin")
 
   if (verbose) {
-    ncol <- 7
-    colnames <- c(colnames, "shortDescription", "liesWithinLayer")
+    ncol <- 6
+    colnames <- c(colnames, "shortDescription")
   }
 
   uidlist <- data.frame(matrix(nrow = length(idaifield_docs), ncol = ncol))
@@ -81,10 +79,6 @@ get_uid_list <- function(idaifield_docs,
     uidlist$category <- ifelse(is.na(category), type, category)
   } else {
     uidlist$category <- category
-  }
-
-  if (remove_config_names) {
-    uidlist$category <- remove_config_names(uidlist$category, silent = TRUE)
   }
 
   uidlist$identifier <- unlist(lapply(idaifield_docs,
@@ -125,11 +119,6 @@ get_uid_list <- function(idaifield_docs,
     } else {
       uidlist$shortDescription <- gather_languages(desc, language = language)
     }
-  }
-
-  if (find_layers) {
-    lwl <- find_layer(uidlist$UID, uidlist)
-    uidlist$liesWithinLayer <- replace_uid(lwl, uidlist)
   }
 
   uidlist$isRecordedIn <- replace_uid(uidlist$isRecordedIn, uidlist)
@@ -175,8 +164,7 @@ get_uid_list <- function(idaifield_docs,
 #' (Useful for grouping the finds of several trenches, but will only work if the
 #' project database is organized accordingly.)
 #' @param find_layers TRUE/FALSE. Default is FALSE. If TRUE, adds another column
-#' with the 'Layer' (see `getOption("idaifield_categories")$layers`, can be
-#' modified) in which a resource is contained  recursively. That means that
+#' with the 'Layer' in which a resource is contained  recursively. That means that
 #' even if it does not immediately lie within this layer, but is
 #' contained by one or several other resources in said layer, a new column
 #' ("liesWithinLayer") will still show the layer.
@@ -185,20 +173,18 @@ get_uid_list <- function(idaifield_docs,
 #' be another column called "liesWithinLayer" which contains "Layer1" for both
 #' sample "A" and Find "001".
 #' @inheritParams gather_languages
-#' @inheritParams get_field_inputtypes
+#' @param ... sink for deprecated params
 #'
-#' @returns a data.frame with identifiers and corresponding UUIDs along with
+#' @returns a data.frame with identifiers and corresponing UUIDs along with
 #' the category (former: type), basic relations and depending on settings place
 #' and shortDescription of each element
 #' @export
 #'
 #' @seealso
-#' * [get_uid_list()] returns the same data.frame from an `idaifield_docs` or
+#' * [make_index()] returns the same data.frame from an `idaifield_docs` or
 #' `idaifield_resources`-list without querying the database.
 #' * [find_layer()] is used when `find_layers = TRUE` to search for the
 #' containing layer-resource recursively.
-#'
-#'
 #'
 #'
 #' @examples
@@ -210,13 +196,16 @@ get_uid_list <- function(idaifield_docs,
 get_field_index <- function(connection,
                             verbose = FALSE,
                             gather_trenches = FALSE,
-                            remove_config_names = TRUE,
                             find_layers = FALSE,
-                            language = "all") {
+                            language = "all",
+                            ...) {
+  # ----- Handle deprecated parameters passed via ...
+  if ("remove_config_names" %in% names(list(...))) {
+    warning("The option to 'remove_config_names' has been removed. Please update your code.")
+  }
 
   stopifnot(is.logical(verbose))
   stopifnot(is.logical(gather_trenches))
-  stopifnot(is.logical(remove_config_names))
   stopifnot(is.logical(find_layers))
 
 
@@ -238,7 +227,7 @@ get_field_index <- function(connection,
   # db query here
   client <- proj_idf_client(connection, include = "query")
   response <- response_to_list(client$post(body = query))
-  response <- unnest_docs(response)
+  response <- unnest_docs(response$docs)
 
   fields <- gsub("relations.", "", fields)
   fields <- fields[!fields == "type"]
@@ -250,7 +239,6 @@ get_field_index <- function(connection,
     if (any(type_ind)) {
       names(x)[type_ind] <- "category"
     }
-
 
     # check if liesWithin contains only one element, if not: discard and warn
     x$relations["liesWithin"] <- reduce_relations(x$relations["liesWithin"],
@@ -278,15 +266,18 @@ get_field_index <- function(connection,
   })
   index_df <- do.call(rbind.data.frame, index_df)
 
-  # get rid of confignames
-  index_df$category <- remove_config_names(index_df$category, silent = TRUE)
-
   # get rid of UUIDs
   index_df$isRecordedIn <- replace_uid(index_df$isRecordedIn, index_df)
   index_df$liesWithin <- replace_uid(index_df$liesWithin, index_df)
 
   if (find_layers) {
-    index_df$liesWithinLayer <- find_layer(index_df$identifier, index_df)
+    config <- get_configuration(connection)
+    layer_categories <- c("Feature", names(config$categories$Feature$trees))
+    index_df$liesWithinLayer <- find_layer(
+      ids = index_df$identifier,
+      index = index_df,
+      layer_categories = layer_categories
+    )
   }
 
   if (gather_trenches) {
@@ -307,7 +298,7 @@ get_field_index <- function(connection,
 
 #' Get a vector of *Place*-resources each element from the index is located in
 #'
-#' @param uidlist as returned by [get_uid_list()]
+#' @param uidlist as returned by [make_index()]
 #' and [get_field_index()]
 #'
 #' @returns a vector containing the Place each resource is located in

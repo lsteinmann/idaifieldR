@@ -1,3 +1,48 @@
+# idaifieldR 0.4.0 _2026-03-15_
+> [!WARNING]
+> This version introduces breaking changes. I tried, but I do not guarantee that the package will notify you of every change. Proceed with appropriate caution. 
+
+## New Field Desktop API
+* idaifieldR now gets the configuration of a project from Field Desktop directly via the `/config/` enpoint instead of the database document. That means that the complete configuration is now accessible.
+  * `parse_field_inputtypes()` produces a data.frame of Categories, Parent Categories, input field identifiers and the corresponding `inputType` in the given Project Configuration.
+  * NOTE: Subfields of composite fields are simply ignored.
+
+## Renewed `simplify_idaifield()`
+`simplify_idaifield()` has been drastically changed. Some functionality which would have created data issues for users was removed (e.g. dimension-recalculation), which results in a less "simple" return list, but will keep the data intact. The function is now less verbose. All lists like `campaign` or `processor` or any checkbox-fields that can contain multiple values are returned as vectors instead of lists. Geometry will be parsed to JSON if kept. UUIDs are replaced during processing. Date fields and Dropdown Ranges are transformed to two values per field: <fieldname>.start and <fieldname>.end (see: `handle_date_input()` and `handle_dropdownrange_input()`). For Dropdown Ranges, start and end are the same of only the one value was set in Field Desktop.
+
+## Improvements:
+* Options: `options(digits=20)` is reset to previous value after exiting `get_idaifield_docs()`. Sorry.
+* `remove_config_names`-Parameter and Function: The project identifier in front of a category or field is not automatically removed any more in the index (`get_field_index()` or `make_index()`), neither in `simplify_idaifield()` (e.g. `test:testField` -> `testField`). The `remove_config_names()` utility functions still exists.
+* `convert_to_onehot()` works again with the new inputTypes passed from `parse_field_inputtypes()`.
+* `fix_dating()` works, but is still questionable and its logic is badly documented. Use with caution.
+
+## Maintenance:
+* reworked `connect_idaifield()` (and affected): 
+  * 'project' parameter is now required. 
+  * 'version' and 'user' parameter removed. 
+  * 'localhost' new default for server.
+  * And the deprecated 'project' / 'projectname' parameter in many other functions is now finally removed.
+  * Substituted check for project parameter with structure check on connection parameter. If `connect_idaifield()` produced if, we just assume it's correct.
+* Renamed `get_uid_list()` to `make_index()` (with notice, will still work for now).
+* Removed `check_if_idaifield()`
+* Removed `download_language_list()`
+* Removed `reformat_geometry()`: Instead, I recommend (and do) re-json-ify the Geometry and advise to use `sf::st_read(json_string, quiet = TRUE)` on each geometry elsewhere.
+* Removed `get_language_lookup()` and removed language support from `simplify_idaifield()` - it's just too much.
+* Removed `extract_field_names()`
+* Removed `get_field_inputtypes()`
+* Reworked `check_and_unnest()` into `maybe_unnest_docs()`.
+* Reworked `find_layers()` to require a vector of categories to search for as layer_categories instead of a global option. 
+* Reorganized and reworked *a lot* of tests (thanks, Claude.ai).
+
+## Bug fixes:
+* `add_limit_to_query()` now validates the updates query again. Unlike before.
+* `fix_relations()` now works with user-defined relations which contain a number in the name.
+
+
+## Note
+Many of the updates in this version have been developed using Claude.ai - though no pure "vibe-coding" was involved.
+
+
 # idaifieldR 0.3.6 _2025-11-29_
 * Quick and dirty fix to get around the default limit of 25 for the `_find` enpoint of PouchDB since Field Desktop v3.6.0
 

@@ -1,7 +1,3 @@
-source(file = "../load_testdata.R")
-
-
-
 test_that("renames type to category", {
   cat_in_names <- lapply(type_to_category(test_docs), function (x) {
     "category" %in% names(x$doc$resource)
@@ -11,7 +7,7 @@ test_that("renames type to category", {
 })
 
 
-conn <- skip_if_no_connection()
+conn <- skip_if_no_couchdb()
 
 
 test_that("renames type to category", {

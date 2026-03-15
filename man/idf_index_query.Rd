@@ -8,8 +8,7 @@ idf_index_query(
   connection,
   field = "category",
   value = "Brick",
-  uidlist = NULL,
-  projectname = NULL
+  uidlist = NULL
 )
 }
 \arguments{
@@ -22,10 +21,7 @@ by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 \item{value}{character. The value to be selected for in the specified field.}
 
 \item{uidlist}{A data.frame as returned by \code{\link[=get_field_index]{get_field_index()}}
-(or \code{\link[=get_uid_list]{get_uid_list()}}).}
-
-\item{projectname}{(deprecated) The name of the project to be queried (overrides
-the one listed in the connection-object).}
+(or \code{\link[=make_index]{make_index()}}).}
 }
 \value{
 An \code{idaifield_docs} list
@@ -33,7 +29,7 @@ An \code{idaifield_docs} list
 \description{
 This function can be used to gather \emph{docs} from an iDAI.field / Field
 Desktop Database according to the values of listed in an index as returned
-by \code{\link[=get_field_index]{get_field_index()}} or \code{\link[=get_uid_list]{get_uid_list()}}.
+by \code{\link[=get_field_index]{get_field_index()}} or \code{\link[=make_index]{make_index()}}.
 }
 \examples{
 \dontrun{

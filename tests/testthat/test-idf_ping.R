@@ -16,7 +16,7 @@ test_that("gives warning for invalid connection credentials", {
 
 
 skip_on_cran()
-connection <- skip_if_no_connection()
+connection <- skip_if_no_couchdb()
 
 no_conn <- suppressWarnings(connect_idaifield(pwd = "wrongpassword",
                                               project = "rtest",

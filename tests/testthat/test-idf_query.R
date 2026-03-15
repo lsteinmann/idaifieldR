@@ -1,8 +1,8 @@
 skip_on_cran()
 
-connection <- skip_if_no_connection()
+connection <- skip_if_no_couchdb()
 
-uidlist <- get_uid_list(get_idaifield_docs(connection))
+uidlist <- make_index(get_idaifield_docs(connection))
 
 test_that("returns idaifield_docs", {
   res <- idf_query(connection,
@@ -15,7 +15,7 @@ test_that("returns appropriate entries", {
   res <- idf_index_query(connection,
                    field = "isRecordedIn", value = "Schnitt 1",
                    uidlist = uidlist)
-  test <- check_and_unnest(res)
+  test <- maybe_unnest_docs(res)
   test <- lapply(res, function(x) x$relation.isRecordedIn)
   test <- unlist(test) == "Schnitt 1"
   expect_true(all(test))
@@ -36,7 +36,7 @@ test_that("error when field not in uidlist", {
 })
 
 test_that("returns appropriate number of entries", {
-  count <- unlist(lapply(test_resources, function(x) x$storagePlace))
+  count <- unlist(lapply(test_docs, function(x) x$doc$resource$storagePlace))
   count <- sum(count == "Museum")
   res <- idf_query(connection, field = "storagePlace", value = "Museum")
   expect_equal(length(res), count)

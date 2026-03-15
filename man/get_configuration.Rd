@@ -2,42 +2,38 @@
 % Please edit documentation in R/get_configuration.R
 \name{get_configuration}
 \alias{get_configuration}
-\title{Get the Custom Project Configuration as Stored in the Project Database}
+\title{Get the Custom Project Configuration as Provided by the Field Desktop API}
 \usage{
-get_configuration(connection, projectname = NULL)
+get_configuration(connection)
 }
 \arguments{
-\item{connection}{A connection object as returned
-by \code{\link[=connect_idaifield]{connect_idaifield()}}}
-
-\item{projectname}{(deprecated) The name of the project in the Field Client that one
-wishes to load. Will overwrite the project argument that was set
-in \code{\link[=connect_idaifield]{connect_idaifield()}}.}
+\item{connection}{A connection object as returned by \code{\link[=connect_idaifield]{connect_idaifield()}}}
 }
 \value{
-A list containing the project configuration; \code{NA} if the configuration
-could not be found or the connection failed.
+A list of class \code{idaifield_config} containing the project
+configuration, with \code{connection} and \code{projectname} stored as attributes.
+Returns \code{NA} with a warning if the configuration could not be found or
+the connection failed.
 }
 \description{
-This function retrieves the project configuration (if existent) from an
-\href{https://github.com/dainst/idai-field}{iDAI.field} project.
-The list will only contain fields and valuelists
-that have been edited in the project configuration editor in iDAI.field 3
-(Field Desktop) and does not encompass \emph{fields}, \emph{valuelists} and
-\emph{translation} added before the update to
-\href{https://github.com/dainst/idai-field}{iDAI.field} 3.
+This function retrieves the complete project configuration (if existent)
+from an \href{https://github.com/dainst/idai-field}{iDAI.field} project via
+Field Desktop's configuration endpoint. The list will contain the complete
+configuration as used in the project, including custom \emph{fields},
+\emph{valuelists} and \emph{translations}.
 }
 \examples{
 \dontrun{
-conn <- connect_idaifield(serverip = "127.0.0.1",
-user = "R", pwd = "hallo", project = "rtest")
-config <- get_configuration(connection = conn,
-projectname = "rtest")
+conn <- connect_idaifield(
+  serverip = "localhost", pwd = "hallo", project = "rtest"
+)
+config <- get_configuration(connection = conn)
 }
 }
 \seealso{
 \itemize{
-\item Get the inputTypes from a Configuration: \code{\link[=get_field_inputtypes]{get_field_inputtypes()}}
+\item Get the inputTypes from a Configuration: \code{\link[=parse_field_inputtypes]{parse_field_inputtypes()}}
 \item This function is used by: \code{\link[=simplify_idaifield]{simplify_idaifield()}}.
+\item \href{https://field.idai.world/manual}{iDAI.field Manual: 12. API}
 }
 }

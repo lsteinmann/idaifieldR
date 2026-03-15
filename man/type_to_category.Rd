@@ -7,7 +7,7 @@
 type_to_category(docs)
 }
 \arguments{
-\item{idaifield_docs}{}
+\item{docs}{An \code{idaifield_docs}.}
 }
 \value{
 the docs with "type" renamed to "category"

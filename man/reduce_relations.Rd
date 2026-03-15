@@ -7,11 +7,11 @@
 reduce_relations(relation, uuid = NA, identifier = NA)
 }
 \arguments{
+\item{relation}{The resources relation-list to be reduced}
+
 \item{uuid}{The id/UUID of the resource (for warning)}
 
 \item{identifier}{The identifier of the resource (for warning)}
-
-\item{resource}{The resource to be checked}
 }
 \value{
 The reduced relations list
