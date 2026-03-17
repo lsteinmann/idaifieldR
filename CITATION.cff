@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Steinmann
+    given-names: Lisa
+    orcid: https://orcid.org/0000-0002-2215-1243
+title: "idaifieldR"
+version: 0.3.6
+identifiers:
+  - type: doi
+    value: 10.34780/068b-q6c7
+date-released: 2025-11-29
