@@ -5,8 +5,8 @@ authors:
     given-names: Lisa
     orcid: https://orcid.org/0000-0002-2215-1243
 title: "idaifieldR"
-version: 0.3.6
+version: 0.4.0
 identifiers:
   - type: doi
     value: 10.34780/068b-q6c7
-date-released: 2025-11-29
+date-released: 2026-03-15
